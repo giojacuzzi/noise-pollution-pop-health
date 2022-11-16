@@ -25,13 +25,26 @@ data = data_raw[measurement_rows,]
 # Subset data for desired measurements
 data = data[,c(
   'Time',
+  # A-weighted
   'LAeq','LApeak',
   'LAS','LASmax',
   'LAF','LAFmax',
-  'LAI','LAImax'
+  'LAI','LAImax',
+  # C-weighted
+  'LCeq','LCpeak',
+  'LCS','LCSmax',
+  'LCF','LCFmax',
+  'LCI','LCImax',
+  # Z-weighted
+  'LZeq','LZpeak',
+  'LZS','LZSmax',
+  'LZF','LZFmax',
+  'LZI','LZImax'
 )]
 
 # TODO: May want to consider using multiple time series (ts) instead of simple vectors
+
+# TODO: Integrate octave bands
 
 format_date = '%Y-%m-%d'
 format_time = '%H:%M:%S'
@@ -202,13 +215,13 @@ Lden = function(Levels, Times) {
 # Metric Evaluation ------------------------------------------------------------
 print('Evaluating metrics')
 
-# NOTE: LAeq values are used here, but LAS/LAF/LAI could be used instead
-DNL  = Ldn(data$LAeq, data$Time)
-DENL = Lden(data$LAeq, data$Time)
+DNL_A = Ldn(data$LAeq, data$Time)
+DENL_A = Lden(data$LAeq, data$Time)
 
-metrics = data.frame(
-  Ldn     = DNL$Ldn,
-  Lden    = DENL$Lden,
+# NOTE: LAeq values are used here, but LAS/LAF/LAI could be used instead
+metrics_A = data.frame(
+  Ldn     = DNL_A$Ldn,
+  Lden    = DENL_A$Lden,
   L_Aeq   = LeqTotal(data$LAeq), # Leq total from all individual Leq measurements, A-weighting
   L_ASeq  = LeqTotal(data$LAS),
   L_AFeq  = LeqTotal(data$LAF),
@@ -228,30 +241,74 @@ metrics = data.frame(
   L_XAeq90 = LxFromLevels(data$LAeq, 90)
 )
 
-# metrics_C = data.frame(
-#   Ldn     = DNL$Ldn,
-#   Lden    = DENL$Lden,
-#   L_Aeq   = LeqTotal(data$LAeq), # Leq total from all individual Leq measurements, A-weighting
-#   L_ASeq  = LeqTotal(data$LAS),
-#   L_AFeq  = LeqTotal(data$LAF),
-#   L_AIeq  = LeqTotal(data$LAI),
-#   SEL_A   = SelFromLevels(data$LAeq),
-#   SEL_AS  = SelFromLevels(data$LAS),
-#   SEL_AF  = SelFromLevels(data$LAF),
-#   SEL_AI  = SelFromLevels(data$LAI),
-#   L_Amax  = max(data$LAeq),
-#   L_ASmax = max(data$LASmax),
-#   L_AFmax = max(data$LAFmax),
-#   L_AImax = max(data$LAImax),
-#   L_Apeak = max(data$LApeak),
-#   L_XAeq10 = LxFromLevels(data$LAeq, 10),
-#   L_XAeq25 = LxFromLevels(data$LAeq, 25),
-#   L_XAeq50 = LxFromLevels(data$LAeq, 50),
-#   L_XAeq90 = LxFromLevels(data$LAeq, 90)
-# )
+DNL_C = Ldn(data$LCeq, data$Time)
+DENL_C = Lden(data$LCeq, data$Time)
+metrics_C = data.frame(
+  Ldn     = DNL_C$Ldn,
+  Lden    = DENL_C$Lden,
+  L_Ceq   = LeqTotal(data$LCeq),
+  L_CSeq  = LeqTotal(data$LCS),
+  L_CFeq  = LeqTotal(data$LCF),
+  L_CIeq  = LeqTotal(data$LCI),
+  SEL_C   = SelFromLevels(data$LCeq),
+  SEL_CS  = SelFromLevels(data$LCS),
+  SEL_CF  = SelFromLevels(data$LCF),
+  SEL_CI  = SelFromLevels(data$LCI),
+  L_Cmax  = max(data$LCeq),
+  L_CSmax = max(data$LCSmax),
+  L_CFmax = max(data$LCFmax),
+  L_CImax = max(data$LCImax),
+  L_Cpeak = max(data$LCpeak),
+  L_XCeq10 = LxFromLevels(data$LCeq, 10),
+  L_XCeq25 = LxFromLevels(data$LCeq, 25),
+  L_XCeq50 = LxFromLevels(data$LCeq, 50),
+  L_XCeq90 = LxFromLevels(data$LCeq, 90)
+)
+
+DNL_Z = Ldn(data$LZeq, data$Time)
+DENL_Z = Lden(data$LZeq, data$Time)
+metrics_Z = data.frame(
+  Ldn     = DNL_Z$Ldn,
+  Lden    = DENL_Z$Lden,
+  L_Zeq   = LeqTotal(data$LZeq),
+  L_ZSeq  = LeqTotal(data$LZS),
+  L_ZFeq  = LeqTotal(data$LZF),
+  L_ZIeq  = LeqTotal(data$LZI),
+  SEL_Z   = SelFromLevels(data$LZeq),
+  SEL_ZS  = SelFromLevels(data$LZS),
+  SEL_ZF  = SelFromLevels(data$LZF),
+  SEL_ZI  = SelFromLevels(data$LZI),
+  L_Zmax  = max(data$LZeq),
+  L_ZSmax = max(data$LZSmax),
+  L_ZFmax = max(data$LZFmax),
+  L_ZImax = max(data$LZImax),
+  L_Zpeak = max(data$LZpeak),
+  L_XZeq10 = LxFromLevels(data$LZeq, 10),
+  L_XZeq25 = LxFromLevels(data$LZeq, 25),
+  L_XZeq50 = LxFromLevels(data$LZeq, 50),
+  L_XZeq90 = LxFromLevels(data$LZeq, 90)
+)
 
 # Plotting ---------------------------------------------------------------------
 print('Plotting')
+library(ggplot2)
+
+# Plot A vs C vs Z weightings
+# Metric, Value, FreqWeighting
+data_by_weighting = data.frame(
+  Metric=rep(c('Ldn', 'Leq', 'SEL', 'Lmax', 'Lpeak', 'Lx10', 'Lx25', 'Lx50', 'Lx90'),3),
+  Value=c(
+    metrics_A$Ldn, metrics_A$L_Aeq, metrics_A$SEL_A, metrics_A$L_Amax, metrics_A$L_Apeak, metrics_A$L_XAeq10, metrics_A$L_XAeq25, metrics_A$L_XAeq50, metrics_A$L_XAeq90,
+    metrics_C$Ldn, metrics_C$L_Ceq, metrics_C$SEL_C, metrics_C$L_Cmax, metrics_C$L_Cpeak, metrics_C$L_XCeq10, metrics_C$L_XCeq25, metrics_C$L_XCeq50, metrics_C$L_XCeq90,
+    metrics_Z$Ldn, metrics_Z$L_Zeq, metrics_Z$SEL_Z, metrics_Z$L_Zmax, metrics_Z$L_Zpeak, metrics_Z$L_XZeq10, metrics_Z$L_XZeq25, metrics_Z$L_XZeq50, metrics_Z$L_XZeq90
+    ),
+  FreqWeighting=c(rep('A',9),rep('C',9),rep('Z',9))
+)
+weights_plot = ggplot(data_by_weighting, aes(fill=FreqWeighting, y=Value, x=Metric, label=round(Value))) +
+  geom_bar(position="dodge", stat="identity") +
+  geom_text(position = position_dodge2(width = 0.75, preserve = "single"), angle = 90, vjust=0.6, hjust=-0.3, size=2) +
+  ggtitle('Frequency Weighting Comparison (A, C, Z)')
+print(weights_plot)
 
 # Plot a specific event
 par(mfrow=c(1,2))
@@ -273,14 +330,14 @@ Leq = LeqTotal(data$LAeq, time_start, time_end)
 SEL = SelFromLevels(data$LAeq[time_start:time_end])
 Lpeak = max(data$LApeak[time_start:time_end])
 points(data$Time[time_start:time_end][which(data$LAeq[time_start:time_end] == Lmax)], Lmax, col='red', pch=1, cex=2.5)
-mini_metrics = c(Leq, SEL, Lmax, Lpeak)
+event_metrics_A = c(Leq, SEL, Lmax, Lpeak)
 abline(h=Leq, lty='longdash')
 lp_metrics = barplot(
-  mini_metrics,
+  event_metrics_A,
   main='Key Metrics',
   # sub='(Raw measurements A-weighted, various time-weightings)',
   beside=TRUE,
-  ylim=c(0,round(max(mini_metrics)+20)),
+  ylim=c(0,round(max(event_metrics_A)+20)),
   las=2,
   cex.names=0.8,
   names.arg=c(
@@ -290,7 +347,7 @@ lp_metrics = barplot(
     'black', 'white','red','darkred'
   )
 )
-text(x=lp_metrics, y=mini_metrics+2, labels = round(mini_metrics,2), cex=1)
+text(x=lp_metrics, y=event_metrics_A+2, labels = round(event_metrics_A,2), cex=1)
 
 # Plot the hour containing the peak measurement
 par(mfrow=c(1,1))
@@ -309,15 +366,14 @@ lp_peakhr = plot(
 )
 axis.POSIXct(1, at=seq(data$Time[time_start], data$Time[time_end], by='10 min'), format='%H:%M')
 points(data$Time[which(data$LAeq==max(data$LAeq))], max(data$LAeq), col='red', pch=1, cex=2.5)
-abline(h=DNL$Leqh[hour_peak+1], lty='longdash')
+abline(h=DNL_A$Leqh[hour_peak+1], lty='longdash')
 
 # Plot signal metrics
 bp_metrics = barplot(
-  t(as.matrix(metrics)),
-  main='Key Metrics',
-  sub='(Raw measurements A-weighted, various time-weightings)',
+  t(as.matrix(metrics_A)),
+  main='Time weighting comparison (A-weighting)',
   beside=TRUE,
-  ylim=c(0,round(max(metrics)+20)),
+  ylim=c(0,round(max(metrics_A)+20)),
   las=2,
   cex.names=0.8,
   names.arg=c(
@@ -335,28 +391,28 @@ bp_metrics = barplot(
     'black','gray5','gray15','gray30','gray45'
   )
 )
-text(x=bp_metrics, y=metrics+2, labels = round(metrics,2), cex=0.5)
+text(x=bp_metrics, y=metrics_A+2, labels = round(metrics_A,2), cex=0.5)
 
 # Plot DNL
 bp_dnl = barplot(
-  DNL$Leqh,
+  DNL_A$Leqh,
   main='Day-night average sound level',
   xlab='Time (hr)',ylab='Leq (dB)',
   col=c(rep('darkblue',7), rep('lightskyblue',15), rep('darkblue',2)),
-  ylim=c(0,round(max(DNL$Leqh)+20)),
+  ylim=c(0,round(max(DNL_A$Leqh)+20)),
   xaxt='n'
 )
 axis(1, at=bp_dnl,labels=seq(0,23))
-text(x=bp_dnl, y=DNL$Leqh+2, labels=round(DNL$Leqh,1), cex=0.5)
-abline(h=DNL$Ldn, lty='longdash')
-text(x=1, y=DNL$Ldn+3, labels=paste(round(DNL$Ldn,2), 'dB'), cex=1.0)
-abline(h=metrics$L_XAeq10, lty='dotted', col='gray')
-text(x=-0.3, y=metrics$L_XAeq10, labels='10%', cex=0.5)
-abline(h=metrics$L_XAeq25, lty='dotted', col='gray')
-text(x=-0.3, y=metrics$L_XAeq25, labels='25%', cex=0.5)
-abline(h=metrics$L_XAeq50, lty='dotted', col='gray')
-text(x=-0.3, y=metrics$L_XAeq50, labels='50%', cex=0.5)
-abline(h=metrics$L_XAeq90, lty='dotted', col='gray')
-text(x=-0.3, y=metrics$L_XAeq90, labels='90%', cex=0.5)
+text(x=bp_dnl, y=DNL_A$Leqh+2, labels=round(DNL_A$Leqh,1), cex=0.5)
+abline(h=DNL_A$Ldn, lty='longdash')
+text(x=1, y=DNL_A$Ldn+3, labels=paste(round(DNL_A$Ldn,2), 'dB'), cex=1.0)
+abline(h=metrics_A$L_XAeq10, lty='dotted', col='gray')
+text(x=-0.3, y=metrics_A$L_XAeq10, labels='10%', cex=0.5)
+abline(h=metrics_A$L_XAeq25, lty='dotted', col='gray')
+text(x=-0.3, y=metrics_A$L_XAeq25, labels='25%', cex=0.5)
+abline(h=metrics_A$L_XAeq50, lty='dotted', col='gray')
+text(x=-0.3, y=metrics_A$L_XAeq50, labels='50%', cex=0.5)
+abline(h=metrics_A$L_XAeq90, lty='dotted', col='gray')
+text(x=-0.3, y=metrics_A$L_XAeq90, labels='90%', cex=0.5)
 
 print('Process finished')
