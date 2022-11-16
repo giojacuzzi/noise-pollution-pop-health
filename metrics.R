@@ -6,8 +6,13 @@ print('Reading data')
 
 library(readxl)
 # path = '~/../../Volumes/PIE/NAVY/NASWI_Site_9B_SG/NASWI - Site 9B_SG - MP1/831C_11163-20201218 000000-20121800.LD0.xlsx'
-# path = '~/../../Volumes/PIE/NAVY/NASWI_Site_9B_SG/NASWI - Site 9B_SG - MP1/831C_11163-20201213 000000-20121300.RC0.xlsx'
+
+# NASWI Gate
 path = '~/Desktop/831C_11163-20201218 000000-20121800.LD0.xlsx'
+
+# Port Townsend City Hall
+# path = '~/Desktop/831C_11164-20201218 000000-20121800.LD0.xlsx'
+
 data_raw = as.data.frame(readxl::read_excel(path, 'Time History'))
 
 # Data preparation -------------------------------------------------------------
@@ -42,6 +47,7 @@ if (any(date_start != format(data$Time, format=format_date))) {
 time_start = format(data$Time[1], format=format_time)
 if (time_start != '00:00:00') {
   print(paste('WARNING - measured start time (', time_start, ') is not 00:00:00', sep=''))
+  time_start = '00:00:00'
 }
 
 # Times for full 24hour period
@@ -51,7 +57,7 @@ Time24hr = seq(
   by='sec'
 )
 Time24hr = data.frame(Time24hr)
-names(Time24hr)[names(Time24hr)=='Time24hr'] <- 'Time'
+names(Time24hr)[names(Time24hr)=='Time24hr'] = 'Time'
 stopifnot(nrow(Time24hr)==time_24hr)
 
 # Validate time measured (total number of seconds, assuming a 1 second frequency)
@@ -80,19 +86,19 @@ if (time_measured < time_24hr) {
 p0 = 2*10^(-5)  # Reference sound pressure in Pascals (Pa) in air 20 μPa
 
 # Acoustic pressure (Pa) to sound pressure level (dB)
-pressureToSpl <- function(p) {
+pressureToSpl = function(p) {
   20*log10(p/p0)
 }
 
 # Sound pressure level (dB) to acoustic pressure (Pa)
-splToPressure <- function(l) {
+splToPressure = function(l) {
   p0*10^(l/20)
 }
 
 # Leq is the equivalent continuous sound pressure level, also known as the "time-averaged sound pressure level". This is the steady-state sound pressure level which, over a given period of time (t_start to t_end), has the same total acoustic energy as the actual fluctuating noise signal (L). In other words, the RMS sound level with the measurement duration used as the averaging time.
 
 # Calculate total Leq from level series over given time period (ISO 1996, Navy Technical Report)
-LeqTotal <- function(L, t_start=1, t_end=length(L)) {
+LeqTotal = function(L, t_start=1, t_end=length(L)) {
   duration = t_end - t_start + 1
   10*log10(sum(10^(L[t_start:t_end]/10))/duration)
 }
@@ -100,12 +106,12 @@ LeqTotal <- function(L, t_start=1, t_end=length(L)) {
 # The sound exposure level, SEL (also referred to as LE), of a noise event is the entire event's total sound energy normalized to a constant reference time interval, typically one second. When applied to single event the SEL is called "single-event sound exposure level". SEL can be used to compare the energy of noise events which have different time durations.
 
 # Calculate SEL from Leq of identical time period	
-SelFromLeq <- function(Leq, duration) {
+SelFromLeq = function(Leq, duration) {
   Leq + 10*log10(duration) # Leq plus 10 times the log of the duration over 1 second)
 }
 
 # Calculate SEL from level series
-SelFromLevels <- function(L) {
+SelFromLevels = function(L) {
   10*log10(sum(splToPressure(L)^2) / p0^2)
 }
 
@@ -113,7 +119,7 @@ SelFromLevels <- function(L) {
 # NOTE: L100 should be equal to the min
 
 # Calculate exceedance for the given percentage of time (0-100)
-LxFromLevels <- function(L, percentage = 50) {
+LxFromLevels = function(L, percentage = 50) {
   if (percentage <= 0 | percentage > 100) {
     stop('Percentage must be between (0, 100]')
   }
@@ -131,7 +137,7 @@ LxFromLevels <- function(L, percentage = 50) {
 
 # Hourly Leq for the given interval
 # TODO: make this functional for data sets without data in all 24 hours
-LeqHourly <- function(Levels, Times, start, end) {
+LeqHourly = function(Levels, Times, start, end) {
   date = format(Times[1], format=format_date)
   seconds = (Times >= as.POSIXct(paste(date,start), tz='UTC')
              & Times <= as.POSIXct(paste(date,end), tz='UTC'))
@@ -139,7 +145,7 @@ LeqHourly <- function(Levels, Times, start, end) {
 }
 
 # Day-night sound level, also known as DNL (ISO 1996). Returns a list including Ldn as well as intermediate calulations (Lday, Lnight, Leqh). Default level adjustment is night +10dB. United States FAA uses day values of [7am,10pm), night values of [10pm,7am)
-Ldn <- function(Levels, Times) {
+Ldn = function(Levels, Times) {
   Leqh_night_am = LeqHourly(Levels, Times, '00:00:00', '06:59:59') # TODO: should this pass Time24hr?
   Leqh_day      = LeqHourly(Levels, Times, '07:00:00', '21:59:59')
   Leqh_night_pm = LeqHourly(Levels, Times, '22:00:00', '23:59:59')
@@ -165,7 +171,7 @@ Ldn <- function(Levels, Times) {
 
 # Day-evening-night sound level, also known as DENL (ISO 1996). Returns a list including Ldn as well as intermediate calulations (Lday, Lnight, Leqh). Default time values are day [7am,7pm), evening [7pm,10pm), and night [10pm,7am). Default level adjustments are evening +5dB, night +10dB
 # NOTE: The FAA uses "Community Noise Equivalent Level" (CNEL) in California, a metric similar to Lden, however the periods are day [7am,7pm), evening [7pm,10pm) with +4.77dB adjustment, and night [10pm,7am) with +10dB adjustment.
-Lden <- function(Levels, Times) {
+Lden = function(Levels, Times) {
   Leqh_night_am = LeqHourly(Levels, Times, '00:00:00', '06:59:59')
   Leqh_day      = LeqHourly(Levels, Times, '07:00:00', '18:59:59')
   Leqh_evening  = LeqHourly(Levels, Times, '19:00:00', '21:59:59')
@@ -222,10 +228,72 @@ metrics = data.frame(
   L_XAeq90 = LxFromLevels(data$LAeq, 90)
 )
 
+# metrics_C = data.frame(
+#   Ldn     = DNL$Ldn,
+#   Lden    = DENL$Lden,
+#   L_Aeq   = LeqTotal(data$LAeq), # Leq total from all individual Leq measurements, A-weighting
+#   L_ASeq  = LeqTotal(data$LAS),
+#   L_AFeq  = LeqTotal(data$LAF),
+#   L_AIeq  = LeqTotal(data$LAI),
+#   SEL_A   = SelFromLevels(data$LAeq),
+#   SEL_AS  = SelFromLevels(data$LAS),
+#   SEL_AF  = SelFromLevels(data$LAF),
+#   SEL_AI  = SelFromLevels(data$LAI),
+#   L_Amax  = max(data$LAeq),
+#   L_ASmax = max(data$LASmax),
+#   L_AFmax = max(data$LAFmax),
+#   L_AImax = max(data$LAImax),
+#   L_Apeak = max(data$LApeak),
+#   L_XAeq10 = LxFromLevels(data$LAeq, 10),
+#   L_XAeq25 = LxFromLevels(data$LAeq, 25),
+#   L_XAeq50 = LxFromLevels(data$LAeq, 50),
+#   L_XAeq90 = LxFromLevels(data$LAeq, 90)
+# )
+
 # Plotting ---------------------------------------------------------------------
 print('Plotting')
 
+# Plot a specific event
+par(mfrow=c(1,2))
+time_start = 14.57 * 3600
+time_end = time_start + 240
+lp_event = plot(
+  data$Time[time_start:time_end],
+  data$LAeq[time_start:time_end],
+  main='Single Event',
+  xlab='Time (H:M:S)', ylab='Sound Pressure Level (dB)',
+  type='l',
+  ylim=c(min(data$LAeq)-5,max(data$LAeq)+5),
+  xaxs='i', yaxs='i',
+  xaxt='n'
+)
+axis.POSIXct(1, at=seq(data$Time[time_start], data$Time[time_end], by='5 sec'), format='%H:%M:%S')
+Lmax = max(data$LAeq[time_start:time_end])
+Leq = LeqTotal(data$LAeq, time_start, time_end)
+SEL = SelFromLevels(data$LAeq[time_start:time_end])
+Lpeak = max(data$LApeak[time_start:time_end])
+points(data$Time[time_start:time_end][which(data$LAeq[time_start:time_end] == Lmax)], Lmax, col='red', pch=1, cex=2.5)
+mini_metrics = c(Leq, SEL, Lmax, Lpeak)
+abline(h=Leq, lty='longdash')
+lp_metrics = barplot(
+  mini_metrics,
+  main='Key Metrics',
+  # sub='(Raw measurements A-weighted, various time-weightings)',
+  beside=TRUE,
+  ylim=c(0,round(max(mini_metrics)+20)),
+  las=2,
+  cex.names=0.8,
+  names.arg=c(
+    'Leq','SEL','Lmax','Lpeak'
+  ),
+  col=c(
+    'black', 'white','red','darkred'
+  )
+)
+text(x=lp_metrics, y=mini_metrics+2, labels = round(mini_metrics,2), cex=1)
+
 # Plot the hour containing the peak measurement
+par(mfrow=c(1,1))
 hour_peak = as.numeric(format(data[data$LApeak==max(data$LApeak),'Time'], format='%H'))
 time_start = hour_peak * 3600
 time_end = time_start + 3600
