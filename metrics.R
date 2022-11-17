@@ -9,7 +9,6 @@ library(readxl)
 
 # NASWI Gate
 path = '~/Desktop/831C_11163-20201218 000000-20121800.LD0.xlsx'
-
 # Port Townsend City Hall
 # path = '~/Desktop/831C_11164-20201218 000000-20121800.LD0.xlsx'
 
@@ -21,6 +20,7 @@ print('Preparing data')
 # Clean raw data (remove 'Run/Pause/Stop' metadata)
 measurement_rows = which(is.na(data_raw$`Record Type`))
 data = data_raw[measurement_rows,]
+# names(data) = make.names(names(data))
 
 # Subset data for desired measurements
 data = data[,c(
@@ -39,7 +39,50 @@ data = data[,c(
   'LZeq','LZpeak',
   'LZS','LZSmax',
   'LZF','LZFmax',
-  'LZI','LZImax'
+  'LZI','LZImax',
+  # Frequency content
+  # 'X1.3.LZeq.20.0',
+  # 'X1.3.LZeq.80.0',
+  # 'X1.3.LZeq.315',
+  # 'X1.3.LZeq.1250',
+  # 'X1.3.LZeq.5000',
+  # 'X1.3.LZeq.20000'
+  '1/3 LZeq 6.3',
+  '1/3 LZeq 8.0',
+  '1/3 LZeq 10.0',
+  '1/3 LZeq 12.5',
+  '1/3 LZeq 16.0',
+  '1/3 LZeq 20.0',
+  '1/3 LZeq 25.0',
+  '1/3 LZeq 31.5',
+  '1/3 LZeq 40.0',
+  '1/3 LZeq 50.0',
+  '1/3 LZeq 63.0',
+  '1/3 LZeq 80.0',
+  '1/3 LZeq 100',
+  '1/3 LZeq 125',
+  '1/3 LZeq 160',
+  '1/3 LZeq 200',
+  '1/3 LZeq 250',
+  '1/3 LZeq 315',
+  '1/3 LZeq 400',
+  '1/3 LZeq 500',
+  '1/3 LZeq 630',
+  '1/3 LZeq 800',
+  '1/3 LZeq 1000',
+  '1/3 LZeq 1250',
+  '1/3 LZeq 1600',
+  '1/3 LZeq 2000',
+  '1/3 LZeq 2500',
+  '1/3 LZeq 3150',
+  '1/3 LZeq 4000',
+  '1/3 LZeq 5000',
+  '1/3 LZeq 6300',
+  '1/3 LZeq 8000',
+  '1/3 LZeq 10000',
+  '1/3 LZeq 12500',
+  '1/3 LZeq 16000',
+  '1/3 LZeq 20000'
 )]
 
 # TODO: May want to consider using multiple time series (ts) instead of simple vectors
@@ -293,43 +336,27 @@ metrics_Z = data.frame(
 print('Plotting')
 library(ggplot2)
 
-# Plot A vs C vs Z weightings
-# Metric, Value, FreqWeighting
-data_by_weighting = data.frame(
-  Metric=rep(c('Ldn', 'Leq', 'SEL', 'Lmax', 'Lpeak', 'Lx10', 'Lx25', 'Lx50', 'Lx90'),3),
-  Value=c(
-    metrics_A$Ldn, metrics_A$L_Aeq, metrics_A$SEL_A, metrics_A$L_Amax, metrics_A$L_Apeak, metrics_A$L_XAeq10, metrics_A$L_XAeq25, metrics_A$L_XAeq50, metrics_A$L_XAeq90,
-    metrics_C$Ldn, metrics_C$L_Ceq, metrics_C$SEL_C, metrics_C$L_Cmax, metrics_C$L_Cpeak, metrics_C$L_XCeq10, metrics_C$L_XCeq25, metrics_C$L_XCeq50, metrics_C$L_XCeq90,
-    metrics_Z$Ldn, metrics_Z$L_Zeq, metrics_Z$SEL_Z, metrics_Z$L_Zmax, metrics_Z$L_Zpeak, metrics_Z$L_XZeq10, metrics_Z$L_XZeq25, metrics_Z$L_XZeq50, metrics_Z$L_XZeq90
-    ),
-  FreqWeighting=c(rep('A',9),rep('C',9),rep('Z',9))
-)
-weights_plot = ggplot(data_by_weighting, aes(fill=FreqWeighting, y=Value, x=Metric, label=round(Value))) +
-  geom_bar(position="dodge", stat="identity") +
-  geom_text(position = position_dodge2(width = 0.75, preserve = "single"), angle = 90, vjust=0.6, hjust=-0.3, size=2) +
-  ggtitle('Frequency Weighting Comparison (A, C, Z)')
-print(weights_plot)
-
 # Plot a specific event
-par(mfrow=c(1,2))
+layout(matrix(c(1,2,3,3), 2, 2, byrow=TRUE))
 time_start = 14.57 * 3600
 time_end = time_start + 240
+event_data = data[time_start:time_end,]
 lp_event = plot(
-  data$Time[time_start:time_end],
-  data$LAeq[time_start:time_end],
+  event_data$Time,
+  event_data$LAeq,
   main='Single Event',
   xlab='Time (H:M:S)', ylab='Sound Pressure Level (dB)',
   type='l',
-  ylim=c(min(data$LAeq)-5,max(data$LAeq)+5),
+  ylim=c(min(event_data$LAeq)-5,max(event_data$LAeq)+5),
   xaxs='i', yaxs='i',
   xaxt='n'
 )
-axis.POSIXct(1, at=seq(data$Time[time_start], data$Time[time_end], by='5 sec'), format='%H:%M:%S')
-Lmax = max(data$LAeq[time_start:time_end])
-Leq = LeqTotal(data$LAeq, time_start, time_end)
-SEL = SelFromLevels(data$LAeq[time_start:time_end])
-Lpeak = max(data$LApeak[time_start:time_end])
-points(data$Time[time_start:time_end][which(data$LAeq[time_start:time_end] == Lmax)], Lmax, col='red', pch=1, cex=2.5)
+axis.POSIXct(1, at=seq(data$Time[time_start], data$Time[time_end], by='30 sec'), format='%H:%M:%S')
+Lmax = max(event_data$LAeq)
+Leq = LeqTotal(event_data$LAeq)
+SEL = SelFromLevels(event_data$LAeq)
+Lpeak = max(event_data$LApeak)
+points(event_data$Time[which(event_data$LAeq == Lmax)], Lmax, col='red', pch=1, cex=2.5)
 event_metrics_A = c(Leq, SEL, Lmax, Lpeak)
 abline(h=Leq, lty='longdash')
 lp_metrics = barplot(
@@ -347,7 +374,15 @@ lp_metrics = barplot(
     'black', 'white','red','darkred'
   )
 )
-text(x=lp_metrics, y=event_metrics_A+2, labels = round(event_metrics_A,2), cex=1)
+text(x=lp_metrics, y=event_metrics_A+4, labels = round(event_metrics_A,2), cex=0.8)
+# Plot 1/3 octave bands
+freq = as.matrix(event_data[,grep('1/3', names(event_data))])
+freq_event = barplot(
+  colMeans(freq),
+  main='1/3 Octave Band Frequency Means',
+  xaxt='n'
+)
+axis(1, at=freq_event,labels=c(6,8,10,12,16,20,25,32,40,50,63,80,100,125,160,200,250,315,400,500,630,800,1000,1250,1600,2000,2500,3150,4000,5000,6300,8000,10000,12500,16000,20000))
 
 # Plot the hour containing the peak measurement
 par(mfrow=c(1,1))
@@ -367,31 +402,6 @@ lp_peakhr = plot(
 axis.POSIXct(1, at=seq(data$Time[time_start], data$Time[time_end], by='10 min'), format='%H:%M')
 points(data$Time[which(data$LAeq==max(data$LAeq))], max(data$LAeq), col='red', pch=1, cex=2.5)
 abline(h=DNL_A$Leqh[hour_peak+1], lty='longdash')
-
-# Plot signal metrics
-bp_metrics = barplot(
-  t(as.matrix(metrics_A)),
-  main='Time weighting comparison (A-weighting)',
-  beside=TRUE,
-  ylim=c(0,round(max(metrics_A)+20)),
-  las=2,
-  cex.names=0.8,
-  names.arg=c(
-    'Ldn','Lden',
-    'Leq','Slow','Fast','Impulse',
-    'SEL (Leq)','Slow','Fast','Impulse',
-    'Lmax (Leq)','Slow','Fast','Impulse',
-    'Lpeak','10%','25%','50%','90%'
-  ),
-  col=c(
-    'lightskyblue', 'darkblue',
-    'white','yellow1','darkorange1','firebrick3',
-    'white','yellow1','darkorange1','firebrick3',
-    'white','yellow1','darkorange1','firebrick3',
-    'black','gray5','gray15','gray30','gray45'
-  )
-)
-text(x=bp_metrics, y=metrics_A+2, labels = round(metrics_A,2), cex=0.5)
 
 # Plot DNL
 bp_dnl = barplot(
@@ -414,5 +424,47 @@ abline(h=metrics_A$L_XAeq50, lty='dotted', col='gray')
 text(x=-0.3, y=metrics_A$L_XAeq50, labels='50%', cex=0.5)
 abline(h=metrics_A$L_XAeq90, lty='dotted', col='gray')
 text(x=-0.3, y=metrics_A$L_XAeq90, labels='90%', cex=0.5)
+
+# Plot signal metrics
+bp_metrics = barplot(
+  t(as.matrix(metrics_A)),
+  main='Time weighting comparison (EQ, Fast, Slow, Impulse)',
+  beside=TRUE,
+  ylim=c(0,round(max(metrics_A)+20)),
+  las=2,
+  cex.names=0.8,
+  names.arg=c(
+    'Ldn','Lden',
+    'Leq','Slow','Fast','Impulse',
+    'SEL (Leq)','Slow','Fast','Impulse',
+    'Lmax (Leq)','Slow','Fast','Impulse',
+    'Lpeak','10%','25%','50%','90%'
+  ),
+  col=c(
+    'lightskyblue', 'darkblue',
+    'white','yellow1','darkorange1','firebrick3',
+    'white','yellow1','darkorange1','firebrick3',
+    'white','yellow1','darkorange1','firebrick3',
+    'black','gray5','gray15','gray30','gray45'
+  )
+)
+text(x=bp_metrics, y=metrics_A+2, labels = round(metrics_A,2), cex=0.5)
+
+# Plot A vs C vs Z weightings
+# Metric, Value, FreqWeighting
+data_by_weighting = data.frame(
+  Metric=rep(c('Ldn', 'Leq', 'SEL', 'Lmax', 'Lpeak', 'Lx10', 'Lx25', 'Lx50', 'Lx90'),3),
+  Value=c(
+    metrics_A$Ldn, metrics_A$L_Aeq, metrics_A$SEL_A, metrics_A$L_Amax, metrics_A$L_Apeak, metrics_A$L_XAeq10, metrics_A$L_XAeq25, metrics_A$L_XAeq50, metrics_A$L_XAeq90,
+    metrics_C$Ldn, metrics_C$L_Ceq, metrics_C$SEL_C, metrics_C$L_Cmax, metrics_C$L_Cpeak, metrics_C$L_XCeq10, metrics_C$L_XCeq25, metrics_C$L_XCeq50, metrics_C$L_XCeq90,
+    metrics_Z$Ldn, metrics_Z$L_Zeq, metrics_Z$SEL_Z, metrics_Z$L_Zmax, metrics_Z$L_Zpeak, metrics_Z$L_XZeq10, metrics_Z$L_XZeq25, metrics_Z$L_XZeq50, metrics_Z$L_XZeq90
+  ),
+  FreqWeighting=c(rep('A',9),rep('C',9),rep('Z',9))
+)
+weights_plot = ggplot(data_by_weighting, aes(fill=FreqWeighting, y=Value, x=Metric, label=round(Value))) +
+  geom_bar(position="dodge", stat="identity") +
+  geom_text(position = position_dodge2(width = 0.75, preserve = "single"), angle = 90, vjust=0.6, hjust=-0.3, size=2) +
+  ggtitle('Frequency Weighting Comparison (A, C, Z)')
+print(weights_plot)
 
 print('Process finished')
