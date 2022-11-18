@@ -33,23 +33,17 @@ SelFromLevels = function(L) {
 }
 
 # Exceedance levels (Lx) represent the percent of the time that was measured above a certain level. For example, an L50 of 44 dB means that for 50% of the time, the level exceeded 44 dB.
-# NOTE: L100 should be equal to the min
 
 # Calculate exceedance for the given percentage of time (0-100)
-LxFromLevels = function(L, percentage = 50) {
-  if (percentage <= 0 | percentage > 100) {
-    stop('Percentage must be between (0, 100]')
+LxFromLevels = function(L, p = 50) {
+  if (p == 0) {
+    return(max(L))
+  } else if (p == 100) {
+    return(min(L))
   }
-  percentage = percentage/100.0
-  ascendingLevels = L[order(L, decreasing=TRUE)]
-  idx = floor(length(L) * percentage) - 1 # Exceeding, not including
-  result = 0.0
-  if (idx < 1) {
-    result = ascendingLevels[idx+1] - 0.1
-  } else {
-    result = ascendingLevels[idx]
-  }
-  result
+  Lsorted = L[order(L, decreasing=TRUE)]
+  i = floor(length(L) * p/100.0)
+  return(Lsorted[i])
 }
 
 # Hourly Leq for the given interval
@@ -61,7 +55,7 @@ LeqHourly = function(Levels, Times, start, end) {
   Leqh = tapply(X=(Levels)[seconds], INDEX=cut(Times[seconds], breaks='hour'), FUN=LeqTotal)
 }
 
-# Day-night sound level, also known as DNL (ISO 1996). Returns a list including Ldn as well as intermediate calulations (Lday, Lnight, Leqh). Default level adjustment is night +10dB. United States FAA uses day values of [7am,10pm), night values of [10pm,7am)
+# Day-night sound level, also known as DNL (ISO 1996). Returns a list including Ldn as well as intermediate calculations (Lday, Lnight, Leqh). Default level adjustment is night +10dB. United States FAA uses day values of [7am,10pm), night values of [10pm,7am)
 Ldn = function(Levels, Times) {
   Leqh_night_am = LeqHourly(Levels, Times, '00:00:00', '06:59:59') # TODO: should this pass Time24hr?
   Leqh_day      = LeqHourly(Levels, Times, '07:00:00', '21:59:59')
