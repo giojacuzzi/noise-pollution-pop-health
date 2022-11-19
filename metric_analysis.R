@@ -36,27 +36,62 @@ SelFromLevels = function(L) {
 
 # Calculate exceedance for the given percentage of time (0-100)
 LxFromLevels = function(L, p = 50) {
+  L = na.omit(L) # Use only present measurements
   if (p == 0) {
     return(max(L))
   } else if (p == 100) {
     return(min(L))
   }
-  Lsorted = L[order(L, decreasing=TRUE)]
+  Lsorted = L[order(L, decreasing=TRUE)] # TODO: does this account correctly for repeated values?
   i = floor(length(L) * p/100.0)
   return(Lsorted[i])
 }
 
 # Hourly Leq for the given interval
-# TODO: make this functional for data sets without data in all 24 hours
-LeqHourly = function(Levels, Times, start, end) {
+# Can extrapolate hourly Leqs for partially missing data
+LeqHourly = function(Levels, Times, start, end, extrapolate=TRUE) {
+  browser()
   date = format(Times[1], format=format_date)
-  seconds = (Times >= as.POSIXct(paste(date,start), tz='UTC')
+  period = (Times >= as.POSIXct(paste(date,start), tz='UTC')
              & Times <= as.POSIXct(paste(date,end), tz='UTC'))
-  Leqh = tapply(X=(Levels)[seconds], INDEX=cut(Times[seconds], breaks='hour'), FUN=LeqTotal)
+  
+  # Subset only hours within the specified period (i.e. day, evening, or night)
+  Levels = Levels[period]
+  Times = Times[period]
+  
+  Leqh = tapply(X=Levels, INDEX=cut(Times, breaks='hour'), FUN=LeqTotal)
+  
+  # These hours have partial measurements (less than 3600 sec, but more than 0)
+  hours_partial_data = tapply(X=Levels, INDEX=cut(Times, breaks='hour'), FUN=function(X){
+    sum(is.na(X))<3600 & sum(is.na(X))>0
+  })
+
+  msg_partial_data = paste('Hour(s)', paste(format(as.POSIXct(names(which(hours_partial_data))), '%H')), 'have incomplete data.')
+  for (hour in which(hours_partial_data)) {
+    hour_start = as.POSIXct(names(hours_partial_data)[hour], tz='UTC')
+    hour_levels = Levels[which(Times==hour_start):which(Times==(hour_start+3600-1))]
+    
+    # Extrapolate the hour's Leq as that of the measurements that are present
+    if (extrapolate) {
+      Leqh[hour] = LeqTotal(na.omit(hour_levels))
+      msg_partial_data = paste(msg_partial_data, 'Extrapolated Leqs.')
+    }
+  }
+  if (any(hours_partial_data)) {
+    warning(msg_partial_data)
+  }
+
+  # Check if any hours are missing data entirely
+  hours_missing_data = !hours_partial_data & is.na(Leqh)
+  if (any(hours_missing_data)) {
+    warning(paste('Hour(s)', paste(format(as.POSIXct(names(which(hours_missing_data))), '%H')), 'have no data. Unable to calculate Leq.'))
+  }
+  return(Leqh)
 }
 
 # Day-night sound level, also known as DNL (ISO 1996). Returns a list including Ldn as well as intermediate calculations (Lday, Lnight, Leqh). Default level adjustment is night +10dB. United States FAA uses day values of [7am,10pm), night values of [10pm,7am)
 Ldn = function(Levels, Times) {
+  browser()
   Leqh_night_am = LeqHourly(Levels, Times, '00:00:00', '06:59:59') # TODO: should this pass Time24hr?
   Leqh_day      = LeqHourly(Levels, Times, '07:00:00', '21:59:59')
   Leqh_night_pm = LeqHourly(Levels, Times, '22:00:00', '23:59:59')

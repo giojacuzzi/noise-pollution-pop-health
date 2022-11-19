@@ -113,12 +113,12 @@ load_data_NAVY = function(path) {
                 floor((time_measured / 60) %% 60),' min ',
                 time_measured %% 60,' sec',
                 ') is less than a full day. ',
-                'Calculations will ignore missing measurements.'
-                , sep=''))
+                # 'Calculations will ignore missing measurements.',
+                sep=''))
     
     # Remove NA rows from data. An alternative would be to set values to 0 (data[is.na(data)] = 0) or a moving average
     # NOTE: this will affect metric results which assume a full set of 24 hours
-    data = data[rowSums(is.na(data))==0,] # Remove rows with NA values
+    # data = data[rowSums(is.na(data))==0,] # Remove rows with NA values
   }
   
   return (data)

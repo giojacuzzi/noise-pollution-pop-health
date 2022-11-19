@@ -9,9 +9,12 @@ source('metric_analysis.R')
 # path = '~/../../Volumes/PIE/NAVY/NASWI_Site_9B_SG/NASWI - Site 9B_SG - MP1/831C_11163-20201218 000000-20121800.LD0.xlsx'
 
 # NASWI Gate
-path = '~/Desktop/831C_11163-20201218 000000-20121800.LD0.xlsx'
+# path = '~/Desktop/831C_11163-20201218 000000-20121800.LD0.xlsx'
 # Port Townsend City Hall
 # path = '~/Desktop/831C_11164-20201218 000000-20121800.LD0.xlsx'
+
+# Incomplete day
+path = '~/../../Volumes/SAFS Work/NAVY/Acoustic Data/Data/NASWI_Site_9B_SG/NASWI - Site 9B_SG - MP1/831C_11163-20201213 000000-20121300.RC0.xlsx'
 
 data = load_data_NAVY(path)
 
@@ -20,6 +23,12 @@ print('Evaluating metrics')
 
 DNL_A = Ldn(data$LAeq, data$Time)
 DENL_A = Lden(data$LAeq, data$Time)
+
+# NOTE: 
+if (anyNA(data)) {
+  data = na.omit(data)
+  warning('Removed missing measurements from metrics calculations. Leq, Lx, and SEL metrics are approximated from available data.')
+}
 
 # NOTE: LAeq values are used here, but LAS/LAF/LAI could be used instead
 metrics_A = data.frame(
@@ -96,57 +105,60 @@ metrics_Z = data.frame(
 print('Plotting')
 library(ggplot2)
 
-# Plot a specific event
-layout(matrix(c(1,2,3,3), 2, 2, byrow=TRUE))
-time_start = 14.57 * 3600
-time_end = time_start + 240
-event_data = data[time_start:time_end,]
-lp_event = plot(
-  event_data$Time,
-  event_data$LAeq,
-  main='Single Event',
-  xlab='Time (H:M:S)', ylab='Sound Pressure Level (dB)',
-  type='l',
-  ylim=c(min(event_data$LAeq)-5,max(event_data$LAeq)+5),
-  xaxs='i', yaxs='i',
-  xaxt='n'
-)
-axis.POSIXct(1, at=seq(data$Time[time_start], data$Time[time_end], by='30 sec'), format='%H:%M:%S')
-Lmax = max(event_data$LAeq)
-Leq = LeqTotal(event_data$LAeq)
-SEL = SelFromLevels(event_data$LAeq)
-Lpeak = max(event_data$LApeak)
-points(event_data$Time[which(event_data$LAeq == Lmax)], Lmax, col='red', pch=1, cex=2.5)
-event_metrics_A = c(Leq, SEL, Lmax, Lpeak)
-abline(h=Leq, lty='longdash')
-lp_metrics = barplot(
-  event_metrics_A,
-  main='Key Metrics',
-  # sub='(Raw measurements A-weighted, various time-weightings)',
-  beside=TRUE,
-  ylim=c(0,round(max(event_metrics_A)+20)),
-  las=2,
-  cex.names=0.8,
-  names.arg=c(
-    'Leq','SEL','Lmax','Lpeak'
-  ),
-  col=c(
-    'black', 'white','red','darkred'
-  )
-)
-text(x=lp_metrics, y=event_metrics_A+4, labels = round(event_metrics_A,2), cex=0.8)
-# Plot 1/3 octave bands
-freq = as.matrix(event_data[,grep('1/3', names(event_data))])
-freq_event = barplot(
-  colMeans(freq),
-  main='1/3 Octave Band Frequency Means',
-  xaxt='n'
-)
-axis(1, at=freq_event,labels=c(6,8,10,12,16,20,25,32,40,50,63,80,100,125,160,200,250,315,400,500,630,800,1000,1250,1600,2000,2500,3150,4000,5000,6300,8000,10000,12500,16000,20000))
+data_clean = data[rowSums(is.na(data))==0,] # Remove rows with NA values for plotting
+
+# TODO: Plot maximum event
+# # Plot a specific event
+# layout(matrix(c(1,2,3,3), 2, 2, byrow=TRUE))
+# time_start = 14.57 * 3600
+# time_end = time_start + 240
+# event_data = data[time_start:time_end,]
+# lp_event = plot(
+#   event_data$Time,
+#   event_data$LAeq,
+#   main='Single Event',
+#   xlab='Time (H:M:S)', ylab='Sound Pressure Level (dB)',
+#   type='l',
+#   ylim=c(min(event_data$LAeq)-5,max(event_data$LAeq)+5),
+#   xaxs='i', yaxs='i',
+#   xaxt='n'
+# )
+# axis.POSIXct(1, at=seq(data$Time[time_start], data$Time[time_end], by='30 sec'), format='%H:%M:%S')
+# Lmax = max(event_data$LAeq)
+# Leq = LeqTotal(event_data$LAeq)
+# SEL = SelFromLevels(event_data$LAeq)
+# Lpeak = max(event_data$LApeak)
+# points(event_data$Time[which(event_data$LAeq == Lmax)], Lmax, col='red', pch=1, cex=2.5)
+# event_metrics_A = c(Leq, SEL, Lmax, Lpeak)
+# abline(h=Leq, lty='longdash')
+# lp_metrics = barplot(
+#   event_metrics_A,
+#   main='Key Metrics',
+#   # sub='(Raw measurements A-weighted, various time-weightings)',
+#   beside=TRUE,
+#   ylim=c(0,round(max(event_metrics_A)+20)),
+#   las=2,
+#   cex.names=0.8,
+#   names.arg=c(
+#     'Leq','SEL','Lmax','Lpeak'
+#   ),
+#   col=c(
+#     'black', 'white','red','darkred'
+#   )
+# )
+# text(x=lp_metrics, y=event_metrics_A+4, labels = round(event_metrics_A,2), cex=0.8)
+# # Plot 1/3 octave bands
+# freq = as.matrix(event_data[,grep('1/3', names(event_data))])
+# freq_event = barplot(
+#   colMeans(freq),
+#   main='1/3 Octave Band Frequency Means',
+#   xaxt='n'
+# )
+# axis(1, at=freq_event,labels=c(6,8,10,12,16,20,25,32,40,50,63,80,100,125,160,200,250,315,400,500,630,800,1000,1250,1600,2000,2500,3150,4000,5000,6300,8000,10000,12500,16000,20000))
 
 # Plot the hour containing the peak measurement
 par(mfrow=c(1,1))
-hour_peak = as.numeric(format(data[data$LApeak==max(data$LApeak),'Time'], format='%H'))
+hour_peak = as.numeric(format(data_clean[data_clean$LApeak==max(data_clean$LApeak),'Time'], format='%H'))
 time_start = hour_peak * 3600
 time_end = time_start + 3600
 lp_peakhr = plot(
@@ -155,12 +167,12 @@ lp_peakhr = plot(
   main='Peak Hour Leq',
   xlab='Time (H:M)', ylab='Sound Pressure Level (dB)',
   type='l',
-  ylim=c(min(data$LAeq)-5,max(data$LAeq)+5),
+  ylim=c(min(data_clean$LAeq)-5,max(data_clean$LAeq)+5),
   xaxs='i', yaxs='i',
   xaxt='n'
 )
 axis.POSIXct(1, at=seq(data$Time[time_start], data$Time[time_end], by='10 min'), format='%H:%M')
-points(data$Time[which(data$LAeq==max(data$LAeq))], max(data$LAeq), col='red', pch=1, cex=2.5)
+points(data$Time[which(data_clean$LAeq==max(data_clean$LAeq))], max(data_clean$LAeq), col='red', pch=1, cex=2.5)
 abline(h=DNL_A$Leqh[hour_peak+1], lty='longdash')
 
 # Plot DNL
@@ -169,7 +181,7 @@ bp_dnl = barplot(
   main='Day-night average sound level',
   xlab='Time (hr)',ylab='Leq (dB)',
   col=c(rep('darkblue',7), rep('lightskyblue',15), rep('darkblue',2)),
-  ylim=c(0,round(max(DNL_A$Leqh)+20)),
+  ylim=c(0,round(max(na.omit(DNL_A$Leqh))+20)),
   xaxt='n'
 )
 axis(1, at=bp_dnl,labels=seq(0,23))
@@ -186,6 +198,9 @@ abline(h=metrics_A$L_XAeq90, lty='dotted', col='gray')
 text(x=-0.3, y=metrics_A$L_XAeq90, labels='90%', cex=0.5)
 
 # Plot signal metrics
+metrics_A[is.na(metrics_A)] = 0
+metrics_C[is.na(metrics_C)] = 0
+metrics_Z[is.na(metrics_Z)] = 0
 bp_metrics = barplot(
   t(as.matrix(metrics_A)),
   main='Time weighting comparison (EQ, Fast, Slow, Impulse)',
