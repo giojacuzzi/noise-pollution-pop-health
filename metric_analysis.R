@@ -15,8 +15,16 @@ splToPressure = function(l) {
 # Leq is the equivalent continuous sound pressure level, also known as the "time-averaged sound pressure level". This is the steady-state sound pressure level which, over a given period of time (t_start to t_end), has the same total acoustic energy as the actual fluctuating noise signal (L). In other words, the RMS sound level with the measurement duration used as the averaging time.
 
 # Calculate total Leq from level series over given time period (ISO 1996, Navy Technical Report)
-LeqTotal = function(L, t_start=1, t_end=length(L)) {
+# Can extrapolate Leq from partially missing data
+LeqTotal = function(L, t_start=1, t_end=length(L), extrapolate=TRUE) {
+  # browser()
+  # Check for missing data
+  if (anyNA(L)) {
+    
+  }
+  
   duration = t_end - t_start + 1
+  # print(paste(duration, ' <-- ', t_start, t_end))
   10*log10(sum(10^(L[t_start:t_end]/10))/duration)
 }
 
@@ -50,14 +58,18 @@ LxFromLevels = function(L, p = 50) {
 # Hourly Leq for the given interval
 # Can extrapolate hourly Leqs for partially missing data
 LeqHourly = function(Levels, Times, start, end, extrapolate=TRUE) {
-  browser()
+  # browser()
   date = format(Times[1], format=format_date)
   period = (Times >= as.POSIXct(paste(date,start), tz='UTC')
              & Times <= as.POSIXct(paste(date,end), tz='UTC'))
   
   # Subset only hours within the specified period (i.e. day, evening, or night)
+  print(paste('before len', length(Levels), length(Times)))
+  print(paste(any(period), length(period)))
   Levels = Levels[period]
   Times = Times[period]
+  print(paste('after len', length(Levels), length(Times)))
+  ## NOTE: If NAs were stripped from this period, Levels and Times will be empty! This will crash LeqTotal from tapply!
   
   Leqh = tapply(X=Levels, INDEX=cut(Times, breaks='hour'), FUN=LeqTotal)
   
@@ -84,24 +96,38 @@ LeqHourly = function(Levels, Times, start, end, extrapolate=TRUE) {
   # Check if any hours are missing data entirely
   hours_missing_data = !hours_partial_data & is.na(Leqh)
   if (any(hours_missing_data)) {
-    warning(paste('Hour(s)', paste(format(as.POSIXct(names(which(hours_missing_data))), '%H')), 'have no data. Unable to calculate Leq.'))
+    msg_missing_hrs = paste(format(as.POSIXct(names(which(hours_missing_data))), '%H'), collapse = ' ')
+    warning(paste('Hour(s)', msg_missing_hrs, 'have no data. Unable to calculate Leq.'))
   }
   return(Leqh)
 }
 
 # Day-night sound level, also known as DNL (ISO 1996). Returns a list including Ldn as well as intermediate calculations (Lday, Lnight, Leqh). Default level adjustment is night +10dB. United States FAA uses day values of [7am,10pm), night values of [10pm,7am)
 Ldn = function(Levels, Times) {
-  browser()
-  Leqh_night_am = LeqHourly(Levels, Times, '00:00:00', '06:59:59') # TODO: should this pass Time24hr?
-  Leqh_day      = LeqHourly(Levels, Times, '07:00:00', '21:59:59')
-  Leqh_night_pm = LeqHourly(Levels, Times, '22:00:00', '23:59:59')
-  Leqh_night = c(Leqh_night_am, Leqh_night_pm)
-  Tday   = length(Leqh_day)
-  Tnight = length(Leqh_night)
-  if (Tday + Tnight != 24) {
-    stop('Must provide data spanning 24 hours')
+  # browser()
+  if (length(unique(cut(Times, breaks='hour'))) != 24) {
+    warning('Data does not span 24 hours. Unable to calculate Ldn.')
   }
   
+  # TODO: merge expected default 24-hour set of NAs with Levels/Times
+  
+  Leqh_night_am = LeqHourly(Levels, Times, '00:00:00', '06:59:59') # TODO: should this pass Time24hr?
+  Leqh_day      = LeqHourly(Levels, Times, '07:00:00', '21:59:59')
+  
+  ## HERE
+  Leqh_night_pm = LeqHourly(Levels, Times, '22:00:00', '23:59:59')
+  Leqh_night = c(Leqh_night_am, Leqh_night_pm)
+
+  # if (anyNA(c(Leqh_day,Leqh_night))) {
+  #   warning('')
+  # }
+  
+  Tday   = length(Leqh_day)
+  Tnight = length(Leqh_night)
+  # if (Tday + Tnight != 24) {
+  #   stop('Must provide data spanning 24 hours')
+  # }
+
   Lday   = LeqTotal(Leqh_day)
   Lnight = LeqTotal(Leqh_night)
   # NOTE: +10dB adjustment for night hours

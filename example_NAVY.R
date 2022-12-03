@@ -6,15 +6,12 @@ source('metric_analysis.R')
 
 # Data reading -----------------------------------------------------------------
 
-# path = '~/../../Volumes/PIE/NAVY/NASWI_Site_9B_SG/NASWI - Site 9B_SG - MP1/831C_11163-20201218 000000-20121800.LD0.xlsx'
-
 # NASWI Gate
-# path = '~/Desktop/831C_11163-20201218 000000-20121800.LD0.xlsx'
-# Port Townsend City Hall
-# path = '~/Desktop/831C_11164-20201218 000000-20121800.LD0.xlsx'
-
+path = '~/Desktop/NAVY Data/NASWI_Site_9B_SG/NASWI - Site 9B_SG - MP1/831C_11163-20201218 000000-20121800.LD0.xlsx'
 # Incomplete day
-path = '~/../../Volumes/SAFS Work/NAVY/Acoustic Data/Data/NASWI_Site_9B_SG/NASWI - Site 9B_SG - MP1/831C_11163-20201213 000000-20121300.RC0.xlsx'
+# path = '~/Desktop/NAVY Data/NASWI_Site_9B_SG/NASWI - Site 9B_SG - MP1/831C_11163-20201213 000000-20121300.RC0.xlsx'
+
+# path = '~/../../Volumes/SAFS Work/NAVY/Acoustic Data/Data/...'
 
 data = load_data_NAVY(path)
 
@@ -24,10 +21,16 @@ print('Evaluating metrics')
 DNL_A = Ldn(data$LAeq, data$Time)
 DENL_A = Lden(data$LAeq, data$Time)
 
-# NOTE: 
+DNL_C = Ldn(data$LCeq, data$Time)
+DENL_C = Lden(data$LCeq, data$Time)
+
+DNL_Z = Ldn(data$LZeq, data$Time)
+DENL_Z = Lden(data$LZeq, data$Time)
+
+# NOTE: Currently, if NA removal is done before calculating DNLs, it will crash in LeqHourly()
 if (anyNA(data)) {
   data = na.omit(data)
-  warning('Removed missing measurements from metrics calculations. Leq, Lx, and SEL metrics are approximated from available data.')
+  warning('Removed NA measurements from metrics calculations for the time period. Leq, Lx, and SEL metrics are approximated from available data.')
 }
 
 # NOTE: LAeq values are used here, but LAS/LAF/LAI could be used instead
@@ -53,8 +56,6 @@ metrics_A = data.frame(
   L_XAeq90 = LxFromLevels(data$LAeq, 90)
 )
 
-DNL_C = Ldn(data$LCeq, data$Time)
-DENL_C = Lden(data$LCeq, data$Time)
 metrics_C = data.frame(
   Ldn     = DNL_C$Ldn,
   Lden    = DENL_C$Lden,
@@ -77,8 +78,6 @@ metrics_C = data.frame(
   L_XCeq90 = LxFromLevels(data$LCeq, 90)
 )
 
-DNL_Z = Ldn(data$LZeq, data$Time)
-DENL_Z = Lden(data$LZeq, data$Time)
 metrics_Z = data.frame(
   Ldn     = DNL_Z$Ldn,
   Lden    = DENL_Z$Lden,
