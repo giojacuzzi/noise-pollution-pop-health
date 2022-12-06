@@ -3,6 +3,23 @@ library(readxl)
 # Global variables
 format_date = '%Y-%m-%d'
 format_time = '%H:%M:%S'
+time_24hr = 24 * 60 * 60 # total number of seconds in a day
+
+# Fit data frame to standardized time series (by second) for a full 24 hour period
+StandardizeTimeWindow = function(data) {
+  date_start = format(data$Time[1], format=format_date)
+  
+  Time24hr = data.frame(Time=seq(
+    from=as.POSIXlt(paste(date_start, '00:00:00'), paste(format_date,format_time), tz='UTC'),
+    to=as.POSIXlt(paste(date_start, '23:59:59'), paste(format_date,format_time), tz='UTC'),
+    by='sec'
+  ))
+
+  # Left outer join to fit data within 24 hour window
+  data = merge(Time24hr, data, by='Time', all=TRUE) # NOTE: missing seconds will produce NAs
+  if (nrow(data) != time_24hr) stop('Error fitting data to 24-hour window')
+  return(data)
+}
 
 # Takes an absolute path to a NAVY .xlsx file converted from Larson Davis binary format .LD0
 # Returns a data frame
@@ -75,8 +92,6 @@ load_data_NAVY = function(path) {
   
   # TODO: May want to consider using multiple time series (ts) instead of simple vectors
   
-  time_24hr = 24 * 60 * 60 # total number of seconds in a day
-  
   # Validate date start
   date_start = format(data$Time[1], format=format_date)
   if (any(date_start != format(data$Time, format=format_date))) {
@@ -89,37 +104,20 @@ load_data_NAVY = function(path) {
     warning(paste('Measured start time (', time_start, ') is not 00:00:00', sep=''))
     time_start = '00:00:00'
   }
-  
-  # Times for full 24hour period
-  Time24hr = seq(
-    from=as.POSIXlt(paste(date_start, time_start), paste(format_date,format_time), tz='UTC'),
-    to=as.POSIXlt(paste(date_start, '23:59:59'), paste(format_date,format_time), tz='UTC'),
-    by='sec'
-  )
-  Time24hr = data.frame(Time24hr)
-  names(Time24hr)[names(Time24hr)=='Time24hr'] = 'Time'
-  stopifnot(nrow(Time24hr)==time_24hr)
-  
+
   # Validate time measured (total number of seconds, assuming a 1 second frequency)
   time_measured = length(data$Time)
-  
-  # Left outer join to fit data within 24 hour window
-  data = merge(Time24hr, data, by='Time', all=TRUE) # NOTE: missing seconds will produce NAs
-  stopifnot(nrow(data)==time_24hr)
-  
+
   if (time_measured < time_24hr) {
     warning(paste('Total time measured (',
                 floor(time_measured / 3600),' hr ',
                 floor((time_measured / 60) %% 60),' min ',
                 time_measured %% 60,' sec',
                 ') is less than a full day. ',
-                # 'Calculations will ignore missing measurements.',
                 sep=''))
-    
-    # Remove NA rows from data. An alternative would be to set values to 0 (data[is.na(data)] = 0) or a moving average
-    # NOTE: this will affect metric results which assume a full set of 24 hours
-    # data = data[rowSums(is.na(data))==0,] # Remove rows with NA values
   }
-  
+
+  # Force data to 24-hour standardized format
+  data = StandardizeTimeWindow(data)
   return (data)
 }

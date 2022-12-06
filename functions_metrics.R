@@ -57,20 +57,14 @@ LxFromLevels = function(L, p = 50) {
 
 # Hourly Leq for the given interval
 # Can extrapolate hourly Leqs for partially missing data
-LeqHourly = function(Levels, Times, start, end, extrapolate=TRUE) {
-  # browser()
+LeqHourly = function(Levels, Times, start='00:00:00', end='23:59:59', extrapolate=TRUE) {
   date = format(Times[1], format=format_date)
   period = (Times >= as.POSIXct(paste(date,start), tz='UTC')
              & Times <= as.POSIXct(paste(date,end), tz='UTC'))
   
   # Subset only hours within the specified period (i.e. day, evening, or night)
-  print(paste('before len', length(Levels), length(Times)))
-  print(paste(any(period), length(period)))
   Levels = Levels[period]
   Times = Times[period]
-  print(paste('after len', length(Levels), length(Times)))
-  ## NOTE: If NAs were stripped from this period, Levels and Times will be empty! This will crash LeqTotal from tapply!
-  
   Leqh = tapply(X=Levels, INDEX=cut(Times, breaks='hour'), FUN=LeqTotal)
   
   # These hours have partial measurements (less than 3600 sec, but more than 0)
@@ -102,32 +96,21 @@ LeqHourly = function(Levels, Times, start, end, extrapolate=TRUE) {
   return(Leqh)
 }
 
+# NOTE: A standardized 24-hour time series window (by second) is expected for Ldn and Lden calculations.
+
 # Day-night sound level, also known as DNL (ISO 1996). Returns a list including Ldn as well as intermediate calculations (Lday, Lnight, Leqh). Default level adjustment is night +10dB. United States FAA uses day values of [7am,10pm), night values of [10pm,7am)
 Ldn = function(Levels, Times) {
-  # browser()
   if (length(unique(cut(Times, breaks='hour'))) != 24) {
     warning('Data does not span 24 hours. Unable to calculate Ldn.')
   }
   
-  # TODO: merge expected default 24-hour set of NAs with Levels/Times
-  
-  Leqh_night_am = LeqHourly(Levels, Times, '00:00:00', '06:59:59') # TODO: should this pass Time24hr?
+  Leqh_night_am = LeqHourly(Levels, Times, '00:00:00', '06:59:59')
   Leqh_day      = LeqHourly(Levels, Times, '07:00:00', '21:59:59')
-  
-  ## HERE
   Leqh_night_pm = LeqHourly(Levels, Times, '22:00:00', '23:59:59')
   Leqh_night = c(Leqh_night_am, Leqh_night_pm)
 
-  # if (anyNA(c(Leqh_day,Leqh_night))) {
-  #   warning('')
-  # }
-  
   Tday   = length(Leqh_day)
   Tnight = length(Leqh_night)
-  # if (Tday + Tnight != 24) {
-  #   stop('Must provide data spanning 24 hours')
-  # }
-
   Lday   = LeqTotal(Leqh_day)
   Lnight = LeqTotal(Leqh_night)
   # NOTE: +10dB adjustment for night hours
