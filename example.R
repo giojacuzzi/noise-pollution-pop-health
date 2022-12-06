@@ -12,7 +12,9 @@ path = '~/Desktop/NAVY Data/NASWI_Site_9B_SG/NASWI - Site 9B_SG - MP1/831C_11163
 # Incomplete day
 # path = '~/Desktop/NAVY Data/NASWI_Site_9B_SG/NASWI - Site 9B_SG - MP1/831C_11163-20201213 000000-20121300.RC0.xlsx'
 
-# path = '~/../../Volumes/SAFS Work/NAVY/Acoustic Data/Data/...'
+# Buggy day
+# path = '~/Desktop/NAVY Data/NASWI_Site_20B_SG/NASWI - Site 20B_SG - MP2/831C_11162-20210328 000000-21032800.LD0.xlsx'
+
 
 data = load_data_NAVY(path)
 

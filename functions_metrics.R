@@ -17,14 +17,7 @@ splToPressure = function(l) {
 # Calculate total Leq from level series over given time period (ISO 1996, Navy Technical Report)
 # Can extrapolate Leq from partially missing data
 LeqTotal = function(L, t_start=1, t_end=length(L), extrapolate=TRUE) {
-  # browser()
-  # Check for missing data
-  if (anyNA(L)) {
-    
-  }
-  
   duration = t_end - t_start + 1
-  # print(paste(duration, ' <-- ', t_start, t_end))
   10*log10(sum(10^(L[t_start:t_end]/10))/duration)
 }
 
@@ -44,7 +37,7 @@ SelFromLevels = function(L) {
 
 # Calculate exceedance for the given percentage of time (0-100)
 LxFromLevels = function(L, p = 50) {
-  L = na.omit(L) # Use only present measurements
+  if (anyNA(L)) stop('Missing data. Unable to calculate Lx')
   if (p == 0) {
     return(max(L))
   } else if (p == 100) {
@@ -100,14 +93,15 @@ LeqHourly = function(Levels, Times, start='00:00:00', end='23:59:59', extrapolat
 
 # Day-night sound level, also known as DNL (ISO 1996). Returns a list including Ldn as well as intermediate calculations (Lday, Lnight, Leqh). Default level adjustment is night +10dB. United States FAA uses day values of [7am,10pm), night values of [10pm,7am)
 Ldn = function(Levels, Times) {
-  if (length(unique(cut(Times, breaks='hour'))) != 24) {
-    warning('Data does not span 24 hours. Unable to calculate Ldn.')
-  }
-  
   Leqh_night_am = LeqHourly(Levels, Times, '00:00:00', '06:59:59')
   Leqh_day      = LeqHourly(Levels, Times, '07:00:00', '21:59:59')
   Leqh_night_pm = LeqHourly(Levels, Times, '22:00:00', '23:59:59')
   Leqh_night = c(Leqh_night_am, Leqh_night_pm)
+  Leqh = c(Leqh_night_am, Leqh_day, Leqh_night_pm)
+  
+  if (anyNA(Leqh)) {
+    warning('Hourly Leq incomplete. Unable to calculate Ldn.')
+  }
 
   Tday   = length(Leqh_day)
   Tnight = length(Leqh_night)
@@ -120,7 +114,7 @@ Ldn = function(Levels, Times) {
     'Ldn'    = Ldn,
     'Lday'   = Lday,
     'Lnight' = Lnight,
-    'Leqh'   = c(Leqh_night_am, Leqh_day, Leqh_night_pm)
+    'Leqh'   = Leqh
   ))
 }
 
@@ -132,13 +126,15 @@ Lden = function(Levels, Times) {
   Leqh_evening  = LeqHourly(Levels, Times, '19:00:00', '21:59:59')
   Leqh_night_pm = LeqHourly(Levels, Times, '22:00:00', '23:59:59')
   Leqh_night = c(Leqh_night_am, Leqh_night_pm)
+  Leqh = c(Leqh_night_am, Leqh_day, Leqh_evening, Leqh_night_pm)
+  
+  if (anyNA(Leqh)) {
+    warning('Hourly Leq incomplete. Unable to calculate Ldn.')
+  }
+  
   Tday     = length(Leqh_day)
   Tevening = length(Leqh_evening)
   Tnight   = length(Leqh_night)
-  if (Tday + Tevening + Tnight != 24) {
-    stop('Must provide data spanning 24 hours')
-  }
-  
   Lday     = LeqTotal(Leqh_day)
   Levening = LeqTotal(Leqh_evening)
   Lnight   = LeqTotal(Leqh_night)
@@ -150,6 +146,6 @@ Lden = function(Levels, Times) {
     'Lday'     = Lday,
     'Levening' = Levening,
     'Lnight'   = Lnight,
-    'Leqh'     = c(Leqh_night_am, Leqh_day, Leqh_evening, Leqh_night_pm)
+    'Leqh'     = Leqh
   ))
 }
