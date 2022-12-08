@@ -16,7 +16,10 @@ source('plot.R')
 # Malformatted xlsx
 # path = '~/Desktop/NAVY Data/NASWI_Site_20B_SG/NASWI - Site 20B_SG - MP2/831C_11162-20210401 000001-21040100.LD0.xlsx'
 # More than one date
-path = '~/Desktop/NAVY Data/NASWI_Site_3A_T/NASWI - Site 3A_T - MP1/831C_11129-20201215 000000-20121500.LD0.xlsx'
+# path = '~/Desktop/NAVY Data/NASWI_Site_3A_T/NASWI - Site 3A_T - MP1/831C_11129-20201215 000000-20121500.LD0.xlsx'
+
+# DEBUG
+path = '~/Desktop/NAVY Data/NASWI_Site_20B_SG/NASWI - Site 20B_SG - MP2/831C_11162-20210401 000001-21040100.LD0.xlsx'
 
 data = load_data_NAVY(path)
 if (is.null(data)) stop()
