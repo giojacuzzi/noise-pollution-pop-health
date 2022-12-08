@@ -15,10 +15,31 @@ StandardizeTimeWindow = function(data) {
     by='sec'
   ))
 
-  # Left outer join to fit data within 24 hour window
-  data = merge(Time24hr, data, by='Time', all=TRUE) # NOTE: missing seconds will produce NAs
+  if (length(unique(format(data$Time, format_date))) > 1) {
+    warning(paste('Data extends beyond single date. Only', date_start, 'will be used.'))
+  }
+    
+  data = merge(Time24hr, data, by='Time', all.x=TRUE) # NOTE: missing seconds will produce NAs
+
   if (nrow(data) != time_24hr) stop('Error fitting data to 24-hour window')
   return(data)
+}
+
+get_id_from_file = function(file) {
+  id = substring(file, gregexpr("NASWI_Site_", file)[[1]][1])
+  id = substring(id, 12, gregexpr("/", id)[[1]][1] - 1)
+  return(id)
+}
+
+get_date_from_file = function(file) {
+  date_start = substring(file, gregexpr('831C_', file)[[1]][1])
+  date_start = substring(date_start, gregexpr('-', date_start)[[1]][1]+1)
+  date_start = strsplit(date_start, ' ')[[1]][1]
+  year = substring(date_start, 1, 4)
+  month = substring(date_start, 5, 6)
+  day = substring(date_start, 7, 8)
+  date_start = paste(c(year,'-',month,'-',day), collapse='')
+  return(date_start)
 }
 
 # Takes an absolute path to a NAVY .xlsx file converted from Larson Davis binary format .LD0
@@ -26,9 +47,18 @@ StandardizeTimeWindow = function(data) {
 load_data_NAVY = function(path) {
   message(paste('Attempting to load', path, '...'))
   
-  # Read Time History measurements page
-  data_raw = as.data.frame(readxl::read_excel(path, 'Time History'))
-  
+  # Read `Time History` measurements page
+  data_failure = TRUE
+  tryCatch({
+    data_raw = as.data.frame(readxl::read_excel(path, 'Time History'))
+    data_failure = FALSE
+  }, error = function(e) {
+    warning(paste('Unable to load data -', e$message, 'in', path))
+  })
+  if (data_failure) {
+    return()
+  }
+
   # Clean raw data (remove any 'Run/Pause/Stop' metadata)
   measurement_rows = which(is.na(data_raw$`Record Type`))
   data = data_raw[measurement_rows,]
@@ -94,7 +124,19 @@ load_data_NAVY = function(path) {
   
   # Validate date start
   date_start = format(data$Time[1], format=format_date)
-  if (any(date_start != format(data$Time, format=format_date))) {
+  if (is.na(as.Date(as.character(data$Time[1]), tz = 'UTC', format = format_date))) {
+    # Scrape date from filename
+    date_start_malformatted = date_start
+    date_start = get_date_from_file(path)
+    warning(paste('Date', date_start_malformatted, 'in unexpected format. Assuming 00:00:00 start on', date_start, 'instead.'))
+
+    data$Time = seq(
+      from=as.POSIXlt(paste(date_start, '00:00:00'), paste(format_date,format_time), tz='UTC'),
+      length.out=length(data$Time),
+      by='sec'
+    )
+    
+  } else if (any(date_start != format(data$Time, format=format_date))) {
     warning(paste('Measured dates extend beyond start date', date_start))
   }
   

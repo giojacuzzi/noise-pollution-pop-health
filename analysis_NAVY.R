@@ -22,12 +22,26 @@ data_navy = data.frame(
 
 files = list.files(path='~/Desktop/NAVY Data', pattern="*.xlsx", full.names=TRUE, recursive=TRUE)
 
+# TODO: merge data spread across multiple files for a single day into a single dataframe before analysis; for each day?
+data_xlsx = data.frame()
+names(data_xlsx) = c('ID', 'Date', 'File')
+for (file in files) {
+  id = get_id_from_file(file)
+  date = get_date_from_file(file)
+  r = data.frame(id, date, file)
+  data_xlsx = rbind(data_xlsx, r)
+}
+
+# Process all the files, TODO: checking for others that concern the same day
 for (file in files) {
 
-  id = str = substring(file, gregexpr("NASWI_Site_", file)[[1]][1])
-  id = substring(id, 12, gregexpr("/", str)[[1]][1] - 1)
-  
+  id = get_id_from_file(file)
   data_file = load_data_NAVY(file)
+  if (is.null(data_file)) {
+    print('Loaded data was null!')
+    next
+  }
+    
   date = format(data_file$Time[1], format=format_date)
 
   # readline(prompt=paste('Loaded date', date, 'for site', id, '- Press [enter] to continue.'))

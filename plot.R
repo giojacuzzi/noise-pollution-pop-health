@@ -8,7 +8,7 @@ dnlplot = function(data, id='', date='') {
     main=paste('Ldn', id, date),
     xlab='Time (hr)',ylab='Leq (dB)',
     col=c(rep('darkblue',7), rep('lightskyblue',15), rep('darkblue',2)),
-    ylim=c(0,round(max(na.omit(data$Leqh))+20)),
+    ylim=c(0,100),
     xaxt='n'
   )
   axis(1, at=bp_dnl,labels=seq(0,23))

@@ -8,15 +8,19 @@ source('plot.R')
 # Data reading -----------------------------------------------------------------
 
 # NASWI Gate
-path = '~/Desktop/NAVY Data/NASWI_Site_9B_SG/NASWI - Site 9B_SG - MP1/831C_11163-20201218 000000-20121800.LD0.xlsx'
+# path = '~/Desktop/NAVY Data/NASWI_Site_9B_SG/NASWI - Site 9B_SG - MP1/831C_11163-20201218 000000-20121800.LD0.xlsx'
 # Incomplete day
 # path = '~/Desktop/NAVY Data/NASWI_Site_9B_SG/NASWI - Site 9B_SG - MP1/831C_11163-20201213 000000-20121300.RC0.xlsx'
-
-# Buggy day
+# Malformatted date
 # path = '~/Desktop/NAVY Data/NASWI_Site_20B_SG/NASWI - Site 20B_SG - MP2/831C_11162-20210328 000000-21032800.LD0.xlsx'
-
+# Malformatted xlsx
+# path = '~/Desktop/NAVY Data/NASWI_Site_20B_SG/NASWI - Site 20B_SG - MP2/831C_11162-20210401 000001-21040100.LD0.xlsx'
+# More than one date
+path = '~/Desktop/NAVY Data/NASWI_Site_3A_T/NASWI - Site 3A_T - MP1/831C_11129-20201215 000000-20121500.LD0.xlsx'
 
 data = load_data_NAVY(path)
+if (is.null(data)) stop()
+print('loaded the data!')
 
 # Metric Evaluation ------------------------------------------------------------
 print('Evaluating metrics')
