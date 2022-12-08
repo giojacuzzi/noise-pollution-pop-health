@@ -37,7 +37,10 @@ SelFromLevels = function(L) {
 
 # Calculate exceedance for the given percentage of time (0-100)
 LxFromLevels = function(L, p = 50) {
-  if (anyNA(L)) stop('Missing data. Unable to calculate Lx')
+  if (anyNA(L) | length(L) == 0) {
+    warning('Missing data. Unable to calculate Lx')
+    return(NA)
+  }
   if (p == 0) {
     return(max(L))
   } else if (p == 100) {

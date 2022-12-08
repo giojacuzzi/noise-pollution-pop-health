@@ -8,6 +8,9 @@ source('plot.R')
 # All xlsx spreadsheet files from the NAVY database
 files = list.files(path='~/Desktop/NAVY Data', pattern="*.xlsx", full.names=TRUE, recursive=TRUE)
 
+# DEBUG:
+# files = '~/Desktop/NAVY Data/NASWI_Site_20B_SG/NASWI - Site 20B_SG - MP2/831C_11162-20210401 000001-21040100.LD0.xlsx'
+
 # Scrape site IDs and measurement dates from files
 data_xlsx = data.frame()
 for (file in files) {
@@ -35,11 +38,12 @@ data_navy = data.frame(
 
 for (id in unique(data_xlsx$ID)) { # for every measurement site ID
   for (date in unique(data_xlsx$Date)) { # for every date at that site
+
     data_date = data.frame()
     files = data_xlsx[data_xlsx$ID==id & data_xlsx$Date==date, 'File']
     for (file in files) { # for every file for that date
       
-      # Process the file
+      # Load the file
       data_file = load_data_NAVY(file)
       if (is.null(data_file)) {
         warning(paste('Unable to load', file, '- skipping...'))
@@ -56,6 +60,16 @@ for (id in unique(data_xlsx$ID)) { # for every measurement site ID
         data_date = merge(na.omit(data_date), na.omit(data_file), by=names(data_file), all=TRUE)
       }
     }
+    
+    # If unable to load data for a date, create a representative dataframe of NAs
+    if (nrow(data_date) == 0) {
+      warning(paste('Unable to load data from file(s) for date', date,'-',files))
+      data_date = data.frame(matrix(nrow=time_24hr,ncol=length(selected_columns)))
+      data_date[1] = get_24hr_time_window(date)
+      colnames(data_date) = selected_columns
+      # data_date$Time = get_24hr_time_window(date)
+    }
+    
     data_date = fit_24hr_time_window(data_date) # NOTE: missing seconds will produce NAs
     if (nrow(data_date) != time_24hr) stop(paste('Error merging measurement file(s) for date', date,'-',files))
     
@@ -79,9 +93,9 @@ for (id in unique(data_xlsx$ID)) { # for every measurement site ID
       Ldn   = DNL_A$Ldn,
       Lden  = DENL_A$Lden,
       Leq   = LeqTotal(data_date$LAeq), # Leq total from all individual Leq measurements, A-weighting
-      SEL   = SelFromLevels(data_date$LAeq),
-      Lmax  = max(data_date$LAeq),
-      Lpeak = max(data_date$LCpeak),
+      SEL   = ifelse(length(data_date$LAeq) > 0, SelFromLevels(data_date$LAeq), NA),
+      Lmax  = ifelse(length(data_date$LAeq) > 0, max(data_date$LAeq), NA),
+      Lpeak = ifelse(length(data_date$LAeq) > 0, max(data_date$LCpeak), NA),
       L10   = LxFromLevels(data_date$LAeq, 10),
       L25   = LxFromLevels(data_date$LAeq, 25),
       L50   = LxFromLevels(data_date$LAeq, 50),
