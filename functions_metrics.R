@@ -95,7 +95,7 @@ LeqHourly = function(Levels, Times, start='00:00:00', end='23:59:59', extrapolat
 # NOTE: A standardized 24-hour time series window (by second) is expected for Ldn and Lden calculations.
 
 # Day-night sound level, also known as DNL (ISO 1996). Returns a list including Ldn as well as intermediate calculations (Lday, Lnight, Leqh). Default level adjustment is night +10dB. United States FAA uses day values of [7am,10pm), night values of [10pm,7am)
-Ldn = function(Levels, Times) {
+LdnFromLevels = function(Levels, Times) {
   Leqh_night_am = LeqHourly(Levels, Times, '00:00:00', '06:59:59')
   Leqh_day      = LeqHourly(Levels, Times, '07:00:00', '21:59:59')
   Leqh_night_pm = LeqHourly(Levels, Times, '22:00:00', '23:59:59')
@@ -123,7 +123,7 @@ Ldn = function(Levels, Times) {
 
 # Day-evening-night sound level, also known as DENL (ISO 1996). Returns a list including Ldn as well as intermediate calulations (Lday, Lnight, Leqh). Default time values are day [7am,7pm), evening [7pm,10pm), and night [10pm,7am). Default level adjustments are evening +5dB, night +10dB
 # NOTE: The FAA uses "Community Noise Equivalent Level" (CNEL) in California, a metric similar to Lden, however the periods are day [7am,7pm), evening [7pm,10pm) with +4.77dB adjustment, and night [10pm,7am) with +10dB adjustment.
-Lden = function(Levels, Times) {
+LdenFromLevels = function(Levels, Times) {
   Leqh_night_am = LeqHourly(Levels, Times, '00:00:00', '06:59:59')
   Leqh_day      = LeqHourly(Levels, Times, '07:00:00', '18:59:59')
   Leqh_evening  = LeqHourly(Levels, Times, '19:00:00', '21:59:59')

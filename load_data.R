@@ -79,6 +79,10 @@ fit_24hr_time_window = function(data) {
   if (length(unique(format(data$Time, format_date))) > 1) {
     warning(paste('Data extends beyond single date. Only', date_start, 'will be used.'))
   }
+  if (nrow(data) > time_24hr) {
+    warning(paste('Data extends beyond 24 hours. Additional rows will be discarded.'))
+    data = data[1:time_24hr,]
+  }
     
   data = merge(window, data, by='Time', all.x=TRUE) # NOTE: missing seconds will produce NAs
 
@@ -142,7 +146,6 @@ load_data_NAVY = function(path) {
       length.out=length(data$Time),
       by='sec'
     )
-    
   } else if (any(date_start != format(data$Time, format=format_date))) {
     warning(paste('Measured dates extend beyond start date', date_start))
   }
@@ -157,13 +160,14 @@ load_data_NAVY = function(path) {
   # Validate time measured (total number of seconds, assuming a 1 second frequency)
   time_measured = length(data$Time)
 
+  hr = floor(time_measured / 3600)
+  min = floor((time_measured / 60) %% 60)
+  sec = time_measured %% 60
+  msg_time_measured = paste0('Total time measured (',hr,' hr ',min,' min ',sec,' sec)')
   if (time_measured < time_24hr) {
-    warning(paste('Total time measured (',
-                floor(time_measured / 3600),' hr ',
-                floor((time_measured / 60) %% 60),' min ',
-                time_measured %% 60,' sec',
-                ') is less than a full day. ',
-                sep=''))
+    warning(paste0(msg_time_measured, ' is less than a full day'))
+  } else if (time_measured > time_24hr) {
+    warning(paste0(msg_time_measured, ' is more than a full day'))
   }
 
   # Force data to 24-hour standardized format
