@@ -13,7 +13,7 @@ options(warn = 0)
 files = list.files(path='~/Desktop/PHI Project Data/SDA', pattern="*.XLS", full.names=TRUE, recursive=TRUE)
 
 # DEBUG
-# files = '/Users/giojacuzzi/Desktop/PHI Project Data/SDA/Whidbey Island Comm Noise_Data/SLM Data/Kineth Point/493829_06JULY-26JULY/SLA01016.XLS'
+# files = '/Users/giojacuzzi/Desktop/PHI Project Data/SDA/Whidbey Island Comm Noise_Data/SLM Data/Race Road/499665_06JULY-26JULY/SLA01058.XLS'
 
 # Scrape site names and measurement dates from files
 data_xls = data.frame()

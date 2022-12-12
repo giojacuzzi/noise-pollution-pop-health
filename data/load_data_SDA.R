@@ -30,7 +30,7 @@ load_data_SDA = function(path) {
   # browser()
   message(paste('Attempting to load', path, '...'))
 
-  # Read `Time History` measurements page
+  # Read data from .XLS file
   data_failure = TRUE
   tryCatch({
     data_raw = read.table(file, sep = '', header=T, na.strings='')
@@ -41,6 +41,10 @@ load_data_SDA = function(path) {
   if (data_failure) {
     return()
   }
+  
+  # Clean raw data (remove any labels and metadata)
+  metadata_rows = which(is.na(as.numeric(data_raw$Value)))
+  if (length(metadata_rows) > 0) data_raw = data_raw[-metadata_rows,] 
   
   # Standardize time, date, and value format
   data_raw$Date = gsub('/', '-', data_raw$Date)
