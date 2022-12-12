@@ -5,21 +5,86 @@ format_date = '%Y-%m-%d'
 format_time = '%H:%M:%S'
 time_24hr = 24 * 60 * 60 # total number of seconds in a day
 
-# Fit data frame to standardized time series (by second) for a full 24 hour period
-StandardizeTimeWindow = function(data) {
-  date_start = format(data$Time[1], format=format_date)
-  
-  Time24hr = data.frame(Time=seq(
+# Columns to subset from the raw data
+selected_columns = c(
+  'Time',
+  # A-weighted
+  'LAeq','LApeak',
+  'LAS','LASmax',
+  'LAF','LAFmax',
+  'LAI','LAImax',
+  # C-weighted
+  'LCeq','LCpeak',
+  'LCS','LCSmax',
+  'LCF','LCFmax',
+  'LCI','LCImax',
+  # Z-weighted
+  'LZeq','LZpeak',
+  'LZS','LZSmax',
+  'LZF','LZFmax',
+  'LZI','LZImax',
+  # Frequency content
+  '1/3 LZeq 6.3',
+  '1/3 LZeq 8.0',
+  '1/3 LZeq 10.0',
+  '1/3 LZeq 12.5',
+  '1/3 LZeq 16.0',
+  '1/3 LZeq 20.0',
+  '1/3 LZeq 25.0',
+  '1/3 LZeq 31.5',
+  '1/3 LZeq 40.0',
+  '1/3 LZeq 50.0',
+  '1/3 LZeq 63.0',
+  '1/3 LZeq 80.0',
+  '1/3 LZeq 100',
+  '1/3 LZeq 125',
+  '1/3 LZeq 160',
+  '1/3 LZeq 200',
+  '1/3 LZeq 250',
+  '1/3 LZeq 315',
+  '1/3 LZeq 400',
+  '1/3 LZeq 500',
+  '1/3 LZeq 630',
+  '1/3 LZeq 800',
+  '1/3 LZeq 1000',
+  '1/3 LZeq 1250',
+  '1/3 LZeq 1600',
+  '1/3 LZeq 2000',
+  '1/3 LZeq 2500',
+  '1/3 LZeq 3150',
+  '1/3 LZeq 4000',
+  '1/3 LZeq 5000',
+  '1/3 LZeq 6300',
+  '1/3 LZeq 8000',
+  '1/3 LZeq 10000',
+  '1/3 LZeq 12500',
+  '1/3 LZeq 16000',
+  '1/3 LZeq 20000'
+)
+
+get_24hr_time_window = function(date_start) {
+  return(data.frame(Time=seq(
     from=as.POSIXlt(paste(date_start, '00:00:00'), paste(format_date,format_time), tz='UTC'),
     to=as.POSIXlt(paste(date_start, '23:59:59'), paste(format_date,format_time), tz='UTC'),
     by='sec'
-  ))
+  )))
+}
+
+# Fit data frame to standardized time series (by second) for a full 24 hour period
+fit_24hr_time_window = function(data) {
+  date_start = format(data$Time[1], format=format_date)
+  
+  window = get_24hr_time_window(date_start)
 
   if (length(unique(format(data$Time, format_date))) > 1) {
     warning(paste('Data extends beyond single date. Only', date_start, 'will be used.'))
   }
+  if (nrow(data) > time_24hr) {
+    warning(paste('Data extends beyond 24 hours. Additional rows will be discarded.'))
+    data = data[1:time_24hr,]
+  }
     
-  data = merge(Time24hr, data, by='Time', all.x=TRUE) # NOTE: missing seconds will produce NAs
+  data = merge(window, data, by='Time', all.x=TRUE) # NOTE: missing seconds will produce NAs
 
   if (nrow(data) != time_24hr) stop('Error fitting data to 24-hour window')
   return(data)
@@ -64,61 +129,7 @@ load_data_NAVY = function(path) {
   data = data_raw[measurement_rows,]
   
   # Subset data for desired measurements
-  data = data[,c(
-    'Time',
-    # A-weighted
-    'LAeq','LApeak',
-    'LAS','LASmax',
-    'LAF','LAFmax',
-    'LAI','LAImax',
-    # C-weighted
-    'LCeq','LCpeak',
-    'LCS','LCSmax',
-    'LCF','LCFmax',
-    'LCI','LCImax',
-    # Z-weighted
-    'LZeq','LZpeak',
-    'LZS','LZSmax',
-    'LZF','LZFmax',
-    'LZI','LZImax',
-    # Frequency content
-    '1/3 LZeq 6.3',
-    '1/3 LZeq 8.0',
-    '1/3 LZeq 10.0',
-    '1/3 LZeq 12.5',
-    '1/3 LZeq 16.0',
-    '1/3 LZeq 20.0',
-    '1/3 LZeq 25.0',
-    '1/3 LZeq 31.5',
-    '1/3 LZeq 40.0',
-    '1/3 LZeq 50.0',
-    '1/3 LZeq 63.0',
-    '1/3 LZeq 80.0',
-    '1/3 LZeq 100',
-    '1/3 LZeq 125',
-    '1/3 LZeq 160',
-    '1/3 LZeq 200',
-    '1/3 LZeq 250',
-    '1/3 LZeq 315',
-    '1/3 LZeq 400',
-    '1/3 LZeq 500',
-    '1/3 LZeq 630',
-    '1/3 LZeq 800',
-    '1/3 LZeq 1000',
-    '1/3 LZeq 1250',
-    '1/3 LZeq 1600',
-    '1/3 LZeq 2000',
-    '1/3 LZeq 2500',
-    '1/3 LZeq 3150',
-    '1/3 LZeq 4000',
-    '1/3 LZeq 5000',
-    '1/3 LZeq 6300',
-    '1/3 LZeq 8000',
-    '1/3 LZeq 10000',
-    '1/3 LZeq 12500',
-    '1/3 LZeq 16000',
-    '1/3 LZeq 20000'
-  )]
+  data = data[, selected_columns]
   
   # TODO: May want to consider using multiple time series (ts) instead of simple vectors
   
@@ -135,7 +146,6 @@ load_data_NAVY = function(path) {
       length.out=length(data$Time),
       by='sec'
     )
-    
   } else if (any(date_start != format(data$Time, format=format_date))) {
     warning(paste('Measured dates extend beyond start date', date_start))
   }
@@ -150,16 +160,17 @@ load_data_NAVY = function(path) {
   # Validate time measured (total number of seconds, assuming a 1 second frequency)
   time_measured = length(data$Time)
 
+  hr = floor(time_measured / 3600)
+  min = floor((time_measured / 60) %% 60)
+  sec = time_measured %% 60
+  msg_time_measured = paste0('Total time measured (',hr,' hr ',min,' min ',sec,' sec)')
   if (time_measured < time_24hr) {
-    warning(paste('Total time measured (',
-                floor(time_measured / 3600),' hr ',
-                floor((time_measured / 60) %% 60),' min ',
-                time_measured %% 60,' sec',
-                ') is less than a full day. ',
-                sep=''))
+    warning(paste0(msg_time_measured, ' is less than a full day'))
+  } else if (time_measured > time_24hr) {
+    warning(paste0(msg_time_measured, ' is more than a full day'))
   }
 
   # Force data to 24-hour standardized format
-  data = StandardizeTimeWindow(data)
+  data = fit_24hr_time_window(data)
   return (data)
 }

@@ -8,7 +8,7 @@ source('plot.R')
 # Data reading -----------------------------------------------------------------
 
 # NASWI Gate
-# path = '~/Desktop/NAVY Data/NASWI_Site_9B_SG/NASWI - Site 9B_SG - MP1/831C_11163-20201218 000000-20121800.LD0.xlsx'
+path = '~/Desktop/PHI Project Data/NAVY/NASWI_Site_9B_SG/NASWI - Site 9B_SG - MP1/831C_11163-20201218 000000-20121800.LD0.xlsx'
 # Incomplete day
 # path = '~/Desktop/NAVY Data/NASWI_Site_9B_SG/NASWI - Site 9B_SG - MP1/831C_11163-20201213 000000-20121300.RC0.xlsx'
 # Malformatted date
@@ -16,7 +16,9 @@ source('plot.R')
 # Malformatted xlsx
 # path = '~/Desktop/NAVY Data/NASWI_Site_20B_SG/NASWI - Site 20B_SG - MP2/831C_11162-20210401 000001-21040100.LD0.xlsx'
 # More than one date
-path = '~/Desktop/NAVY Data/NASWI_Site_3A_T/NASWI - Site 3A_T - MP1/831C_11129-20201215 000000-20121500.LD0.xlsx'
+# path = '~/Desktop/NAVY Data/NASWI_Site_3A_T/NASWI - Site 3A_T - MP1/831C_11129-20201215 000000-20121500.LD0.xlsx'
+# More than 24 hours of measurements
+# path = '~/Desktop/NAVY Data/NASWI_Site_8B_SG/NASWI - Site 8B_SG - MP4/831C_11130-20210811 000000-21081100.LD0.xlsx'
 
 data = load_data_NAVY(path)
 if (is.null(data)) stop()
@@ -25,14 +27,14 @@ print('loaded the data!')
 # Metric Evaluation ------------------------------------------------------------
 print('Evaluating metrics')
 
-DNL_A = Ldn(data$LAeq, data$Time)
-DENL_A = Lden(data$LAeq, data$Time)
+DNL_A = LdnFromLevels(data$LAeq, data$Time)
+DENL_A = LdenFromLevels(data$LAeq, data$Time)
 
-DNL_C = Ldn(data$LCeq, data$Time)
-DENL_C = Lden(data$LCeq, data$Time)
+DNL_C = LdnFromLevels(data$LCeq, data$Time)
+DENL_C = LdenFromLevels(data$LCeq, data$Time)
 
-DNL_Z = Ldn(data$LZeq, data$Time)
-DENL_Z = Lden(data$LZeq, data$Time)
+DNL_Z = LdnFromLevels(data$LZeq, data$Time)
+DENL_Z = LdenFromLevels(data$LZeq, data$Time)
 
 # NOTE: Summary metrics are intended to represent the entire 24-hour period. As such, we remove any missing data to enable approximate calculations.
 if (anyNA(data)) {

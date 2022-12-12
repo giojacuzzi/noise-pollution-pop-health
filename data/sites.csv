@@ -1,0 +1,55 @@
+"Org","ID","Name","Region","Latitude","Longitude"
+"NAVY","2B_T","Seaplane Base","Ault Field",48.302,-122.609417
+"NAVY","3A_T","Skagit River Dike","Ault Field",48.358783,-122.459883
+"NAVY","5B_SG","Lopez Island","Ault Field",48.422137,-122.814946
+"NAVY","8B_SG","Dog Park","Ault Field",48.327333,-122.65765
+"NAVY","9B_SG","NASWI Gate","Ault Field",48.368816,-122.658583
+"NAVY","20B_SG","Perry House","OLF Coupeville",48.169589,-122.629032
+"NAVY","24A_B","NPS Reuble Farm","OLF Coupeville",48.189114,-122.666312
+"NAVY","25B_T","Private Residence","OLF Coupeville",48.173664,-122.589307
+"NAVY","26B_SG","Reeder Bay","OLF Coupeville",48.219567,-122.63495
+"NAVY","27A_SG","Coupeville Water Tower","OLF Coupeville",48.171882,-122.641267
+"NAVY","33_SG","Port Townsend City Hall","OLF Coupeville",48.116,-122.753483
+"NAVY","99_HOH","Hoh Rain Forest Visitor Center","Olympic Peninsula",47.859722,-123.932415
+"NPS","OLYM001","Hoh River Trail","Olympic Peninsula",47.86627,-123.9146
+"NPS","OLYM002","Third Beach Trail","Olympic Peninsula",47.88517,-124.59748
+"NPS","OLYM003","Hurricane Ridge","Olympic Peninsula",47.96968,-123.50123
+"NPS","OLYM004","Lake Crescent Pyramid Mt Trail","Olympic Peninsula",48.0696,-123.84014
+"NPS","OLYM005","Lake Ozette","Olympic Peninsula",48.11472,-124.65187
+"NPS","OLYM006","High Divide","Olympic Peninsula",47.903471,-123.710344
+"NPS","OLYM007","North Fork Skokomish River Trail (Staircase)","Olympic Peninsula",47.525142,-123.339283
+"NPS","OLYM008","Upper Royal Basin","Olympic Peninsula",47.834592,-123.213764
+"NPS","OLYM101BP","Barnes Point","Olympic Peninsula",48.060938,-123.796069
+"NPS","OLYM101F","Fairholme","Olympic Peninsula",48.069769,-123.916417
+"NPS","EBLA001","Reuble Farm","OLF Coupeville",48.1893,-122.6664
+"NPS","EBLA002","Ferry House","OLF Coupeville",48.19182,-122.7036
+"JGL",NA,"Lockwood/Stark","OLF Coupeville",48.1692,-122.61945
+"JGL",NA,"Rhododendron Park",NA,48.19757,-122.64574
+"JGL",NA,"Rosehip Farm",NA,48.198208,-122.66854
+"JGL",NA,"Ferry House",NA,48.19182,-122.7036
+"JGL",NA,"Reuble Farm",NA,48.1893,-122.6664
+"JGL",NA,"Keystone",NA,48.16184,-122.6219
+"JGL",NA,"Island Transit",NA,48.20848,-122.64147
+"JGL",NA,"Long Pt Manor",NA,48.22462,-122.64894
+"JGL",NA,"Admirals/Byrd",NA,48.16501,-122.61963
+"JGL",NA,"Crockett Farm",NA,48.173004,-122.67073
+"SDA",NA,"Ledgewood","OLF Coupeville",48.146416,-122.598947
+"SDA",NA,"Race Road / Lagoon",NA,48.196492,-122.602965
+"SDA",NA,"Kineth Point",NA,48.218952,-122.638115
+"SDA",NA,"Morgan Hill, Port Townsend",NA,48.124617,-122.758069
+"SDA",NA,"Madrona Beach, Camano",NA,48.227747,-122.533422
+"SDA",NA,"Newberry House",NA,48.208747,-122.68525
+"SDA",NA,"Moran Beach","Ault Field",48.3882,-122.66352
+"SDA",NA,"Pt Colville, Lopez",NA,48.4218721,-122.8161437
+"SDA",NA,"North Dugualla",NA,48.368691,-122.586605
+"SDA",NA,"South Dugualla (Dugualla Heights)",NA,48.351879,-122.584107
+"SDA",NA,"Rosario Beach, Fidalgo",NA,48.422194,-122.664235
+"SDA",NA,"West Frostad",NA,48.347107,-122.625202
+"UW",NA,"Queets / Clearwater","Olympic Peninsula",47.63236,-124.247471
+"UW",NA,"Forks",NA,47.923407,-124.364412
+"UW","OLYM001","Hoh River Trail",NA,47.86627,-123.9146
+"UW","OLYM002","Third Beach Trail",NA,47.88517,-124.59748
+"OI",NA,"Moran Beach","Ault Field",48.372629,-122.665057
+"OI",NA,"1-km off Ault Field Runway","Ault Field",48.3492,-122.6917
+"BLM",NA,"Point Colville, Lopez",NA,48.4221,-122.8143
+"BLM",NA,"American Camp, San Juan",NA,48.2771,-122.5966
