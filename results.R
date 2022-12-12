@@ -29,13 +29,20 @@ max_day = tapply(data_metrics$Lden_Lday, data_metrics$ID, max)
 max_evening = tapply(data_metrics$Lden_Levening, data_metrics$ID, max)
 max_night = tapply(data_metrics$Lden_Lnight, data_metrics$ID, max)
 
+# Ldn mean map
+mapview(
+  merge(data_sites, data.frame(dB=c(t(mean_dnl)), ID=rownames(mean_dnl)), all=TRUE),
+  xcol='Longitude', ycol='Latitude', zcol='dB',
+  cex='dB', crs=4269, grid=FALSE, legend=TRUE,
+  layer.name = 'Mean Ldn (dBA)'
+)
+
 # Ldn max map
-mapviewOptions(legend.pos='bottomright')
 mapview(
   merge(data_sites, data.frame(dB=c(t(max_dnl)), ID=rownames(max_dnl)), all=TRUE),
   xcol='Longitude', ycol='Latitude', zcol='dB',
   cex='dB', crs=4269, grid=FALSE, legend=TRUE,
-  layer.name = 'Max Ldn (dB)'
+  layer.name = 'Max Ldn (dBA)'
 )
 
 # Day-night average grouped barplot

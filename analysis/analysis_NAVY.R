@@ -21,6 +21,9 @@ for (file in files) {
   data_xlsx = rbind(data_xlsx, r)
 }
 
+# Save all files data to csv
+write.csv(data_xlsx, file='data/files_navy.csv', row.names=FALSE)
+
 # Populate `metrics_navy` with metrics for every site ID and date
 metrics_navy = data.frame()
 
@@ -55,7 +58,6 @@ for (id in unique(data_xlsx$ID)) { # for every measurement site ID
       data_date = data.frame(matrix(nrow=time_24hr,ncol=length(selected_columns)))
       data_date[1] = get_24hr_time_window(date)
       colnames(data_date) = selected_columns
-      # data_date$Time = get_24hr_time_window(date)
     }
     
     data_date = fit_24hr_time_window(data_date) # NOTE: missing seconds will produce NAs
@@ -128,5 +130,5 @@ for (id in unique(data_xlsx$ID)) { # for every measurement site ID
   }
 }
 
-# Save all metrics data to file
+# Save all metrics data to csv
 write.csv(metrics_navy, file='data/metrics/metrics_navy.csv', row.names=FALSE)
