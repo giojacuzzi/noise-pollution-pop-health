@@ -1,12 +1,9 @@
+### Load data from NAVY .xlsx files converted from Larson Davis binary format .LD0
+source('global.R')
 library(readxl)
 
-# Global variables
-format_date = '%Y-%m-%d'
-format_time = '%H:%M:%S'
-time_24hr = 24 * 60 * 60 # total number of seconds in a day
-
 # Columns to subset from the raw data
-selected_columns = c(
+selected_columns_NAVY = c(
   'Time',
   # A-weighted
   'LAeq','LApeak',
@@ -62,34 +59,6 @@ selected_columns = c(
   '1/3 LZeq 20000'
 )
 
-get_24hr_time_window = function(date_start) {
-  return(data.frame(Time=seq(
-    from=as.POSIXlt(paste(date_start, '00:00:00'), paste(format_date,format_time), tz='UTC'),
-    to=as.POSIXlt(paste(date_start, '23:59:59'), paste(format_date,format_time), tz='UTC'),
-    by='sec'
-  )))
-}
-
-# Fit data frame to standardized time series (by second) for a full 24 hour period
-fit_24hr_time_window = function(data) {
-  date_start = format(data$Time[1], format=format_date)
-  
-  window = get_24hr_time_window(date_start)
-
-  if (length(unique(format(data$Time, format_date))) > 1) {
-    warning(paste('Data extends beyond single date. Only', date_start, 'will be used.'))
-  }
-  if (nrow(data) > time_24hr) {
-    warning(paste('Data extends beyond 24 hours. Additional rows will be discarded.'))
-    data = data[1:time_24hr,]
-  }
-    
-  data = merge(window, data, by='Time', all.x=TRUE) # NOTE: missing seconds will produce NAs
-
-  if (nrow(data) != time_24hr) stop('Error fitting data to 24-hour window')
-  return(data)
-}
-
 get_id_from_file = function(file) {
   id = substring(file, gregexpr("NASWI_Site_", file)[[1]][1])
   id = substring(id, 12, gregexpr("/", id)[[1]][1] - 1)
@@ -107,8 +76,7 @@ get_date_from_file = function(file) {
   return(date_start)
 }
 
-# Takes an absolute path to a NAVY .xlsx file converted from Larson Davis binary format .LD0
-# Returns a data frame
+# Takes an absolute path to a NAVY .xlsx file, returns a data frame
 load_data_NAVY = function(path) {
   message(paste('Attempting to load', path, '...'))
   
@@ -123,13 +91,13 @@ load_data_NAVY = function(path) {
   if (data_failure) {
     return()
   }
-
+  
   # Clean raw data (remove any 'Run/Pause/Stop' metadata)
   measurement_rows = which(is.na(data_raw$`Record Type`))
   data = data_raw[measurement_rows,]
   
   # Subset data for desired measurements
-  data = data[, selected_columns]
+  data = data[, selected_columns_NAVY]
   
   # TODO: May want to consider using multiple time series (ts) instead of simple vectors
   
@@ -140,9 +108,9 @@ load_data_NAVY = function(path) {
     date_start_malformatted = date_start
     date_start = get_date_from_file(path)
     warning(paste('Date', date_start_malformatted, 'in unexpected format. Assuming 00:00:00 start on', date_start, 'instead.'))
-
+    
     data$Time = seq(
-      from=as.POSIXlt(paste(date_start, '00:00:00'), paste(format_date,format_time), tz='UTC'),
+      from=as.POSIXct(paste(date_start, '00:00:00'), paste(format_date,format_time), tz='UTC'),
       length.out=length(data$Time),
       by='sec'
     )
@@ -154,12 +122,11 @@ load_data_NAVY = function(path) {
   time_start = format(data$Time[1], format=format_time)
   if (time_start != '00:00:00') {
     warning(paste('Measured start time (', time_start, ') is not 00:00:00', sep=''))
-    time_start = '00:00:00'
   }
-
+  
   # Validate time measured (total number of seconds, assuming a 1 second frequency)
   time_measured = length(data$Time)
-
+  
   hr = floor(time_measured / 3600)
   min = floor((time_measured / 60) %% 60)
   sec = time_measured %% 60
@@ -169,7 +136,7 @@ load_data_NAVY = function(path) {
   } else if (time_measured > time_24hr) {
     warning(paste0(msg_time_measured, ' is more than a full day'))
   }
-
+  
   # Force data to 24-hour standardized format
   data = fit_24hr_time_window(data)
   return (data)

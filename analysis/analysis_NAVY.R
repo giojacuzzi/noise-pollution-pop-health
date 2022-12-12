@@ -2,12 +2,12 @@
 #### Results written to `data/metrics/metrics_navy.csv`
 #### Dependencies: NAVY database
 
-source('load_data.R')
-source('functions_metrics.R')
-source('plot.R')
+source('data/load_data_NAVY.R')
+source('analysis/metrics.R')
+source('plot/plot.R')
 
-# Present warnings immediately
-options(warn = 1)
+plot_dnl_results = FALSE # Plot day-night average with each analysis
+options(warn = 1) # Present warnings immediately
 
 # All xlsx spreadsheet files from the NAVY database
 files = list.files(path='~/Desktop/PHI Project Data/NAVY', pattern="*.xlsx", full.names=TRUE, recursive=TRUE)
@@ -72,6 +72,11 @@ for (id in unique(data_xlsx$ID)) { # for every measurement site ID
     Lden_Lday     = round(denl_metrics$Lday, digits=2)
     Lden_Levening = round(denl_metrics$Levening, digits=2)
     Lden_Lnight   = round(denl_metrics$Lnight, digits=2)
+    
+    # OPTIONAL: Plot results
+    if (plot_dnl_results) {
+      dnlplot(dnl_metrics, id, date)
+    }
 
     # NOTE: Leqh is identical for Ldn and Lden
     Leqh = round(t(unname(dnl_metrics$Leqh)), digits=2)

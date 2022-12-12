@@ -58,7 +58,7 @@ l_maxpeak = data.frame(max_Lmax, max_LCpeak)
 ggplot(
   data.frame(dB = c(t(l_maxpeak[,])),
              id = rep(rownames(l_maxpeak),each=2),
-             metric = c('Lmax (A)','Lpeak (C)')),
+             metric = c('Lmax (dBA)','Lpeak (dBC)')),
   aes(fill=metric, y=dB, x=id)) + 
   geom_bar(position='dodge', stat='identity') +
   theme_minimal() + 
