@@ -28,12 +28,12 @@ get_dates_from_file = function(path) {
 # Returns a data frame
 load_data_SDA = function(path) {
   # browser()
-  message(paste('Attempting to load', path, '...'))
+  # message(paste('Attempting to load', path, '...'))
 
   # Read data from .XLS file
   data_failure = TRUE
   tryCatch({
-    data_raw = read.table(file, sep = '', header=T, na.strings='')
+    data_raw = read.table(path, sep = '', header=T, na.strings='')
     data_failure = FALSE
   }, error = function(e) {
     warning(paste('Unable to load data -', e$message, 'in', path))

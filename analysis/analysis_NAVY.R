@@ -13,18 +13,21 @@ options(warn=0) # Present warnings immediately
 # All xlsx spreadsheet files from the NAVY database
 files = list.files(path='~/Desktop/PHI Project Data/NAVY', pattern="*.xlsx", full.names=TRUE, recursive=TRUE)
 
-# Scrape site IDs and measurement dates from files
-data_xlsx = data.frame()
-for (file in files) {
-  id = get_id_from_file(file)
-  name = get_site_name_for_ID(id)
-  date = get_date_from_file(file)
-  r = data.frame(Date=date, Name=name, ID=id, File=file)
-  data_xlsx = rbind(data_xlsx, r)
+# Scrape site IDs and measurement dates from files and save to csv
+create_files_navy_csv = function(files) {
+  data_xlsx = data.frame()
+  for (file in files) {
+    id = get_id_from_file(file)
+    name = get_site_name_for_ID(id)
+    date = get_date_from_file(file)
+    r = data.frame(Date=date, Name=name, ID=id, File=file)
+    data_xlsx = rbind(data_xlsx, r)
+  }
+  write.csv(data_xlsx, file='data/files_navy.csv', row.names=FALSE)
+  return(data_xlsx)
 }
 
-# Save all files data to csv
-write.csv(data_xlsx, file='data/files_navy.csv', row.names=FALSE)
+data_xlsx = create_files_navy_csv(files)
 
 # Populate `metrics_navy` with metrics for every site ID and date
 metrics_navy = data.frame()

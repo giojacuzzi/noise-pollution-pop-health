@@ -12,22 +12,26 @@ options(warn = 0)
 # All xls spreadsheet files from the SDA database
 files = list.files(path='~/Desktop/PHI Project Data/SDA', pattern="*.XLS", full.names=TRUE, recursive=TRUE)
 
-# Scrape site names and measurement dates from files
-data_xls = data.frame()
-for (file in files) {
-  name = get_name_from_path(file)
-  dates = get_dates_from_file(file)
-  for (date in dates) {
-    r = data.frame(Name=name, Date=date, File=file)
-    data_xls = rbind(data_xls, r)
+# Scrape site names, id, and measurement dates from files and save to csv
+create_files_sda_csv = function(files) {
+  data_xls = data.frame()
+  for (file in files) {
+    dates = get_dates_from_file(file)
+    name = get_name_from_path(file)
+    id = get_ID_for_site_name(name)
+    for (date in dates) {
+      r = data.frame(Date=date, Name=name, ID=id, File=file)
+      data_xls = rbind(data_xls, r)
+    }
   }
-}
-if (nrow(data_xls) <= length(files)) {
-  stop('Error - Files span multiple dates, expecting more xls data entries!')
+  if (nrow(data_xls) <= length(files)) {
+    stop('Error - Files span multiple dates, expecting more xls data entries!')
+  }
+  write.csv(data_xls, file='data/files_sda.csv', row.names=FALSE)
+  return(data_xls)
 }
 
-# Save all files data to csv
-write.csv(data_xls, file='data/files_sda.csv', row.names=FALSE)
+data_xls = create_files_sda_csv(files)
 
 # OPTION: Present warnings immediately
 options(warn = 1)
