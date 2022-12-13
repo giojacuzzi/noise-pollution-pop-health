@@ -96,6 +96,7 @@ LeqHourly = function(Levels, Times, start='00:00:00', end='23:59:59', extrapolat
 
 # Day-night sound level, also known as DNL (ISO 1996). Returns a list including Ldn as well as intermediate calculations (Lday, Lnight, Leqh). Default level adjustment is night +10dB. United States FAA uses day values of [7am,10pm), night values of [10pm,7am)
 LdnFromLevels = function(Levels, Times) {
+  # browser()
   Leqh_night_am = LeqHourly(Levels, Times, '00:00:00', '06:59:59')
   Leqh_day      = LeqHourly(Levels, Times, '07:00:00', '21:59:59')
   Leqh_night_pm = LeqHourly(Levels, Times, '22:00:00', '23:59:59')

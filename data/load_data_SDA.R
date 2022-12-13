@@ -55,11 +55,11 @@ load_data_SDA = function(path) {
   data = data_raw[, c('Time', 'Value')]
   data = na.omit(data)
   
-  # Validate date start
-  date_start = format(data$Time[1], format=format_date)
-  if (any(date_start != format(data$Time, format=format_date))) {
-    warning(paste('Measured dates extend beyond start date', date_start))
-  }
+  # # Validate date start
+  # date_start = format(data$Time[1], format=format_date)
+  # if (any(date_start != format(data$Time, format=format_date))) {
+  #   warning(paste('Measured dates extend beyond start date', date_start))
+  # }
 
   # # Validate time start
   # time_start = format(data$Time[1], format=format_time)

@@ -78,7 +78,7 @@ get_date_from_file = function(file) {
 
 # Takes an absolute path to a NAVY .xlsx file, returns a data frame
 load_data_NAVY = function(path) {
-  message(paste('Attempting to load', path, '...'))
+  # message(paste('Attempting to load', path, '...'))
   
   # Read `Time History` measurements page
   data_failure = TRUE
@@ -139,5 +139,5 @@ load_data_NAVY = function(path) {
   
   # Force data to 24-hour standardized format
   data = fit_24hr_time_window(data)
-  return (data)
+  return (list(data))
 }
