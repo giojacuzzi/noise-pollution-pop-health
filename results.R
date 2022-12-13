@@ -1,3 +1,5 @@
+### Plot and map results
+
 source('global.R')
 library('ggplot2')
 library('viridis')
@@ -8,9 +10,8 @@ data_metrics_navy = cbind(Org='NAVY', data_metrics_navy)
 data_metrics_sda = read.csv('data/metrics/metrics_sda.csv')
 data_metrics_sda = cbind(Org='SDA', data_metrics_sda)
 data_metrics = rbind(data_metrics_navy, data_metrics_sda)
-# data_metrics = na.omit(data_metrics_raw)
 
-# Organization map
+# Organization map -------------------------------------------------------------
 mapviewOptions(legend.pos='bottomright')
 mapview(
   data_sites,
@@ -33,7 +34,7 @@ max_day     = tapply(data_metrics[!is.na(data_metrics$Lden_Lday),'Lden_Lday'], d
 max_evening = tapply(data_metrics[!is.na(data_metrics$Lden_Levening),'Lden_Levening'], data_metrics[!is.na(data_metrics$Lden_Levening),'ID'], max)
 max_night   = tapply(data_metrics[!is.na(data_metrics$Lden_Lnight),'Lden_Lnight'], data_metrics[!is.na(data_metrics$Lden_Lnight),'ID'], max)
 
-# Ldn mean map
+# Ldn mean map -----------------------------------------------------------------
 mapview(
   merge(data_sites, data.frame(dB=c(t(mean_dnl)), ID=rownames(mean_dnl)), all=TRUE),
   xcol='Longitude', ycol='Latitude', zcol='dB',
@@ -41,7 +42,8 @@ mapview(
   layer.name = 'Mean Ldn (dBA)'
 )
 
-# Ldn max map
+
+# Ldn max map ------------------------------------------------------------------
 mapview(
   merge(data_sites, data.frame(dB=c(t(max_dnl)), ID=rownames(max_dnl)), all=TRUE),
   xcol='Longitude', ycol='Latitude', zcol='dB',
@@ -49,7 +51,7 @@ mapview(
   layer.name = 'Max Ldn (dBA)'
 )
 
-# Day-night average grouped barplot
+# Day-night average grouped barplot --------------------------------------------
 dnl_denl = data.frame(mean_dnl, mean_denl, max_dnl, max_denl)
 ggplot(
   data.frame(dB = c(t(dnl_denl[,])),
@@ -57,7 +59,7 @@ ggplot(
              metric = c('Mean Ldn','Mean Lden','Max Ldn','Max Lden')),
   aes(fill=metric, y=dB, x=id)) + 
   geom_bar(position='dodge', stat='identity') +
-  geom_hline(yintercept = 85) + # OSHA
+  geom_hline(yintercept=85, linetype='dotted', col='red') + # OSHA 8-hour exposure
   theme_minimal() + 
   labs(x='Site', y='dB', title='Day-night average means and maximums') +
   scale_fill_manual('', values=viridis(4))
@@ -82,3 +84,47 @@ ggplot(
 # Dates by Ldn -----------------------------------------------------------------
 dates_by_ldn = data_metrics[with(data_metrics,order(-Ldn)),]
 dates_by_ldn[1:20]
+
+# Health Impacts ---------------------------------------------------------------
+
+# The percent predicted to be highly annoyed in relation to exposure to aircraft traffic noise. Based on the WHO regression equation %HA = −50.9693 + 1.0168 × Lden + 0.0072 × Lden^2 derived from the systematic review (Guski et al., 2017).
+# TODO: should be only defined for Lden [40, 75]
+regression_HA = function(Lden) {
+  return(-50.9693 + 1.0168 * Lden + 0.0072 * Lden^2)
+}
+
+# Plot HA (highly annoyed)
+mean_lden_HA = data.frame(Lden=sort(mean_denl), HA=regression_HA(sort(mean_denl)))
+max_lden_HA = data.frame(Lden=sort(max_denl), HA=regression_HA(sort(max_denl)))
+# Mean
+ggplot(mean_lden_HA, aes(x=Lden, y=HA, label=rownames(mean_lden_HA))) +
+  labs(x='Lden (dB)', y='%HA', title='Percent Highly Annoyed (Mean)') +
+  geom_point(col='blue') + geom_text(hjust=0, vjust=1.5, col='blue') +
+  stat_function(fun=regression_HA)
+# Max
+ggplot(max_lden_HA, aes(x=Lden, y=HA, label=rownames(max_lden_HA))) +
+  labs(x='Lden (dB)', y='%HA', title='Percent Highly Annoyed (Max)') +
+  geom_point(col='red') + geom_text(hjust=0, vjust=1.5, col='red') +
+  geom_hline(yintercept=100, linetype='dashed') + # 100% HA
+  stat_function(fun=regression_HA)
+
+# The percent predicted to be highly sleep-disturbed in relation to exposure to aircraft traffic noise. Based on the WHO regression model in the systematic review specified as %HSD = 16.79–0.9293 × Lnight + 0.0198 × Lnight^2
+# TODO: account for confidence intervals
+regression_HSA = function(Lnight) {
+  return(-50.9693 + 1.0168 * Lnight + 0.0072 * Lnight^2)
+}
+
+# Plot HSA (highly sleep-disturbed)
+mean_lden_lnight_HSA = data.frame(Lden=sort(mean_night), HA=regression_HSA(sort(mean_night)))
+max_lden_lnight_HSA = data.frame(Lden=sort(max_night), HA=regression_HSA(sort(max_night)))
+# Mean
+ggplot(mean_lden_lnight_HSA, aes(x=Lden, y=HA, label=rownames(mean_lden_lnight_HSA))) +
+  labs(x='Lnight (dB)', y='%HSA', title='Percent Highly Sleep Disturbed (Mean)') +
+  geom_point(col='blue') + geom_text(hjust=0, vjust=1.5, col='blue') +
+  stat_function(fun=regression_HA)
+# Max
+ggplot(max_lden_lnight_HSA, aes(x=Lden, y=HA, label=rownames(max_lden_lnight_HSA))) +
+  labs(x='Lnight (dB)', y='%HSA', title='Percent Highly Sleep Disturbed (Max)') +
+  geom_point(col='red') + geom_text(hjust=0, vjust=1.5, col='red') +
+  geom_hline(yintercept=100, linetype='dashed') + # 100% HSA
+  stat_function(fun=regression_HA)
