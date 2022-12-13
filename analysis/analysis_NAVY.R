@@ -2,12 +2,13 @@
 #### Results written to `data/metrics/metrics_navy.csv`
 #### Dependencies: NAVY database
 
+source('global.R')
 source('data/load_data_NAVY.R')
 source('analysis/metrics.R')
 source('plot/plot.R')
 
 plot_dnl_results = FALSE # Plot day-night average with each analysis
-options(warn = 1) # Present warnings immediately
+options(warn=0) # Present warnings immediately
 
 # All xlsx spreadsheet files from the NAVY database
 files = list.files(path='~/Desktop/PHI Project Data/NAVY', pattern="*.xlsx", full.names=TRUE, recursive=TRUE)
@@ -16,8 +17,9 @@ files = list.files(path='~/Desktop/PHI Project Data/NAVY', pattern="*.xlsx", ful
 data_xlsx = data.frame()
 for (file in files) {
   id = get_id_from_file(file)
+  name = get_site_name_for_ID(id)
   date = get_date_from_file(file)
-  r = data.frame(ID=id, Date=date, File=file)
+  r = data.frame(Date=date, Name=name, ID=id, File=file)
   data_xlsx = rbind(data_xlsx, r)
 }
 
@@ -28,6 +30,7 @@ write.csv(data_xlsx, file='data/files_navy.csv', row.names=FALSE)
 metrics_navy = data.frame()
 
 for (id in unique(data_xlsx$ID)) { # for every measurement site ID
+  name = get_site_name_for_ID(id)
   for (date in unique(data_xlsx$Date)) { # for every date at that site
 
     data_date = data.frame()
@@ -55,9 +58,9 @@ for (id in unique(data_xlsx$ID)) { # for every measurement site ID
     # If unable to load data for a date, create a representative dataframe of NAs
     if (nrow(data_date) == 0) {
       warning(paste('Unable to load data from file(s) for date', date,'-',files))
-      data_date = data.frame(matrix(nrow=time_24hr,ncol=length(selected_columns)))
+      data_date = data.frame(matrix(nrow=time_24hr,ncol=length(selected_columns_NAVY)))
       data_date[1] = get_24hr_time_window(date)
-      colnames(data_date) = selected_columns
+      colnames(data_date) = selected_columns_NAVY
     }
     
     data_date = fit_24hr_time_window(data_date) # NOTE: missing seconds will produce NAs
@@ -109,6 +112,7 @@ for (id in unique(data_xlsx$ID)) { # for every measurement site ID
     metrics = data.frame(
       # Metadata
       Date = date,
+      Name = name,
       ID   = id,
       # Ldn
       Ldn,  Ldn_Lday,  Ldn_Lnight,

@@ -4,6 +4,18 @@ format_date = '%Y-%m-%d'
 format_time = '%H:%M:%S'
 time_24hr = 24 * 60 * 60 # total number of seconds in a day
 
+data_sites = read.csv('data/sites.csv')
+# NOTE: unofficial data_sites IDs produced via:
+# `abbreviate(gsub(',','',data_sites[is.na(data_sites$ID),'Name']), named=F)`
+
+get_site_name_for_ID = function(id) {
+  return(na.omit(data_sites[data_sites$ID==id,])$Name)
+}
+
+get_ID_for_site_name = function(name) {
+  return(unique(na.omit(data_sites[data_sites$Name==name,])$ID))
+}
+
 # Returns a data frame containing a single column, `Time`, with a row of POSIXct values for every second of the given date
 get_24hr_time_window = function(date_start) {
   return(data.frame(Time=seq(

@@ -12,9 +12,6 @@ options(warn = 0)
 # All xls spreadsheet files from the SDA database
 files = list.files(path='~/Desktop/PHI Project Data/SDA', pattern="*.XLS", full.names=TRUE, recursive=TRUE)
 
-# DEBUG
-# files = '/Users/giojacuzzi/Desktop/PHI Project Data/SDA/Whidbey Island Comm Noise_Data/SLM Data/Race Road/499665_06JULY-26JULY/SLA01058.XLS'
-
 # Scrape site names and measurement dates from files
 data_xls = data.frame()
 for (file in files) {
@@ -74,12 +71,6 @@ for (name in unique(data_xls$Name)) { # for every measurement site name
 
     data_date = fit_24hr_time_window(data_date) # NOTE: missing seconds will produce NAs
     if (nrow(data_date) != time_24hr) stop(paste('Error merging measurement file(s) for date', date,'-',files))
-    
-    message(paste(date, 'load successful - calculating metrics...'))
-    
-    if (date == '2020-07-11') {
-      message('here we go...')
-    }
 
     # Calculate the day-night-average metrics from all data measured on that date
     dnl_metrics = LdnFromLevels(data_date$Value, data_date$Time)
@@ -112,6 +103,7 @@ for (name in unique(data_xls$Name)) { # for every measurement site name
     Leq    = round(LeqTotal(data_date$Value), digits=2) # Leq total (24hr)
     SEL    = ifelse(length(data_date$Value) > 0, round(SelFromLevels(data_date$Value), digits=2), NA)
     Lmax   = ifelse(length(data_date$Value) > 0, max(data_date$Value), NA)
+    LCpeak = NA # NOTE: no C-weighted measurements from SDA data
     L10    = LxFromLevels(data_date$Value, 10)
     L25    = LxFromLevels(data_date$Value, 25)
     L50    = LxFromLevels(data_date$Value, 50)
@@ -121,6 +113,7 @@ for (name in unique(data_xls$Name)) { # for every measurement site name
       # Metadata
       Date = date,
       Name = name,
+      ID   = get_ID_for_site_name(name), # NOTE: No provided ID for SDA sites
       # Ldn
       Ldn,  Ldn_Lday,  Ldn_Lnight,
       # Lden
@@ -131,7 +124,7 @@ for (name in unique(data_xls$Name)) { # for every measurement site name
       Leq16, Leq17, Leq18, Leq19, Leq20, Leq21, Leq22, Leq23,
       # Summary (24hr)
       Leq, SEL,
-      Lmax,
+      Lmax, LCpeak,
       L10, L25, L50, L90
     )
 
