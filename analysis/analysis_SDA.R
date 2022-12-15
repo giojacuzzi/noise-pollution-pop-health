@@ -7,19 +7,21 @@ source('analysis/metrics.R')
 source('plot/plot.R')
 
 # OPTION: Present warnings immediately
-options(warn = 0)
+options(warn = 1)
 
 # All xls spreadsheet files from the SDA database
 files = list.files(path='~/Desktop/PHI Project Data/SDA', pattern="*.XLS", full.names=TRUE, recursive=TRUE)
 
 # Scrape site names, id, and measurement dates from files and save to csv
 create_files_sda_csv = function(files) {
+  message('Creating data/files_sda.csv...')
   data_xls = data.frame()
   for (file in files) {
     dates = get_dates_from_file(file)
     name = get_name_from_path(file)
     id = get_ID_for_site_name(name)
     for (date in dates) {
+      # message(paste(id, basename(file), 'contains', date))
       r = data.frame(Date=date, Name=name, ID=id, File=file)
       data_xls = rbind(data_xls, r)
     }

@@ -43,7 +43,7 @@ load_data_SDA = function(path) {
   }
   
   # Clean raw data (remove any labels and metadata)
-  metadata_rows = which(is.na(as.numeric(data_raw$Value)))
+  metadata_rows = which(data_raw$Place == 'Place')
   if (length(metadata_rows) > 0) data_raw = data_raw[-metadata_rows,] 
   
   # Standardize time, date, and value format

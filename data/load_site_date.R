@@ -17,10 +17,10 @@ load_site_date = function(id, date) {
   files_for_date = entries_for_date$File
   org = unique(entries_for_date$Org)
   if (length(files_for_date) == 0) {
-    error(paste('Could note find site date', id, date))
+    stop(paste('Could not find site date', id, date))
   }
   
-  message(paste0('Loading site date ', id, ' ', date, ' (', length(files_for_date), ' files)...'))
+  message(paste0('Loading ', id, ' ', date, ' (', length(files_for_date), ' files)...'))
   
   data_date = data.frame()
   total_measurements = 0
@@ -33,7 +33,7 @@ load_site_date = function(id, date) {
     } else if (org == 'SDA') {
       data_file = load_data_SDA(file)
     } else {
-      error('Unsupported org data!')
+      stop('Unsupported org data!')
     }
     if (is.null(data_file)) {
       warning(paste('Unable to load', file, '- skipping...'))
@@ -55,32 +55,32 @@ load_site_date = function(id, date) {
 
   # If unable to load data for a date, create a representative dataframe of NAs
   if (nrow(data_date) == 0) {
-    warning(paste('Unable to load data for date', date,'from files -',files))
+    warning(paste('Unable to load data for date', date,'from files -', files_for_date))
     data_date = data.frame(matrix(nrow=time_24hr,ncol=2))
     data_date[1] = get_24hr_time_window(date)
     colnames(data_date) = c('Time','Value')
   }
   
   if (total_measurements != nrow(na.omit(data_date))) {
-    error(paste('Error merging measurements for date', date,'from files -',files))
+    stop(paste('Error merging measurements for date', date,'from files -', files_for_date))
   }
   
   data_date = fit_24hr_time_window(data_date) # NOTE: missing seconds will produce NAs
   if (nrow(data_date) != time_24hr) stop(paste('Error fitting data to 24-hr window for date', date))
-  
+
   return(data_date)
 }
 
-# SDA test
-id = 'KntP'
-date = '2020-07-07'
-site_date_data = load_site_date(id, date)
-site_date_dnl_metrics = LdnFromLevels(site_date_data$Value, site_date_data$Time)
-dnlplot(site_date_dnl_metrics, id, date)
-
-# NAVY test
-id = '24A_B'
-date = '2021-06-08'
-site_date_data = load_site_date(id, date)
-site_date_dnl_metrics = LdnFromLevels(site_date_data$LAeq, site_date_data$Time)
-dnlplot(site_date_dnl_metrics, id, date)
+# # SDA test
+# id = 'KntP'
+# date = '2020-07-07'
+# site_date_data = load_site_date(id, date)
+# site_date_dnl_metrics = LdnFromLevels(site_date_data$Value, site_date_data$Time)
+# dnlplot(site_date_dnl_metrics, id, date)
+# 
+# # NAVY test
+# id = '24A_B'
+# date = '2021-06-08'
+# site_date_data = load_site_date(id, date)
+# site_date_dnl_metrics = LdnFromLevels(site_date_data$LAeq, site_date_data$Time)
+# dnlplot(site_date_dnl_metrics, id, date)
