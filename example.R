@@ -1,9 +1,9 @@
 #### NAVY noise monitoring data metric evaluation and plotting
 #### Dependencies: NAVY excel spreadsheet
 
-source('load_data.R')
-source('functions_metrics.R')
-source('plot.R')
+source('data/load_file_navy.R')
+source('analysis/metrics.R')
+source('plot/plot.R')
 
 # Data reading -----------------------------------------------------------------
 
@@ -20,8 +20,9 @@ path = '~/Desktop/PHI Project Data/NAVY/NASWI_Site_9B_SG/NASWI - Site 9B_SG - MP
 # More than 24 hours of measurements
 # path = '~/Desktop/NAVY Data/NASWI_Site_8B_SG/NASWI - Site 8B_SG - MP4/831C_11130-20210811 000000-21081100.LD0.xlsx'
 
-data = load_data_NAVY(path)
+data = load_file_navy(path)
 if (is.null(data)) stop()
+data = data[[1]]
 print('loaded the data!')
 
 # Metric Evaluation ------------------------------------------------------------

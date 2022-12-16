@@ -1,19 +1,13 @@
 source('global.R')
-source('plot/plot.R')
-source('data/load_data_SDA.R')
-source('data/load_data_NAVY.R')
-source('analysis/metrics.R')
-
-data_files_navy = read.csv('data/files_navy.csv')
-data_files_navy = cbind(Org='NAVY', data_files_navy)
-data_files_sda = read.csv('data/files_sda.csv')
-data_files_sda = cbind(Org='SDA', data_files_sda)
-data_files = rbind(data_files_navy, data_files_sda)
+source('data/load_file_sda.R')
+source('data/load_file_navy.R')
 
 # Load data for given site ID at given date
 load_site_date = function(id, date) {
   
-  entries_for_date = data_files[data_files$ID==id & data_files$Date==date,]
+  file_map = get_file_map()
+  
+  entries_for_date = file_map[file_map$ID==id & file_map$Date==date,]
   files_for_date = entries_for_date$File
   org = unique(entries_for_date$Org)
   if (length(files_for_date) == 0) {
@@ -29,9 +23,9 @@ load_site_date = function(id, date) {
 
     # Load the file data
     if (org == 'NAVY') {
-      data_file = load_data_NAVY(file)
+      data_file = load_file_navy(file)
     } else if (org == 'SDA') {
-      data_file = load_data_SDA(file)
+      data_file = load_file_sda(file)
     } else {
       stop('Unsupported org data!')
     }

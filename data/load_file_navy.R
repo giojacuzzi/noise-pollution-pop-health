@@ -59,13 +59,13 @@ selected_columns_NAVY = c(
   '1/3 LZeq 20000'
 )
 
-get_id_from_file = function(file) {
+get_id_from_file_navy = function(file) {
   id = substring(file, gregexpr("NASWI_Site_", file)[[1]][1])
   id = substring(id, 12, gregexpr("/", id)[[1]][1] - 1)
   return(id)
 }
 
-get_date_from_file = function(file) {
+get_date_from_file_navy = function(file) {
   date_start = substring(file, gregexpr('831C_', file)[[1]][1])
   date_start = substring(date_start, gregexpr('-', date_start)[[1]][1]+1)
   date_start = strsplit(date_start, ' ')[[1]][1]
@@ -76,10 +76,33 @@ get_date_from_file = function(file) {
   return(date_start)
 }
 
-# Takes an absolute path to a NAVY .xlsx file, returns a data frame
-load_data_NAVY = function(path) {
-  # message(paste('Attempting to load', path, '...'))
-  
+options(warn=0) # Present warnings immediately
+
+# Scrape site IDs and measurement dates from files and save to csv
+map_files_navy_csv = function() {
+  # All xlsx spreadsheet files from the NAVY database
+  message('Mapping files to navy site dates...')
+  files = list.files(path='~/Desktop/PHI Project Data/NAVY', pattern="*.xlsx", full.names=TRUE, recursive=TRUE)
+  data_xlsx = data.frame()
+  for (file in files) {
+    message(paste0('Mapping file',file,'...'))
+    id = get_id_from_file_navy(file)
+    name = get_site_name_for_ID(id)
+    date = get_date_from_file_navy(file)
+    r = data.frame(Date=date, Name=name, ID=id, File=file)
+    data_xlsx = rbind(data_xlsx, r)
+  }
+  data_xlsx = cbind(Org='NAVY', data_xlsx)
+  write.csv(data_xlsx, file='data/file_map_navy.csv', row.names=FALSE)
+  return(data_xlsx)
+}
+
+get_file_map_navy = function() {
+  return(read.csv('data/file_map_navy.csv'))
+}
+
+# Takes an absolute path to a NAVY .xlsx file, returns a list containing a data frame
+load_file_navy = function(path) {
   # Read `Time History` measurements page
   data_failure = TRUE
   tryCatch({
@@ -107,7 +130,7 @@ load_data_NAVY = function(path) {
   if (is.na(as.Date(as.character(data$Time[1]), tz = 'UTC', format = format_date))) {
     # Scrape date from filename
     date_start_malformatted = date_start
-    date_start = get_date_from_file(path)
+    date_start = get_date_from_file_navy(path)
     warning(paste('Date', date_start_malformatted, 'in unexpected format. Assuming 00:00:00 start on', date_start, 'instead.'))
     
     data$Time = seq(
@@ -119,24 +142,24 @@ load_data_NAVY = function(path) {
     warning(paste('Measured dates extend beyond start date', date_start))
   }
   
-  # Validate time start
-  time_start = format(data$Time[1], format=format_time)
-  if (time_start != '00:00:00') {
-    warning(paste('Measured start time (', time_start, ') is not 00:00:00', sep=''))
-  }
-  
-  # Validate time measured (total number of seconds, assuming a 1 second frequency)
-  time_measured = length(data$Time)
-  
-  hr = floor(time_measured / 3600)
-  min = floor((time_measured / 60) %% 60)
-  sec = time_measured %% 60
-  msg_time_measured = paste0('Total time measured (',hr,' hr ',min,' min ',sec,' sec)')
-  if (time_measured < time_24hr) {
-    warning(paste0(msg_time_measured, ' is less than a full day'))
-  } else if (time_measured > time_24hr) {
-    warning(paste0(msg_time_measured, ' is more than a full day'))
-  }
+  # # Validate time start
+  # time_start = format(data$Time[1], format=format_time)
+  # if (time_start != '00:00:00') {
+  #   warning(paste('Measured start time (', time_start, ') is not 00:00:00', sep=''))
+  # }
+  # 
+  # # Validate time measured (total number of seconds, assuming a 1 second frequency)
+  # time_measured = length(data$Time)
+  # 
+  # hr = floor(time_measured / 3600)
+  # min = floor((time_measured / 60) %% 60)
+  # sec = time_measured %% 60
+  # msg_time_measured = paste0('Total time measured (',hr,' hr ',min,' min ',sec,' sec)')
+  # if (time_measured < time_24hr) {
+  #   warning(paste0(msg_time_measured, ' is less than a full day'))
+  # } else if (time_measured > time_24hr) {
+  #   warning(paste0(msg_time_measured, ' is more than a full day'))
+  # }
   
   # Force data to 24-hour standardized format
   data = fit_24hr_time_window(data)

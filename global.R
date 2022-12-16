@@ -8,6 +8,20 @@ data_sites = read.csv('data/sites.csv')
 # NOTE: unofficial data_sites IDs produced via:
 # `abbreviate(gsub(',','',data_sites[is.na(data_sites$ID),'Name']), named=F)`
 
+get_file_map = function() {
+  if (!exists('file_map')) {
+    return(rbind(read.csv('data/file_map_navy.csv'), read.csv('data/file_map_sda.csv')))
+  }
+  return(file_map)
+}
+
+get_data_metrics = function() {
+  if (!exists('data_metrics')) {
+    return(read.csv('data/metrics/metrics.csv'))
+  }
+  return(data_metrics)
+}
+
 get_site_name_for_ID = function(id) {
   return(na.omit(data_sites[data_sites$ID==id,])$Name)
 }

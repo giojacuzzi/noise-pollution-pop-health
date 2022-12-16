@@ -5,11 +5,7 @@ library('ggplot2')
 library('viridis')
 library('mapview')
 
-data_metrics_navy = read.csv('data/metrics/metrics_navy.csv')
-data_metrics_navy = cbind(Org='NAVY', data_metrics_navy)
-data_metrics_sda = read.csv('data/metrics/metrics_sda.csv')
-data_metrics_sda = cbind(Org='SDA', data_metrics_sda)
-data_metrics = rbind(data_metrics_navy, data_metrics_sda)
+data_metrics = get_data_metrics()
 
 # Organization map -------------------------------------------------------------
 mapviewOptions(legend.pos='bottomright')
