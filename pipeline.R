@@ -5,6 +5,8 @@ source('data/load_file_navy.R')
 file_map_navy = map_files_navy_csv() # produces `data/files_navy.csv`
 source('data/load_file_sda.R')
 file_map_sda = map_files_sda_csv()  # produces `data/files_sda.csv`
+source('data/load_file_nps.R')
+file_map_nps = map_files_nps_csv()  # produces `data/files_sda.csv`
 
 file_map = get_file_map() # requires both .csv files
 

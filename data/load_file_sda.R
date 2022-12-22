@@ -63,11 +63,12 @@ load_file_sda = function(file) {
     data_raw = read.table(file, sep = '', header=T, na.strings='')
     data_failure = FALSE
   }, error = function(e) {
-    warning(paste('Unable to load data -', e$message, 'in', path))
+    warning(paste('Unable to load data -', e$message, 'in', file))
   })
   if (data_failure) {
     return()
   }
+  message(paste('Loading file', basename(file)))
   
   # Clean raw data (remove any labels and metadata)
   metadata_rows = which(data_raw$Place == 'Place')

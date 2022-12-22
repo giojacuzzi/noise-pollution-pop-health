@@ -81,6 +81,25 @@ ggplot(
 dates_by_ldn = data_metrics[with(data_metrics,order(-Ldn)),]
 dates_by_ldn[1:20]
 
+# Plot date site ldn -----------------------------------------------------------
+
+# Plot date site hour spl ------------------------------------------------------
+
+source('data/load_site_date.R')
+create_splplot = function(id, date, hour) {
+  site_date_data = load_site_date(id, date)
+  start = (hour*60*60) + 1
+  end = (start + 60*60/2) - 1
+  ggplot(site_date_data[start:end,], aes(x=Time, y=Value)) +
+    geom_line() +
+    ggtitle(paste(id, date, 'hour', hour))
+}
+
+hour = 0
+id = 'KntP'
+date = '2020-07-08'
+create_splplot(id, date, hour)
+
 # Health Impacts ---------------------------------------------------------------
 
 # The percent predicted to be highly annoyed in relation to exposure to aircraft traffic noise. Based on the WHO regression equation %HA = −50.9693 + 1.0168 × Lden + 0.0072 × Lden^2 derived from the systematic review (Guski et al., 2017).

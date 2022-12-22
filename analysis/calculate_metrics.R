@@ -2,16 +2,23 @@ source('analysis/metrics.R')
 source('data/load_site_date.R')
 
 get_levels_for_org = function(data, org) {
+  org = toupper(org)
   return(switch(org,
                 'NAVY'=data$LAeq,
                 'SDA'=data$Value,
+                'NPS'=data$dbA,
                 NULL))
 }
 
-# Calculate metrics for every site ID and date, store in a data frame, and save as `data/metrics/metrics.csv`
-calculate_metrics_csv = function() {
+# Calculate metrics for every site ID and date from an org database (or all, if none is specified), store in a data frame, and save as `data/metrics/metrics.csv`
+calculate_metrics_csv = function(orgarg = '') {
 
+  options(warn = 1)
   file_map = get_file_map()
+  if (orgarg != '') {
+    orgarg = toupper(orgarg)
+    file_map = file_map[file_map$Org==orgarg,]
+  }
 
   metrics = data.frame()
   num_processed = 0
@@ -106,6 +113,12 @@ calculate_metrics_csv = function() {
   }
   
   # Save all metrics data to csv
-  write.csv(metrics, file='data/metrics/metrics.csv', row.names=FALSE)
+  file_name = 'data/metrics/'
+  if (orgarg == '') {
+    file_name = paste0(file_name, 'metrics.csv')
+  } else {
+    file_name = paste0(file_name, 'metrics_', orgarg, '.csv')
+  }
+  write.csv(metrics, file=file_name, row.names=FALSE)
   return(metrics)
 }

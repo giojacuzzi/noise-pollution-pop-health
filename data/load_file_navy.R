@@ -2,6 +2,46 @@
 source('global.R')
 library(readxl)
 
+get_id_from_file_navy = function(file) {
+  id = substring(file, gregexpr("NASWI_Site_", file)[[1]][1])
+  id = substring(id, 12, gregexpr("/", id)[[1]][1] - 1)
+  return(id)
+}
+
+get_date_from_file_navy = function(file) {
+  date_start = substring(file, gregexpr('831C_', file)[[1]][1])
+  date_start = substring(date_start, gregexpr('-', date_start)[[1]][1]+1)
+  date_start = strsplit(date_start, ' ')[[1]][1]
+  year = substring(date_start, 1, 4)
+  month = substring(date_start, 5, 6)
+  day = substring(date_start, 7, 8)
+  date_start = paste(c(year,'-',month,'-',day), collapse='')
+  return(date_start)
+}
+
+# Scrape site IDs and measurement dates from files and save to csv
+map_files_navy_csv = function() {
+  # All xlsx spreadsheet files from the NAVY database
+  message('Mapping files to navy site dates...')
+  files = list.files(path='~/Desktop/PHI Project Data/NAVY', pattern="*.xlsx", full.names=TRUE, recursive=TRUE)
+  data_xlsx = data.frame()
+  for (file in files) {
+    message(paste0('Mapping file',file,'...'))
+    id = get_id_from_file_navy(file)
+    name = get_site_name_for_ID(id)
+    date = get_date_from_file_navy(file)
+    r = data.frame(Date=date, Name=name, ID=id, File=file)
+    data_xlsx = rbind(data_xlsx, r)
+  }
+  data_xlsx = cbind(Org='NAVY', data_xlsx)
+  write.csv(data_xlsx, file='data/file_map_navy.csv', row.names=FALSE)
+  return(data_xlsx)
+}
+
+get_file_map_navy = function() {
+  return(read.csv('data/file_map_navy.csv'))
+}
+
 # Columns to subset from the raw data
 selected_columns_NAVY = c(
   'Time',
@@ -59,48 +99,6 @@ selected_columns_NAVY = c(
   '1/3 LZeq 20000'
 )
 
-get_id_from_file_navy = function(file) {
-  id = substring(file, gregexpr("NASWI_Site_", file)[[1]][1])
-  id = substring(id, 12, gregexpr("/", id)[[1]][1] - 1)
-  return(id)
-}
-
-get_date_from_file_navy = function(file) {
-  date_start = substring(file, gregexpr('831C_', file)[[1]][1])
-  date_start = substring(date_start, gregexpr('-', date_start)[[1]][1]+1)
-  date_start = strsplit(date_start, ' ')[[1]][1]
-  year = substring(date_start, 1, 4)
-  month = substring(date_start, 5, 6)
-  day = substring(date_start, 7, 8)
-  date_start = paste(c(year,'-',month,'-',day), collapse='')
-  return(date_start)
-}
-
-options(warn=0) # Present warnings immediately
-
-# Scrape site IDs and measurement dates from files and save to csv
-map_files_navy_csv = function() {
-  # All xlsx spreadsheet files from the NAVY database
-  message('Mapping files to navy site dates...')
-  files = list.files(path='~/Desktop/PHI Project Data/NAVY', pattern="*.xlsx", full.names=TRUE, recursive=TRUE)
-  data_xlsx = data.frame()
-  for (file in files) {
-    message(paste0('Mapping file',file,'...'))
-    id = get_id_from_file_navy(file)
-    name = get_site_name_for_ID(id)
-    date = get_date_from_file_navy(file)
-    r = data.frame(Date=date, Name=name, ID=id, File=file)
-    data_xlsx = rbind(data_xlsx, r)
-  }
-  data_xlsx = cbind(Org='NAVY', data_xlsx)
-  write.csv(data_xlsx, file='data/file_map_navy.csv', row.names=FALSE)
-  return(data_xlsx)
-}
-
-get_file_map_navy = function() {
-  return(read.csv('data/file_map_navy.csv'))
-}
-
 # Takes an absolute path to a NAVY .xlsx file, returns a list containing a data frame
 load_file_navy = function(path) {
   # Read `Time History` measurements page
@@ -115,6 +113,7 @@ load_file_navy = function(path) {
     # TODO: If NAVY, scrape any pre-calculated metrics from the 'Summary' sheet
     return()
   }
+  message(paste('Loading file', basename(path)))
   
   # Clean raw data (remove any 'Run/Pause/Stop' metadata)
   measurement_rows = which(is.na(data_raw$`Record Type`))

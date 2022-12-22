@@ -4,20 +4,29 @@ format_date = '%Y-%m-%d'
 format_time = '%H:%M:%S'
 time_24hr = 24 * 60 * 60 # total number of seconds in a day
 
-data_sites = read.csv('data/sites.csv')
 # NOTE: unofficial data_sites IDs produced via:
 # `abbreviate(gsub(',','',data_sites[is.na(data_sites$ID),'Name']), named=F)`
+get_data_sites = function() {
+  if (!exists('data_sites')) {
+    return(read.csv('data/sites.csv'))
+  }
+  return(data_sites)
+}
 
 get_file_map = function() {
   if (!exists('file_map')) {
-    return(rbind(read.csv('data/file_map_navy.csv'), read.csv('data/file_map_sda.csv')))
+    return(rbind(read.csv('data/file_map_navy.csv'),
+                 read.csv('data/file_map_sda.csv'),
+                 read.csv('data/file_map_nps.csv')))
   }
   return(file_map)
 }
 
 get_data_metrics = function() {
   if (!exists('data_metrics')) {
-    return(read.csv('data/metrics/metrics.csv'))
+    return(rbind(read.csv('data/metrics/metrics_NAVY.csv'),
+                 read.csv('data/metrics/metrics_NPS.csv'),
+                 read.csv('data/metrics/metrics_SDA.csv')))
   }
   return(data_metrics)
 }
