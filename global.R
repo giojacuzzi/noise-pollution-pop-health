@@ -32,10 +32,12 @@ get_data_metrics = function() {
 }
 
 get_site_name_for_ID = function(id) {
+  data_sites = get_data_sites()
   return(na.omit(data_sites[data_sites$ID==id,])$Name)
 }
 
 get_ID_for_site_name = function(name) {
+  data_sites = get_data_sites()
   return(unique(na.omit(data_sites[data_sites$Name==name,])$ID))
 }
 
