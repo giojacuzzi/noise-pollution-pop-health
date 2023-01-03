@@ -7,8 +7,8 @@ library('mapview')
 
 data_metrics = get_data_metrics()
 
-# NOTE: Some SDA measurements were recorded with overloaded gains (i.e. distortion) that result in erroneously high values during flybys. Here, we remove site dates with measurements exceeding 100 dB (50 site dates total), which is about 36% of the SDA data.
-data_metrics = data_metrics[-which(data_metrics$Org == 'SDA' & data_metrics$Lmax > 100.0),]
+# NOTE: Some SDA measurements were recorded with overloaded gains (i.e. distortion) that result in erroneously high values during flybys. Here, we remove site dates with measurements exceeding 110 dB.
+data_metrics = data_metrics[-which(data_metrics$Org == 'SDA' & data_metrics$Lmax > 110.0),]
 
 # Organization map -------------------------------------------------------------
 mapviewOptions(legend.pos='bottomright')
@@ -20,88 +20,68 @@ mapview(
   layer.name = 'Organization'
 )
 
-# Day-night average means and maximums -----------------------------------------
-mean_dnl     = tapply(data_metrics[!is.na(data_metrics$Ldn),'Ldn'], data_metrics[!is.na(data_metrics$Ldn),'ID'], mean)
-mean_denl    = tapply(data_metrics[!is.na(data_metrics$Lden),'Lden'], data_metrics[!is.na(data_metrics$Lden),'ID'], mean)
-mean_day     = tapply(data_metrics[!is.na(data_metrics$Lden_Lday),'Lden_Lday'], data_metrics[!is.na(data_metrics$Lden_Lday),'ID'], mean)
-mean_evening = tapply(data_metrics[!is.na(data_metrics$Lden_Levening),'Lden_Levening'], data_metrics[!is.na(data_metrics$Lden_Levening),'ID'], mean)
-mean_night   = tapply(data_metrics[!is.na(data_metrics$Lden_Lnight),'Lden_Lnight'], data_metrics[!is.na(data_metrics$Lden_Lnight),'ID'], mean)
+# Ldn median map -----------------------------------------------------------------
+median_dnl = tapply(data_metrics[!is.na(data_metrics$Ldn),'Ldn'], data_metrics[!is.na(data_metrics$Ldn),'ID'], median)
 
-max_dnl     = tapply(data_metrics[!is.na(data_metrics$Ldn),'Ldn'], data_metrics[!is.na(data_metrics$Ldn),'ID'], max)
-max_denl    = tapply(data_metrics[!is.na(data_metrics$Lden),'Lden'], data_metrics[!is.na(data_metrics$Lden),'ID'], max)
-max_day     = tapply(data_metrics[!is.na(data_metrics$Lden_Lday),'Lden_Lday'], data_metrics[!is.na(data_metrics$Lden_Lday),'ID'], max)
-max_evening = tapply(data_metrics[!is.na(data_metrics$Lden_Levening),'Lden_Levening'], data_metrics[!is.na(data_metrics$Lden_Levening),'ID'], max)
-max_night   = tapply(data_metrics[!is.na(data_metrics$Lden_Lnight),'Lden_Lnight'], data_metrics[!is.na(data_metrics$Lden_Lnight),'ID'], max)
-
-# Ldn mean map -----------------------------------------------------------------
 mapview(
-  merge(get_data_sites(), data.frame(dB=c(t(mean_dnl)), ID=rownames(mean_dnl)), all=TRUE),
+  merge(get_data_sites(), data.frame(dB=c(t(median_dnl)), ID=rownames(median_dnl)), all=TRUE),
   xcol='Longitude', ycol='Latitude', zcol='dB',
   cex='dB', crs=4269, grid=FALSE, legend=TRUE,
-  layer.name = 'Mean Ldn (dBA)'
+  layer.name = 'Median Ldn (dBA)'
 )
-
-
-# Ldn max map ------------------------------------------------------------------
-mapview(
-  merge(get_data_sites(), data.frame(dB=c(t(max_dnl)), ID=rownames(max_dnl)), all=TRUE),
-  xcol='Longitude', ycol='Latitude', zcol='dB',
-  cex='dB', crs=4269, grid=FALSE, legend=TRUE,
-  layer.name = 'Max Ldn (dBA)'
-)
-
-# Day-night average grouped barplot --------------------------------------------
-dnl_denl = data.frame(mean_dnl, mean_denl, max_dnl, max_denl)
-ggplot(
-  data.frame(dB = c(t(dnl_denl[,])),
-             id = rep(rownames(dnl_denl),each=4),
-             metric = c('Mean Ldn','Mean Lden','Max Ldn','Max Lden')),
-  aes(fill=metric, y=dB, x=id)) + 
-  geom_bar(position='dodge', stat='identity') +
-  geom_hline(yintercept=85, linetype='dotted', col='red') + # OSHA 8-hour exposure
-  theme_minimal() + 
-  labs(x='Site', y='dB', title='Day-night average means and maximums') +
-  scale_fill_manual('', values=viridis(4))
 
 # Level maximums and peaks -----------------------------------------------------
-data_metrics_max = data_metrics
-data_metrics_max[is.na(data_metrics_max)] = 0
-max_Lmax = tapply(data_metrics_max$Lmax, data_metrics_max$ID, max)
-max_LCpeak = tapply(data_metrics_max$LCpeak, data_metrics_max$ID, max)
-l_maxpeak = data.frame(max_Lmax, max_LCpeak)
-ggplot(
-  data.frame(dB = c(t(l_maxpeak[,])),
-             id = rep(rownames(l_maxpeak),each=2),
-             metric = c('Lmax (dBA)','Lpeak (dBC)')),
-  aes(fill=metric, y=dB, x=id)) + 
-  geom_bar(position='dodge', stat='identity') +
-  theme_minimal() + 
-  labs(x='Site', y='dB', title='Level maximums and peaks') +
-  scale_fill_manual('',values=viridis(4))
+# data_metrics_max = data_metrics
+# data_metrics_max[is.na(data_metrics_max)] = 0
+# max_Lmax = tapply(data_metrics_max$Lmax, data_metrics_max$ID, max)
+# max_LCpeak = tapply(data_metrics_max$LCpeak, data_metrics_max$ID, max)
+# l_maxpeak = data.frame(max_Lmax, max_LCpeak)
+# ggplot(
+#   data.frame(dB = c(t(l_maxpeak[,])),
+#              id = rep(rownames(l_maxpeak),each=2),
+#              metric = c('Lmax (dBA)','Lpeak (dBC)')),
+#   aes(fill=metric, y=dB, x=id)) + 
+#   geom_bar(position='dodge', stat='identity') +
+#   theme_minimal() + 
+#   labs(x='Site', y='dB', title='Level maximums and peaks') +
+#   scale_fill_manual('',values=viridis(4))
 
 
-# Dates by Ldn -----------------------------------------------------------------
-dates_by_ldn = data_metrics[with(data_metrics,order(-Ldn)),]
-dates_by_ldn[1:20]
 
-# Plot date site ldn -----------------------------------------------------------
+# Plot site date Ldns -----------------------------------------------------------
+
+site_date_ldns = na.omit(data_metrics[,c('Org', 'Date', 'Name', 'ID', 'Ldn')])
+
+ggplot(site_date_ldns, aes(x=reorder(ID, Ldn, FUN=median), y=Ldn, fill=Org)) + 
+  geom_boxplot(alpha=0.3) +
+  labs(title='Day-night-average levels per site', x ='Site ID', y ='Ldn (dBA)') +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  geom_hline(yintercept=65, linetype='dotted', colour='red') + # HUD and Federal Aviation Regulation Part 150 incompatible for residential land use
+  geom_hline(yintercept=55, linetype='dotted', colour='red') # EPA recommended outdoor ambient noise level
+
+# Plot site date maximums ------------------------------------------------------
+site_date_maximums = na.omit(data_metrics[,c('Org', 'Date', 'Name', 'ID', 'Lmax')])
+
+ggplot(site_date_maximums, aes(x=reorder(ID, Lmax, FUN=median), y=Lmax, fill=Org)) + 
+  geom_boxplot(alpha=0.3) +
+  labs(title='Maximum levels per site', x ='Site ID', y ='Lmax (dBA)') +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 # Plot date site hour spl ------------------------------------------------------
-
-source('data/load_site_date.R')
-create_splplot = function(id, date, hour) {
-  site_date_data = load_site_date(id, date)
-  start = (hour*60*60) + 1
-  end = (start + 60*60/2) - 1
-  ggplot(site_date_data[start:end,], aes(x=Time, y=Value)) +
-    geom_line() +
-    ggtitle(paste(id, date, 'hour', hour))
-}
-
-hour = 0
-id = 'KntP'
-date = '2020-07-08'
-create_splplot(id, date, hour)
+# source('data/load_site_date.R')
+# create_splplot = function(id, date, hour) {
+#   site_date_data = load_site_date(id, date)
+#   start = (hour*60*60) + 1
+#   end = (start + 60*60/2) - 1
+#   ggplot(site_date_data[start:end,], aes(x=Time, y=Value)) +
+#     geom_line() +
+#     ggtitle(paste(id, date, 'hour', hour))
+# }
+# 
+# hour = 0
+# id = 'KntP'
+# date = '2020-07-08'
+# create_splplot(id, date, hour)
 
 # Health Impacts ---------------------------------------------------------------
 
@@ -112,16 +92,22 @@ regression_HA = function(Lden) {
 }
 
 # Plot HA (highly annoyed)
-mean_lden_HA = data.frame(Lden=sort(mean_denl), HA=regression_HA(sort(mean_denl)))
-max_lden_HA = data.frame(Lden=sort(max_denl), HA=regression_HA(sort(max_denl)))
-# Mean
-ggplot(mean_lden_HA, aes(x=Lden, y=HA, label=rownames(mean_lden_HA))) +
-  labs(x='Lden (dB)', y='%HA', title='Percent Highly Annoyed (Mean)') +
+
+# Median
+median_lden = tapply(data_metrics[!is.na(data_metrics$Lden),'Lden'], data_metrics[!is.na(data_metrics$Lden),'ID'], median)
+median_lden_HA = data.frame(Lden=sort(median_lden), HA=regression_HA(sort(median_lden)))
+
+ggplot(median_lden_HA, aes(x=Lden, y=HA, label=rownames(median_lden_HA))) +
+  labs(x='Lden Median (dB)', y='%HA', title='Percent Highly Annoyed (Median Lden)') +
   geom_point(col='blue') + geom_text(hjust=0, vjust=1.5, col='blue') +
   stat_function(fun=regression_HA)
+
 # Max
+max_lden = tapply(data_metrics[!is.na(data_metrics$Lden),'Lden'], data_metrics[!is.na(data_metrics$Lden),'ID'], max)
+max_lden_HA = data.frame(Lden=sort(max_lden), HA=regression_HA(sort(max_lden)))
+
 ggplot(max_lden_HA, aes(x=Lden, y=HA, label=rownames(max_lden_HA))) +
-  labs(x='Lden (dB)', y='%HA', title='Percent Highly Annoyed (Max)') +
+  labs(x='Lden Maximum (dB)', y='%HA', title='Percent Highly Annoyed (Maximum Lden)') +
   geom_point(col='red') + geom_text(hjust=0, vjust=1.5, col='red') +
   geom_hline(yintercept=100, linetype='dashed') + # 100% HA
   stat_function(fun=regression_HA)
@@ -133,18 +119,22 @@ regression_HSA = function(Lnight) {
 }
 
 # Plot HSA (highly sleep-disturbed)
-mean_lden_lnight_HSA = data.frame(Lden=sort(mean_night), HA=regression_HSA(sort(mean_night)))
-max_lden_lnight_HSA = data.frame(Lden=sort(max_night), HA=regression_HSA(sort(max_night)))
+
 # Mean
-ggplot(mean_lden_lnight_HSA, aes(x=Lden, y=HA, label=rownames(mean_lden_lnight_HSA))) +
-  labs(x='Lnight (dB)', y='%HSA', title='Percent Highly Sleep Disturbed (Mean)') +
+median_lden_lnight = tapply(data_metrics[!is.na(data_metrics$Lden_Lnight),'Lden_Lnight'], data_metrics[!is.na(data_metrics$Lden_Lnight),'ID'], median)
+median_lden_lnight_HSA = data.frame(Lden=sort(median_lden_lnight), HA=regression_HSA(sort(median_lden_lnight)))
+
+ggplot(median_lden_lnight_HSA, aes(x=Lden, y=HA, label=rownames(median_lden_lnight_HSA))) +
+  labs(x='Lnight Median (dB)', y='%HSA', title='WHO - Percent Highly Sleep Disturbed (Median Lnight)') +
   geom_point(col='blue') + geom_text(hjust=0, vjust=1.5, col='blue') +
   geom_hline(yintercept=0, linetype='dashed') + # 0% HSA
   stat_function(fun=regression_HA)
+
 # Max
+max_lden_lnight = tapply(data_metrics[!is.na(data_metrics$Lden_Lnight),'Lden_Lnight'], data_metrics[!is.na(data_metrics$Lden_Lnight),'ID'], max)
+max_lden_lnight_HSA = data.frame(Lden=sort(max_lden_lnight), HA=regression_HSA(sort(max_lden_lnight)))
+
 ggplot(max_lden_lnight_HSA, aes(x=Lden, y=HA, label=rownames(max_lden_lnight_HSA))) +
-  labs(x='Lnight (dB)', y='%HSA', title='Percent Highly Sleep Disturbed (Max)') +
+  labs(x='Lnight Maximum (dB)', y='%HSA', title='WHO - Percent Highly Sleep Disturbed (Maximum Lnight)') +
   geom_point(col='red') + geom_text(hjust=0, vjust=1.5, col='red') +
-  geom_hline(yintercept=0, linetype='dashed') + # 0% HSA
-  geom_hline(yintercept=100, linetype='dashed') + # 100% HSA
   stat_function(fun=regression_HA)
