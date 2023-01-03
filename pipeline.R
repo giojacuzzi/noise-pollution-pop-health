@@ -1,6 +1,8 @@
 ### The entire data processing pipeline. Requirements are the PHI database and `data/sites.csv`
 
 # 1. Create tables mapping org files to sites and dates
+source('global.R')
+
 source('data/load_file_navy.R')
 file_map_navy = map_files_navy_csv() # produces `data/files_navy.csv`
 source('data/load_file_sda.R')
@@ -8,7 +10,7 @@ file_map_sda = map_files_sda_csv()  # produces `data/files_sda.csv`
 source('data/load_file_nps.R')
 file_map_nps = map_files_nps_csv()  # produces `data/files_sda.csv`
 
-file_map = get_file_map() # requires both .csv files
+file_map = get_file_map() # requires all .csv files
 
 # 2. Calculate metrics for each site date
 source('analysis/calculate_metrics.R')

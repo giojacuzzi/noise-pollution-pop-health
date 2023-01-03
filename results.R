@@ -7,10 +7,13 @@ library('mapview')
 
 data_metrics = get_data_metrics()
 
+# NOTE: Some SDA measurements were recorded with overloaded gains (i.e. distortion) that result in erroneously high values during flybys. Here, we remove site dates with measurements exceeding 100 dB (50 site dates total), which is about 36% of the SDA data.
+data_metrics = data_metrics[-which(data_metrics$Org == 'SDA' & data_metrics$Lmax > 100.0),]
+
 # Organization map -------------------------------------------------------------
 mapviewOptions(legend.pos='bottomright')
 mapview(
-  data_sites,
+  get_data_sites(),
   xcol='Longitude', ycol='Latitude', zcol='Org',
   crs=4269, grid=FALSE, legend=TRUE,
   col.regions=c('sienna','gold','blue','green3','salmon','darkturquoise','purple3'),
@@ -32,7 +35,7 @@ max_night   = tapply(data_metrics[!is.na(data_metrics$Lden_Lnight),'Lden_Lnight'
 
 # Ldn mean map -----------------------------------------------------------------
 mapview(
-  merge(data_sites, data.frame(dB=c(t(mean_dnl)), ID=rownames(mean_dnl)), all=TRUE),
+  merge(get_data_sites(), data.frame(dB=c(t(mean_dnl)), ID=rownames(mean_dnl)), all=TRUE),
   xcol='Longitude', ycol='Latitude', zcol='dB',
   cex='dB', crs=4269, grid=FALSE, legend=TRUE,
   layer.name = 'Mean Ldn (dBA)'
@@ -41,7 +44,7 @@ mapview(
 
 # Ldn max map ------------------------------------------------------------------
 mapview(
-  merge(data_sites, data.frame(dB=c(t(max_dnl)), ID=rownames(max_dnl)), all=TRUE),
+  merge(get_data_sites(), data.frame(dB=c(t(max_dnl)), ID=rownames(max_dnl)), all=TRUE),
   xcol='Longitude', ycol='Latitude', zcol='dB',
   cex='dB', crs=4269, grid=FALSE, legend=TRUE,
   layer.name = 'Max Ldn (dBA)'
@@ -136,10 +139,12 @@ max_lden_lnight_HSA = data.frame(Lden=sort(max_night), HA=regression_HSA(sort(ma
 ggplot(mean_lden_lnight_HSA, aes(x=Lden, y=HA, label=rownames(mean_lden_lnight_HSA))) +
   labs(x='Lnight (dB)', y='%HSA', title='Percent Highly Sleep Disturbed (Mean)') +
   geom_point(col='blue') + geom_text(hjust=0, vjust=1.5, col='blue') +
+  geom_hline(yintercept=0, linetype='dashed') + # 0% HSA
   stat_function(fun=regression_HA)
 # Max
 ggplot(max_lden_lnight_HSA, aes(x=Lden, y=HA, label=rownames(max_lden_lnight_HSA))) +
   labs(x='Lnight (dB)', y='%HSA', title='Percent Highly Sleep Disturbed (Max)') +
   geom_point(col='red') + geom_text(hjust=0, vjust=1.5, col='red') +
+  geom_hline(yintercept=0, linetype='dashed') + # 0% HSA
   geom_hline(yintercept=100, linetype='dashed') + # 100% HSA
   stat_function(fun=regression_HA)
