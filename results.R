@@ -98,7 +98,7 @@ median_lden = tapply(data_metrics[!is.na(data_metrics$Lden),'Lden'], data_metric
 median_lden_HA = data.frame(Lden=sort(median_lden), HA=regression_HA(sort(median_lden)))
 
 ggplot(median_lden_HA, aes(x=Lden, y=HA, label=rownames(median_lden_HA))) +
-  labs(x='Lden Median (dB)', y='%HA', title='Percent Highly Annoyed (Median Lden)') +
+  labs(x='Lden Median (dB)', y='%HA', title='WHO - Percent Highly Annoyed (Median Lden)') +
   geom_point(col='blue') + geom_text(hjust=0, vjust=1.5, col='blue') +
   stat_function(fun=regression_HA)
 
@@ -107,7 +107,7 @@ max_lden = tapply(data_metrics[!is.na(data_metrics$Lden),'Lden'], data_metrics[!
 max_lden_HA = data.frame(Lden=sort(max_lden), HA=regression_HA(sort(max_lden)))
 
 ggplot(max_lden_HA, aes(x=Lden, y=HA, label=rownames(max_lden_HA))) +
-  labs(x='Lden Maximum (dB)', y='%HA', title='Percent Highly Annoyed (Maximum Lden)') +
+  labs(x='Lden Maximum (dB)', y='%HA', title='WHO - Percent Highly Annoyed (Maximum Lden)') +
   geom_point(col='red') + geom_text(hjust=0, vjust=1.5, col='red') +
   geom_hline(yintercept=100, linetype='dashed') + # 100% HA
   stat_function(fun=regression_HA)
@@ -143,7 +143,7 @@ ggplot(max_lden_lnight_HSA, aes(x=Lden, y=HA, label=rownames(max_lden_lnight_HSA
 
 day_abbr = c('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun')
 # season_abbr = c('Spring', 'Summer', 'Fall', 'Winter')
-daily_levels = na.omit(data_metrics[data_metrics$Org=='NAVY', c('Org', 'Date', 'Name', 'ID', 'Ldn', 'Lmax')])
+daily_levels = na.omit(data_metrics[data_metrics$Org=='NAVY', ])
 daily_levels = cbind(daily_levels, Day=weekdays(as.POSIXct(daily_levels$Date, tz='UTC'), abbreviate=T))
 daily_levels$Day = factor(daily_levels$Day, levels=day_abbr)
 daily_levels = cbind(daily_levels, Month=months(as.POSIXct(daily_levels$Date, tz='UTC'), abbreviate=T))
@@ -173,5 +173,19 @@ ggplot(daily_levels, aes(x=Day, y=Ldn, fill=Month)) +
   geom_boxplot(alpha=0.4) +
   labs(title='Ldn per day, per month across all Navy sites', x ='Month', y ='Ldn (dBA)')
 
+# Median Leq hourly heatmap per day
+data_hour_day_levels = data.frame()
+for (hour in 0:23) {
+  leq_hr = paste('Leq', formatC(hour, width=2, flag='0'), sep='')
+  result = tapply(daily_levels[,leq_hr], INDEX=daily_levels$Day, FUN=median)
+  result = data.frame(Hour=hour, Day=names(result), Leq=result)
+  rownames(result) = c()
+  data_hour_day_levels = rbind(data_hour_day_levels, result)
+}
+data_hour_day_levels$Day = factor(data_hour_day_levels$Day, levels = day_abbr)
 
-
+ggplot(data_hour_day_levels[order(as.numeric(data_hour_day_levels$Day)),], aes(x=Hour, y=Day, fill=Leq)) + 
+  geom_tile() +
+  scale_fill_viridis(option='A') +
+  labs(title='Median Ldn heatmap across all Navy sites', x='Hour', y='Day') +
+  scale_x_continuous('Hour', labels = as.character(0:23), breaks = 0:23)
