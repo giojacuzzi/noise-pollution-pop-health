@@ -1,5 +1,4 @@
 ### Plot and map results
-
 source('global.R')
 library('ggplot2')
 library('viridis')
@@ -19,6 +18,25 @@ mapview(
   col.regions=c('sienna','gold','blue','green3','salmon','darkturquoise','purple3'),
   layer.name = 'Organization'
 )
+
+# Plot site date Ldns -----------------------------------------------------------
+
+site_date_ldns = na.omit(data_metrics[,c('Org', 'Date', 'Name', 'ID', 'Ldn')])
+
+ggplot(site_date_ldns, aes(x=reorder(ID, Ldn, FUN=median), y=Ldn, fill=Org)) + 
+  geom_boxplot(alpha=0.4) +
+  labs(title='Day-night-average levels per site (Whidbey Island area)', x ='Site ID', y ='Ldn (dBA)') +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  geom_hline(yintercept=65, linetype='dotted', colour='red') + # HUD and Federal Aviation Regulation Part 150 incompatible for residential land use
+  geom_hline(yintercept=55, linetype='dotted', colour='red') # EPA recommended outdoor ambient noise level
+
+# # Plot site date maximums ------------------------------------------------------
+# site_date_maximums = na.omit(data_metrics[,c('Org', 'Date', 'Name', 'ID', 'Lmax')])
+# 
+# ggplot(site_date_maximums, aes(x=reorder(ID, Lmax, FUN=median), y=Lmax, fill=Org)) + 
+#   geom_boxplot(alpha=0.3) +
+#   labs(title='Maximum levels per site', x ='Site ID', y ='Lmax (dBA)') +
+#   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 # Ldn median map -----------------------------------------------------------------
 median_dnl = tapply(data_metrics[!is.na(data_metrics$Ldn),'Ldn'], data_metrics[!is.na(data_metrics$Ldn),'ID'], median)
@@ -45,27 +63,6 @@ mapview(
 #   theme_minimal() + 
 #   labs(x='Site', y='dB', title='Level maximums and peaks') +
 #   scale_fill_manual('',values=viridis(4))
-
-
-
-# Plot site date Ldns -----------------------------------------------------------
-
-site_date_ldns = na.omit(data_metrics[,c('Org', 'Date', 'Name', 'ID', 'Ldn')])
-
-ggplot(site_date_ldns, aes(x=reorder(ID, Ldn, FUN=median), y=Ldn, fill=Org)) + 
-  geom_boxplot(alpha=0.4) +
-  labs(title='Day-night-average levels per site', x ='Site ID', y ='Ldn (dBA)') +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
-  geom_hline(yintercept=65, linetype='dotted', colour='red') + # HUD and Federal Aviation Regulation Part 150 incompatible for residential land use
-  geom_hline(yintercept=55, linetype='dotted', colour='red') # EPA recommended outdoor ambient noise level
-
-# Plot site date maximums ------------------------------------------------------
-site_date_maximums = na.omit(data_metrics[,c('Org', 'Date', 'Name', 'ID', 'Lmax')])
-
-ggplot(site_date_maximums, aes(x=reorder(ID, Lmax, FUN=median), y=Lmax, fill=Org)) + 
-  geom_boxplot(alpha=0.3) +
-  labs(title='Maximum levels per site', x ='Site ID', y ='Lmax (dBA)') +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 # Plot date site hour spl ------------------------------------------------------
 # source('data/load_site_date.R')
@@ -146,32 +143,14 @@ day_abbr = c('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun')
 daily_levels = na.omit(data_metrics[data_metrics$Org=='NAVY', ])
 daily_levels = cbind(daily_levels, Day=weekdays(as.POSIXct(daily_levels$Date, tz='UTC'), abbreviate=T))
 daily_levels$Day = factor(daily_levels$Day, levels=day_abbr)
+
 daily_levels = cbind(daily_levels, Month=months(as.POSIXct(daily_levels$Date, tz='UTC'), abbreviate=T))
 daily_levels$Month = factor(daily_levels$Month, levels=month.abb)
 # daily_levels = cbind(daily_levels, Season=cut(as.numeric(daily_levels$Month), breaks=c(12,2,5,8,11), labels=season_abbr, right=T))
 # daily_levels$Season = factor(daily_levels$Season, levels=season_abbr)
-
-# Ldn per day
-ggplot(daily_levels[order(daily_levels$Day), ], aes(x=Day, y=Ldn, fill=Org)) + 
-  geom_boxplot(alpha=0.4) +
-  labs(title='Ldn per day across all Navy sites', x ='Day', y ='Ldn (dBA)') +
-  geom_hline(yintercept=65, linetype='dotted', colour='red') # HUD / FAA
-
-# Lmax per day
-ggplot(daily_levels[order(daily_levels$Day), ], aes(x=Day, y=Lmax, fill=Org)) + 
-  geom_boxplot(alpha=0.4) +
-  labs(title='Lmax per day across all Navy sites', x ='Day', y ='Lmax (dBA)') +
-  geom_hline(yintercept=65, linetype='dotted', colour='red') # HUD / FAA
-
-# Ldn per month
-ggplot(daily_levels[order(as.numeric(daily_levels$Month)), ], aes(x=Month, y=Ldn, fill=Org)) +
-  geom_boxplot(alpha=0.4) +
-  labs(title='Ldn per month across all Navy sites', x ='Month', y ='Ldn (dBA)')
-
-# Ldn per day, per season
-ggplot(daily_levels, aes(x=Day, y=Ldn, fill=Month)) +
-  geom_boxplot(alpha=0.4) +
-  labs(title='Ldn per day, per month across all Navy sites', x ='Month', y ='Ldn (dBA)')
+daily_levels = cbind(daily_levels, Period=daily_levels$Month)
+levels(daily_levels$Period)[levels(daily_levels$Period)=='Mar'] <- 'Mar/Apr'
+levels(daily_levels$Period)[levels(daily_levels$Period)=='Apr'] <- 'Mar/Apr'
 
 # Median Leq hourly heatmap per day
 data_hour_day_levels = data.frame()
@@ -187,5 +166,27 @@ data_hour_day_levels$Day = factor(data_hour_day_levels$Day, levels = day_abbr)
 ggplot(data_hour_day_levels[order(as.numeric(data_hour_day_levels$Day)),], aes(x=Hour, y=Day, fill=Leq)) + 
   geom_tile() +
   scale_fill_viridis(option='A') +
-  labs(title='Median Ldn heatmap across all Navy sites', x='Hour', y='Day') +
+  labs(title='Median Leq heatmap across all Navy sites', x='Hour', y='Day') +
   scale_x_continuous('Hour', labels = as.character(0:23), breaks = 0:23)
+
+# Ldn per day
+ggplot(daily_levels[order(daily_levels$Day), ], aes(x=Day, y=Ldn, fill=Org)) + 
+  geom_boxplot(alpha=0.4) +
+  labs(title='Ldn per day across all Navy sites', x ='Day', y ='Ldn (dBA)') +
+  geom_hline(yintercept=65, linetype='dotted', colour='red') # HUD / FAA
+
+# # Lmax per day
+# ggplot(daily_levels[order(daily_levels$Day), ], aes(x=Day, y=Lmax, fill=Org)) + 
+#   geom_boxplot(alpha=0.4) +
+#   labs(title='Lmax per day across all Navy sites', x ='Day', y ='Lmax (dBA)') +
+#   geom_hline(yintercept=65, linetype='dotted', colour='red') # HUD / FAA
+
+# Ldn per measurement period
+ggplot(daily_levels, aes(x=Period, y=Ldn, fill=Org)) +
+  geom_boxplot(alpha=0.4) +
+  labs(title='Ldn per measurement period across all Navy sites', x ='Period (Month)', y ='Ldn (dBA)')
+
+# Ldn per day, per measurement period
+ggplot(daily_levels, aes(x=Day, y=Ldn, fill=Period)) +
+  geom_boxplot(alpha=0.4) +
+  labs(title='Ldn per day, per measurement period across all Navy sites', x ='Period', y ='Ldn (dBA)')
