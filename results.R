@@ -53,7 +53,7 @@ mapview(
 site_date_ldns = na.omit(data_metrics[,c('Org', 'Date', 'Name', 'ID', 'Ldn')])
 
 ggplot(site_date_ldns, aes(x=reorder(ID, Ldn, FUN=median), y=Ldn, fill=Org)) + 
-  geom_boxplot(alpha=0.3) +
+  geom_boxplot(alpha=0.4) +
   labs(title='Day-night-average levels per site', x ='Site ID', y ='Ldn (dBA)') +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
   geom_hline(yintercept=65, linetype='dotted', colour='red') + # HUD and Federal Aviation Regulation Part 150 incompatible for residential land use
@@ -140,33 +140,38 @@ ggplot(max_lden_lnight_HSA, aes(x=Lden, y=HA, label=rownames(max_lden_lnight_HSA
   stat_function(fun=regression_HA)
 
 # Time Breakdowns (NAVY only) --------------------------------------------------
+
 day_abbr = c('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun')
+# season_abbr = c('Spring', 'Summer', 'Fall', 'Winter')
+daily_levels = na.omit(data_metrics[data_metrics$Org=='NAVY', c('Org', 'Date', 'Name', 'ID', 'Ldn', 'Lmax')])
+daily_levels = cbind(daily_levels, Day=weekdays(as.POSIXct(daily_levels$Date, tz='UTC'), abbreviate=T))
+daily_levels$Day = factor(daily_levels$Day, levels=day_abbr)
+daily_levels = cbind(daily_levels, Month=months(as.POSIXct(daily_levels$Date, tz='UTC'), abbreviate=T))
+daily_levels$Month = factor(daily_levels$Month, levels=month.abb)
+# daily_levels = cbind(daily_levels, Season=cut(as.numeric(daily_levels$Month), breaks=c(12,2,5,8,11), labels=season_abbr, right=T))
+# daily_levels$Season = factor(daily_levels$Season, levels=season_abbr)
 
 # Ldn per day
-daily_ldns = na.omit(data_metrics[data_metrics$Org=='NAVY', c('Org', 'Date', 'Name', 'ID', 'Ldn')])
-daily_ldns = cbind(daily_ldns, Day=weekdays(as.POSIXct(daily_ldns$Date, tz='UTC'), abbreviate=T))
-daily_ldns$Day = factor(daily_ldns$Day, levels=day_abbr)
-daily_ldns = daily_ldns[order(daily_ldns$Day), ]
-
-ggplot(daily_ldns, aes(x=Day, y=Ldn, fill=Org)) + 
-  geom_boxplot(alpha=0.3) +
+ggplot(daily_levels[order(daily_levels$Day), ], aes(x=Day, y=Ldn, fill=Org)) + 
+  geom_boxplot(alpha=0.4) +
   labs(title='Ldn per day across all Navy sites', x ='Day', y ='Ldn (dBA)') +
   geom_hline(yintercept=65, linetype='dotted', colour='red') # HUD / FAA
 
 # Lmax per day
-daily_lmax = na.omit(data_metrics[data_metrics$Org=='NAVY', c('Org', 'Date', 'Name', 'ID', 'Lmax')])
-daily_lmax = cbind(daily_lmax, Day=weekdays(as.POSIXct(daily_lmax$Date, tz='UTC'), abbreviate=T))
-daily_lmax$Day = factor(daily_lmax$Day, levels=day_abbr)
-daily_lmax = daily_lmax[order(daily_lmax$Day), ]
-
-ggplot(daily_lmax, aes(x=Day, y=Lmax, fill=Org)) + 
-  geom_boxplot(alpha=0.3) +
+ggplot(daily_levels[order(daily_levels$Day), ], aes(x=Day, y=Lmax, fill=Org)) + 
+  geom_boxplot(alpha=0.4) +
   labs(title='Lmax per day across all Navy sites', x ='Day', y ='Lmax (dBA)') +
   geom_hline(yintercept=65, linetype='dotted', colour='red') # HUD / FAA
 
+# Ldn per month
+ggplot(daily_levels[order(as.numeric(daily_levels$Month)), ], aes(x=Month, y=Ldn, fill=Org)) +
+  geom_boxplot(alpha=0.4) +
+  labs(title='Ldn per month across all Navy sites', x ='Month', y ='Ldn (dBA)')
+
 # Ldn per day, per season
-
-
+ggplot(daily_levels, aes(x=Day, y=Ldn, fill=Month)) +
+  geom_boxplot(alpha=0.4) +
+  labs(title='Ldn per day, per month across all Navy sites', x ='Month', y ='Ldn (dBA)')
 
 
 
