@@ -138,3 +138,35 @@ ggplot(max_lden_lnight_HSA, aes(x=Lden, y=HA, label=rownames(max_lden_lnight_HSA
   labs(x='Lnight Maximum (dB)', y='%HSA', title='WHO - Percent Highly Sleep Disturbed (Maximum Lnight)') +
   geom_point(col='red') + geom_text(hjust=0, vjust=1.5, col='red') +
   stat_function(fun=regression_HA)
+
+# Time Breakdowns (NAVY only) --------------------------------------------------
+day_abbr = c('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun')
+
+# Ldn per day
+daily_ldns = na.omit(data_metrics[data_metrics$Org=='NAVY', c('Org', 'Date', 'Name', 'ID', 'Ldn')])
+daily_ldns = cbind(daily_ldns, Day=weekdays(as.POSIXct(daily_ldns$Date, tz='UTC'), abbreviate=T))
+daily_ldns$Day = factor(daily_ldns$Day, levels=day_abbr)
+daily_ldns = daily_ldns[order(daily_ldns$Day), ]
+
+ggplot(daily_ldns, aes(x=Day, y=Ldn, fill=Org)) + 
+  geom_boxplot(alpha=0.3) +
+  labs(title='Ldn per day across all Navy sites', x ='Day', y ='Ldn (dBA)') +
+  geom_hline(yintercept=65, linetype='dotted', colour='red') # HUD / FAA
+
+# Lmax per day
+daily_lmax = na.omit(data_metrics[data_metrics$Org=='NAVY', c('Org', 'Date', 'Name', 'ID', 'Lmax')])
+daily_lmax = cbind(daily_lmax, Day=weekdays(as.POSIXct(daily_lmax$Date, tz='UTC'), abbreviate=T))
+daily_lmax$Day = factor(daily_lmax$Day, levels=day_abbr)
+daily_lmax = daily_lmax[order(daily_lmax$Day), ]
+
+ggplot(daily_lmax, aes(x=Day, y=Lmax, fill=Org)) + 
+  geom_boxplot(alpha=0.3) +
+  labs(title='Lmax per day across all Navy sites', x ='Day', y ='Lmax (dBA)') +
+  geom_hline(yintercept=65, linetype='dotted', colour='red') # HUD / FAA
+
+# Ldn per day, per season
+
+
+
+
+
