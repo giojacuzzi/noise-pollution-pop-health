@@ -20,6 +20,7 @@ mapview(
 )
 
 # Plot site date Ldns -----------------------------------------------------------
+# NOTE: includes weekends
 
 site_date_ldns = na.omit(data_metrics[,c('Org', 'Date', 'Name', 'ID', 'Ldn')])
 
@@ -174,6 +175,37 @@ ggplot(daily_levels[order(daily_levels$Day), ], aes(x=Day, y=Ldn, fill=Org)) +
   geom_boxplot(alpha=0.4) +
   labs(title='Ldn per day across all Navy sites', x ='Day', y ='Ldn (dBA)') +
   geom_hline(yintercept=65, linetype='dotted', colour='red') # HUD / FAA
+
+# # Leq per hour, per day
+# for (day in day_abbr) {
+#   fdsa = data.frame()
+#   for (hour in 0:23) {
+#     leq_hr = paste('Leq', formatC(hour, width=2, flag='0'), sep='')
+#       levels_for_day_hour = daily_levels[daily_levels$Day==day,leq_hr]
+#       result = data.frame(Hour=hour, Day=day, Leq=levels_for_day_hour)
+#       fdsa = rbind(fdsa, result)
+#     # }
+#   }
+#   fdsa$Hour = factor(fdsa$Hour, levels = 0:23)
+#   print(ggplot(fdsa, aes(x=Hour, y=Leq)) +
+#     geom_boxplot(alpha=0.4) +
+#     coord_cartesian(ylim=c(20,100)) +
+#     labs(title=paste(day, 'hourly Leq across all Navy sites'), x ='Hour', y ='Leq (dBA)'))
+# }
+# fdsa = data.frame()
+# for (hour in 0:23) {
+#   leq_hr = paste('Leq', formatC(hour, width=2, flag='0'), sep='')
+#   for (day in unique(daily_levels$Day)) {
+#     levels_for_day_hour = daily_levels[daily_levels$Day==day,leq_hr]
+#     result = data.frame(Hour=hour, Day=day, Leq=levels_for_day_hour)
+#     fdsa = rbind(fdsa, result)
+#   }
+# }
+# fdsa$Day = factor(fdsa$Day, levels = day_abbr)
+# fdsa$Hour = factor(fdsa$Hour, levels = 0:23)
+# ggplot(fdsa, aes(x=Day, y=Leq, fill=Hour)) +
+#   geom_boxplot(alpha=0.4) +
+#   labs(title='Hourly Leq per day across all Navy sites', x ='Day', y ='Leq (dBA)')
 
 # # Lmax per day
 # ggplot(daily_levels[order(daily_levels$Day), ], aes(x=Day, y=Lmax, fill=Org)) + 
