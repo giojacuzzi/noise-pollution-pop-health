@@ -1,0 +1,57 @@
+ POI File: 
+
+ SUMMARY OF TOTAL LDNMR
+
+                                                       ---------------------------  L O C A T I O N  ----------------------------
+                                                       ----- LATITUDE ----- ---- LONGITUDE ----- --  X  --- --  Y  --- --  Z  ---      LDNMR     (dB)
+ POINT-ID   -------------- DESCRIPTION ---------------   (decimal degrees)    (decimal degrees)    (ft)       (ft)      (ft AGL)   FLIGHT STATIC  TOTAL
+ HOH                                                      47.8597500000        -123.932410000            0          0          0     35.0    0.0   35.0
+ MOA                                                      47.6540200000        -124.044540000            0          0          0     35.0    0.0   35.0
+
+
+       LDNMR-RANKED FLIGHT EVENTS
+
+                                                                      ---- TRACK ----                      SPEED  ALTITUDE SLANT ----------EVENTS-----------        HA     LDNMR   CUMU
+ POINT ID-- RANK AIRCRAFT NAME------- ENGINE NAME--------- PROFILE ID TYPE ID-------- POWER---- UNITS----- (KIAS) (ft MSL)  (ft)  DAYTIME  EVENING NIGHTTIME          (%)   (dB)   (dB)
+ HOH           1 F-18E/F                                   EA-18G_W237     W-237 A AND                          0        0     0    0.000    0.000     0.000          0.0    0.0    0.0
+ HOH           2 F-18E/F                                   EA-18G_ENTE     EA18_ENNEW                           0        0     0    0.000    0.000     0.000          0.0    0.0    3.0
+ HOH           3 F-15E                                     F-15_MOA_BF     OLYMPIC A A                          0        0     0    0.000    0.000     0.000          0.0    0.0    4.8
+ HOH           4 P-3C                                      P-3_MOA_ISR     OLYMPIC A A                          0        0     0    0.000    0.000     0.000          0.0    0.0    6.0
+ HOH           5 F-18E/F                                   EA-18G_EXIT     EA18_EXNEW                           0        0     0    0.000    0.000     0.000          0.0    0.0    7.0
+ HOH           6 B-737-D9 (                                P-8_WAB_ENT     P3_8_WAB_EN                          0        0     0    0.000    0.000     0.000          0.0    0.0    7.8
+ HOH           7 F-18E/F                                   EA-18G_W237     W-237 A AND                          0        0     0    0.000    0.000     0.000          0.0    0.0    8.5
+ HOH           8 F-18E/F                                   EA-18G_MOA_     OLYMPIC A A                          0        0     0    0.000    0.000     0.000          0.0    0.0    9.0
+ HOH           9 F-15E                                     F-15_MOA_EN     F15_MOA_ENT                          0        0     0    0.000    0.000     0.000          0.0    0.0    9.5
+ HOH          10 F-15E                                     F-15_WA_EXI     F15_WA_EXIT                          0        0     0    0.000    0.000     0.000          0.0    0.0   10.0
+ HOH          11 B-737-D9 (                                P-8_MOA_ISR     OLYMPIC A A                          0        0     0    0.000    0.000     0.000          0.0    0.0   10.4
+ HOH          12 F-15E                                     F-15_MOA_EX     F15_MOA_EXI                          0        0     0    0.000    0.000     0.000          0.0    0.0   10.8
+ HOH          13 B-737-D9 (                                P-8_WAA_EXI     P3_8_WAA_EX                          0        0     0    0.000    0.000     0.000          0.0    0.0   11.1
+ HOH          14 F-18E/F                                   EA-18G_W237     W-237 A AND                          0        0     0    0.000    0.000     0.000          0.0    0.0   11.5
+ HOH          15 F-15E                                     F-15_MOA_AC     OLYMPIC A A                          0        0     0    0.000    0.000     0.000          0.0    0.0   11.8
+ HOH          16 B-737-D9 (                                P-8_WAB_EXI     P3_8_WAB_EX                          0        0     0    0.000    0.000     0.000          0.0    0.0   12.0
+ HOH          17 F-18E/F                                   EA-18G_MOA_     OLYMPIC A A                          0        0     0    0.000    0.000     0.000          0.0    0.0   12.3
+ HOH          18 F-18E/F                                   EA-18G_MOA_     OLYMPIC A A                          0        0     0    0.000    0.000     0.000          0.0    0.0   12.6
+ HOH          19 B-737-D9 (                                P-8_WAA_ENT     P3_8_WAA_EN                          0        0     0    0.000    0.000     0.000          0.0    0.0   12.8
+ HOH          20 F-15E                                     F-15_WA_ENT     F15_WA_ENTR                          0        0     0    0.000    0.000     0.000          0.0    0.0   13.0
+
+ MOA           1 F-18E/F                                   EA-18G_W237     W-237 A AND                          0        0     0    0.000    0.000     0.000          0.0    0.0    0.0
+ MOA           2 F-18E/F                                   EA-18G_ENTE     EA18_ENNEW                           0        0     0    0.000    0.000     0.000          0.0    0.0    3.0
+ MOA           3 F-15E                                     F-15_MOA_BF     OLYMPIC A A                          0        0     0    0.000    0.000     0.000          0.0    0.0    4.8
+ MOA           4 P-3C                                      P-3_MOA_ISR     OLYMPIC A A                          0        0     0    0.000    0.000     0.000          0.0    0.0    6.0
+ MOA           5 F-15E                                     F-15_MOA_EN     F15_MOA_ENT                          0        0     0    0.000    0.000     0.000          0.0    0.0    7.0
+ MOA           6 B-737-D9 (                                P-8_WAB_ENT     P3_8_WAB_EN                          0        0     0    0.000    0.000     0.000          0.0    0.0    7.8
+ MOA           7 F-18E/F                                   EA-18G_W237     W-237 A AND                          0        0     0    0.000    0.000     0.000          0.0    0.0    8.5
+ MOA           8 F-18E/F                                   EA-18G_MOA_     OLYMPIC A A                          0        0     0    0.000    0.000     0.000          0.0    0.0    9.0
+ MOA           9 F-18E/F                                   EA-18G_EXIT     EA18_EXNEW                           0        0     0    0.000    0.000     0.000          0.0    0.0    9.5
+ MOA          10 F-15E                                     F-15_WA_EXI     F15_WA_EXIT                          0        0     0    0.000    0.000     0.000          0.0    0.0   10.0
+ MOA          11 B-737-D9 (                                P-8_MOA_ISR     OLYMPIC A A                          0        0     0    0.000    0.000     0.000          0.0    0.0   10.4
+ MOA          12 F-15E                                     F-15_MOA_EX     F15_MOA_EXI                          0        0     0    0.000    0.000     0.000          0.0    0.0   10.8
+ MOA          13 B-737-D9 (                                P-8_WAA_EXI     P3_8_WAA_EX                          0        0     0    0.000    0.000     0.000          0.0    0.0   11.1
+ MOA          14 F-18E/F                                   EA-18G_W237     W-237 A AND                          0        0     0    0.000    0.000     0.000          0.0    0.0   11.5
+ MOA          15 F-15E                                     F-15_MOA_AC     OLYMPIC A A                          0        0     0    0.000    0.000     0.000          0.0    0.0   11.8
+ MOA          16 B-737-D9 (                                P-8_WAB_EXI     P3_8_WAB_EX                          0        0     0    0.000    0.000     0.000          0.0    0.0   12.0
+ MOA          17 F-18E/F                                   EA-18G_MOA_     OLYMPIC A A                          0        0     0    0.000    0.000     0.000          0.0    0.0   12.3
+ MOA          18 F-18E/F                                   EA-18G_MOA_     OLYMPIC A A                          0        0     0    0.000    0.000     0.000          0.0    0.0   12.6
+ MOA          19 B-737-D9 (                                P-8_WAA_ENT     P3_8_WAA_EN                          0        0     0    0.000    0.000     0.000          0.0    0.0   12.8
+ MOA          20 F-15E                                     F-15_WA_ENT     F15_WA_ENTR                          0        0     0    0.000    0.000     0.000          0.0    0.0   13.0
+

@@ -1,0 +1,151 @@
+ POI File: tempbops.poi
+ OPX File: tempbops.opx
+ Airbase Name: NAS Whidbey Island and NOLF Coupeville                      
+ OPX Case: Ave Year Alt2A - SLM Scenario                               
+           BaseOps case "Ave Year Alt2A"                               
+           modified according to the SLM scenario.                     
+                                                                       
+            - Delete all points of interest where POI Group matches Old
+ Date of start of NMAP run:  1/11/2022
+ Time of start of NMAP run: 21: 6:13
+ CALCULATIONS INCLUDE ATTENUATION DUE TO TOPOGRAPHY
+
+ SUMMARY OF TOTAL DNL      
+
+                                                       ---------------------------  L O C A T I O N  ----------------------------
+                                                       ----- LATITUDE ----- ---- LONGITUDE ----- --  X  --- --  Y  --- --  Z  ---      DNL       (dB)
+ POINT-ID   -------------- DESCRIPTION ---------------   (decimal degrees)    (decimal degrees)    (ft)       (ft)      (ft AGL)   FLIGHT STATIC  TOTAL
+ 5B_SG            SE Lopez Island at Point Colville -   0.484221370000D+02   0.122814946000D+03     -38619      25699          5     45.8    0.0   45.8
+
+
+ COLUMN HEADER LEGEND (U.S.) FOR FLIGHT EVENTS
+ Heading      Description
+ POINT ID     identification of the point of interest
+ RANK         rank of profile DNL/CNEL to all other profiles
+ PROFILE ID   identification of the profile
+ TRACK TYPE   type of flight track (arrival, departure, etc.)
+ TRACK ID     identification of the track
+ POWER        power setting value (1)
+ UNITS        power units
+ SPEED        indicated airspeed (knots) (2)
+ ALTITUDE     altitude (ft MSL) (3)
+ SLANT        slant range (ft) (3)
+ DAYTIME      number of daytime (0700-2200 or 0700-1900) events
+ EVENING      number of evening (1900-2200) events
+ NIGHTTIME    number of nighttime (2200-0700) events
+ SEL          effective air-ground Sound Exposure Level (dB) due to this profile (4, 5)
+ DNL or CNEL  Day-Night Average Sound Level or Community Noise Equivalent Level (dB) due to this profile (5)
+ CUMU         cumulative DNL or CNEL of this and all higher ranking profiles (5)
+ (1) power setting prior to or of the point of closest approach (PCA);
+     if the pre-flight run-up is the contributor, the power setting is not that of the run-up but that of rotation;
+     the noise exposure includes the pre-flight run-up;
+ (2) airspeed prior to or of the PCA
+ (3) interpolated value at the PCA
+ (4) includes lateral or topographical attentuation and number of engines running; not necessarily at the PCA;
+ (5) decibels re: 20 micropascals; negative values are possible;
+
+
+       DNL-RANKED FLIGHT EVENTS
+
+                                                                      ---- TRACK ----                       SPEED ALTITUDE  SLANT ----------EVENTS-----------       SEL       DNL   CUMU
+ POINT ID-- RANK AIRCRAFT NAME------- ENGINE NAME--------- PROFILE ID TYPE ID-------- POWER---- UNITS----- (KIAS) (ft MSL)   (ft)  DAYTIME  EVENING NIGHTTIME      (dB)      (dB)   (dB)
+ 5B_SG         1 F-18E/F              F414-GE-400          223A_FRS   DEP  32D2B          95.00 % NC          300     6782   8065    0.286    0.000     0.000      93.7      38.9   38.9
+ 5B_SG         2 B-737-700*           CFM56-7B-24          547B_MOD   PAT  07G1B       17760.00 LBS           200     3000   4469    0.000    0.000     0.286      82.5      37.7   41.3
+ 5B_SG         3 F-18E/F              F414-GE-400          223A_FLT   DEP  32D2B          95.00 % NC          300     7575   8809    0.143    0.000     0.000      92.7      34.9   42.2
+ 5B_SG         4 F-18E/F              F414-GE-400          202A_FLT   DEP  07D1B          97.00 % NC            0       47  43139    1.000    0.000     0.000      82.5      33.2   42.7
+ 5B_SG         5 F-18E/F              F414-GE-400          214A_FLT   DEP  25D1B          95.00 % NC          300     2614  28733    3.000    0.000     0.000      76.7      32.1   43.1
+ 5B_SG         6 F-18E/F              F414-GE-400          214A_EXP   DEP  25D1B          95.00 % NC          300     3835  28866    3.286    0.000     0.000      76.0      31.8   43.4
+ 5B_SG         7 F-18E/F              F414-GE-400          248P_FO    DEP  07WC32P        97.00 % NC            0       47  43139    0.429    0.000     0.000      82.8      29.8   43.6
+ 5B_SG         8 F-18E/F              F414-GE-400          215A_FLT   DEP  25D1C          95.00 % NC          300     3425  27975    1.571    0.000     0.000      77.1      29.7   43.8
+ 5B_SG         9 F-18E/F              F414-GE-400          202A_EXP   DEP  07D1B          97.00 % NC            0       47  43139    0.429    0.000     0.000      82.6      29.6   43.9
+ 5B_SG        10 F-18E/F              F414-GE-400          203A_FLT   DEP  07D1C          97.00 % NC            0       47  43139    0.429    0.000     0.000      82.5      29.5   44.1
+ 5B_SG        11 F-18E/F              F414-GE-400          220A_FRS   DEP  32D1B          95.00 % NC          300     3267  26058    0.857    0.000     0.000      79.0      29.0   44.2
+ 5B_SG        12 F-18E/F              F414-GE-400          217A_FLT   DEP  25D2B          95.00 % NC          300     2554  28777    1.286    0.000     0.000      76.9      28.7   44.3
+ 5B_SG        13 F-18E/F              F414-GE-400          217A_FRS   DEP  25D2B          95.00 % NC          300     3125  28832    1.429    0.000     0.000      76.0      28.2   44.4
+ 5B_SG        14 F-18E/F              F414-GE-400          208A_FLT   DEP  14D1B          97.00 % NC            0       47  43120    0.429    0.000     0.000      81.2      28.1   44.5
+ 5B_SG        15 F-18E/F              F414-GE-400          206A_FLT   DEP  07D2C          97.00 % NC            0       47  43139    0.286    0.000     0.000      82.5      27.7   44.6
+ 5B_SG        16 F-18E/F              F414-GE-400          205A_FLT   DEP  07D2B          97.00 % NC            0       47  43139    0.286    0.000     0.000      82.5      27.7   44.7
+ 5B_SG        17 F-18E/F              F414-GE-400          220A_EXP   DEP  32D1B          95.00 % NC          300     3908  26144    0.571    0.000     0.000      79.1      27.3   44.8
+ 5B_SG        18 F-18E/F              F414-GE-400          208A_FRS   DEP  14D1B          97.00 % NC            0       47  43120    0.286    0.000     0.000      81.5      26.7   44.9
+ 5B_SG        19 F-18E/F              F414-GE-400          215A_EXP   DEP  25D1C          95.00 % NC          300     4269  28087    0.857    0.000     0.000      76.4      26.3   44.9
+ 5B_SG        20 F-18E/F              F414-GE-400          217A_EXP   DEP  25D2B          95.00 % NC          300     3802  28911    0.714    0.000     0.000      76.2      25.4   45.0
+ 5B_SG        21 F-18E/F              F414-GE-400          267A       PAT  07F1B          82.20 % NC          140      707  33179    2.571    0.000     0.000      70.4      25.1   45.0
+ 5B_SG        22 F-18E/F              F414-GE-400          202A_FRS   DEP  07D1B          97.00 % NC            0       47  43139    0.143    0.000     0.000      82.9      25.1   45.1
+ 5B_SG        23 F-18E/F              F414-GE-400          205A_FRS   DEP  07D2B          97.00 % NC            0       47  43139    0.143    0.000     0.000      82.9      25.1   45.1
+ 5B_SG        24 F-18E/F              F414-GE-400          203A_EXP   DEP  07D1C          97.00 % NC            0       47  43139    0.143    0.000     0.000      82.6      24.8   45.1
+ 5B_SG        25 F-18E/F              F414-GE-400          221A_FRS   DEP  32D1C          95.00 % NC          300     3868  24715    0.286    0.000     0.000      79.5      24.7   45.2
+ 5B_SG        26 F-18E/F              F414-GE-400          279B_FRS   PAT  25G1B          82.00 % NC          250     3000   6406    0.143    0.000     0.000      82.3      24.5   45.2
+ 5B_SG        27 B-737-700*           CFM56-7B-24          549B_MOD   PAT  25G1B       17760.00 LBS           200     3000   6406    0.286    0.000     0.000      78.8      23.9   45.2
+ 5B_SG        28 F-18E/F              F414-GE-400          219A_FRS   DEP  32D1A          95.00 % NC          300     2644  28321    0.286    0.000     0.000      78.5      23.7   45.3
+ 5B_SG        29 F-18E/F              F414-GE-400          209A_FRS   DEP  14D1C          97.00 % NC            0       47  43120    0.143    0.000     0.000      81.5      23.7   45.3
+ 5B_SG        30 F-18E/F              F414-GE-400          212A_EXP   DEP  14D2C          97.00 % NC            0       47  43120    0.143    0.000     0.000      81.3      23.5   45.3
+ 5B_SG        31 F-18E/F              F414-GE-400          209A_FLT   DEP  14D1C          97.00 % NC            0       47  43120    0.143    0.000     0.000      81.2      23.4   45.4
+ 5B_SG        32 F-18E/F              F414-GE-400          211A_FLT   DEP  14D2B          97.00 % NC            0       47  43120    0.143    0.000     0.000      81.2      23.3   45.4
+ 5B_SG        33 F-18E/F              F414-GE-400          212A_FLT   DEP  14D2C          97.00 % NC            0       47  43120    0.143    0.000     0.000      81.2      23.3   45.4
+ 5B_SG        34 F-18E/F              F414-GE-400          213A_FLT   DEP  25D1A          95.00 % NC          300     1778  30366    0.429    0.000     0.000      76.3      23.3   45.4
+ 5B_SG        35 F-18E/F              F414-GE-400          218A_FRS   DEP  25D2C          95.00 % NC          300     3739  28018    0.429    0.000     0.000      76.2      23.1   45.5
+ 5B_SG        36 F-18E/F              F414-GE-400          270B       PAT  32F1C          84.00 % NC          140     1000  37403    1.286    0.000     0.000      71.3      23.0   45.5
+ 5B_SG        37 F-18E/F              F414-GE-400          252P_FO    DEP  25WC32P        84.00 % NC          250     1500  32233    0.857    0.000     0.000      72.9      22.8   45.5
+ 5B_SG        38 F-18E/F              F414-GE-400          214A_FRS   DEP  25D1B          95.00 % NC          300     3169  28787    0.429    0.000     0.000      75.7      22.7   45.5
+ 5B_SG        39 F-18E/F              F414-GE-400          216A_FRS   DEP  25D2A          95.00 % NC          300     2495  30546    0.429    0.000     0.000      75.5      22.4   45.6
+ 5B_SG        40 F-18E/F              F414-GE-400          221A_EXP   DEP  32D1C          95.00 % NC          300     4355  24794    0.143    0.000     0.000      79.5      21.7   45.6
+ 5B_SG        41 F-18E/F              F414-GE-400          215A_FRS   DEP  25D1C          95.00 % NC          300     3751  28015    0.286    0.000     0.000      76.1      21.3   45.6
+ 5B_SG        42 B-737-700*           CFM56-7B-24          501_MOD    DEP  07D1B       25000.00 LBS             0       47  43139    0.714    0.000     0.000      72.0      21.2   45.6
+ 5B_SG        43 B-737-700*           CFM56-7B-24          449B       PAT  25G1B       17760.00 LBS           200     3000   6406    0.143    0.000     0.000      78.7      20.9   45.6
+ 5B_SG        44 F-18E/F              F414-GE-400          213A_EXP   DEP  25D1A          95.00 % NC          300     3387  30499    0.286    0.000     0.000      75.5      20.7   45.6
+ 5B_SG        45 F-18E/F              F414-GE-400          269A       PAT  25F1B          90.00 % NC          145      592  46912    0.857    0.000     0.000      70.0      20.0   45.6
+ 5B_SG        46 F-18E/F              F414-GE-400          218A_EXP   DEP  25D2C          95.00 % NC          300     4260  28091    0.143    0.000     0.000      77.2      19.3   45.7
+ 5B_SG        47 F-18E/F              F414-GE-400          218A_FLT   DEP  25D2C          95.00 % NC          300     3409  27978    0.143    0.000     0.000      77.0      19.2   45.7
+ 5B_SG        48 F-18E/F              F414-GE-400          280B_FRS   PAT  32G1B          82.00 % NC          250     3000  25966    0.571    0.000     0.000      69.8      18.0   45.7
+ 5B_SG        49 B-737-700*           CFM56-7B-24          515_MOD    DEP  32D2B       17941.00 LBS           250     6957   8191    0.143    0.000     0.000      75.7      17.9   45.7
+ 5B_SG        50 F-18E/F              F414-GE-400          238A_FLT   ARR  14O2A_FLT      80.00 % NC          300     3000  10060    0.286    0.000     0.000      72.7      17.9   45.7
+ 5B_SG        51 F-18E/F              F414-GE-400          269B       PAT  25F1C          84.00 % NC          140     1000  42110    1.286    0.000     0.000      66.1      17.9   45.7
+ 5B_SG        52 F-18E/F              F414-GE-400          227B_EXP   ARR  07A3B          82.20 % NC          150     1659  27223    0.429    0.000     0.000      70.5      17.5   45.7
+ 5B_SG        53 F-18E/F              F414-GE-400          261_FRS    ITF  32CW25_FRS     78.00 % NC          350     1500  41929    1.000    0.000     0.000      66.7      17.4   45.7
+ 5B_SG        54 F-18E/F              F414-GE-400          259_FRS    ITF  32CW07_FRS     85.00 % NC          300     1945  30425    0.286    0.000     0.000      72.1      17.2   45.7
+ 5B_SG        55 B-737-700*           CFM56-7B-24          503_MOD    DEP  07D2B       25000.00 LBS             0       47  43139    0.286    0.000     0.000      72.0      17.2   45.7
+ 5B_SG        56 F-18E/F              F414-GE-400          228C_FRS   ARR  14A1C          82.20 % NC          300     1990  24075    0.143    0.000     0.000      74.7      16.8   45.7
+ 5B_SG        57 F-18E/F              F414-GE-400          241B_EXP   ARR  32O1B_FRS      78.00 % NC          350     1500  40574    0.429    0.000     0.000      69.6      16.6   45.7
+ 5B_SG        58 F-18E/F              F414-GE-400          235C_FLT   ARR  07O1C_FLT      78.00 % NC          300     4991   8597    0.143    0.000     0.000      73.6      15.7   45.7
+ 5B_SG        59 F-18E/F              F414-GE-400          238A_FRS   ARR  14O2A_FRS      80.00 % NC          300     2834  10013    0.143    0.000     0.000      73.4      15.6   45.7
+ 5B_SG        60 F-18E/F              F414-GE-400          238B_FRS   ARR  14O2B_FRS      80.00 % NC          300     2829  10078    0.143    0.000     0.000      73.4      15.6   45.7
+ 5B_SG        61 F-18E/F              F414-GE-400          241B_FLT   ARR  32O1B_FLT      78.00 % NC          350     1500  40574    0.286    0.000     0.000      69.4      14.6   45.8
+ 5B_SG        62 F-18E/F              F414-GE-400          235B_EXP   ARR  07O1B_FRS      78.00 % NC          280     4961   8579    0.143    0.000     0.000      72.3      14.5   45.8
+ 5B_SG        63 F-18E/F              F414-GE-400          235B_FLT   ARR  07O1B_FLT      78.00 % NC          300     4770   8469    0.143    0.000     0.000      72.2      14.4   45.8
+ 5B_SG        64 F-18E/F              F414-GE-400          267B       PAT  07F1C          82.20 % NC          130      740  33180    0.143    0.000     0.000      72.0      14.1   45.8
+ 5B_SG        65 F-18E/F              F414-GE-400          237A_EXP   ARR  14O1A_FRS      80.00 % NC          300     3000  26695    0.286    0.000     0.000      68.1      13.3   45.8
+ 5B_SG        66 F-18E/F              F414-GE-400          236C_FLT   ARR  07O2C_FLT      80.00 % NC          300     3000  27836    0.143    0.000     0.000      70.4      12.6   45.8
+ 5B_SG        67 F-18E/F              F414-GE-400          241C_EXP   ARR  32O1C_FRS      78.00 % NC          350     1500  37416    0.143    0.000     0.000      70.4      12.5   45.8
+ 5B_SG        68 F-18E/F              F414-GE-400          241C_FLT   ARR  32O1C_FLT      78.00 % NC          350     1500  37413    0.143    0.000     0.000      70.1      12.3   45.8
+ 5B_SG        69 F-18E/F              F414-GE-400          242B_FRS   ARR  32O2B_FRS      78.00 % NC          350     1500  40574    0.286    0.000     0.000      67.0      12.2   45.8
+ 5B_SG        70 F-18E/F              F414-GE-400          239B_EXP   ARR  25O1B_FRS      78.00 % NC          350     1500  46909    0.571    0.000     0.000      63.7      11.9   45.8
+ 5B_SG        71 F-18E/F              F414-GE-400          240B_EXP   ARR  25O2B_FRS      78.00 % NC          350     1500  46909    0.571    0.000     0.000      63.7      11.9   45.8
+ 5B_SG        72 F-18E/F              F414-GE-400          236B_FLT   ARR  07O2B_FLT      80.00 % NC          300     3000  27836    0.286    0.000     0.000      66.5      11.7   45.8
+ 5B_SG        73 F-18E/F              F414-GE-400          282B_M     PAT  14F1C          84.00 % NC          140      450  38386    0.143    0.000     0.000      69.5      11.6   45.8
+ 5B_SG        74 P-3C                 T56-A-14             349B       PAT  25G1B        1500.00 ESHP          200     3000   6406    0.286    0.000     0.000      66.4      11.5   45.8
+ 5B_SG        75 F-18E/F              F414-GE-400          242B_FLT   ARR  32O2B_FLT      78.00 % NC          350     1500  40574    0.143    0.000     0.000      69.4      11.5   45.8
+ 5B_SG        76 F-18E/F              F414-GE-400          237B_EXP   ARR  14O1B_FRS      80.00 % NC          300     2999  26697    0.143    0.000     0.000      68.6      10.8   45.8
+ 5B_SG        77 F-18E/F              F414-GE-400          237B_FRS   ARR  14O1B_FRS      80.00 % NC          300     2532  26649    0.143    0.000     0.000      68.1      10.3   45.8
+ 5B_SG        78 F-18E/F              F414-GE-400          237A_FRS   ARR  14O1A_FRS      80.00 % NC          300     2529  26648    0.143    0.000     0.000      68.0      10.2   45.8
+ 5B_SG        79 F-18E/F              F414-GE-400          242C_FRS   ARR  32O2C_FRS      78.00 % NC          350     1500  37416    0.143    0.000     0.000      68.0      10.1   45.8
+ 5B_SG        80 F-18E/F              F414-GE-400          276PDY     PAT  32FCPY         84.00 % NC          150      800  90601    3.000    0.000     0.000      54.4       9.8   45.8
+ 5B_SG        81 F-18E/F              F414-GE-400          240B_FRS   ARR  25O2B_FRS      78.00 % NC          350     1500  46909    0.143    0.000     0.000      67.6       9.8   45.8
+ 5B_SG        82 F-18E/F              F414-GE-400          239C_EXP   ARR  25O1C_FRS      78.00 % NC          350     1500  42098    0.286    0.000     0.000      64.4       9.6   45.8
+ 5B_SG        83 F-18E/F              F414-GE-400          231B_FRS   ARR  25A2B          85.00 % NC          140       97  49540    0.286    0.000     0.000      64.1       9.3   45.8
+ 5B_SG        84 F-18E/F              F414-GE-400          241B_FRS   ARR  32O1B_FRS      78.00 % NC          350     1500  40574    0.143    0.000     0.000      67.0       9.2   45.8
+ 5B_SG        85 F-18E/F              F414-GE-400          230A_EXP   ARR  25A1D          85.00 % NC          140       97  49540    0.286    0.000     0.000      63.9       9.1   45.8
+ 5B_SG        86 F-18E/F              F414-GE-400          240C_FRS   ARR  25O2C_FRS      78.00 % NC          350     1500  42098    0.286    0.000     0.000      63.7       8.9   45.8
+ 5B_SG        87 F-18E/F              F414-GE-400          239C_FLT   ARR  25O1C_FLT      78.00 % NC          350     1500  42096    0.857    0.000     0.000      58.7       8.7   45.8
+ 5B_SG        88 B-737-700*           CFM56-7B-24          553B_MOD   PAT  25TU2C      24000.00 LBS           140      413  41960    0.429    0.000     0.000      61.0       8.0   45.8
+ 5B_SG        89 F-18E/F              F414-GE-400          239B_FLT   ARR  25O1B_FLT      78.00 % NC          350     1500  46910    0.857    0.000     0.000      57.8       7.8   45.8
+ 5B_SG        90 B-737-700*           CFM56-7B-24          513_MOD    DEP  32D1B       17941.00 LBS           250     4226  26193    0.143    0.000     0.000      65.5       7.7   45.8
+ 5B_SG        91 F-18E/F              F414-GE-400          245_FLT    ARR  25AHT          85.00 % NC          130       97  49540    0.143    0.000     0.000      65.4       7.6   45.8
+ 5B_SG        92 P-3C                 T56-A-14             313        DEP  32D1B        3500.00 ESHP          250     3193  26040    0.286    0.000     0.000      61.4       6.6   45.8
+ 5B_SG        93 F-18E/F              F414-GE-400          237B_FLT   ARR  14O1B_FLT      80.00 % NC          300     2999  26701    0.143    0.000     0.000      64.2       6.3   45.8
+ 5B_SG        94 F-18E/F              F414-GE-400          237A_FLT   ARR  14O1A_FLT      80.00 % NC          300     3000  26695    0.143    0.000     0.000      64.1       6.3   45.8
+ 5B_SG        95 B-737-700*           CFM56-7B-24          401        DEP  07D1B       27000.00 LBS             0       47  43139    0.143    0.000     0.000      64.1       6.2   45.8
+ 5B_SG        96 F-18E/F              F414-GE-400          233C_FRS   ARR  32A1C          85.00 % NC          140       97  49967    0.143    0.000     0.000      64.0       6.2   45.8
+ 5B_SG        97 F-18E/F              F414-GE-400          230A_FRS   ARR  25A1D          85.00 % NC          140       97  49540    0.143    0.000     0.000      63.9       6.1   45.8
+ 5B_SG        98 F-18E/F              F414-GE-400          231B_EXP   ARR  25A2B          85.00 % NC          140       97  49540    0.143    0.000     0.000      63.9       6.1   45.8
+ 5B_SG        99 F-18E/F              F414-GE-400          239C_FRS   ARR  25O1C_FRS      78.00 % NC          350     1500  42098    0.143    0.000     0.000      63.7       5.9   45.8
+
