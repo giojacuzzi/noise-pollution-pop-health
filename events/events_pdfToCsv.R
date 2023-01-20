@@ -59,5 +59,5 @@ for (pdf in pdfs) {
     event_data = rbind(event_data, page_data)
   }
   
-  write.csv(event_data, paste('data/', pdf, '.csv', sep=''), row.names=FALSE)
+  write.csv(event_data, paste('data/events/', pdf, '.csv', sep=''), row.names=FALSE)
 }
