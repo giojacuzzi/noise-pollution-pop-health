@@ -17,10 +17,31 @@ for (date in dates) {
 
 results = events_data
 
+DEBUG_PLOT = F
+
 # For all events at this site, calculate onset rate
-for (row in 1:nrow(site_events)) {
+for (row in 1:nrow(site_events)) { #1:nrow(site_events)
   event = site_events[row,]
   print(paste('EVENT', event$UniqueEventID))
+  
+  
+  # DEBUG: plot event (check out events 16, 32,33,34,37,67)
+  if (DEBUG_PLOT) {
+    buffer = 30
+    t1 = as.POSIXct(event$StartTime, tz='UTC')
+    t2 = as.POSIXct(event$StopTime, tz='UTC')
+    tMax = as.POSIXct(event$LAeq_LmaxTime, tz='UTC')
+    library(ggplot2)
+    event_data = data[which(data$Time==t1-buffer):which(data$Time==t2+buffer),]
+    
+    print(ggplot(event_data, aes(x=Time, y=LAeq)) +
+            geom_line() +
+            geom_vline(xintercept = t1) +
+            geom_vline(xintercept = t2) +
+            geom_vline(xintercept = tMax, linetype = 'dashed', colour = 'red')
+    )
+  }
+  # DEBUG: plot event
   
   event_start = which(data$Time==as.POSIXct(event$StartTime[1], tz='UTC'))
   event_end = which(data$Time==as.POSIXct(event$StopTime[1], tz='UTC')) - 1
@@ -54,6 +75,8 @@ for (row in 1:nrow(site_events)) {
   print(paste('OnsetRate is raw', onset_rate, 'vs theirs', their_onset_rate))
   print(paste(event_data$LAeq[onset_end], '-', event_data$LAeq[1], '/', onset_end,'-',1))
   print(paste(event$LAeq_Lmax, '-', event_data$LAeq[1], '/', their_onset_time_diff))
+  
+  if (DEBUG_PLOT) readline(prompt="Press [enter] to continue")
 
   results[results$UniqueEventID==event$UniqueEventID,'OnsetRateRaw'] = onset_rate
   results[results$UniqueEventID==event$UniqueEventID,'OnsetRateReported'] = their_onset_rate
