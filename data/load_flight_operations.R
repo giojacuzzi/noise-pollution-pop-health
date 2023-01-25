@@ -5,7 +5,10 @@ clean_flight_ops_data = function(data) {
   data = data[-which(data$Track.Group=='Subtotal'),] # Remove subtotal rows
   data = data[rowSums(is.na(data)) != ncol(data),]   # Remove empty (NA) rows
   data = data[-which(data$Aircraft=='Aircraft'),]    # Remove duplicate row headers
-  return(data)
+  data$Num.Day   = as.numeric(data$Num.Day)
+  data$Num.Night = as.numeric(data$Num.Night)
+  data$Num.Total = as.numeric(data$Num.Total)
+  return(data.frame(data))
 }
 
 files = c(
@@ -53,12 +56,31 @@ for (profile in profiles) {
   maxops = max(ops)
 
   if (maxops > 0) {
-    idx = which(ops==max(ops))
+    idx = which(ops==maxops)[1]
     print(paste(profile, ':', toString(ops), ' - max', maxops, 'idx', idx))
     data_max = data[[idx]]
-    row_max = data_max[data_max$Profile==profile,]
-    data_all_ops = rbind(data_all_ops, row_max)
+    data_all_ops = rbind(data_all_ops, data_max[data_max$Profile==profile,])
   }
 }
 
-
+# Format for xml conversion and save
+names(data_all_ops) = c(
+  'Aircraft',
+  'Engine',
+  'Profile',
+  'Long Name',
+  'Track',
+  'Track Type',
+  'Runway',
+  'Noise Model',
+  'A/C Category',
+  'Rep',
+  'Track Group',
+  'Num Day',
+  'Num Night',
+  'Num Total',
+  '% Day',
+  '% Night',
+  '% Total'
+)
+write.csv(data_all_ops, 'data/Noise Modeling Data/Exports/MP1/NASWI - All Flight Operations.csv')
