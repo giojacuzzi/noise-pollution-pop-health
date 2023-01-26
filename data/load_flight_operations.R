@@ -1,4 +1,4 @@
-# NOTE: The 'NASWI_MPX_Y_Noisemap - Flight Operations.xml' files have been exported from the corresponding .baseops case via BaseOps, where X is the monitoring period and Y is the file number (for Ault Field; Coupeville doesn't have this). These exports have been copied over to 'data/Noise Modeling Data/Exports/MP1', then opened in MS Excel, and saved as the .csv files used here.
+# NOTE: The 'NASWI_MPX_Y_Noisemap - Flight Operations.xml' files have been exported from the corresponding .baseops case via BaseOps (all columns), where X is the monitoring period and Y is the file number (for Ault Field; Coupeville doesn't have this). These exports were then moved over to 'data/Noise Modeling Data/Exports/MPX', then opened in MS Excel, and saved as the .csv files used here.
 
 clean_flight_ops_data = function(data) {
   data[data==''] = NA                                # Replace empty values with NA
@@ -106,7 +106,7 @@ for (period in periods) {
   # - Number of night operations
   # NOTE: We currently only have day/night values for the operations on average annual day
   
-  filename = paste0('data/Noise Modeling Data/Aggregates/', period,'/NASWI - Aggregate Flight Operations.csv')
+  filename = paste0('data/Noise Modeling Data/Aggregates/NASWI - Aggregate Flight Operations ', period, '.csv')
   write.csv(data_all_ops,
             file=filename,
             row.names=F,
