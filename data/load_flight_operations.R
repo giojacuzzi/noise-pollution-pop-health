@@ -22,6 +22,7 @@ get_total_quantity_ops = function(data) {
 
 periods = c('MP1','MP2','MP3','MP4')
 
+metadata = data.frame()
 for (period in periods) {
   
   # Get all six files for the period...
@@ -77,6 +78,22 @@ for (period in periods) {
     data_all_ops = rbind(data_all_ops, data_max[data_max$Profile==profile,])
   }
   
+  # File name for aggregate results
+  filename = paste0('data/Noise Modeling Data/Aggregates/NASWI - Aggregate Flight Operations ', period, '.csv')
+
+  # Add to total metadata file
+  aggregate_num_active_op_profiles = get_num_active_ops(data_all_ops)
+  aggregate_total_quantity_ops = get_total_quantity_ops(data_all_ops)
+  metadata = rbind(
+    metadata,
+    data.frame(
+      Period           = period,
+      File             = c(basename(files), basename(filename)),
+      ActiveOpProfiles = c(unlist(num_active_ops), aggregate_num_active_op_profiles),
+      TotalQuantityOps = c(unlist(total_quantity_ops), aggregate_total_quantity_ops)
+    )
+  )
+  
   # Format for xml conversion and save
   names(data_all_ops) = c( 
     'Aircraft',
@@ -105,8 +122,6 @@ for (period in periods) {
   # - Number of evening operations 
   # - Number of night operations
   # NOTE: We currently only have day/night values for the operations on average annual day
-  
-  filename = paste0('data/Noise Modeling Data/Aggregates/NASWI - Aggregate Flight Operations ', period, '.csv')
   write.csv(data_all_ops,
             file=filename,
             row.names=F,
@@ -144,3 +159,12 @@ for (period in periods) {
   # Press OK again
   
 }
+
+# Save total metadata file
+metadata_filename = paste0('data/Noise Modeling Data/Aggregates/Metadata.csv')
+write.csv(metadata,
+          file=metadata_filename,
+          row.names=F,
+          quote=F,
+          na='')
+message(paste('Created', metadata_filename))
