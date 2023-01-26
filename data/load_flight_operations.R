@@ -81,6 +81,38 @@ names(data_all_ops) = c(
   '% Night',
   '% Total'
 )
+
+# Using Microsoft Excel, create a spreadsheet containing the following:
+# - Flight profile name
+# - Flight track name
+# - Number of day operations
+# - Number of evening operations 
+# - Number of night operations
+# NOTE: We currently only have day/night values for the operations on average annual day
+
 write.csv(data_all_ops, 'data/Noise Modeling Data/Exports/MP1/NASWI - All Flight Operations.csv')
 
-# Next, open the csv with Excel. Also open a copy of an original xml export from baseops. Copy the rows from one to the other, save, and use that.
+# Next, open the csv with Excel?
+
+# In baseops:
+# File > Import Flight Operations from Spreadsheet
+# Option Categories > File > Import operations from the following spreadsheet file: <the file>
+# Option Categories > Columns:
+#   Flight Profile Name Column: C (3)
+#   Num Day Ops Column: L (12)
+#   Num Night Ops Column: M (13)
+#   Also import flight tracks: yes
+#   Flight Track Name Column: E (5)
+# Press OK... You should see the following message:
+#   Importing flight profiles from spreadsheet file NASWI_MP1_Noisemap - Flight Operations.xml  
+#   The following flight profiles appear in both the BaseOps case and the  
+#   spreadsheet file.  
+# 
+#   The daily flight profile operation counts in the BaseOps case will be updated to  
+#   match the values in the spreadsheet file.  
+# 
+#   226A_EXP  
+#   226A_FLT  
+#   226A_FRS
+#   ...
+# Press OK again
