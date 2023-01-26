@@ -118,13 +118,7 @@ for (period in periods) {
   # Remove '% Total' values, as they may be incorrect after aggregation
   data_all_ops[,'% Total'] = NA
   
-  # Using Microsoft Excel, create a spreadsheet containing the following:
-  # - Flight profile name
-  # - Flight track name
-  # - Number of day operations
-  # - Number of evening operations 
-  # - Number of night operations
-  # NOTE: We currently only have day/night values for the operations on average annual day
+  # Create the aggregate csv
   write.csv(data_all_ops,
             file=filename,
             row.names=F,
@@ -133,6 +127,7 @@ for (period in periods) {
   message(paste('Created', filename))
   
   # Next, open the csv with Excel, and re-save it as an xml
+  # NOTE: We currently only have day/night values (not evening) for the operations on average annual day, so in the next step, we cannot import any data from an 'evening' column
   
   # In baseops:
   # File > Import Flight Operations from Spreadsheet
