@@ -53,18 +53,16 @@ for (profile in profiles) {
   ops_8B_SG      = data[[5]][data[[5]]$Profile==profile, 'Num.Total']
   ops_9B_SG      = data[[6]][data[[6]]$Profile==profile, 'Num.Total']
   ops = c(ops_coupeville, ops_2B_T, ops_3A_T, ops_5B_SG, ops_8B_SG, ops_9B_SG)
+  
   maxops = max(ops)
-
-  if (maxops > 0) {
-    idx = which(ops==maxops)[1]
-    print(paste(profile, ':', toString(ops), ' - max', maxops, 'idx', idx))
-    data_max = data[[idx]]
-    data_all_ops = rbind(data_all_ops, data_max[data_max$Profile==profile,])
-  }
+  idx = which(ops==maxops)[1]
+  # print(paste(profile, ':', toString(ops), ' - max', maxops, 'idx', idx))
+  data_max = data[[idx]]
+  data_all_ops = rbind(data_all_ops, data_max[data_max$Profile==profile,])
 }
 
 # Format for xml conversion and save
-names(data_all_ops) = c(
+names(data_all_ops) = c( 
   'Aircraft',
   'Engine',
   'Profile',
@@ -84,3 +82,5 @@ names(data_all_ops) = c(
   '% Total'
 )
 write.csv(data_all_ops, 'data/Noise Modeling Data/Exports/MP1/NASWI - All Flight Operations.csv')
+
+# Next, open the csv with Excel. Also open a copy of an original xml export from baseops. Copy the rows from one to the other, save, and use that.
