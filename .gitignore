@@ -1,3 +1,21 @@
+# NOISEMAP files
+.dbf
+.prj
+.shp
+.shp.xml
+.shx
+.i10
+.log
+.o10
+.i11
+.011
+.grd
+.ops
+.opx
+.poi
+.run
+.nmp
+
 # Apple files
 .DS_Store
 
