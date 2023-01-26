@@ -125,37 +125,6 @@ for (period in periods) {
             quote=F,
             na='')
   message(paste('Created', filename))
-  
-  # Next, open the csv with Excel, and re-save it as an xml
-  # NOTE: We currently only have day/night values (not evening) for the operations on average annual day, so in the next step, we cannot import any data from an 'evening' column
-  
-  # In baseops:
-  # File > Import Flight Operations from Spreadsheet
-  # Option Categories > File > Import operations from the following spreadsheet file: <the xml file you just saved>
-  # Option Categories > Columns:
-  #   Flight Profile Name Column: C (3)
-  #   Num Day Ops Column: L (12)
-  #   Num Night Ops Column: M (13)
-  #   Also import flight tracks: yes
-  #   Flight Track Name Column: E (5)
-  # Option Categories > Missing Data
-  #   If a flight profile in the spreadsheet is missing from the BaseOps case, then... Add the missing profile to the BaseOps case
-  #   If a flight profile in the BaseOps case is missing from the spreadsheet, then... Leave the profile unchanged in the BaseOps case
-  #   If you are also importing flight tracks, and a flight track in the spreadsheet is missing from the BaseOps case, then... Set the profile's flight track to "undefined"
-  # Press OK... You should see the following message:
-  #   Importing flight profiles from spreadsheet file NASWI_MP1_Noisemap - Flight Operations.xml  
-  #   The following flight profiles appear in both the BaseOps case and the  
-  #   spreadsheet file.  
-  # 
-  #   The daily flight profile operation counts in the BaseOps case will be updated to  
-  #   match the values in the spreadsheet file.  
-  # 
-  #   226A_EXP  
-  #   226A_FLT  
-  #   226A_FRS
-  #   ...
-  # Press OK again
-  
 }
 
 # Save total metadata file
@@ -166,3 +135,33 @@ write.csv(metadata,
           quote=F,
           na='')
 message(paste('Created', metadata_filename))
+
+# Next, open the 4 aggregate csv files with Excel, and re-save them as xml
+# NOTE: We currently only have day/night values (not evening) for the operations on average annual day, so in the next step, we cannot import any data from an 'evening' column
+
+# In baseops:
+# File > Import Flight Operations from Spreadsheet
+# Option Categories > File > Import operations from the following spreadsheet file: <the xml file you just saved>
+# Option Categories > Columns:
+#   Flight Profile Name Column: C (3)
+#   Num Day Ops Column: L (12)
+#   Num Night Ops Column: M (13)
+#   Also import flight tracks: yes
+#   Flight Track Name Column: E (5)
+# Option Categories > Missing Data
+#   If a flight profile in the spreadsheet is missing from the BaseOps case, then... Add the missing profile to the BaseOps case
+#   If a flight profile in the BaseOps case is missing from the spreadsheet, then... Leave the profile unchanged in the BaseOps case
+#   If you are also importing flight tracks, and a flight track in the spreadsheet is missing from the BaseOps case, then... Set the profile's flight track to "undefined"
+# Press OK... You should see the following message:
+#   Importing flight profiles from spreadsheet file NASWI_MP1_Noisemap - Flight Operations.xml  
+#   The following flight profiles appear in both the BaseOps case and the  
+#   spreadsheet file.  
+# 
+#   The daily flight profile operation counts in the BaseOps case will be updated to  
+#   match the values in the spreadsheet file.  
+# 
+#   226A_EXP  
+#   226A_FLT  
+#   226A_FRS
+#   ...
+# Press OK again
