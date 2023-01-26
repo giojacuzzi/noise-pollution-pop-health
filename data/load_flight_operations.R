@@ -115,6 +115,9 @@ for (period in periods) {
     '% Total'
   )
   
+  # Remove '% Total' values, as they may be incorrect after aggregation
+  data_all_ops[,'% Total'] = NA
+  
   # Using Microsoft Excel, create a spreadsheet containing the following:
   # - Flight profile name
   # - Flight track name
