@@ -92,7 +92,9 @@ names(data_all_ops) = c(
 
 write.csv(data_all_ops,
           file='data/Noise Modeling Data/Exports/MP1/NASWI - All Flight Operations.csv',
-          row.names=F)
+          row.names=F,
+          quote=F,
+          na='')
 
 # Next, open the csv with Excel, and re-save it as an xml
 
