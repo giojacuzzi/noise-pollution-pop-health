@@ -90,19 +90,25 @@ names(data_all_ops) = c(
 # - Number of night operations
 # NOTE: We currently only have day/night values for the operations on average annual day
 
-write.csv(data_all_ops, 'data/Noise Modeling Data/Exports/MP1/NASWI - All Flight Operations.csv')
+write.csv(data_all_ops,
+          file='data/Noise Modeling Data/Exports/MP1/NASWI - All Flight Operations.csv',
+          row.names=F)
 
-# Next, open the csv with Excel?
+# Next, open the csv with Excel, and re-save it as an xml
 
 # In baseops:
 # File > Import Flight Operations from Spreadsheet
-# Option Categories > File > Import operations from the following spreadsheet file: <the file>
+# Option Categories > File > Import operations from the following spreadsheet file: <the xml file you just saved>
 # Option Categories > Columns:
 #   Flight Profile Name Column: C (3)
 #   Num Day Ops Column: L (12)
 #   Num Night Ops Column: M (13)
 #   Also import flight tracks: yes
 #   Flight Track Name Column: E (5)
+# Option Categories > Missing Data
+#   If a flight profile in the spreadsheet is missing from the BaseOps case, then... Add the missing profile to the BaseOps case
+#   If a flight profile in the BaseOps case is missing from the spreadsheet, then... Leave the profile unchanged in the BaseOps case
+#   If you are also importing flight tracks, and a flight track in the spreadsheet is missing from the BaseOps case, then... Set the profile's flight track to "undefined"
 # Press OK... You should see the following message:
 #   Importing flight profiles from spreadsheet file NASWI_MP1_Noisemap - Flight Operations.xml  
 #   The following flight profiles appear in both the BaseOps case and the  
