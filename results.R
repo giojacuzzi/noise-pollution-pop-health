@@ -112,30 +112,41 @@ ggplot(max_lden_HA, aes(x=Lden, y=HA, label=rownames(max_lden_HA))) +
 
 # The percent predicted to be highly sleep-disturbed in relation to exposure to aircraft traffic noise. Based on the WHO regression model in the systematic review specified as %HSD = 16.79–0.9293 × Lnight + 0.0198 × Lnight^2
 # TODO: account for confidence intervals
-regression_HSA = function(Lnight) {
-  return(-50.9693 + 1.0168 * Lnight + 0.0072 * Lnight^2)
+regression_HSD = function(Lnight) {
+  return(16.79 - 0.9293 * Lnight + 0.0198 * Lnight^2)
 }
 
-# Plot HSA (highly sleep-disturbed)
+# Plot HSD (highly sleep-disturbed)
 
-# Mean
+ggplot(data.frame(
+  lnight=c(40,    45,    50,    55,    60,    65),
+  tmin=  c(4.72,  6.95,  9.87,  13.57, 18.15, 23.65),
+  tmax=  c(17.81, 23.08, 29.60, 37.41, 46.36, 56.05)
+)) +
+  stat_function(fun=regression_HSD) +
+  geom_ribbon(aes(x=lnight,ymin=tmin,ymax=tmax),fill='blue',alpha=0.2)
+
+# Median
 median_lden_lnight = tapply(data_metrics[!is.na(data_metrics$Lden_Lnight),'Lden_Lnight'], data_metrics[!is.na(data_metrics$Lden_Lnight),'ID'], median)
-median_lden_lnight_HSA = data.frame(Lden=sort(median_lden_lnight), HA=regression_HSA(sort(median_lden_lnight)))
+median_lden_lnight_HSD = data.frame(Lden=sort(median_lden_lnight), HSD=regression_HSD(sort(median_lden_lnight)))
 
-ggplot(median_lden_lnight_HSA, aes(x=Lden, y=HA, label=rownames(median_lden_lnight_HSA))) +
-  labs(x='Lnight Median (dB)', y='%HSA', title='WHO - Percent Highly Sleep Disturbed (Median Lnight)') +
+# TODO: combine with ribbon plot above
+# TODO: look into alternate representation via odds ratio ("forest") relationship of 1.94 (95% CI: 1.61-2.33) per 10 dB increase in noise
+
+ggplot(median_lden_lnight_HSD, aes(x=Lden, y=HSD, label=rownames(median_lden_lnight_HSD))) +
+  labs(x='Lnight Median (dB)', y='%HSD', title='WHO - Percent Highly Sleep Disturbed (Median Lnight)') +
   geom_point(col='blue') + geom_text(hjust=0, vjust=1.5, col='blue') +
   geom_hline(yintercept=0, linetype='dashed') + # 0% HSA
-  stat_function(fun=regression_HA)
+  stat_function(fun=regression_HSD)
 
 # Max
 max_lden_lnight = tapply(data_metrics[!is.na(data_metrics$Lden_Lnight),'Lden_Lnight'], data_metrics[!is.na(data_metrics$Lden_Lnight),'ID'], max)
-max_lden_lnight_HSA = data.frame(Lden=sort(max_lden_lnight), HA=regression_HSA(sort(max_lden_lnight)))
+max_lden_lnight_HSD = data.frame(Lden=sort(max_lden_lnight), HSD=regression_HSD(sort(max_lden_lnight)))
 
-ggplot(max_lden_lnight_HSA, aes(x=Lden, y=HA, label=rownames(max_lden_lnight_HSA))) +
-  labs(x='Lnight Maximum (dB)', y='%HSA', title='WHO - Percent Highly Sleep Disturbed (Maximum Lnight)') +
+ggplot(max_lden_lnight_HSD, aes(x=Lden, y=HSD, label=rownames(max_lden_lnight_HSD))) +
+  labs(x='Lnight Maximum (dB)', y='%HSD', title='WHO - Percent Highly Sleep Disturbed (Maximum Lnight)') +
   geom_point(col='red') + geom_text(hjust=0, vjust=1.5, col='red') +
-  stat_function(fun=regression_HA)
+  stat_function(fun=regression_HSD)
 
 # Time Breakdowns (NAVY only) --------------------------------------------------
 
