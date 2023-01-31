@@ -22,7 +22,7 @@ get_total_quantity_ops = function(data) {
 
 periods = c('MP1','MP2','MP3','MP4')
 
-metadata = data.frame()
+overview = data.frame()
 for (period in periods) {
   
   # Get all six files for the period...
@@ -33,7 +33,7 @@ for (period in periods) {
   # NASWI_MP1_05_Noisemap - 5B_SG Lopez Island (Point Colville)
   # NASWI_MP1_08_Noisemap - 8B_SG Dog Park (North Whidbey Parks & Rec)
   # NASWI_MP1_09_Noisemap - 9B_SG NASWI Gate (Corner of Banta Rd & Nortz Rd)
-  files = list.files(path=paste0('data/Noise Modeling Data/Exports/', period), pattern="*.csv", full.names=T, recursive=F)
+  files = list.files(path=paste0('data/flight_ops/Noise Modeling Data/Exports/', period), pattern="*.csv", full.names=T, recursive=F)
   
   if (length(files) != 6) {
     warning(paste('Expecting 6 files for period', period, 'and found', length(files)))
@@ -79,13 +79,13 @@ for (period in periods) {
   }
   
   # File name for aggregate results
-  filename = paste0('data/Noise Modeling Data/Aggregates/NASWI - Aggregate Flight Operations ', period, '.csv')
+  filename = paste('data/flight_ops/output/Period', period, 'Aggregate Flight Operations.csv')
 
-  # Add to total metadata file
+  # Add to total overview file
   aggregate_num_active_op_profiles = get_num_active_ops(data_all_ops)
   aggregate_total_quantity_ops = get_total_quantity_ops(data_all_ops)
-  metadata = rbind(
-    metadata,
+  overview = rbind(
+    overview,
     data.frame(
       Period           = period,
       File             = c(basename(files), basename(filename)),
@@ -127,14 +127,14 @@ for (period in periods) {
   message(paste('Created', filename))
 }
 
-# Save total metadata file
-metadata_filename = paste0('data/Noise Modeling Data/Aggregates/Metadata.csv')
-write.csv(metadata,
-          file=metadata_filename,
+# Save total overview file
+overview_filename = paste0('data/flight_ops/output/Overview.csv')
+write.csv(overview,
+          file=overview_filename,
           row.names=F,
           quote=F,
           na='')
-message(paste('Created', metadata_filename))
+message(paste('Created', overview_filename))
 
 # Next, open the 4 aggregate csv files with Excel, and re-save them as xml
 # NOTE: We currently only have day/night values (not evening) for the operations on average annual day, so in the next step, we cannot import any data from an 'evening' column
