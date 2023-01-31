@@ -46,12 +46,12 @@ map_files_jgl_csv = function() {
     data_txt = rbind(data_txt, r)
   }
   data_txt = cbind(Org='JGL', data_txt)
-  write.csv(data_txt, file='data/file_map_jgl.csv', row.names=FALSE)
+  write.csv(data_txt, file='data/load/output/file_map_jgl.csv', row.names=FALSE)
   return(data_txt)
 }
 
 get_file_map_jgl = function() {
-  return(read.csv('data/file_map_jgl.csv'))
+  return(read.csv('data/load/output/file_map_jgl.csv'))
 }
 
 # # Columns to subset from the raw data

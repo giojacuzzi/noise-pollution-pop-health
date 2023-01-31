@@ -1,7 +1,7 @@
 source('global.R')
-source('data/load_file_navy.R')
-source('data/load_file_sda.R')
-source('data/load_file_nps.R')
+source('data/load/load_file_navy.R')
+source('data/load/load_file_sda.R')
+source('data/load/load_file_nps.R')
 
 # Load data for given site ID at given date
 load_site_date = function(id, date) {

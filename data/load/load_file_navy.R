@@ -34,12 +34,12 @@ map_files_navy_csv = function() {
     data_xlsx = rbind(data_xlsx, r)
   }
   data_xlsx = cbind(Org='NAVY', data_xlsx)
-  write.csv(data_xlsx, file='data/file_map_navy.csv', row.names=FALSE)
+  write.csv(data_xlsx, file='data/load/output/file_map_navy.csv', row.names=FALSE)
   return(data_xlsx)
 }
 
 get_file_map_navy = function() {
-  return(read.csv('data/file_map_navy.csv'))
+  return(read.csv('data/load/output/file_map_navy.csv'))
 }
 
 # Columns to subset from the raw data

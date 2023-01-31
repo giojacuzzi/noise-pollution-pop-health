@@ -1,9 +1,10 @@
 #### Extract noise events from pdfs and save to csv files
 
-setwd(dirname(rstudioapi::getSourceEditorContext()$path))
+# setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 
 library(pdftools)
-path = '~/../../Volumes/SAFS Work/NAVY/Aircraft Noise Event Database/PUBLIC_NASWI_NoiseEvents/'
+#'~/../../Volumes/SAFS Work/NAVY/Aircraft Noise Event Database/PUBLIC_NASWI_NoiseEvents/'
+path = '~/../../Volumes/SAFS Backup/PHI Project Data/NAVY/Aircraft Noise Event Database/PUBLIC_NASWI_NoiseEvents/'
 pdfs = c(
   'Public_NoiseEvents_NASWI_M1.pdf',
   'Public_NoiseEvents_NASWI_M2.pdf',
@@ -59,5 +60,5 @@ for (pdf in pdfs) {
     event_data = rbind(event_data, page_data)
   }
   
-  write.csv(event_data, paste('data/events/', pdf, '.csv', sep=''), row.names=FALSE)
+  write.csv(event_data, paste('data/events/output/', pdf, '.csv', sep=''), row.names=FALSE)
 }

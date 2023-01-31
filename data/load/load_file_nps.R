@@ -27,12 +27,12 @@ map_files_nps_csv = function() {
     data_txt = rbind(data_txt, r)
   }
   data_txt = cbind(Org='NPS', data_txt)
-  write.csv(data_txt, file='data/file_map_nps.csv', row.names=FALSE)
+  write.csv(data_txt, file='data/load/output/file_map_nps.csv', row.names=FALSE)
   return(data_txt)
 }
 
 get_file_map_nps = function() {
-  return(read.csv('data/file_map_nps.csv'))
+  return(read.csv('data/load/output/file_map_nps.csv'))
 }
 
 # Columns to subset from the raw data
