@@ -1,5 +1,5 @@
-source('analysis/metrics.R')
-source('data/load_site_date.R')
+source('data/metrics/metrics.R')
+source('data/load/load_site_date.R')
 
 get_levels_for_org = function(data, org) {
   org = toupper(org)
@@ -113,7 +113,7 @@ calculate_metrics_csv = function(orgarg = '') {
   }
   
   # Save all metrics data to csv
-  file_name = 'data/metrics/'
+  file_name = 'data/metrics/output/'
   if (orgarg == '') {
     file_name = paste0(file_name, 'metrics.csv')
   } else {
