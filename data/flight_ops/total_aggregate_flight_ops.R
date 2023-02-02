@@ -17,4 +17,36 @@ filename = paste('data/flight_ops/output/Total Aggregate Flight Operations.csv')
 
 # TODO: Overview stats
 
+# Format columns for xml conversion and BaseOps compatibility
+names(total_ops) = c( 
+  'Aircraft',
+  'Engine',
+  'Profile',
+  'Long Name',
+  'Track',
+  'Track Type',
+  'Runway',
+  'Noise Model',
+  'A/C Category',
+  'Rep',
+  'Track Group',
+  'Num Day',
+  'Num Night',
+  'Num Total',
+  '% Day',
+  '% Night',
+  '% Total'
+)
+
+# Remove '% Total' values, as they may be incorrect after aggregation
+total_ops[,'% Total'] = NA
+
+# Create the aggregate .csv
+write.csv(total_ops,
+          file=filename,
+          row.names=F,
+          quote=F,
+          na='')
+message(paste('Created', filename))
+
 # Next, see README.md for instructions on how to convert csv to xml and import into BaseOps
