@@ -1,4 +1,4 @@
-# NOTE: The 'NASWI_MPX_Y_Noisemap - Flight Operations.xml' files have been exported from the corresponding .baseops case via BaseOps (all columns), where X is the monitoring period and Y is the file number (for Ault Field; Coupeville doesn't have this). These exports were then moved over to 'data/Noise Modeling Data/Exports/MPX', then opened in MS Excel, and saved as the .csv files used here.
+# Aggregated flight operations data per-period
 
 clean_flight_ops_data = function(data) {
   data[data==''] = NA                                # Replace empty values with NA
@@ -61,25 +61,19 @@ for (period in periods) {
                       unique(data[[6]]$Profile)))
   
   # Create a dataframe aggregating all flight operations by taking the maximum operations quantity for each profile
-  data_all_ops = data.frame()
-  for (profile in profiles) {
-    ops_coupeville = data[[1]][data[[1]]$Profile==profile, 'Num.Total']
-    ops_2B_T       = data[[2]][data[[2]]$Profile==profile, 'Num.Total']
-    ops_3A_T       = data[[3]][data[[3]]$Profile==profile, 'Num.Total']
-    ops_5B_SG      = data[[4]][data[[4]]$Profile==profile, 'Num.Total']
-    ops_8B_SG      = data[[5]][data[[5]]$Profile==profile, 'Num.Total']
-    ops_9B_SG      = data[[6]][data[[6]]$Profile==profile, 'Num.Total']
-    ops = c(ops_coupeville, ops_2B_T, ops_3A_T, ops_5B_SG, ops_8B_SG, ops_9B_SG)
-    
-    maxops = max(ops)
-    idx = which(ops==maxops)[1]
-    # print(paste(profile, ':', toString(ops), ' - max', maxops, 'idx', idx))
-    data_max = data[[idx]]
-    data_all_ops = rbind(data_all_ops, data_max[data_max$Profile==profile,])
-  }
+  library(dplyr)
+  data_all_ops = as.data.frame(
+    bind_rows(data) %>% group_by(Profile) %>% slice(which.max(Num.Total))
+  )
   
   # File name for aggregate results
   filename = paste('data/flight_ops/output/Period', period, 'Aggregate Flight Operations.csv')
+  
+  # Order by profile
+  data_all_ops = data_all_ops[order(data_all_ops$Profile),]
+  
+  # Rename cols for consistency with individual data frames
+  colnames(data_all_ops) = names(data[[1]])
 
   # Add to total overview file
   aggregate_num_active_op_profiles = get_num_active_ops(data_all_ops)
@@ -94,7 +88,7 @@ for (period in periods) {
     )
   )
   
-  # Format for xml conversion and save
+  # Format columns for xml conversion and BaseOps compatibility
   names(data_all_ops) = c( 
     'Aircraft',
     'Engine',
@@ -118,7 +112,7 @@ for (period in periods) {
   # Remove '% Total' values, as they may be incorrect after aggregation
   data_all_ops[,'% Total'] = NA
   
-  # Create the aggregate csv
+  # Create the aggregate .csv
   write.csv(data_all_ops,
             file=filename,
             row.names=F,
@@ -136,32 +130,4 @@ write.csv(overview,
           na='')
 message(paste('Created', overview_filename))
 
-# Next, open the 4 aggregate csv files with Excel, and re-save them as xml
-# NOTE: We currently only have day/night values (not evening) for the operations on average annual day, so in the next step, we cannot import any data from an 'evening' column
-
-# In baseops:
-# File > Import Flight Operations from Spreadsheet
-# Option Categories > File > Import operations from the following spreadsheet file: <the xml file you just saved>
-# Option Categories > Columns:
-#   Flight Profile Name Column: C (3)
-#   Num Day Ops Column: L (12)
-#   Num Night Ops Column: M (13)
-#   Also import flight tracks: yes
-#   Flight Track Name Column: E (5)
-# Option Categories > Missing Data
-#   If a flight profile in the spreadsheet is missing from the BaseOps case, then... Add the missing profile to the BaseOps case
-#   If a flight profile in the BaseOps case is missing from the spreadsheet, then... Leave the profile unchanged in the BaseOps case
-#   If you are also importing flight tracks, and a flight track in the spreadsheet is missing from the BaseOps case, then... Set the profile's flight track to "undefined"
-# Press OK... You should see the following message:
-#   Importing flight profiles from spreadsheet file NASWI_MP1_Noisemap - Flight Operations.xml  
-#   The following flight profiles appear in both the BaseOps case and the  
-#   spreadsheet file.  
-# 
-#   The daily flight profile operation counts in the BaseOps case will be updated to  
-#   match the values in the spreadsheet file.  
-# 
-#   226A_EXP  
-#   226A_FLT  
-#   226A_FRS
-#   ...
-# Press OK again
+# Next, see README.md for instructions on how to convert csv to xml and import into BaseOps
