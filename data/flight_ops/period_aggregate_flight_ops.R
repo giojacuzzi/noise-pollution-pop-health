@@ -33,7 +33,7 @@ for (period in periods) {
   # NASWI_MP1_05_Noisemap - 5B_SG Lopez Island (Point Colville)
   # NASWI_MP1_08_Noisemap - 8B_SG Dog Park (North Whidbey Parks & Rec)
   # NASWI_MP1_09_Noisemap - 9B_SG NASWI Gate (Corner of Banta Rd & Nortz Rd)
-  files = list.files(path=paste0('data/flight_ops/Noise Modeling Data/Exports/', period), pattern="*.csv", full.names=T, recursive=F)
+  files = list.files(path=paste0('data/flight_ops/modeling/data/original_exports/', period), pattern="*.csv", full.names=T, recursive=F)
   
   if (length(files) != 6) {
     warning(paste('Expecting 6 files for period', period, 'and found', length(files)))

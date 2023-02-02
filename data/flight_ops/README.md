@@ -4,14 +4,14 @@ This document details the process for aggregating separate per-period flight ope
 - Aggregated flight operations data per-period
 - Total flight operations data (a single comprehensive file aggregating all of the aggregated periods)
 
-The base data ('NASWI_MPX_Y_Noisemap - Flight Operations.xml' files) have been exported from their corresponding .baseops case via BaseOps (all columns), where X is the monitoring period and Y is the file number (for Ault Field; note that Coupeville activity is just represented by a single file per period). These exports were then moved over to 'data/Noise Modeling Data/Exports/', opened in MS Excel, and saved as the .csv files used in the scripts of this directory:
+The base data ('NASWI_MPX_Y_Noisemap - Flight Operations.xml' files) have been exported from their corresponding .baseops case via BaseOps (all columns), where X is the monitoring period and Y is the file number (for Ault Field; note that Coupeville activity is just represented by a single file per period). These exports are located at `'data/flight_ops/modeling/data/original_exports`. They were then opened in MS Excel, and saved as the .csv files used by the following scripts of this directory:
 
 - `period_aggregate_flight_ops.R`
 - `total_aggregate_flight_ops.R`
 
 Run both of these scripts to generate the per-period aggregates and the total singular aggregate csv outputs.
 
-Next, open the aggregate csv file(s) from `data/flight_ops/output` that you want to use with Excel, and re-save as xml file(s) in `data/flight_ops/Noise Modeling Data/Aggregates/`.
+Next, open the aggregate csv file(s) from `data/flight_ops/output` that you want to use with Excel, and re-save as xml file(s) in `data/flight_ops/modeling/data/`.
 NOTE: We currently only have day/night values (not evening) for the operations on average annual day, so in the next step, we cannot import any data from an 'evening' column.
 
 Run BaseOps, and open the corresponding .baseops case file from `.../Aggregates/NOISEMAP/`.
