@@ -14,7 +14,7 @@ Run both of these scripts to generate the per-period aggregates and the total si
 Next, open the aggregate csv file(s) from `data/flight_ops/output` that you want to use with Excel, and re-save as xml file(s) in `data/flight_ops/modeling/data/`.
 NOTE: We currently only have day/night values (not evening) for the operations on average annual day, so in the next step, we cannot import any data from an 'evening' column.
 
-Run BaseOps, and open the corresponding .baseops case file from `.../Aggregates/NOISEMAP/`.
+Run BaseOps, and open the corresponding .baseops case file from `data/flight_ops/modeling/data/`.
 
 To import new flight operations into BaseOps:
 - File > Import Flight Operations from Spreadsheet
@@ -60,14 +60,16 @@ Edit Options...
 - Contours > Color Gradient
   Manually specify mapping:
   30 white 0
-  40 blue 0
-  50 green 30
-  60 yellow 30
-  70 orange 30
-  80 red 30
-  90 maroon 30
+  40 teal 25
+  50 green 25
+  60 yellow 25
+  70 orange 25
+  80 red 25
+  90 maroon 25
 - Geographic Annotations > Points
   Point of Interest Label X
+  Color maroon
 - Background > Layers > Add Layer (SlippyMap) > Options
   Title Server URL Prefix: tile.openstreetmap.org
   Attribution Text: OpenStreetMap
+- Apply, OK
