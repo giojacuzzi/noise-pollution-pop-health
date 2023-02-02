@@ -67,7 +67,7 @@ for (pdf in files) {
     data = rbind(data, page_data)
   }
   
-  filename = paste0('data/flight_ops/output/', basename(pdf), '.csv')
+  filename = paste0('data/flight_ops/output/ault/', basename(pdf), '.csv')
   write.csv(data, filename, row.names=F)
   print(paste('Created', filename))
 }
