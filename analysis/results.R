@@ -150,42 +150,42 @@ ggplot(max_lden_lnight_HSD, aes(x=Lden, y=HSD, label=rownames(max_lden_lnight_HS
 
 # Time Breakdowns (NAVY only) --------------------------------------------------
 
-day_abbr = c('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun')
-# season_abbr = c('Spring', 'Summer', 'Fall', 'Winter')
-daily_levels = na.omit(data_metrics[data_metrics$Org=='NAVY', ])
-daily_levels = cbind(daily_levels, Day=weekdays(as.POSIXct(daily_levels$Date, tz='UTC'), abbreviate=T))
-daily_levels$Day = factor(daily_levels$Day, levels=day_abbr)
-
-daily_levels = cbind(daily_levels, Month=months(as.POSIXct(daily_levels$Date, tz='UTC'), abbreviate=T))
-daily_levels$Month = factor(daily_levels$Month, levels=month.abb)
-# daily_levels = cbind(daily_levels, Season=cut(as.numeric(daily_levels$Month), breaks=c(12,2,5,8,11), labels=season_abbr, right=T))
-# daily_levels$Season = factor(daily_levels$Season, levels=season_abbr)
-daily_levels = cbind(daily_levels, Period=daily_levels$Month)
-levels(daily_levels$Period)[levels(daily_levels$Period)=='Mar'] <- 'Mar/Apr'
-levels(daily_levels$Period)[levels(daily_levels$Period)=='Apr'] <- 'Mar/Apr'
-
-# Median Leq hourly heatmap per day
-data_hour_day_levels = data.frame()
-for (hour in 0:23) {
-  leq_hr = paste('Leq', formatC(hour, width=2, flag='0'), sep='')
-  result = tapply(daily_levels[,leq_hr], INDEX=daily_levels$Day, FUN=median)
-  result = data.frame(Hour=hour, Day=names(result), Leq=result)
-  rownames(result) = c()
-  data_hour_day_levels = rbind(data_hour_day_levels, result)
-}
-data_hour_day_levels$Day = factor(data_hour_day_levels$Day, levels = day_abbr)
-
-ggplot(data_hour_day_levels[order(as.numeric(data_hour_day_levels$Day)),], aes(x=Hour, y=Day, fill=Leq)) + 
-  geom_tile() +
-  scale_fill_viridis(option='A') +
-  labs(title='Median Leq heatmap across all Navy sites', x='Hour', y='Day') +
-  scale_x_continuous('Hour', labels = as.character(0:23), breaks = 0:23)
-
-# Ldn per day
-ggplot(daily_levels[order(daily_levels$Day), ], aes(x=Day, y=Ldn, fill=Org)) + 
-  geom_boxplot(alpha=0.4) +
-  labs(title='Ldn per day across all Navy sites', x ='Day', y ='Ldn (dBA)') +
-  geom_hline(yintercept=65, linetype='dotted', colour='red') # HUD / FAA
+# day_abbr = c('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun')
+# # season_abbr = c('Spring', 'Summer', 'Fall', 'Winter')
+# daily_levels = na.omit(data_metrics[data_metrics$Org=='NAVY', ])
+# daily_levels = cbind(daily_levels, Day=weekdays(as.POSIXct(daily_levels$Date, tz='UTC'), abbreviate=T))
+# daily_levels$Day = factor(daily_levels$Day, levels=day_abbr)
+#
+# daily_levels = cbind(daily_levels, Month=months(as.POSIXct(daily_levels$Date, tz='UTC'), abbreviate=T))
+# daily_levels$Month = factor(daily_levels$Month, levels=month.abb)
+# # daily_levels = cbind(daily_levels, Season=cut(as.numeric(daily_levels$Month), breaks=c(12,2,5,8,11), labels=season_abbr, right=T))
+# # daily_levels$Season = factor(daily_levels$Season, levels=season_abbr)
+# daily_levels = cbind(daily_levels, Period=daily_levels$Month)
+# levels(daily_levels$Period)[levels(daily_levels$Period)=='Mar'] <- 'Mar/Apr'
+# levels(daily_levels$Period)[levels(daily_levels$Period)=='Apr'] <- 'Mar/Apr'
+#
+# # Ldn per day
+# ggplot(daily_levels[order(daily_levels$Day), ], aes(x=Day, y=Ldn, fill=Org)) +
+#   geom_boxplot(alpha=0.4) +
+#   labs(title='Ldn per day across all Navy sites', x ='Day', y ='Ldn (dBA)') +
+#   geom_hline(yintercept=65, linetype='dotted', colour='red') # HUD / FAA
+#
+# # Median Leq hourly heatmap per day
+# data_hour_day_levels = data.frame()
+# for (hour in 0:23) {
+#   leq_hr = paste('Leq', formatC(hour, width=2, flag='0'), sep='')
+#   result = tapply(daily_levels[,leq_hr], INDEX=daily_levels$Day, FUN=median)
+#   result = data.frame(Hour=hour, Day=names(result), Leq=result)
+#   rownames(result) = c()
+#   data_hour_day_levels = rbind(data_hour_day_levels, result)
+# }
+# data_hour_day_levels$Day = factor(data_hour_day_levels$Day, levels = day_abbr)
+#
+# ggplot(data_hour_day_levels[order(as.numeric(data_hour_day_levels$Day)),], aes(x=Hour, y=Day, fill=Leq)) +
+#   geom_tile() +
+#   scale_fill_viridis(option='A') +
+#   labs(title='Median Leq heatmap across all Navy sites', x='Hour', y='Day') +
+#   scale_x_continuous('Hour', labels = as.character(0:23), breaks = 0:23)
 
 # # Leq per hour, per day
 # for (day in day_abbr) {
@@ -219,7 +219,7 @@ ggplot(daily_levels[order(daily_levels$Day), ], aes(x=Day, y=Ldn, fill=Org)) +
 #   labs(title='Hourly Leq per day across all Navy sites', x ='Day', y ='Leq (dBA)')
 
 # # Lmax per day
-# ggplot(daily_levels[order(daily_levels$Day), ], aes(x=Day, y=Lmax, fill=Org)) + 
+# ggplot(daily_levels[order(daily_levels$Day), ], aes(x=Day, y=Lmax, fill=Org)) +
 #   geom_boxplot(alpha=0.4) +
 #   labs(title='Lmax per day across all Navy sites', x ='Day', y ='Lmax (dBA)') +
 #   geom_hline(yintercept=65, linetype='dotted', colour='red') # HUD / FAA
