@@ -1,4 +1,6 @@
-# 
+# Lden per day, per season, per airfield
+
+library(ggplot2)
 sites = read.csv('data/sites/sites.csv')
 metrics = read.csv('data/metrics/output/metrics_NAVY.csv')
 

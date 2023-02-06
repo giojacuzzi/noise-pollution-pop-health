@@ -1,6 +1,8 @@
 # Analysis of navy flight ops record from 'Flight Operations Data'
+library(ggplot2)
 library(patchwork)
 library(stringr)
+
 hours = str_pad(0:23, 2, pad = '0')
 days  = c('Mon','Tue','Wed','Thu','Fri','Sat','Sun')
 
@@ -42,7 +44,7 @@ for (file in files) {
 
   p_ault_hourly = ggplot(data=pdata_hourly, aes(x=Hour, y=NumOps, fill=TimePeriod)) +
     geom_bar(stat='identity') +
-    labs(title=paste('Recorded Flight Operations by Hour - Ault Field, Monitoring Period', period),
+    labs(title=paste('Recorded Flight Operations by Hour - Ault Field, Week', period),
          subtitle=paste('Total:', sum(hourly_ops)),
          x ='Hour',
          y ='Number of Operations') +
@@ -62,7 +64,7 @@ for (file in files) {
   
   p_ault_daily = ggplot(data=pdata_daily[order(pdata_daily$Day), ], aes(x=Day, y=NumOps)) +
     geom_bar(stat='identity') +
-    labs(title=paste('Recorded Flight Operations by Weekday - Ault Field, Monitoring Period', period),
+    labs(title=paste('Recorded Flight Operations by Weekday - Ault Field, Week', period),
          subtitle=paste('Total:', sum(daily_ops)),
          x ='Day',
          y ='Number of Operations')
@@ -75,3 +77,10 @@ for (file in files) {
 (plots_ault_hourly[[1]] + plots_ault_hourly[[2]]) / (plots_ault_hourly[[3]] + plots_ault_hourly[[4]])
 # Operations by weekday
 (plots_ault_daily[[1]] + plots_ault_daily[[2]]) / (plots_ault_daily[[3]] + plots_ault_daily[[4]])
+
+# OLF Coupeville data processing ---------------------------------------------------
+# TODO
+# files = list.files(path='data/flight_ops/output/coup/', pattern="*.csv", full.names=T, recursive=F)
+# data_coop = data.frame()
+# plots_coop_hourly = list()
+# plots_coop_daily  = list()
