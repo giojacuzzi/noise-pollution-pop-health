@@ -20,13 +20,13 @@ plots_ault_daily  = list()
 
 for (file in files) {
   
-  period = substring(basename(file), 7, 9) # Monitoring period
+  period = substring(basename(file), 9, 9) # Monitoring period
   data_period = read.csv(file)
-  data_period$LogTime           = as.POSIXct(data_period$LogTime)
-  data_period$Hour              = strftime(data_period$LogTime, format='%H')
-  data_period$TimePeriod        = get_time_period_for_hours(data_period$Hour)
-  data_period$Day               = factor(weekdays(data_period$LogTime, abbreviate=T), levels=days)
-  data_period$MonitoringPeriod  = period
+  data_period$Time       = as.POSIXct(data_period$Time)
+  data_period$Hour       = strftime(data_period$Time, format='%H')
+  data_period$TimePeriod = get_time_period_for_hours(data_period$Hour)
+  data_period$Day        = factor(weekdays(data_period$Time, abbreviate=T), levels=days)
+  data_period$Period     = period
   
   data_ault = rbind(data_ault, data_period)
   
@@ -79,8 +79,14 @@ for (file in files) {
 (plots_ault_daily[[1]] + plots_ault_daily[[2]]) / (plots_ault_daily[[3]] + plots_ault_daily[[4]])
 
 # OLF Coupeville data processing ---------------------------------------------------
-# TODO
-# files = list.files(path='data/flight_ops/output/coup/', pattern="*.csv", full.names=T, recursive=F)
-# data_coop = data.frame()
-# plots_coop_hourly = list()
-# plots_coop_daily  = list()
+
+data_coop = read.csv('data/flight_ops/output/coup/Coupeville Ops.csv')
+data_coop$Time       = as.POSIXct(data_coop$Time)
+data_coop$Hour       = strftime(data_coop$Time, format='%H')
+data_coop$TimePeriod = get_time_period_for_hours(data_coop$Hour)
+data_coop$Day        = factor(weekdays(data_coop$Time, abbreviate=T), levels=days)
+data_coop$Month      = months(data_coop$Time, abbreviate=T)
+data_coop$Period     = unlist(lapply(data_coop$Month, FUN=function(x){ switch(x, 'Dec'=1, 'Mar'=2, 'Apr'=2, 'Jun'=3, 'Aug'=4) }))
+
+plots_coop_hourly = list()
+plots_coop_daily  = list()
