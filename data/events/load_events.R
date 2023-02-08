@@ -1,35 +1,29 @@
 #### Extract noise events from pdfs and save to csv files
 
-# setwd(dirname(rstudioapi::getSourceEditorContext()$path))
-
 library(pdftools)
-#'~/../../Volumes/SAFS Work/NAVY/Aircraft Noise Event Database/PUBLIC_NASWI_NoiseEvents/'
-path = '~/../../Volumes/SAFS Backup/PHI Project Data/NAVY/Aircraft Noise Event Database/PUBLIC_NASWI_NoiseEvents/'
-pdfs = c(
-  'Public_NoiseEvents_NASWI_M1.pdf',
-  'Public_NoiseEvents_NASWI_M2.pdf',
-  'Public_NoiseEvents_NASWI_M3.pdf',
-  'Public_NoiseEvents_NASWI_M4.pdf'
-)
+files = list.files(path='~/../../Volumes/SAFS Work/NAVY/Aircraft Noise Event Database/PUBLIC_NASWI_NoiseEvents', pattern="Public_NoiseEvents_NASWI_M(1|2|3|4).pdf", full.names=T, recursive=F)
 
 format_date = '%m/%d/%Y'
 format_time = '%H:%M:%S'
 
 # For each pdf, convert to data frame and export to csv
-for (pdf in pdfs) {
-  event_pages = pdf_text(paste(path, pdf, sep=''))
-  event_data = data.frame(matrix(ncol=9, nrow=0))
-  colnames(event_data) = c('SiteID',scan(text = trimws(strsplit(event_pages[1],'\n')[[1]]), what = "")[1:8])
+for (pdf in files) {
+  message(paste('Reading', basename(pdf), '...'))
+  period = substring(basename(pdf), 27, 27) # Monitoring period
   
-  # For each page of the pdf, parse and bind to event_data
+  event_pages = pdf_text(pdf)
+  period_data = data.frame(matrix(ncol=9, nrow=0))
+  colnames(period_data) = c('SiteID',scan(text=trimws(strsplit(event_pages[1],'\n')[[1]]), what ='', quiet=T)[1:8])
+  
+  # For each page of the pdf, parse and bind to period_data
   for (page in event_pages) {
     page = strsplit(page, "\n")
     page = page[[1]]
     page = trimws(page)
     
     page_data = data.frame(matrix(ncol=9, nrow=0))
-    colnames(page_data) = colnames(event_data)
-    page_text = scan(text = page, what = "")
+    colnames(page_data) = colnames(period_data)
+    page_text = scan(text=page, what ='', quiet=T)
     
     # Determine the site ID
     siteID = page_text[grep('Page', page_text) - 1]
@@ -51,14 +45,17 @@ for (pdf in pdfs) {
         as.POSIXlt(paste(row_text[10],row_text[11]), paste(format_date,format_time), tz='UTC') # LAeq_LmaxTime (date and time)
       )
       row_data = as.data.frame(row_data)
-      colnames(row_data) = colnames(event_data)
+      colnames(row_data) = colnames(period_data)
       page_data = rbind.data.frame(page_data, row_data)
       ch = ch + 11
     }
     colnames(page_data) = c('SiteID',page_text[1:8])
     page_data = na.omit(page_data)
-    event_data = rbind(event_data, page_data)
+    period_data = rbind(period_data, page_data)
+    message(siteID)
   }
   
-  write.csv(event_data, paste('data/events/output/', pdf, '.csv', sep=''), row.names=FALSE)
+  path = paste0('data/events/output/events_', period, '.csv')
+  write.csv(period_data, path, row.names=F)
+  message(paste('Created', path))
 }
