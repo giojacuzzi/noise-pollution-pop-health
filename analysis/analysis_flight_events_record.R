@@ -19,8 +19,8 @@ for (s in 1:nrow(sites)) {
     xlim(25, 125) + ylim(0,1500) +
     labs(title=paste0(site, ' (', sites[s,'Name'], ')'),
          subtitle=paste('Mean events per week:', mean_events)) +
-    labs(x =ifelse(s==9,'LAeq_Lmax',''),
-         y =ifelse(s==9,'Number of events','')) +
+    labs(x =ifelse((s==4 | s==9),'LAeq_Lmax',''),
+         y =ifelse((s==4 | s==9),'Number of events','')) +
     theme(legend.position=ifelse((s==5 | s==11), 'right', 'none'))
   
   plots_events_per_site[[s]] = p
