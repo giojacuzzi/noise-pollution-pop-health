@@ -6,6 +6,8 @@ files = list.files(path='~/../../Volumes/SAFS Work/NAVY/Aircraft Noise Event Dat
 format_date = '%m/%d/%Y'
 format_time = '%H:%M:%S'
 
+data = data.frame()
+
 # For each pdf, convert to data frame and export to csv
 for (pdf in files) {
   message(paste('Reading', basename(pdf), '...'))
@@ -54,8 +56,13 @@ for (pdf in files) {
     period_data = rbind(period_data, page_data)
     message(siteID)
   }
+  period_data$MonitoringPeriod = period
+  data = rbind(data, period_data)
   
   path = paste0('data/events/output/events_', period, '.csv')
   write.csv(period_data, path, row.names=F)
   message(paste('Created', path))
 }
+path = 'data/events/output/events.csv'
+write.csv(data, path)
+message(paste('Created', path))
