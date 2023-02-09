@@ -3,12 +3,15 @@ library(ggplot2)
 library(viridis)
 theme_set(theme_minimal())
 
+days  = c('Mon','Tue','Wed','Thu','Fri','Sat','Sun')
+
 sites = read.csv('data/sites/sites.csv')
 sites = sites[sites$Org=='NAVY' & (sites$Region=='Ault Field' | sites$Region=='OLF Coupeville'), ]
 events = read.csv('data/events/output/events.csv')
 events$MonitoringPeriod = as.factor(events$MonitoringPeriod)
-events$StartTime       = as.POSIXct(events$StartTime)
-events$Hour       = as.factor(strftime(events$StartTime, format='%H'))
+events$StartTime        = as.POSIXct(events$StartTime)
+events$Hour             = as.factor(strftime(events$StartTime, format='%H'))
+events$Day              = factor(weekdays(events$StartTime, abbreviate=T), levels=days)
 
 # Ault Field: 9B_SG (NASWI Gate)
 # OLF Coupeville: 24A_B (Reuble Farm)
@@ -19,19 +22,12 @@ for (site in sites_to_plot) {
   
   # TODO: cut breaks for sleep disturbance?
   events_site$Range_LAeq_Lmax = cut(events_site$LAeq_Lmax, breaks=c(0,50,70,90,200), right=F)
-  
-  num_events_per_period = summary(events_site$MonitoringPeriod)
-  num_events_per_hour   = summary(events_site$Hour)
-  num_events_per_hour_period = tapply(X=events_site$Hour, INDEX=events_site$MonitoringPeriod, FUN=summary)
-  
-  num_events_per_period_hour = tapply(X=events_site$MonitoringPeriod, INDEX=events_site$Hour, FUN=summary)
-  mean_events_per_hour = unlist(lapply(num_events_per_period_hour, mean))
-  
+  factor_levels = c("[0,50)", "[50,70)" , "[70,90)", "[90,200)")
+  factor_lables = c("0-50", "50-70", "70-90", "90+")
+
   num_events_per_range_hour = tapply(X=events_site$Range_LAeq_Lmax, INDEX=events_site$Hour, FUN=summary)
+  # Average across 4 periods
   mean_events_per_range_hour = lapply(num_events_per_range_hour, function(x){x/4})
-  
-  fixer = tapply(X=events_site$Hour, INDEX=events_site$Range_LAeq_Lmax, FUN=summary)
-  mean_fixer = lapply(fixer, function(x){x/4})
   
   pdata_hourly = data.frame()
   for (hour in names(mean_events_per_range_hour)) {
@@ -44,17 +40,43 @@ for (site in sites_to_plot) {
     ))
   }
   pdata_hourly$Hour = as.factor(pdata_hourly$Hour)
-  pdata_hourly$Range = factor(pdata_hourly$Range, levels =
-                                c("[0,50)", "[50,70)" , "[70,90)", "[90,200)"),
-                              labels = c("0-50", "50-70", "70-90", "90+"))
+  pdata_hourly$Range = factor(pdata_hourly$Range, levels=factor_levels, labels=factor_lables)
   
   p = ggplot(data=pdata_hourly, aes(x=Hour, y=Events, group=Range, fill=Range)) +
     geom_bar(stat='identity') +
-    scale_fill_viridis_d(option='magma') +
+    scale_fill_viridis_d(option='viridis') +
     labs(title=paste('Mean noise event Lmax -', sites[sites$ID==site,'Region']),
          subtitle=paste('Site', site, '- average', sum(pdata_hourly$Events), 'events per week'),
          x ='Hour',
          y ='Mean number of events',
          fill='LAeq_Lmax')
   print(p)
+
+  num_events_per_range_day = tapply(X=events_site$Range_LAeq_Lmax, INDEX=events_site$Day, FUN=summary)
+  # Average across 4 periods
+  mean_events_per_range_day = lapply(num_events_per_range_day, function(x){x/4})
+  
+  pdata_daily = data.frame()
+  for (day in names(mean_events_per_range_day)) {
+    nevnt = mean_events_per_range_day[[day]]
+    range = names(mean_events_per_range_day[[day]])
+    pdata_daily = rbind(pdata_daily, data.frame(
+      Day=factor(day, levels=days),
+      Events=nevnt,
+      Range=range
+    ))
+  }
+  pdata_daily$Day = as.factor(pdata_daily$Day)
+  pdata_daily$Range = factor(pdata_daily$Range, levels=factor_levels, labels=factor_lables)
+  
+  p = ggplot(data=pdata_daily[order(pdata_daily$Day), ], aes(x=Day, y=Events, group=Range, fill=Range)) +
+    geom_bar(stat='identity') +
+    scale_fill_viridis_d(option='viridis') +
+    labs(title=paste('Mean noise event Lmax -', sites[sites$ID==site,'Region']),
+         subtitle=paste('Site', site, '- average', sum(pdata_daily$Events), 'events per week'),
+         x ='Day',
+         y ='Mean number of events',
+         fill='LAeq_Lmax')
+  print(p)
+  
 }
