@@ -1,4 +1,5 @@
-# Analysis of navy flight ops record from 'Flight Operations Data'
+# Bar plots of flight operation counts vs hour of day / day of week (per-airfield)
+
 library(ggplot2)
 library(patchwork)
 library(stringr)
@@ -69,13 +70,6 @@ for (file in files) {
   plots_ault_daily[[period]] = p_ault_daily
 }
 
-# Ault Field plotting ----------------------------------------------------------
-
-# Operations by hour
-(plots_ault_hourly[[1]] + plots_ault_hourly[[2]]) / (plots_ault_hourly[[3]] + plots_ault_hourly[[4]])
-# Operations by weekday
-(plots_ault_daily[[1]] + plots_ault_daily[[2]]) / (plots_ault_daily[[3]] + plots_ault_daily[[4]])
-
 # OLF Coupeville data processing ---------------------------------------------------
 
 data_coup = read.csv('data/flight_ops/output/coup/Coupeville Ops.csv')
@@ -132,10 +126,14 @@ for (period in 1:4) {
   plots_coup_daily[[period]] = p_coup_daily
 }
 
-# OLF Coupeville plotting ------------------------------------------------------
+# Plotting ---------------------------------------------------------------------
+
+# Operations by hour
+(plots_ault_hourly[[1]] + plots_ault_hourly[[2]]) / (plots_ault_hourly[[3]] + plots_ault_hourly[[4]])
+# Operations by weekday
+(plots_ault_daily[[1]] + plots_ault_daily[[2]]) / (plots_ault_daily[[3]] + plots_ault_daily[[4]])
 
 # Operations by hour
 (plots_coup_hourly[[1]] + plots_coup_hourly[[2]]) / (plots_coup_hourly[[3]] + plots_coup_hourly[[4]])
 # Operations by weekday
 (plots_coup_daily[[1]] + plots_coup_daily[[2]]) / (plots_coup_daily[[3]] + plots_coup_daily[[4]])
-

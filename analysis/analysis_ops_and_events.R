@@ -1,4 +1,5 @@
-# Noise event quantity vs day of week barplot per-period for Ault Field and Coupeville (see “Aircraft Noise Event Database”)
+# Bar plots of noise event quantity vs hour of day / day of week (per-site, per-period)
+
 library(ggplot2)
 library(patchwork)
 library(stringr)

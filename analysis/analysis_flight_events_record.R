@@ -1,7 +1,8 @@
-# Analysis of navy flight events record from 'Aircraft Noise Event Database'
+# Histograms of noise event LAeq_Lmax distribution (per-site, per-period)
+
 library(ggplot2)
 library(patchwork)
-theme_set(theme_bw())
+theme_set(theme_minimal())
 
 sites = read.csv('data/sites/sites.csv')
 sites = sites[sites$Org=='NAVY' & (sites$Region=='Ault Field' | sites$Region=='OLF Coupeville'), ]
