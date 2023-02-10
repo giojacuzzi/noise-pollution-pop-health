@@ -14,7 +14,13 @@ events$DEN        = get_den_period_for_hours(events$Hour)
 events$Day        = factor(weekdays(events$StartTime, abbreviate=T), levels=days)
 events$Period     = get_navy_monitoring_period_for_times(events$StartTime)
 
+#### TODO: incorporate ops
 ops = read.csv('data/flight_ops/output/ops.csv')
+ops$Time       = as.POSIXct(ops$Time)
+ops$Hour       = as.factor(strftime(ops$Time, format='%H'))
+ops$DEN        = get_den_period_for_hours(ops$Hour)
+ops$Day        = factor(weekdays(ops$Time, abbreviate=T), levels=days)
+ops$Period     = get_navy_monitoring_period_for_times(ops$Time)
 
 # Ault Field: 9B_SG (NASWI Gate)
 # OLF Coupeville: 24A_B (Reuble Farm)
@@ -22,6 +28,7 @@ sites_to_plot = c('9B_SG', '24A_B')
 
 for (site in sites_to_plot) {
   events_site = events[events$SiteID==site,]
+  ops_field = ops[ops$Field==get_field_name_for_ID(site),]
   
   factor_breaks = c(0,40,50,60,70,80,90,1000)
   factor_lables = c('<40', '40-50', '50-60','60-70','70-80','80-90','90+')
@@ -31,12 +38,21 @@ for (site in sites_to_plot) {
   # Average across 4 periods
   mean_events_per_range_hour = lapply(num_events_per_range_hour, function(x){x/4})
   
+  # Average across 4 periods
+  num_ops_per_hour = summary(ops_field$Hour)
+  mean_ops_hour = lapply(num_ops_per_hour, function(x){x/4})
+  
+  pops_hourly = as.data.frame(as.table(unlist(mean_ops_hour)))
+  names(pops_hourly) = c('Hour', 'Ops')
+  
   pdata_hourly = data.frame()
   for (hour in names(mean_events_per_range_hour)) {
+    # nops  = mean_ops_hour[[hour]]
     nevnt = mean_events_per_range_hour[[hour]]
     range = names(mean_events_per_range_hour[[hour]])
     pdata_hourly = rbind(pdata_hourly, data.frame(
       Hour=hour,
+      # Ops=nops,
       Events=nevnt,
       Range=range
     ))
@@ -44,13 +60,25 @@ for (site in sites_to_plot) {
   pdata_hourly$Hour = as.factor(pdata_hourly$Hour)
   pdata_hourly$Range = factor(pdata_hourly$Range, labels=factor_lables)
   
-  p = ggplot(data=pdata_hourly, aes(x=Hour, y=Events, group=Range, fill=Range)) +
-    geom_bar(stat='identity') +
+  p = ggplot() +
+    geom_bar(data=pdata_hourly, aes(x=Hour, y=Events, group=Range, fill=Range), stat='identity') +
+    # geom_point(data=pops_hourly, aes(x=Hour, y=Ops), size=3, color='black') +
     scale_fill_viridis_d(option='magma') +
+    # scale_y_continuous(name='EVENTS', sec.axis = sec_axis(~./2, name = 'OPS'))
     labs(title=paste('Mean noise event Lmax -', sites[sites$ID==site,'Region']),
          subtitle=paste('Site', site, '- average', sum(pdata_hourly$Events), 'events per week'),
          x ='Hour',
          y ='Mean number of events',
+         fill='LAeq_Lmax')
+  print(p)
+  
+  p = ggplot() +
+    geom_point(data=pops_hourly, aes(x=Hour, y=Ops), size=3, color='black') +
+    geom_line(data=pops_hourly, aes(x=Hour, y=Ops), group=1, size=2, color='black') +
+    labs(title=paste('Mean ops -', sites[sites$ID==site,'Region']),
+         subtitle=paste('Site', site, '- average', sum(pops_hourly$Ops), 'ops per week'),
+         x ='Hour',
+         y ='Mean number of ops',
          fill='LAeq_Lmax')
   print(p)
 

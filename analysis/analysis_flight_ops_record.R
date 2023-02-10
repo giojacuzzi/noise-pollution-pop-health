@@ -3,7 +3,6 @@ source('global.R')
 
 library(ggplot2)
 library(patchwork)
-library(stringr)
 
 data = read.csv('data/flight_ops/output/ops.csv')
 data$Time       = as.POSIXct(data$Time)

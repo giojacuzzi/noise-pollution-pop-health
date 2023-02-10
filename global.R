@@ -1,5 +1,6 @@
 ### Global variables, functions, settings
 
+library(stringr)
 library(ggplot2)
 theme_set(theme_minimal())
 
@@ -34,6 +35,11 @@ get_data_metrics = function() {
                  read.csv('data/metrics/output/metrics_SDA.csv')))
   }
   return(data_metrics)
+}
+
+get_field_name_for_ID = function(id) {
+  data_sites = get_data_sites()
+  return(na.omit(data_sites[data_sites$ID==id,])$Field)
 }
 
 get_site_name_for_ID = function(id) {

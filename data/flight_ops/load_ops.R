@@ -183,7 +183,7 @@ data_coup = na.omit(data_coup)
 
 # TODO: bind coup and ault, save to csv
 data_ault$Field = 'Ault'
-data_coup$Field = 'Coupeville'
+data_coup$Field = 'Coup'
 data = data.frame()
 data = rbind(data, data_ault)
 data = rbind(data, data_coup)
