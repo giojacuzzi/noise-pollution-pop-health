@@ -34,25 +34,16 @@ for (site in sites_to_plot) {
   factor_lables = c('<40', '40-50', '50-60','60-70','70-80','80-90','90+')
   events_site$Range_LAeq_Lmax = cut(events_site$LAeq_Lmax, breaks=factor_breaks, right=F)
 
+  # Average events across all 4 periods
   num_events_per_range_hour = tapply(X=events_site$Range_LAeq_Lmax, INDEX=events_site$Hour, FUN=summary)
-  # Average across 4 periods
   mean_events_per_range_hour = lapply(num_events_per_range_hour, function(x){x/4})
-  
-  # Average across 4 periods
-  num_ops_per_hour = summary(ops_field$Hour)
-  mean_ops_hour = lapply(num_ops_per_hour, function(x){x/4})
-  
-  pops_hourly = as.data.frame(as.table(unlist(mean_ops_hour)))
-  names(pops_hourly) = c('Hour', 'Ops')
   
   pdata_hourly = data.frame()
   for (hour in names(mean_events_per_range_hour)) {
-    # nops  = mean_ops_hour[[hour]]
     nevnt = mean_events_per_range_hour[[hour]]
     range = names(mean_events_per_range_hour[[hour]])
     pdata_hourly = rbind(pdata_hourly, data.frame(
       Hour=hour,
-      # Ops=nops,
       Events=nevnt,
       Range=range
     ))
@@ -60,30 +51,26 @@ for (site in sites_to_plot) {
   pdata_hourly$Hour = as.factor(pdata_hourly$Hour)
   pdata_hourly$Range = factor(pdata_hourly$Range, labels=factor_lables)
   
-  p = ggplot() +
-    geom_bar(data=pdata_hourly, aes(x=Hour, y=Events, group=Range, fill=Range), stat='identity') +
-    # geom_point(data=pops_hourly, aes(x=Hour, y=Ops), size=3, color='black') +
-    scale_fill_viridis_d(option='magma') +
-    # scale_y_continuous(name='EVENTS', sec.axis = sec_axis(~./2, name = 'OPS'))
-    labs(title=paste('Mean noise event Lmax -', sites[sites$ID==site,'Region']),
-         subtitle=paste('Site', site, '- average', sum(pdata_hourly$Events), 'events per week'),
-         x ='Hour',
-         y ='Mean number of events',
-         fill='LAeq_Lmax')
-  print(p)
+  # Average ops across all 4 periods
+  num_ops_per_hour = summary(ops_field$Hour)
+  mean_ops_hour = lapply(num_ops_per_hour, function(x){x/4})
+  pops_hourly = as.data.frame(as.table(unlist(mean_ops_hour)))
+  names(pops_hourly) = c('Hour', 'Ops')
   
   p = ggplot() +
-    geom_point(data=pops_hourly, aes(x=Hour, y=Ops), size=3, color='black') +
-    geom_line(data=pops_hourly, aes(x=Hour, y=Ops), group=1, size=2, color='black') +
-    labs(title=paste('Mean ops -', sites[sites$ID==site,'Region']),
-         subtitle=paste('Site', site, '- average', sum(pops_hourly$Ops), 'ops per week'),
+    geom_bar(data=pdata_hourly, aes(x=Hour, y=Events, group=Range, fill=Range), stat='identity') +
+    scale_fill_viridis_d(option='magma') +
+    labs(title=paste('Mean noise event Lmax vs flight operations -', sites[sites$ID==site,'Region']),
+         subtitle=paste('Site', site, '- average', sum(pops_hourly$Ops), 'operations per week'),
          x ='Hour',
-         y ='Mean number of ops',
-         fill='LAeq_Lmax')
+         fill='Range (dBA)') +
+    geom_point(data=pops_hourly, aes(x=Hour, y=Ops), size=2, color='black') +
+    geom_line(data=pops_hourly, aes(x=Hour, y=Ops), group=1, size=1, color='black') +
+    scale_y_continuous(name='Noise events', sec.axis=sec_axis(trans=~.*1, name='Flight operations'))
   print(p)
 
+  # Average events across 4 periods
   num_events_per_range_day = tapply(X=events_site$Range_LAeq_Lmax, INDEX=events_site$Day, FUN=summary)
-  # Average across 4 periods
   mean_events_per_range_day = lapply(num_events_per_range_day, function(x){x/4})
   
   pdata_daily = data.frame()
@@ -99,14 +86,21 @@ for (site in sites_to_plot) {
   pdata_daily$Day = as.factor(pdata_daily$Day)
   pdata_daily$Range = factor(pdata_daily$Range, labels=factor_lables)
   
-  p = ggplot(data=pdata_daily[order(pdata_daily$Day), ], aes(x=Day, y=Events, group=Range, fill=Range)) +
-    geom_bar(stat='identity') +
+  # Average ops across 4 periods
+  num_ops_per_day = summary(ops_field$Day)
+  mean_ops_daily = lapply(num_ops_per_day, function(x){x/4})
+  pops_daily = as.data.frame(as.table(unlist(mean_ops_daily)))
+  names(pops_daily) = c('Day', 'Ops')
+
+  p = ggplot() +
+    geom_bar(data=pdata_daily[order(pdata_daily$Day), ], aes(x=Day, y=Events, group=Range, fill=Range), stat='identity') +
     scale_fill_viridis_d(option='magma') +
-    labs(title=paste('Mean noise event Lmax -', sites[sites$ID==site,'Region']),
-         subtitle=paste('Site', site, '- average', sum(pdata_daily$Events), 'events per week'),
+    labs(title=paste('Mean noise event Lmax vs flight operations -', sites[sites$ID==site,'Region']),
+         subtitle=paste('Site', site, '- average', sum(pops_daily$Ops), 'operations per week'),
          x ='Day',
-         y ='Mean number of events',
-         fill='LAeq_Lmax')
+         fill='Range (dBA)') +
+    geom_point(data=pops_daily, aes(x=Day, y=Ops), size=2, color='black') +
+    geom_line(data=pops_daily, aes(x=Day, y=Ops), group=1, size=1, color='black') +
+    scale_y_continuous(name='Noise events', sec.axis=sec_axis(trans=~.*1, name='Flight operations'))
   print(p)
-  
 }
