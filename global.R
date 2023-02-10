@@ -14,25 +14,32 @@ days  = c('Mon','Tue','Wed','Thu','Fri','Sat','Sun')
 # `abbreviate(gsub(',','',data_sites[is.na(data_sites$ID),'Name']), named=F)`
 get_data_sites = function() {
   if (!exists('data_sites')) {
-    return(read.csv('data/sites/sites.csv'))
+    data_sites = read.csv('data/sites/sites.csv')
   }
   return(data_sites)
 }
 
 get_file_map = function() {
   if (!exists('file_map')) {
-    return(rbind(read.csv('data/load/output/file_map_navy.csv'),
-                 read.csv('data/load/output/file_map_sda.csv'),
-                 read.csv('data/load/output/file_map_nps.csv')))
+    file_map = rbind(read.csv('data/load/output/file_map_navy.csv'),
+                     read.csv('data/load/output/file_map_sda.csv'),
+                     read.csv('data/load/output/file_map_nps.csv'))
   }
   return(file_map)
 }
 
 get_data_metrics = function() {
   if (!exists('data_metrics')) {
-    return(rbind(read.csv('data/metrics/output/metrics_NAVY.csv'),
-                 read.csv('data/metrics/output/metrics_NPS.csv'),
-                 read.csv('data/metrics/output/metrics_SDA.csv')))
+    data_metrics = rbind(read.csv('data/metrics/output/metrics_NAVY.csv'),
+                         read.csv('data/metrics/output/metrics_NPS.csv'),
+                         read.csv('data/metrics/output/metrics_SDA.csv'))
+    # NOTE: Some SDA measurements were recorded with overloaded gains (i.e. distortion) that result in erroneously high values during flybys. Here, we remove site dates with measurements exceeding 110 dB.
+    data_metrics = data_metrics[-which(data_metrics$Org == 'SDA' & data_metrics$Lmax > 110.0),]
+    data_metrics$Date   = as.POSIXct(data_metrics$Date, tz='UTC')
+    data_metrics$Day    = factor(weekdays(data_metrics$Date, abbreviate=T), levels=days)
+    # data_metrics$Field  = get_field_name_for_ID(data_metrics$ID) # TODO?
+    data_metrics$Period = NA
+    data_metrics[data_metrics$Org=='NAVY',]$Period = get_navy_monitoring_period_for_times(data_metrics[data_metrics$Org=='NAVY',]$Date)
   }
   return(data_metrics)
 }
@@ -60,9 +67,7 @@ get_den_period_for_hours = function(hours) {
 }
 
 get_navy_monitoring_period_for_times = function(times) {
-  result = times
-  result = months(as.POSIXct(result, tz='UTC'), abbreviate=T)
-  result = factor(result, levels=month.abb)
+  result = factor(months(as.POSIXct(times, tz='UTC'), abbreviate=T), levels=month.abb)
   levels(result) = c(
     '0', # Jan
     '0', # Feb
