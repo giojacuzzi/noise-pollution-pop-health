@@ -20,10 +20,9 @@ sites_to_plot = c('9B_SG', '24A_B')
 for (site in sites_to_plot) {
   events_site = events[events$SiteID==site,]
   
-  # TODO: cut breaks for sleep disturbance?
-  events_site$Range_LAeq_Lmax = cut(events_site$LAeq_Lmax, breaks=c(0,50,70,90,200), right=F)
-  factor_levels = c("[0,50)", "[50,70)" , "[70,90)", "[90,200)")
-  factor_lables = c("0-50", "50-70", "70-90", "90+")
+  factor_breaks = c(0,40,50,60,70,80,90,1000)
+  factor_lables = c('<40', '40-50', '50-60','60-70','70-80','80-90','90+')
+  events_site$Range_LAeq_Lmax = cut(events_site$LAeq_Lmax, breaks=factor_breaks, right=F)
 
   num_events_per_range_hour = tapply(X=events_site$Range_LAeq_Lmax, INDEX=events_site$Hour, FUN=summary)
   # Average across 4 periods
@@ -40,11 +39,11 @@ for (site in sites_to_plot) {
     ))
   }
   pdata_hourly$Hour = as.factor(pdata_hourly$Hour)
-  pdata_hourly$Range = factor(pdata_hourly$Range, levels=factor_levels, labels=factor_lables)
+  pdata_hourly$Range = factor(pdata_hourly$Range, labels=factor_lables)
   
   p = ggplot(data=pdata_hourly, aes(x=Hour, y=Events, group=Range, fill=Range)) +
     geom_bar(stat='identity') +
-    scale_fill_viridis_d(option='viridis') +
+    scale_fill_viridis_d(option='magma') +
     labs(title=paste('Mean noise event Lmax -', sites[sites$ID==site,'Region']),
          subtitle=paste('Site', site, '- average', sum(pdata_hourly$Events), 'events per week'),
          x ='Hour',
@@ -67,11 +66,11 @@ for (site in sites_to_plot) {
     ))
   }
   pdata_daily$Day = as.factor(pdata_daily$Day)
-  pdata_daily$Range = factor(pdata_daily$Range, levels=factor_levels, labels=factor_lables)
+  pdata_daily$Range = factor(pdata_daily$Range, labels=factor_lables)
   
   p = ggplot(data=pdata_daily[order(pdata_daily$Day), ], aes(x=Day, y=Events, group=Range, fill=Range)) +
     geom_bar(stat='identity') +
-    scale_fill_viridis_d(option='viridis') +
+    scale_fill_viridis_d(option='magma') +
     labs(title=paste('Mean noise event Lmax -', sites[sites$ID==site,'Region']),
          subtitle=paste('Site', site, '- average', sum(pdata_daily$Events), 'events per week'),
          x ='Day',
