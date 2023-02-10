@@ -1,17 +1,20 @@
 # Stacked per-airfield barplots of sentinel site mean noise event count per hour across periods grouped by loudness (+ number of operations at the airfield on second y axis?)
+source('global.R')
+
 library(ggplot2)
 library(viridis)
-theme_set(theme_minimal())
-
-days  = c('Mon','Tue','Wed','Thu','Fri','Sat','Sun')
 
 sites = read.csv('data/sites/sites.csv')
 sites = sites[sites$Org=='NAVY' & (sites$Region=='Ault Field' | sites$Region=='OLF Coupeville'), ]
+
 events = read.csv('data/events/output/events.csv')
-events$MonitoringPeriod = as.factor(events$MonitoringPeriod)
-events$StartTime        = as.POSIXct(events$StartTime)
-events$Hour             = as.factor(strftime(events$StartTime, format='%H'))
-events$Day              = factor(weekdays(events$StartTime, abbreviate=T), levels=days)
+events$StartTime  = as.POSIXct(events$StartTime)
+events$Hour       = strftime(events$StartTime, format='%H')
+events$DEN        = get_den_period_for_hours(events$Hour)
+events$Day        = factor(weekdays(events$StartTime, abbreviate=T), levels=days)
+events$Period     = get_navy_monitoring_period_for_times(events$StartTime)
+
+ops = read.csv('data/flight_ops/output/ops.csv')
 
 # Ault Field: 9B_SG (NASWI Gate)
 # OLF Coupeville: 24A_B (Reuble Farm)

@@ -57,9 +57,3 @@ p_coup_levels_daily = ggplot(levels_daily_coup[order(levels_daily_coup$Day), ], 
   labs(title='Lden per day - OLF Coupeville Sites, Seasonal', x ='Day', y ='Lden (dBA)') +
   geom_hline(yintercept=65, linetype='dotted', colour='red') # HUD / FAA
 print(p_coup_levels_daily)
-
-#-------------------------------------------------------------------------------
-# Flight ops quantity vs day of week histogram per-period for Ault Field and Coupeville (see “Flight Operations Data”)
-
-
-

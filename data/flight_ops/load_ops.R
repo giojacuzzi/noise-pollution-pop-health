@@ -9,12 +9,14 @@ format_date = '%m/%d/%y'
 format_time = '%H:%M'
 ncols = 10
 
+data_ault = data.frame()
+
 for (pdf in files) {
   pages = pdf_text(pdf)
-  data = data.frame(matrix(ncol=ncols, nrow=0))
-  colnames(data) = scan(text = trimws(strsplit(pages[1],'\n')[[1]]), what = "")[1:ncols]
+  data_period = data.frame(matrix(ncol=ncols, nrow=0))
+  colnames(data_period) = scan(text = trimws(strsplit(pages[1],'\n')[[1]]), what = "")[1:ncols]
 
-  # Parse and bind each page to `data`
+  # Parse and bind each page to `data_period`
   for (page in pages) {
 
     page = strsplit(page, '\n')
@@ -34,7 +36,7 @@ for (pdf in files) {
       date = page_text[logtime_indices[curr_row]-1]
       time = page_text[logtime_indices[curr_row]]
       row_data = data.frame(
-        ID = page_text[row_idx],
+        # ID = page_text[row_idx],
         Time     = as.POSIXct(paste(date, time), paste(format_date,format_time), tz='UTC')
       )
       curr_row = curr_row + 1
@@ -64,12 +66,13 @@ for (pdf in files) {
 
       page_data = rbind(page_data, row_data)
     }
-    data = rbind(data, page_data)
+    data_period = rbind(data_period, page_data)
   }
-
-  filename = paste0('data/flight_ops/output/ault/', basename(pdf), '.csv')
-  write.csv(data, filename, row.names=F)
-  message(paste('Created', filename))
+  
+  data_ault = rbind(data_ault, data_period)
+  # filename = paste0('data/flight_ops/output/ault/', basename(pdf), '.csv')
+  # write.csv(data, filename, row.names=F)
+  # message(paste('Created', filename))
 }
 
 # OLF Coupeville FCLP ----------------------------------------------------------
@@ -86,7 +89,7 @@ get_num_numeric_entries = function(row) {
   length(na.omit(suppressWarnings(as.numeric(scan(text=row, what='')))))
 }
 
-data = data.frame(matrix(ncol=ncols, nrow=0))
+data_coup = data.frame()
 
 for (pdf in files) {
   # readline(prompt=paste('Press [enter] to process', basename(pdf)))
@@ -117,10 +120,8 @@ for (pdf in files) {
     }
 
     while (idx <= length(page)) {
-      
-      # TODO: instead of EA search, search for normalized 'start' or 'stop' with a ':'?
-      # OR check how many entries there are
-      # Skip if there should is less than 3 + side entries or includes the words start/stop/end
+
+      # Skip non-data rows
       while ((idx <= length(page)) &
              (!grepl(':', page[idx], ignore.case=T) |
                grepl('session', page[idx], ignore.case=T) |
@@ -135,8 +136,6 @@ for (pdf in files) {
         # print(page[idx])
         idx = idx + 1
       }
-      
-      # TODO: check for malformed start/stop lines
       
       # print(paste('reading from line', idx))
       row = page[idx]
@@ -172,12 +171,22 @@ for (pdf in files) {
     # print(paste('First', page_data[1,]))
     # print(paste('Last', page_data[nrow(page_data),]))
     
-    data = rbind(data, page_data)
+    data_coup = rbind(data_coup, page_data)
     message(paste('Read', date))
   }
 }
 
-data = na.omit(data)
-filename = paste0('data/flight_ops/output/coup/Coupeville Ops.csv')
-write.csv(data, filename, row.names=F)
-message(paste('Created', filename))
+data_coup = na.omit(data_coup)
+# filename = paste0('data/flight_ops/output/coup/Coupeville Ops.csv')
+# write.csv(data, filename, row.names=F)
+# message(paste('Created', filename))
+
+# TODO: bind coup and ault, save to csv
+data_ault$Field = 'Ault'
+data_coup$Field = 'Coupeville'
+data = data.frame()
+data = rbind(data, data_ault)
+data = rbind(data, data_coup)
+path = 'data/flight_ops/output/ops.csv'
+write.csv(data, path, row.names=F)
+message(paste('Created', path))

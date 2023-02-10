@@ -26,8 +26,13 @@ for (s in 1:nrow(sites)) {
   
   plots_events_per_site[[s]] = p
 }
-  
-(plots_events_per_site[[1]] + plots_events_per_site[[2]] + plots_events_per_site[[3]]) / (plots_events_per_site[[4]] + plots_events_per_site[[5]] + plot_spacer())
-                                                                                                                       
-                                                                                                                       (plots_events_per_site[[6]] + plots_events_per_site[[7]] + plots_events_per_site[[8]]) / (plots_events_per_site[[9]] + plots_events_per_site[[10]] + plots_events_per_site[[11]])
 
+# Ault
+print(
+  (plots_events_per_site[[1]] + plots_events_per_site[[2]] + plots_events_per_site[[3]]) / (plots_events_per_site[[4]] + plots_events_per_site[[5]] + plot_spacer())
+)
+
+# Coup
+print(
+  (plots_events_per_site[[6]] + plots_events_per_site[[7]] + plots_events_per_site[[8]]) / (plots_events_per_site[[9]] + plots_events_per_site[[10]] + plots_events_per_site[[11]])
+)                        

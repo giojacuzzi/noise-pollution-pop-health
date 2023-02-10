@@ -1,8 +1,13 @@
-### Global variables and functions
+### Global variables, functions, settings
+
+library(ggplot2)
+theme_set(theme_minimal())
 
 format_date = '%Y-%m-%d'
 format_time = '%H:%M:%S'
 time_24hr = 24 * 60 * 60 # total number of seconds in a day
+hours = str_pad(0:23, 2, pad = '0')
+days  = c('Mon','Tue','Wed','Thu','Fri','Sat','Sun')
 
 # NOTE: unofficial data_sites IDs produced via:
 # `abbreviate(gsub(',','',data_sites[is.na(data_sites$ID),'Name']), named=F)`
@@ -39,6 +44,34 @@ get_site_name_for_ID = function(id) {
 get_ID_for_site_name = function(name) {
   data_sites = get_data_sites()
   return(unique(na.omit(data_sites[data_sites$Name==name,])$ID))
+}
+
+# Day, evening, or night for hours 00-23
+get_den_period_for_hours = function(hours) {
+  return(cut(as.numeric(hours),
+             breaks=c(-1,6,18,22,23),
+             labels=c('Night','Day','Evening','Night')))
+}
+
+get_navy_monitoring_period_for_times = function(times) {
+  result = times
+  result = months(as.POSIXct(result, tz='UTC'), abbreviate=T)
+  result = factor(result, levels=month.abb)
+  levels(result) = c(
+    '0', # Jan
+    '0', # Feb
+    '2', # Mar
+    '2', # Apr
+    '0', # May
+    '3', # Jun
+    '0', # Jul
+    '4', # Aug
+    '0', # Sep
+    '0', # Oct
+    '0', # Nov
+    '1'  # Dec
+  )
+  return(result)
 }
 
 # Returns a data frame containing a single column, `Time`, with a row of POSIXct values for every second of the given date
