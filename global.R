@@ -2,6 +2,7 @@
 
 library(stringr)
 library(ggplot2)
+library(viridis)
 theme_set(theme_minimal())
 
 format_date = '%Y-%m-%d'

@@ -1,14 +1,16 @@
-events_data = read.csv('data/events/output/Public_NoiseEvents_NASWI_M1.pdf.csv')
+events_data = read.csv('data/events/output/events.csv')
 events_data$OnsetRateRaw = NA # Add onset rate column (calculated from raw LAeq_Lmax values)
 events_data$OnsetRateReported = NA # Add onset rate column (calculated from reported LAeq_Lmax values in pdfs)
 events_data$UniqueEventID = seq(1, nrow(events_data)) # Add a unique event ID
 
 source('data/load/load_site_date.R')
+library(patchwork)
 
 id = '2B_T'
 site_events = events_data[events_data$SiteID==id,]
 
 dates = as.character(unique(c(as.Date(site_events$StartTime),as.Date(site_events$StopTime))))
+dates = dates
 
 data = data.frame()
 for (date in dates) {
@@ -17,7 +19,7 @@ for (date in dates) {
 
 results = events_data
 
-DEBUG_PLOT = F
+DEBUG_PLOT = T
 
 # For all events at this site, calculate onset rate
 for (row in 1:nrow(site_events)) { #1:nrow(site_events)
@@ -34,12 +36,42 @@ for (row in 1:nrow(site_events)) { #1:nrow(site_events)
     library(ggplot2)
     event_data = data[which(data$Time==t1-buffer):which(data$Time==t2+buffer),]
     
-    print(ggplot(event_data, aes(x=Time, y=LAeq)) +
+    p1 = ggplot(event_data, aes(x=Time, y=LAeq)) +
             geom_line() +
             geom_vline(xintercept = t1) +
             geom_vline(xintercept = t2) +
             geom_vline(xintercept = tMax, linetype = 'dashed', colour = 'red')
-    )
+    
+    # Spectral heatmap
+    spect = event_data[,c(1, 26:61)]
+    names(spect) = gsub('1/3 LZeq ', '', names(spect))
+    
+    spect_total = data.frame()
+    for (s in 1:nrow(spect)) {
+      sec = as.POSIXct(spect$Time[s])
+      
+      band = rownames(t(spect[s,c(-1)]))
+      lzeq = unname(spect[s,c(-1)])
+      
+      spect_sec = data.frame(
+        sec,
+        band,
+        t(lzeq)
+      )
+      rownames(spect_sec) = c()
+      colnames(spect_sec) = c('Time', 'Band', 'LZeq')
+      spect_total = rbind(spect_total, spect_sec)
+    }
+    spect_total$Band = as.character(as.numeric(spect_total$Band))
+    spect_total$Band = factor(spect_total$Band)
+    sorted_levels = as.character(sort(as.numeric(levels(spect_total$Band))))
+    spect_total$Band = factor(spect_total$Band, levels = sorted_levels)
+  
+    p2 = ggplot(spect_total, aes(x=Time, y=Band, fill=LZeq)) +
+      geom_tile() +
+      scale_fill_viridis(option='A') +
+      labs(x='Time', y='Band')
+    print(p2 / p1)
   }
   # DEBUG: plot event
   
@@ -73,8 +105,8 @@ for (row in 1:nrow(site_events)) { #1:nrow(site_events)
   onset_rate = round(onset_rate, 2)
   
   print(paste('OnsetRate is raw', onset_rate, 'vs theirs', their_onset_rate))
-  print(paste(event_data$LAeq[onset_end], '-', event_data$LAeq[1], '/', onset_end,'-',1))
-  print(paste(event$LAeq_Lmax, '-', event_data$LAeq[1], '/', their_onset_time_diff))
+  # print(paste(event_data$LAeq[onset_end], '-', event_data$LAeq[1], '/', onset_end,'-',1))
+  # print(paste(event$LAeq_Lmax, '-', event_data$LAeq[1], '/', their_onset_time_diff))
   
   if (DEBUG_PLOT) readline(prompt="Press [enter] to continue")
 
