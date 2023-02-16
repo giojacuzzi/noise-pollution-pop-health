@@ -72,7 +72,7 @@ combo = rbind(median_lden_lnight_HSD, max_lden_lnight_HSD)
 # TODO: combine with ribbon plot above
 # TODO: look into alternate representation via odds ratio ("forest") relationship of 1.94 (95% CI: 1.61-2.33) per 10 dB increase in noise
 
-ggplot() +
+p_hsd = ggplot() +
   labs(x='Lnight (dBA)', y='%HSD', title='WHO - Percent Highly Sleep Disturbed') +
   geom_ribbon(
     data=data.frame(
@@ -87,3 +87,4 @@ ggplot() +
     aes(x=Lnight, y=HSD, color=factor(Stat)),
     # label=rownames(median_lden_lnight_HSD),
     )
+print(p_hsd)

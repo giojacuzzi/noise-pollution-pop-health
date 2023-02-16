@@ -11,15 +11,6 @@ time_24hr = 24 * 60 * 60 # total number of seconds in a day
 hours = str_pad(0:23, 2, pad = '0')
 days  = c('Mon','Tue','Wed','Thu','Fri','Sat','Sun')
 
-# NOTE: unofficial data_sites IDs produced via:
-# `abbreviate(gsub(',','',data_sites[is.na(data_sites$ID),'Name']), named=F)`
-get_data_sites = function() {
-  if (!exists('data_sites')) {
-    data_sites = read.csv('data/sites/sites.csv')
-  }
-  return(data_sites)
-}
-
 get_file_map = function() {
   if (!exists('file_map')) {
     file_map = rbind(read.csv('data/load/output/file_map_navy.csv'),
@@ -27,6 +18,15 @@ get_file_map = function() {
                      read.csv('data/load/output/file_map_nps.csv'))
   }
   return(file_map)
+}
+
+# NOTE: unofficial data_sites IDs produced via:
+# `abbreviate(gsub(',','',data_sites[is.na(data_sites$ID),'Name']), named=F)`
+get_data_sites = function() {
+  if (!exists('data_sites')) {
+    data_sites = read.csv('data/sites/sites.csv')
+  }
+  return(data_sites)
 }
 
 get_data_metrics = function() {
@@ -45,9 +45,21 @@ get_data_metrics = function() {
   return(data_metrics)
 }
 
+get_data_ops = function() {
+  if (!exists('data_ops')) {
+    data_ops = read.csv('data/flight_ops/output/ops.csv')
+    data_ops$Time   = as.POSIXct(data_ops$Time)
+    data_ops$Hour   = as.factor(strftime(data_ops$Time, format='%H'))
+    data_ops$DEN    = get_den_period_for_hours(data_ops$Hour)
+    data_ops$Day    = factor(weekdays(data_ops$Time, abbreviate=T), levels=days)
+    data_ops$Period = get_navy_monitoring_period_for_times(data_ops$Time)
+  }
+  return(data_ops)
+}
+
 get_field_name_for_ID = function(id) {
   data_sites = get_data_sites()
-  return(na.omit(data_sites[data_sites$ID==id,])$Field)
+  return(data_sites[data_sites$ID==id,]$Field)
 }
 
 get_site_name_for_ID = function(id) {
@@ -61,10 +73,11 @@ get_ID_for_site_name = function(name) {
 }
 
 # Day, evening, or night for hours 00-23
-get_den_period_for_hours = function(hours) {
-  return(cut(as.numeric(hours),
-             breaks=c(-1,6,18,22,23),
-             labels=c('Night','Day','Evening','Night')))
+get_den_period_for_hours = function(h) {
+  den_period = cut(as.numeric(h),
+                   breaks=c(-1,6,18,21,23),
+                   labels=c('Night','Day','Evening','Night'))
+  return(factor(den_period, levels=c('Day','Evening','Night')))
 }
 
 get_navy_monitoring_period_for_times = function(times) {

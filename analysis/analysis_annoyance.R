@@ -25,23 +25,55 @@ regression_HA = function(Lden) {
   return(-50.9693 + 1.0168 * Lden + 0.0072 * Lden^2)
 }
 
+# M&O https://asa.scitation.org/doi/pdf/10.1121/1.423927
+regression_MO = function(Lden) {
+  return(0.02 * (Lden-42) + 0.0561 * (Lden-42)^2)
+}
+
 # Plot HA (highly annoyed)
 
 # Median
 median_lden = tapply(data_metrics[!is.na(data_metrics$Lden),'Lden'], data_metrics[!is.na(data_metrics$Lden),'ID'], median)
-median_lden_HA = data.frame(Lden=sort(median_lden), HA=regression_HA(sort(median_lden)))
+median_lden_HA = data.frame(
+  Stat='Median',
+  Lden=sort(median_lden),
+  HA=regression_HA(sort(median_lden))
+)
 
-ggplot(median_lden_HA, aes(x=Lden, y=HA, label=rownames(median_lden_HA))) +
-  labs(x='Lden Median (dB)', y='%HA', title='WHO - Percent Highly Annoyed (Median Lden)') +
-  geom_point(col='blue') + geom_text(hjust=0, vjust=1.5, col='blue') +
-  stat_function(fun=regression_HA)
+# p1 = ggplot(median_lden_HA, aes(x=Lden, y=HA, label=rownames(median_lden_HA))) +
+#   labs(x='Lden Median (dB)', y='%HA', title='WHO - Percent Highly Annoyed (Median Lden)') +
+#   geom_point(col='blue') + geom_text(hjust=0, vjust=1.5, col='blue') +
+#   stat_function(fun=regression_HA)
+# print(p1)
 
 # Max
 max_lden = tapply(data_metrics[!is.na(data_metrics$Lden),'Lden'], data_metrics[!is.na(data_metrics$Lden),'ID'], max)
-max_lden_HA = data.frame(Lden=sort(max_lden), HA=regression_HA(sort(max_lden)))
+max_lden_HA = data.frame(
+  Stat='Max',
+  Lden=sort(max_lden),
+  HA=regression_HA(sort(max_lden))
+)
 
-ggplot(max_lden_HA, aes(x=Lden, y=HA, label=rownames(max_lden_HA))) +
-  labs(x='Lden Maximum (dB)', y='%HA', title='WHO - Percent Highly Annoyed (Maximum Lden)') +
-  geom_point(col='red') + geom_text(hjust=0, vjust=1.5, col='red') +
-  geom_hline(yintercept=100, linetype='dashed') + # 100% HA
-  stat_function(fun=regression_HA)
+# p2 = ggplot(max_lden_HA, aes(x=Lden, y=HA, label=rownames(max_lden_HA))) +
+#   labs(x='Lden Maximum (dB)', y='%HA', title='WHO - Percent Highly Annoyed (Maximum Lden)') +
+#   geom_point(col='red') + geom_text(hjust=0, vjust=1.5, col='red') +
+#   geom_hline(yintercept=100, linetype='dashed') + # 100% HA
+#   stat_function(fun=regression_HA)
+# print(p2)
+
+combo = rbind(median_lden_HA, max_lden_HA)
+
+p_ha = ggplot() +
+  labs(x='Lden (dBA)', y='%HA', title='WHO - Percent Highly Annoyed') +
+  xlim(40, max(combo$Lden)+5) +
+  ylim(0, max(combo$HA)+5) +
+  stat_function(fun=regression_HA) +
+  stat_function(fun=regression_MO, colour = 'gray') +
+  geom_point(
+    data=combo,
+    aes(x=Lden, y=HA, color=factor(Stat)),
+    # label=rownames(median_lden_lnight_HSD),
+  ) +
+  geom_hline(yintercept=100, linetype='dashed') +
+  geom_vline(xintercept=75, linetype='dashed')
+print(p_ha)

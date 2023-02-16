@@ -37,9 +37,9 @@ for (field in unique(data$Field)) {
            subtitle=paste('Week period', period, 'Total:', sum(hourly_ops)),
            x ='Hour',
            y ='Number of Operations') +
-      scale_fill_manual(values=c('#150e5c',
-                                 '#abb5ff',
-                                 '#9c2a4b'))
+      scale_fill_manual(values=c('#abb5ff',
+                                 '#9c2a4b',
+                                 '#150e5c'))
     plots_hourly = append(plots_hourly, list(p_hourly))
     
     # Operations by weekday

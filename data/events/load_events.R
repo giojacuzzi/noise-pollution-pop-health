@@ -1,6 +1,7 @@
 #### Extract noise events from pdfs and save to csv files
-
+source('global.R')
 library(pdftools)
+
 files = list.files(path='~/../../Volumes/SAFS Work/NAVY/Aircraft Noise Event Database/PUBLIC_NASWI_NoiseEvents', pattern="Public_NoiseEvents_NASWI_M(1|2|3|4).pdf", full.names=T, recursive=F)
 
 format_date = '%m/%d/%Y'
@@ -56,6 +57,7 @@ for (pdf in files) {
     period_data = rbind(period_data, page_data)
     message(siteID)
   }
+  period_data$Period = period
   data = rbind(data, period_data)
   
   # path = paste0('data/events/output/events_', period, '.csv')
@@ -63,5 +65,5 @@ for (pdf in files) {
   # message(paste('Created', path))
 }
 path = 'data/events/output/events.csv'
-write.csv(data, path)
+write.csv(data, path, row.names=F)
 message(paste('Created', path))
