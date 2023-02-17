@@ -33,7 +33,7 @@ for (field in unique(data$Field)) {
     
     p_hourly = ggplot(data=pdata_hourly, aes(x=Hour, y=NumOps, fill=TimePeriod)) +
       geom_bar(stat='identity') +
-      labs(title=paste0('Recorded Ops by Hour - ', field),
+      labs(title=paste0('Total recorded Ops by Hour - ', field),
            subtitle=paste('Week period', period, 'Total:', sum(hourly_ops)),
            x ='Hour',
            y ='Number of Operations') +

@@ -32,6 +32,18 @@ mapview(
 # Average Lden and total/field ops sentinel Whidbey sites all days -------------
 # When is the navy active throughout the week, and how does it affect overall levels?
 
+# TODO: show distribution as well
+
+sentinel_sites = c(
+  '8B_SG', # Ault Field
+  '24A_B'  # OLF Coupeville
+)
+sentinel_metrics_ault = data_metrics[data_metrics$ID==sentinel_sites[1],]
+sentinel_metrics_coup = data_metrics[data_metrics$ID==sentinel_sites[2],]
+
+mean_lden_day_ault = tapply(X=sentinel_metrics_ault$Lden, INDEX=sentinel_metrics_ault$Day, FUN=mean)
+mean_lden_day_coup = tapply(X=sentinel_metrics_coup$Lden, INDEX=sentinel_metrics_coup$Day, FUN=mean)
+
 # Average ops by field and day of week
 ops_per_ault_date = summary(data_ops[data_ops$Field=='Ault',]$Date)
 ops_ault_df = data.frame(
@@ -48,51 +60,33 @@ ops_coup_df = data.frame(
 )
 mean_ops_day_coup = tapply(ops_coup_df$Ops, ops_coup_df$Day, mean)
 
-sentinel_sites = c(
-  '8B_SG', # Ault Field
-  '24A_B'  # OLF Coupeville
-)
-
-sentinel_metrics_ault = data_metrics[data_metrics$ID==sentinel_sites[1],]
-mean_lden_day_ault = tapply(X=sentinel_metrics_ault$Lden, INDEX=sentinel_metrics_ault$Day, FUN=mean)
-sentinel_metrics_coup = data_metrics[data_metrics$ID==sentinel_sites[2],]
-mean_lden_day_coup = tapply(X=sentinel_metrics_coup$Lden, INDEX=sentinel_metrics_coup$Day, FUN=mean)
-
-df_mean_ops_lden = data.frame(
+df_mean_ops_lden_day = data.frame(
   Day   = factor(rep(days,2), levels=days),
   Field = factor(c(rep('Ault',7), rep('Coup',7))),
   Ops   = c(mean_ops_day_ault, mean_ops_day_coup),
   Lden  = c(mean_lden_day_ault, mean_lden_day_coup)
 )
 
-df_mean_ops_total = data.frame(
-  Day = factor(days, levels=days),
-  Ops = tapply(X=df_mean_ops_lden$Ops, INDEX=df_mean_ops_lden$Day, FUN=sum)
-)
-
-total_ops_field = tapply(df_mean_ops_lden$Ops, df_mean_ops_lden$Field, sum)
-
 # TODO: change 0 ops days line to dashed style?
-p_mean_ops_field = ggplot() +
-  geom_line(data=df_mean_ops_lden, aes(x=Day, y=Ops, group=Field, color=Field), stat='identity') +
+p_mean_ops_field_day = ggplot() +
+  geom_line(data=df_mean_ops_lden_day, aes(x=Day, y=Ops, group=Field, color=Field), stat='identity') +
   labs(title='Average flight operations per day',
        subtitle=paste('Ault:', sum(mean_ops_day_ault), 'ops per week\nCoup:', sum(mean_ops_day_coup), 'ops per week'),
        x='',
        y='Operations')
-p_mean_lden_field = ggplot() +
-  geom_bar(data=df_mean_ops_lden, aes(x=Day, y=Lden, fill=Field), stat='identity', position='dodge', alpha=0.9) +
-  # geom_line(data=df_mean_ops_total, aes(x=Day, y=((Ops/4+0))), group=1, size=1, color='black') +
+p_mean_lden_field_day = ggplot() +
+  geom_bar(data=df_mean_ops_lden_day, aes(x=Day, y=Lden, fill=Field), stat='identity', position='dodge', alpha=0.9) +
   scale_y_continuous(name='Lden (dBA)', limits=c(50,90), oob=rescale_none) +
   labs(title='Average daily Lden',
        subtitle=paste('Sentinel sites', get_site_name_for_ID(sentinel_sites[1]),
                       'and', get_site_name_for_ID(sentinel_sites[2])))
-print(p_mean_ops_field / p_mean_lden_field)
+print(p_mean_ops_field_day / p_mean_lden_field_day)
 
 # Lden per site and airfield on days of activity -------------------------------
 # During days of activity, what are overall levels throughout the region?
 
-days_ault_active = df_mean_ops_lden[df_mean_ops_lden$Field=='Ault' & df_mean_ops_lden$Ops > 0,]$Day
-days_coup_active = df_mean_ops_lden[df_mean_ops_lden$Field=='Coup' & df_mean_ops_lden$Ops > 0,]$Day
+days_ault_active = df_mean_ops_lden_day[df_mean_ops_lden_day$Field=='Ault' & df_mean_ops_lden_day$Ops > 0,]$Day
+days_coup_active = df_mean_ops_lden_day[df_mean_ops_lden_day$Field=='Coup' & df_mean_ops_lden_day$Ops > 0,]$Day
 
 # HUD and Federal Aviation Regulation Part 150 incompatible for
 # residential land use
@@ -199,8 +193,30 @@ p_heatmap = ggplot(data_hour_day_levels[order(as.numeric(data_hour_day_levels$Da
 print(p_heatmap)
 
 # Average active day Leq and ops per hour --------------------------------------
+# TODO: show distribution as well, some days are much worse and late at night
 
+ops_hour_ault = c()
+for (hour in hours) ops_hour_ault = c(ops_hour_ault, sum(data_ops[data_ops$Field=='Ault',]$Hour==hour))
+mean_ops_hour_ault = ops_hour_ault / length(unique(data_ops[data_ops$Field=='Ault',]$Date))
+ops_hour_coup = c()
+for (hour in hours) ops_hour_coup = c(ops_hour_coup, sum(data_ops[data_ops$Field=='Coup',]$Hour==hour))
+mean_ops_hour_coup = ops_hour_coup / length(unique(data_ops[data_ops$Field=='Coup',]$Date))
 
+df_mean_ops_hour = data.frame(
+  Hour  = factor(rep(hours,2), levels=hours),
+  Field = factor(c(rep('Ault',24), rep('Coup',24))),
+  Ops   = c(mean_ops_hour_ault, mean_ops_hour_coup)
+  # Lden  = c(mean_lden_day_ault, mean_lden_day_coup)
+)
+
+p_mean_ops_field_hour = ggplot() +
+  geom_line(data=df_mean_ops_hour, aes(x=Hour, y=Ops, group=Field, color=Field), stat='identity') +
+  geom_vline(xintercept='22', linetype='dotted', size=0.7, colour='red') + # Lnight
+  labs(title='Average flight operations per hour',
+       subtitle=paste('Ault:', round(sum(mean_ops_hour_ault)), 'ops per day\nCoup:', round(sum(mean_ops_hour_coup)), 'ops per day'),
+       x='',
+       y='Operations')
+print(p_mean_ops_field_hour)
 
 # Lnight per site and airfield on days of activity -----------------------------
 
