@@ -40,7 +40,7 @@ get_data_metrics = function() {
     data_metrics$Day    = factor(weekdays(data_metrics$Date, abbreviate=T), levels=days)
     # data_metrics$Field  = get_field_name_for_ID(data_metrics$ID) # TODO?
     data_metrics$Period = NA
-    data_metrics[data_metrics$Org=='NAVY',]$Period = get_navy_monitoring_period_for_times(data_metrics[data_metrics$Org=='NAVY',]$Date)
+    data_metrics[data_metrics$Org=='NAVY',]$Period = sapply(data_metrics[data_metrics$Org=='NAVY',]$Date, get_navy_monitoring_period_for_times)
   }
   return(data_metrics)
 }
@@ -52,6 +52,7 @@ get_data_ops = function() {
     data_ops$Hour   = as.factor(strftime(data_ops$Time, format='%H'))
     data_ops$DEN    = get_den_period_for_hours(data_ops$Hour)
     data_ops$Day    = factor(weekdays(data_ops$Time, abbreviate=T), levels=days)
+    data_ops$Date   = factor(format(data_ops$Time, format_date))
     data_ops$Period = get_navy_monitoring_period_for_times(data_ops$Time)
   }
   return(data_ops)

@@ -21,7 +21,8 @@ p = ggplot(data_hour_day_levels[order(as.numeric(data_hour_day_levels$Day)),], a
   geom_tile() +
   scale_fill_viridis(option='A') +
   labs(title='Max Leq heatmap across all Navy sites', x='Hour', y='Day') +
-  scale_x_continuous('Hour', labels = as.character(0:23), breaks = 0:23)
+  scale_x_continuous('Hour', labels = as.character(0:23), breaks = 0:23) +
+  coord_flip()
 print(p)
 
 # Lnight per site --------------------------------------------------------------

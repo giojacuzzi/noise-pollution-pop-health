@@ -2,11 +2,16 @@ source('global.R')
 library(mapview)
 library(dplyr)
 library(scales)
+library(patchwork)
 
 data_sites = get_data_sites()
 
 data_metrics = get_data_metrics()
 data_metrics$Field = unlist(lapply(data_metrics$ID, get_field_name_for_ID))
+
+# NOTE: only look at Navy data for now
+data_metrics = na.omit(data_metrics)
+data_metrics = data_metrics[data_metrics$Org=='NAVY',]
 
 data_ops = get_data_ops()
 
@@ -27,17 +32,21 @@ mapview(
 # Average Lden and total/field ops sentinel Whidbey sites all days -------------
 # When is the navy active throughout the week, and how does it affect overall levels?
 
-# Average ops across all 4 monitoring periods
-mean_ops_day_ault = summary(data_ops[data_ops$Field=='Ault','Day']) # total
-mean_ops_day_ault = sapply(mean_ops_day_ault, function(x){x/4}) # averaged
-mean_ops_day_coup = summary(data_ops[data_ops$Field=='Coup','Day'])
-mean_ops_day_coup = sapply(mean_ops_day_coup, function(x){x/4})
-
-df_mean_ops = data.frame(
-  Day   = factor(rep(days,2), levels=days),
-  Field = factor(c(rep('Ault',7), rep('Coup',7))),
-  Ops   = c(mean_ops_day_ault, mean_ops_day_coup)
+# Average ops by field and day of week
+ops_per_ault_date = summary(data_ops[data_ops$Field=='Ault',]$Date)
+ops_ault_df = data.frame(
+  Date=as.POSIXct(names(ops_per_ault_date), tz='UTC'),
+  Day=factor(weekdays(as.POSIXct(names(ops_per_ault_date), tz='UTC'), abbreviate=T), levels=days),
+  Ops=ops_per_ault_date
 )
+mean_ops_day_ault = tapply(ops_ault_df$Ops, ops_ault_df$Day, mean)
+ops_per_coup_date = summary(data_ops[data_ops$Field=='Coup',]$Date)
+ops_coup_df = data.frame(
+  Date=as.POSIXct(names(ops_per_coup_date), tz='UTC'),
+  Day=factor(weekdays(as.POSIXct(names(ops_per_coup_date), tz='UTC'), abbreviate=T), levels=days),
+  Ops=ops_per_coup_date
+)
+mean_ops_day_coup = tapply(ops_coup_df$Ops, ops_coup_df$Day, mean)
 
 sentinel_sites = c(
   '8B_SG', # Ault Field
@@ -66,8 +75,8 @@ total_ops_field = tapply(df_mean_ops_lden$Ops, df_mean_ops_lden$Field, sum)
 # TODO: change 0 ops days line to dashed style?
 p_mean_ops_field = ggplot() +
   geom_line(data=df_mean_ops_lden, aes(x=Day, y=Ops, group=Field, color=Field), stat='identity') +
-  labs(title='Average daily flight operations',
-       subtitle=paste('Ault -', total_ops_field['Ault'], 'ops per week\nCoup -', total_ops_field['Coup'], 'ops per week'),
+  labs(title='Average flight operations per day',
+       subtitle=paste('Ault:', sum(mean_ops_day_ault), 'ops per week\nCoup:', sum(mean_ops_day_coup), 'ops per week'),
        x='',
        y='Operations')
 p_mean_lden_field = ggplot() +
@@ -75,7 +84,8 @@ p_mean_lden_field = ggplot() +
   # geom_line(data=df_mean_ops_total, aes(x=Day, y=((Ops/4+0))), group=1, size=1, color='black') +
   scale_y_continuous(name='Lden (dBA)', limits=c(50,90), oob=rescale_none) +
   labs(title='Average daily Lden',
-       subtitle=paste('Sentinel sites 8B_SG and 24A_B'))
+       subtitle=paste('Sentinel sites', get_site_name_for_ID(sentinel_sites[1]),
+                      'and', get_site_name_for_ID(sentinel_sites[2])))
 print(p_mean_ops_field / p_mean_lden_field)
 
 # Lden per site and airfield on days of activity -------------------------------
@@ -93,25 +103,28 @@ l_epa = 55
 # of annoyance at 45 dB Lden was rated moderate quality.
 l_who = 45
 
-# NOTE: only look at Navy data for now
-site_date_ldens = na.omit(data_metrics[,c('Org', 'Date', 'Day', 'Name', 'ID', 'Field', 'Lden')])
-site_date_ldens = site_date_ldens[site_date_ldens$Org=='NAVY',]
-
-active_site_date_ldens = rbind(
-  site_date_ldens[site_date_ldens$Field=='Ault' & site_date_ldens$Day %in% days_ault_active,],
-  site_date_ldens[site_date_ldens$Field=='Coup' & site_date_ldens$Day %in% days_coup_active,]
+active_site_date_metrics = rbind(
+  data_metrics[data_metrics$Field=='Ault' & data_metrics$Day %in% days_ault_active,],
+  data_metrics[data_metrics$Field=='Coup' & data_metrics$Day %in% days_coup_active,]
 )
 
-ggplot(active_site_date_ldens, aes(x=reorder(Name, Lden, FUN=median), y=Lden, fill=Field)) + 
+inactive_site_date_metrics = rbind(
+  data_metrics[data_metrics$Field=='Ault' & !(data_metrics$Day %in% days_ault_active),],
+  data_metrics[data_metrics$Field=='Coup' & !(data_metrics$Day %in% days_coup_active),]
+)
+
+p_lden_site = ggplot(active_site_date_metrics, aes(x=reorder(Name, Lden, FUN=median), y=Lden, fill=Field)) + 
   geom_boxplot(alpha=0.9) +
   labs(title='Lden per site, active days of operation', x ='Site', y ='Lden (dBA)') +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
   geom_hline(yintercept=l_hudfaa, linetype='dotted', size=0.7, colour='red') +
   geom_hline(yintercept=l_epa, linetype='dotted', size=0.7, colour='red') +
   geom_hline(yintercept=l_who, linetype='dotted', size=0.7, colour='red') +
   coord_flip()
+print(p_lden_site)
 
-# Risk of high annoyance for days of average and maximum activity, all sites ---
+# TODO: compare with inactive site dates
+
+# Annoyance for days of average and maximum activity, all sites ----------------
 # What is the risk of high annoyance at these sites based on exposure-response relationships?
 
 # See ISO 1996-1 2016 Annex E/F and Lct
@@ -132,19 +145,19 @@ regression_ISO = function(Lden) {
 }
 
 # Median
-median_lden = tapply(active_site_date_ldens$Lden, active_site_date_ldens$ID, median)
+median_lden = tapply(active_site_date_metrics$Lden, active_site_date_metrics$ID, median)
 median_lden_HA = data.frame(
   Stat='Median',
   Lden=sort(median_lden),
-  HA=regression_HA(sort(median_lden))
+  HA=regression_WHO(sort(median_lden))
 )
 
 # Max
-max_lden = tapply(active_site_date_ldens$Lden, active_site_date_ldens$ID, max)
+max_lden = tapply(active_site_date_metrics$Lden, active_site_date_metrics$ID, max)
 max_lden_HA = data.frame(
   Stat='Max',
   Lden=sort(max_lden),
-  HA=regression_HA(sort(max_lden))
+  HA=regression_WHO(sort(max_lden))
 )
 
 combo = rbind(median_lden_HA, max_lden_HA)
@@ -165,3 +178,44 @@ p_ha = ggplot() +
   geom_hline(yintercept=100, linetype='dashed') +
   geom_vline(xintercept=75, linetype='dashed')
 print(p_ha)
+
+# Maximum Leq hourly heatmap per day -------------------------------------------
+data_hour_day_levels = data.frame()
+for (hour in 0:23) {
+  leq_hr = paste('Leq', formatC(hour, width=2, flag='0'), sep='')
+  result = tapply(data_metrics[,leq_hr], INDEX=data_metrics$Day, FUN=max)
+  result = data.frame(Hour=hour, Day=names(result), Leq=result)
+  rownames(result) = c()
+  data_hour_day_levels = rbind(data_hour_day_levels, result)
+}
+data_hour_day_levels$Day = factor(data_hour_day_levels$Day, levels=days)
+
+p_heatmap = ggplot(data_hour_day_levels[order(as.numeric(data_hour_day_levels$Day)),], aes(x=Hour, y=Day, fill=Leq)) +
+  geom_tile() +
+  scale_fill_viridis(option='A') +
+  labs(title='Max Leq heatmap across all Navy sites', x='Hour', y='Day') +
+  scale_x_continuous('Hour', labels = as.character(0:23), breaks = 0:23) +
+  coord_flip()
+print(p_heatmap)
+
+# Average active day Leq and ops per hour --------------------------------------
+
+
+
+# Lnight per site and airfield on days of activity -----------------------------
+
+# WHO Guideline 'strong' recommendation. Evidence for a relevant absolute risk of sleep disturbance related to night noise exposure from aircraft at 40 dB Lnight was rated moderate quality. 
+l_hsd_who = 40
+
+p_lnight_site = ggplot(active_site_date_metrics, aes(x=reorder(Name, Lden_Lnight, FUN=median), y=Lden_Lnight, fill=Field)) + 
+  geom_boxplot(alpha=0.9) +
+  labs(title='Lnight per site, active days of operation', x ='Site', y ='Lnight (dBA)') +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  geom_hline(yintercept=l_hsd_who, linetype='dotted', size=0.7, colour='red') +
+  coord_flip()
+print(p_lnight_site)
+# TODO: active nights of operation, not full 24 hour periods?
+
+# TODO: compare to inactive site dates
+
+# TODO -------------------------------
