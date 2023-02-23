@@ -58,6 +58,18 @@ get_data_ops = function() {
   return(data_ops)
 }
 
+get_data_events = function() {
+  if (!exists('data_events')) {
+    data_events = read.csv('data/events/output/events.csv')
+    data_events$StartTime  = as.POSIXct(data_events$StartTime)
+    data_events$Hour       = strftime(data_events$StartTime, format='%H')
+    data_events$DEN        = get_den_period_for_hours(data_events$Hour)
+    data_events$Day        = factor(weekdays(data_events$StartTime, abbreviate=T), levels=days)
+    data_events$Period     = get_navy_monitoring_period_for_times(data_events$StartTime)
+  }
+  return(data_events)
+}
+
 get_field_name_for_ID = function(id) {
   data_sites = get_data_sites()
   return(data_sites[data_sites$ID==id,]$Field)

@@ -102,27 +102,57 @@ active_site_date_metrics = rbind(
   data_metrics[data_metrics$Field=='Ault' & data_metrics$Day %in% days_ault_active,],
   data_metrics[data_metrics$Field=='Coup' & data_metrics$Day %in% days_coup_active,]
 )
+active_site_date_metrics$Activity='Active'
 
 inactive_site_date_metrics = rbind(
   data_metrics[data_metrics$Field=='Ault' & !(data_metrics$Day %in% days_ault_active),],
   data_metrics[data_metrics$Field=='Coup' & !(data_metrics$Day %in% days_coup_active),]
 )
+inactive_site_date_metrics$Activity='Inactive'
 
-p_lden_site = ggplot(active_site_date_metrics, aes(x=reorder(Name, Lden, FUN=median), y=Lden, fill=Field)) + 
+combined_data_metrics = rbind(inactive_site_date_metrics, active_site_date_metrics)
+combined_data_metrics$Activity = factor(combined_data_metrics$Activity)
+combined_data_metrics$Field = factor(combined_data_metrics$Field)
+combined_data_metrics = combined_data_metrics[with(combined_data_metrics, order(Activity)), ]
+
+p_lden_site_detail = ggplot(combined_data_metrics) +
+  labs(title='Lden per site, all days', x ='Site', y ='Lden (dBA)') +
+  geom_violin(aes(x=reorder(Name, Lden, FUN=median), y=Lden, color=Field), alpha=1.0) +
+  stat_summary(mapping=aes(x=Name, y=Lden), fun='median', geom='crossbar', width=0.5, fatten=1.0) +
+  geom_dotplot(aes(x=reorder(Name, Lden, FUN=median), y=Lden, fill=Activity), binaxis='y', binwidth=1, stackdir='center', stackratio=1.2, dotsize=0.5, alpha=0.5, color=NA) +
+  scale_fill_manual(values=c('Active'='red', 'Inactive'='darkgray')) +
+  coord_flip()
+print(p_lden_site_detail)
+
+p_lden_site_active = ggplot(combined_data_metrics[combined_data_metrics$Field=='Coup',], aes(x=reorder(Name, Lden, FUN=median), y=Lden, fill=Activity)) + 
   geom_violin(alpha=0.9) +
   # geom_boxplot(alpha=0.9) +
-  stat_summary(fun='median', geom='point') +
-  labs(title='Lden per site, active days of operation', x ='Site', y ='Lden (dBA)') +
+  stat_summary(fun='median', geom='crossbar', width=0.1, fatten=1.0) +
+  labs(title='Lden per Coupeville site, active vs inactive days of operation', x ='Site', y ='Lden (dBA)') +
   geom_hline(yintercept=l_hudfaa, linetype='dotted', size=0.7, colour='red') +
   geom_hline(yintercept=l_epa, linetype='dotted', size=0.7, colour='red') +
   geom_hline(yintercept=l_who, linetype='dotted', size=0.7, colour='red') +
   coord_flip()
-print(p_lden_site)
+print(p_lden_site_active)
+
+p_lden_site_all = ggplot(combined_data_metrics, aes(x=reorder(Name, Lden, FUN=median), y=Lden, fill=Field)) + 
+  geom_violin(alpha=0.9) +
+  # geom_boxplot(alpha=0.9) +
+  stat_summary(mapping=aes(y=Lden), fun='median', geom='crossbar', width=0.5, fatten=1.0) +
+  stat_summary(mapping=aes(y=Lden), fun='energyavg', geom='point') +
+  labs(title='Lden per site, all days', x ='Site', y ='Lden (dBA)') +
+  geom_hline(yintercept=l_hudfaa, linetype='dotted', size=0.7, colour='red') +
+  geom_hline(yintercept=l_epa, linetype='dotted', size=0.7, colour='red') +
+  geom_hline(yintercept=l_who, linetype='dotted', size=0.7, colour='red') +
+  coord_flip()
+print(p_lden_site_all)
 
 # TODO: compare with inactive site dates
 
 # Annoyance for days of average and maximum activity, all sites ----------------
 # What is the risk of high annoyance at these sites based on exposure-response relationships?
+
+# TODO: Annoyance on a longer, "proper" timescale? Energy averaged across the four monitoring periods?
 
 # See ISO 1996-1 2016 Annex E/F and Lct
 
@@ -146,50 +176,49 @@ regression_japan = function(Lden) {
 }
 
 # Median
-median_lden = tapply(active_site_date_metrics$Lden, active_site_date_metrics$ID, median)
+median_lden = tapply(data_metrics$Lden, data_metrics$ID, median)
 median_lden_HA = data.frame(
   Stat='Median',
   Lden=sort(median_lden),
-  HA=regression_WHO(sort(median_lden))
+  HA_WHO=regression_WHO(sort(median_lden)),
+  HA_JAPAN=regression_japan(sort(median_lden)),
+  HA_MO=regression_MO(sort(median_lden))
 )
 
-# Max
-max_lden = tapply(active_site_date_metrics$Lden, active_site_date_metrics$ID, max)
-max_lden_HA = data.frame(
-  Stat='Max',
-  Lden=sort(max_lden),
-  HA=regression_WHO(sort(max_lden))
+# Energy average
+energyavg_lden = tapply(data_metrics$Lden, data_metrics$ID, energyavg)
+energyavg_lden_HA = data.frame(
+  Stat='Energy Average',
+  Lden=sort(energyavg_lden),
+  HA_WHO=regression_WHO(sort(energyavg_lden)),
+  HA_JAPAN=regression_japan(sort(energyavg_lden)),
+  HA_MO=regression_MO(sort(energyavg_lden))
 )
 
-combo = rbind(median_lden_HA, max_lden_HA)
+# NOTE: Time scale for ERFs is long-term, typically one year, so single-date maximum Ldens are not appropriate
+
+combo = rbind(median_lden_HA, energyavg_lden_HA)
 
 p_ha = ggplot() +
-  labs(x='Lden (dBA)', y='%HA', title='WHO - Percent Highly Annoyed') +
-  xlim(40, max(combo$Lden)+5) +
-  ylim(0, max(combo$HA)+5) +
-  
-  stat_function(fun=regression_WHO, xlim=c(40,75)) +
+  labs(title='Percent population highly annoyed per site - all dates') +
+  stat_function(fun=regression_WHO, xlim=c(40,75), size=.7) +
   stat_function(fun=regression_WHO, xlim=c(75,100), linetype='dashed') +
-  stat_function(fun=regression_MO, xlim=c(40,75), color='red') +
+  stat_function(fun=regression_MO, xlim=c(40,75), size=.7, color='red') +
   stat_function(fun=regression_MO, xlim=c(75,200), color='red', linetype='dashed') +
-  # stat_function(fun=regression_ISO, colour= 'green') +
-  geom_ribbon(
-    data=data.frame(
-      Lden=  c(40,    45,    50,    55,    60,    65),
-      HAmin= c(8.1,  22.2,  33.7,  45.9, 58.8, 69.0),
-      HAmax= c(21.0, 30.1,  42.4,  54.6, 66.7, 82.0)
-    ), aes(x=Lden,ymin=HAmin,ymax=HAmax),
-    fill='blue', alpha=0.2) +
-  stat_function(fun=regression_japan, xlim=c(40,65), colour= 'purple') +
-  stat_function(fun=regression_japan, xlim=c(65,100), colour= 'purple', linetype='dashed') +
-  geom_point(
-    data=combo,
-    aes(x=Lden, y=HA, color=factor(Stat)),
-    # label=rownames(median_lden_lnight_HSD),
-    size=3
-  ) +
-  # scale_x_continuous(name='Lden (dBA)', limits=c(40,75), oob=rescale_none) +
-  geom_hline(yintercept=100, linetype='dashed')
+  geom_ribbon(data=data.frame(
+    Lden=  c(40,    45,    50,    55,    60,    65),
+    HAmin= c(8.1,  22.2,  33.7,  45.9, 58.8, 69.0),
+    HAmax= c(21.0, 30.1,  42.4,  54.6, 66.7, 82.0)
+  ), aes(x=Lden,ymin=HAmin,ymax=HAmax), fill='blue', alpha=0.2) +
+  stat_function(fun=regression_japan, xlim=c(40,65), size=.7, color= 'purple') +
+  stat_function(fun=regression_japan, xlim=c(65,100), color= 'purple', linetype='dashed') +
+  geom_point(data=combo, aes(x=Lden, y=HA_WHO,   color=factor(Stat)), size=2, alpha=0.7) +
+  geom_point(data=combo, aes(x=Lden, y=HA_JAPAN, color=factor(Stat)), size=2, alpha=0.7) +
+  geom_point(data=combo, aes(x=Lden, y=HA_MO,    color=factor(Stat)), size=2, alpha=0.7) +
+  scale_x_continuous(name='Lden (dBA)', limits=c(40,100), oob=rescale_none) +
+  scale_y_continuous(name='%HA', n.breaks=9, limits=c(0,110), oob=rescale_none) +
+  geom_hline(yintercept=100, linetype='dotted') +
+  labs(color='Site Lden')
 print(p_ha)
 
 # Maximum Leq hourly heatmap per day -------------------------------------------
@@ -244,7 +273,7 @@ p_mean_ops_field_hour = ggplot() +
 p_mean_leq_field_hour = ggplot() +
   geom_bar(data=df_mean_ops_hour, aes(x=Hour, y=Leq, fill=Field), stat='identity', position='dodge', alpha=0.9) +
   scale_y_continuous(name='Leq (dBA)', limits=c(40,90), oob=rescale_none) +
-  labs(title='Average hourly Leq',
+  labs(title='Average active day Leq per hour',
        subtitle=paste('Sentinel sites', get_site_name_for_ID(sentinel_sites[1]),
                       'and', get_site_name_for_ID(sentinel_sites[2])))
 print(p_mean_ops_field_hour / p_mean_leq_field_hour)
@@ -254,17 +283,65 @@ print(p_mean_ops_field_hour / p_mean_leq_field_hour)
 # WHO Guideline 'strong' recommendation. Evidence for a relevant absolute risk of sleep disturbance related to night noise exposure from aircraft at 40 dB Lnight was rated moderate quality. 
 l_hsd_who = 40
 
-p_lnight_site = ggplot(active_site_date_metrics, aes(x=reorder(Name, Lden_Lnight, FUN=median), y=Lden_Lnight, fill=Field)) + 
+nights_ault_active = unique(data_ops[data_ops$Field=='Ault' & data_ops$DEN=='Night','Date'])
+nights_coup_active = unique(data_ops[data_ops$Field=='Coup' & data_ops$DEN=='Night','Date'])
+
+active_night_site_date_metrics = rbind(
+  data_metrics[data_metrics$Field=='Ault' & factor(format(data_metrics$Date, format_date)) %in% nights_ault_active,],
+  data_metrics[data_metrics$Field=='Coup' & factor(format(data_metrics$Date, format_date)) %in% nights_coup_active,]
+)
+active_night_site_date_metrics$Activity='Active'
+
+inactive_night_site_date_metrics = rbind(
+  data_metrics[data_metrics$Field=='Ault' & !(factor(format(data_metrics$Date, format_date)) %in% nights_ault_active),],
+  data_metrics[data_metrics$Field=='Coup' & !(factor(format(data_metrics$Date, format_date)) %in% nights_coup_active),]
+)
+inactive_night_site_date_metrics$Activity='Inactive'
+
+combined_night_data_metrics = rbind(inactive_night_site_date_metrics, active_night_site_date_metrics)
+combined_night_data_metrics$Activity = factor(combined_night_data_metrics$Activity)
+combined_night_data_metrics$Field = factor(combined_night_data_metrics$Field)
+combined_night_data_metrics = combined_night_data_metrics[with(combined_night_data_metrics, order(Activity)), ]
+
+
+p_lnight_site = ggplot(active_night_site_date_metrics, aes(x=reorder(Name, Lden_Lnight, FUN=median), y=Lden_Lnight, fill=Field)) + 
   # geom_boxplot(alpha=0.9) +
   geom_violin(alpha=0.9) +
   # geom_boxplot(alpha=0.9) +
   stat_summary(fun='median', geom='point') +
-  labs(title='Lnight per site, active days of operation', x ='Site', y ='Lnight (dBA)') +
+  labs(title='Lnight per site, active nights of operation', x ='Site', y ='Lnight (dBA)') +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
   geom_hline(yintercept=l_hsd_who, linetype='dotted', size=0.7, colour='red') +
   coord_flip()
 print(p_lnight_site)
-# TODO: active nights of operation, not full 24 hour periods?
+
+p_lnight_site_detail = ggplot(combined_night_data_metrics) +
+  labs(title='Lnight per site, all nights', x ='Site', y ='Lnight (dBA)') +
+  geom_violin(aes(x=reorder(Name, Lden_Lnight, FUN=median), y=Lden_Lnight, color=Field), alpha=1.0) +
+  stat_summary(mapping=aes(x=Name, y=Lden_Lnight), fun='median', geom='crossbar', width=0.5, fatten=1.0) +
+  geom_dotplot(aes(x=reorder(Name, Lden_Lnight, FUN=median), y=Lden_Lnight, fill=Activity), binaxis='y', binwidth=1, stackdir='center', stackratio=1.2, dotsize=0.5, alpha=0.5, color=NA) +
+  scale_fill_manual(values=c('Active'='red', 'Inactive'='darkgray')) +
+  coord_flip()
+print(p_lnight_site_detail)
+
+p_lnight_site_active = ggplot(combined_night_data_metrics, aes(x=reorder(Name, Lden_Lnight, FUN=median), y=Lden_Lnight, fill=Activity)) + 
+  geom_violin(alpha=0.9) +
+  # geom_boxplot(alpha=0.9) +
+  stat_summary(fun='median', geom='crossbar', width=0.1, fatten=1.0) +
+  labs(title='Lnight per site, active vs inactive nights of operation', x ='Site', y ='Lnight (dBA)') +
+  geom_hline(yintercept=l_hsd_who, linetype='dotted', size=0.7, colour='red') +
+  coord_flip()
+print(p_lnight_site_active)
+
+p_lnight_site_all = ggplot(combined_data_metrics, aes(x=reorder(Name, Lden_Lnight, FUN=median), y=Lden_Lnight, fill=Field)) + 
+  geom_violin(alpha=0.9) +
+  # geom_boxplot(alpha=0.9) +
+  stat_summary(mapping=aes(y=Lden_Lnight), fun='median', geom='crossbar', width=0.5, fatten=1.0) +
+  stat_summary(mapping=aes(y=Lden_Lnight), fun='energyavg', geom='point') +
+  labs(title='Lnight per site, all days', x ='Site', y ='Lnight (dBA)') +
+  geom_hline(yintercept=l_hsd_who, linetype='dotted', size=0.7, colour='red') +
+  coord_flip()
+print(p_lnight_site_all)
 
 # TODO: compare to inactive site dates
 
@@ -287,23 +364,125 @@ eq_hsd_combinedestimate = function(Lnight) {
   return(0.02502*(Lnight)^2 - 1.12624*(Lnight) + 17.07421)
 }
 
+# NOTE: Time scale for ERFs is long-term, typically one year, so single-date maximum Lnights are not appropriate. "Equivalent noise levels are often used in surveys and epidemiologic studies as long-term average exposure metrics, and are therefore also often found in legislative and policy contexts. For example, the Night Noise Guidelines for Europe of the World Health Organization (WHO) define effects of nocturnal noise based on annual average outdoor Lnight ranges. The value of equivalent noise levels in describing the effects of noise on sleep is more limited, as different noise scenarios may calculate to the same equivalent noise level, but differ substantially in their sleep disturbing properties. There is general agreement that the number and acoustical properties of single noise events better reflect the actual degree of nocturnal sleep disturbance in a single night. It is thus questionable whether Lnight can be used as the only indicator for predicting the effects of noise on sleep and the consequences of noise-induced sleep disturbance, or whether supplemental noise indicators are needed
+
+# Median
+median_lnight = tapply(data_metrics$Lden_Lnight, data_metrics$ID, median)
+median_lnight_HSD = data.frame(
+  Stat='Median',
+  Lnight=sort(median_lnight),
+  HSD_smith=eq_hsd_combinedestimate(sort(median_lnight))
+)
+
+# Energy average
+energyavg_lnight = tapply(data_metrics$Lden_Lnight, data_metrics$ID, energyavg)
+energyavg_lnight_HSD = data.frame(
+  Stat='Energy Average',
+  Lnight=sort(energyavg_lnight),
+  HSD_smith=eq_hsd_combinedestimate(sort(energyavg_lnight))
+)
+
+# NOTE: Time scale for ERFs is long-term, typically one year, so single-date maximum Ldens are not appropriate
+
+combo = rbind(median_lnight_HSD, energyavg_lnight_HSD)
+
 p_hsd = ggplot() +
-  labs(x='Lnight (dBA)', y='%HSD', title='WHO - Percent Highly Annoyed') +
-  xlim(40, 70) +
-  ylim(0, 60) +
-  stat_function(fun=eq_hsd_awakenings,       color='pink') +
-  stat_function(fun=eq_hsd_fallingasleep,    color='magenta') +
-  stat_function(fun=eq_hsd_sleepdisturbance, color='purple') +
-  stat_function(fun=eq_hsd_combinedestimate) +
-  # geom_point(
-  #   data=combo,
-  #   aes(x=Lden, y=HA, color=factor(Stat)),
-  #   # label=rownames(median_lden_lnight_HSD),
-  #   size=3
-  # ) +
-  # geom_hline(yintercept=100, linetype='dashed') +
-  geom_vline(xintercept=65, linetype='dashed')
+  labs(title='Percent population highly sleep disturbed per site - all dates') +
+  stat_function(fun=eq_hsd_combinedestimate, xlim=c(40,65), size=.7) +
+  stat_function(fun=eq_hsd_combinedestimate, xlim=c(65,80), linetype='dashed') +
+  # geom_ribbon(data=data.frame(
+  #   Lden=  c(40,    45,    50,    55,    60,    65),
+  #   HAmin= c(8.1,  22.2,  33.7,  45.9, 58.8, 69.0),
+  #   HAmax= c(21.0, 30.1,  42.4,  54.6, 66.7, 82.0)
+  # ), aes(x=Lden,ymin=HAmin,ymax=HAmax), fill='blue', alpha=0.2) +
+  # stat_function(fun=regression_japan, xlim=c(40,65), size=.7, color= 'purple') +
+  # stat_function(fun=regression_japan, xlim=c(65,100), color= 'purple', linetype='dashed') +
+  geom_point(data=combo, aes(x=Lnight, y=HSD_smith, color=factor(Stat)), size=2, alpha=0.7) +
+  scale_x_continuous(name='Lnight (dBA)', limits=c(40,80), oob=rescale_none) +
+  scale_y_continuous(name='%HSD', n.breaks=9, limits=c(0,90), oob=rescale_none) +
+  labs(color='Site Lnight')
 print(p_hsd)
+
+# Num events above 60 dB -------------------------------------------------------
+
+for (site in sentinel_sites) {
+  events_site = events[events$SiteID==site,]
+  ops_field = ops[ops$Field==get_field_name_for_ID(site),]
+  
+  factor_breaks = c(0,40,50,60,70,80,90,1000)
+  factor_lables = c('<40', '40-50', '50-60','60-70','70-80','80-90','90+')
+  events_site$Range_LAeq_Lmax = cut(events_site$LAeq_Lmax, breaks=factor_breaks, right=F)
+  
+  # Average events across all 4 periods
+  num_events_per_range_hour = tapply(X=events_site$Range_LAeq_Lmax, INDEX=events_site$Hour, FUN=summary)
+  mean_events_per_range_hour = lapply(num_events_per_range_hour, function(x){x/4})
+  
+  pdata_hourly = data.frame()
+  for (hour in names(mean_events_per_range_hour)) {
+    nevnt = mean_events_per_range_hour[[hour]]
+    range = names(mean_events_per_range_hour[[hour]])
+    pdata_hourly = rbind(pdata_hourly, data.frame(
+      Hour=hour,
+      Events=nevnt,
+      Range=range
+    ))
+  }
+  pdata_hourly$Hour = as.factor(pdata_hourly$Hour)
+  pdata_hourly$Range = factor(pdata_hourly$Range, labels=factor_lables)
+  
+  # Average ops across all 4 periods
+  num_ops_per_hour = summary(ops_field$Hour)
+  mean_ops_hour = lapply(num_ops_per_hour, function(x){x/4})
+  pops_hourly = as.data.frame(as.table(unlist(mean_ops_hour)))
+  names(pops_hourly) = c('Hour', 'Ops')
+  
+  p = ggplot() +
+    geom_bar(data=pdata_hourly, aes(x=Hour, y=Events, group=Range, fill=Range), stat='identity') +
+    scale_fill_viridis_d(option='magma') +
+    labs(title=paste('Mean noise event Lmax vs flight operations -', sites[sites$ID==site,'Region']),
+         subtitle=paste('Site', site, '- average', sum(pops_hourly$Ops), 'operations per week'),
+         x ='Hour',
+         fill='Range (dBA)') +
+    geom_point(data=pops_hourly, aes(x=Hour, y=Ops), size=2, color='black') +
+    geom_line(data=pops_hourly, aes(x=Hour, y=Ops), group=1, size=1, color='black') +
+    scale_y_continuous(name='Noise events', sec.axis=sec_axis(trans=~.*1, name='Flight operations'))
+  print(p)
+  
+  # Average events across 4 periods
+  num_events_per_range_day = tapply(X=events_site$Range_LAeq_Lmax, INDEX=events_site$Day, FUN=summary)
+  mean_events_per_range_day = lapply(num_events_per_range_day, function(x){x/4})
+  
+  pdata_daily = data.frame()
+  for (day in names(mean_events_per_range_day)) {
+    nevnt = mean_events_per_range_day[[day]]
+    range = names(mean_events_per_range_day[[day]])
+    pdata_daily = rbind(pdata_daily, data.frame(
+      Day=factor(day, levels=days),
+      Events=nevnt,
+      Range=range
+    ))
+  }
+  pdata_daily$Day = as.factor(pdata_daily$Day)
+  pdata_daily$Range = factor(pdata_daily$Range, labels=factor_lables)
+  
+  # Average ops across 4 periods
+  num_ops_per_day = summary(ops_field$Day)
+  mean_ops_daily = lapply(num_ops_per_day, function(x){x/4})
+  pops_daily = as.data.frame(as.table(unlist(mean_ops_daily)))
+  names(pops_daily) = c('Day', 'Ops')
+  
+  p = ggplot() +
+    geom_bar(data=pdata_daily[order(pdata_daily$Day), ], aes(x=Day, y=Events, group=Range, fill=Range), stat='identity') +
+    scale_fill_viridis_d(option='magma') +
+    labs(title=paste('Mean noise event Lmax vs flight operations -', sites[sites$ID==site,'Region']),
+         subtitle=paste('Site', site, '- average', sum(pops_daily$Ops), 'operations per week'),
+         x ='Day',
+         fill='Range (dBA)') +
+    geom_point(data=pops_daily, aes(x=Day, y=Ops), size=2, color='black') +
+    geom_line(data=pops_daily, aes(x=Day, y=Ops), group=1, size=1, color='black') +
+    scale_y_continuous(name='Noise events', sec.axis=sec_axis(trans=~.*1, name='Flight operations'))
+  print(p)
+}
 
 # TODO: Sleep disturbance for events of average SEL, all sites ------
 # TODO

@@ -104,3 +104,4 @@ for (site in sites_to_plot) {
     scale_y_continuous(name='Noise events', sec.axis=sec_axis(trans=~.*1, name='Flight operations'))
   print(p)
 }
+
