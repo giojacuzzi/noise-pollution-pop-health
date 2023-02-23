@@ -140,6 +140,10 @@ regression_MO = function(Lden) {
 regression_ISO = function(Lden) {
   return(-9.199 * 10^-5 * (Lden - 40)^3 + 3.932 * 10^-2 * (Lden - 40)^2 + 0.294 * (Lden - 40))
 }
+# Yokoshima et al 2021
+regression_japan = function(Lden) {
+  return(-68.080 + 1.838 * Lden + 0.006 * Lden^2) # (R^2 = 0.994)
+}
 
 # Median
 median_lden = tapply(active_site_date_metrics$Lden, active_site_date_metrics$ID, median)
@@ -163,17 +167,29 @@ p_ha = ggplot() +
   labs(x='Lden (dBA)', y='%HA', title='WHO - Percent Highly Annoyed') +
   xlim(40, max(combo$Lden)+5) +
   ylim(0, max(combo$HA)+5) +
-  stat_function(fun=regression_WHO) +
-  stat_function(fun=regression_MO, colour = 'magenta') +
-  stat_function(fun=regression_ISO, colour= 'purple') +
+  
+  stat_function(fun=regression_WHO, xlim=c(40,75)) +
+  stat_function(fun=regression_WHO, xlim=c(75,100), linetype='dashed') +
+  stat_function(fun=regression_MO, xlim=c(40,75), color='red') +
+  stat_function(fun=regression_MO, xlim=c(75,200), color='red', linetype='dashed') +
+  # stat_function(fun=regression_ISO, colour= 'green') +
+  geom_ribbon(
+    data=data.frame(
+      Lden=  c(40,    45,    50,    55,    60,    65),
+      HAmin= c(8.1,  22.2,  33.7,  45.9, 58.8, 69.0),
+      HAmax= c(21.0, 30.1,  42.4,  54.6, 66.7, 82.0)
+    ), aes(x=Lden,ymin=HAmin,ymax=HAmax),
+    fill='blue', alpha=0.2) +
+  stat_function(fun=regression_japan, xlim=c(40,65), colour= 'purple') +
+  stat_function(fun=regression_japan, xlim=c(65,100), colour= 'purple', linetype='dashed') +
   geom_point(
     data=combo,
     aes(x=Lden, y=HA, color=factor(Stat)),
     # label=rownames(median_lden_lnight_HSD),
     size=3
   ) +
-  geom_hline(yintercept=100, linetype='dashed') +
-  geom_vline(xintercept=75, linetype='dashed')
+  # scale_x_continuous(name='Lden (dBA)', limits=c(40,75), oob=rescale_none) +
+  geom_hline(yintercept=100, linetype='dashed')
 print(p_ha)
 
 # Maximum Leq hourly heatmap per day -------------------------------------------
