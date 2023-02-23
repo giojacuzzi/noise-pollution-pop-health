@@ -1,4 +1,5 @@
 source('global.R')
+source('data/metrics/metrics.R')
 library(mapview)
 library(dplyr)
 library(scales)
@@ -41,8 +42,8 @@ sentinel_sites = c(
 sentinel_metrics_ault = data_metrics[data_metrics$ID==sentinel_sites[1],]
 sentinel_metrics_coup = data_metrics[data_metrics$ID==sentinel_sites[2],]
 
-mean_lden_day_ault = tapply(X=sentinel_metrics_ault$Lden, INDEX=sentinel_metrics_ault$Day, FUN=mean)
-mean_lden_day_coup = tapply(X=sentinel_metrics_coup$Lden, INDEX=sentinel_metrics_coup$Day, FUN=mean)
+energyavg_lden_day_ault = tapply(X=sentinel_metrics_ault$Lden, INDEX=sentinel_metrics_ault$Day, FUN=energyavg)
+energyavg_lden_day_coup = tapply(X=sentinel_metrics_coup$Lden, INDEX=sentinel_metrics_coup$Day, FUN=energyavg)
 
 # Average ops by field and day of week
 ops_per_ault_date = summary(data_ops[data_ops$Field=='Ault',]$Date)
@@ -64,10 +65,10 @@ df_mean_ops_lden_day = data.frame(
   Day   = factor(rep(days,2), levels=days),
   Field = factor(c(rep('Ault',7), rep('Coup',7))),
   Ops   = c(mean_ops_day_ault, mean_ops_day_coup),
-  Lden  = c(mean_lden_day_ault, mean_lden_day_coup)
+  Lden  = c(energyavg_lden_day_ault, energyavg_lden_day_coup)
 )
 
-# TODO: change 0 ops days line to dashed style?
+# TODO: change 0 ops days line to dashed style? or do levels with lines and ops with bars?
 p_mean_ops_field_day = ggplot() +
   geom_line(data=df_mean_ops_lden_day, aes(x=Day, y=Ops, group=Field, color=Field), stat='identity') +
   labs(title='Average flight operations per day',
@@ -108,7 +109,9 @@ inactive_site_date_metrics = rbind(
 )
 
 p_lden_site = ggplot(active_site_date_metrics, aes(x=reorder(Name, Lden, FUN=median), y=Lden, fill=Field)) + 
-  geom_boxplot(alpha=0.9) +
+  geom_violin(alpha=0.9) +
+  # geom_boxplot(alpha=0.9) +
+  stat_summary(fun='median', geom='point') +
   labs(title='Lden per site, active days of operation', x ='Site', y ='Lden (dBA)') +
   geom_hline(yintercept=l_hudfaa, linetype='dotted', size=0.7, colour='red') +
   geom_hline(yintercept=l_epa, linetype='dotted', size=0.7, colour='red') +
@@ -202,21 +205,33 @@ ops_hour_coup = c()
 for (hour in hours) ops_hour_coup = c(ops_hour_coup, sum(data_ops[data_ops$Field=='Coup',]$Hour==hour))
 mean_ops_hour_coup = ops_hour_coup / length(unique(data_ops[data_ops$Field=='Coup',]$Date))
 
+active_ault_hour_metrics = subset(active_site_date_metrics[active_site_date_metrics$ID==sentinel_sites[1],], select=Leq00:Leq23)
+energyavg_leq_hour_ault = sapply(active_ault_hour_metrics, energyavg)
+active_coup_hour_metrics = subset(active_site_date_metrics[active_site_date_metrics$ID==sentinel_sites[2],], select=Leq00:Leq23)
+energyavg_leq_hour_coup = sapply(active_coup_hour_metrics, energyavg)
+
 df_mean_ops_hour = data.frame(
   Hour  = factor(rep(hours,2), levels=hours),
   Field = factor(c(rep('Ault',24), rep('Coup',24))),
-  Ops   = c(mean_ops_hour_ault, mean_ops_hour_coup)
-  # Lden  = c(mean_lden_day_ault, mean_lden_day_coup)
+  Ops   = c(mean_ops_hour_ault, mean_ops_hour_coup),
+  Leq   = c(energyavg_leq_hour_ault, energyavg_leq_hour_coup)
 )
 
+# TODO: histogram per period instead?
 p_mean_ops_field_hour = ggplot() +
   geom_line(data=df_mean_ops_hour, aes(x=Hour, y=Ops, group=Field, color=Field), stat='identity') +
   geom_vline(xintercept='22', linetype='dotted', size=0.7, colour='red') + # Lnight
-  labs(title='Average flight operations per hour',
+  labs(title='Average active day flight operations per hour',
        subtitle=paste('Ault:', round(sum(mean_ops_hour_ault)), 'ops per day\nCoup:', round(sum(mean_ops_hour_coup)), 'ops per day'),
        x='',
        y='Operations')
-print(p_mean_ops_field_hour)
+p_mean_leq_field_hour = ggplot() +
+  geom_bar(data=df_mean_ops_hour, aes(x=Hour, y=Leq, fill=Field), stat='identity', position='dodge', alpha=0.9) +
+  scale_y_continuous(name='Leq (dBA)', limits=c(40,90), oob=rescale_none) +
+  labs(title='Average hourly Leq',
+       subtitle=paste('Sentinel sites', get_site_name_for_ID(sentinel_sites[1]),
+                      'and', get_site_name_for_ID(sentinel_sites[2])))
+print(p_mean_ops_field_hour / p_mean_leq_field_hour)
 
 # Lnight per site and airfield on days of activity -----------------------------
 
@@ -224,7 +239,10 @@ print(p_mean_ops_field_hour)
 l_hsd_who = 40
 
 p_lnight_site = ggplot(active_site_date_metrics, aes(x=reorder(Name, Lden_Lnight, FUN=median), y=Lden_Lnight, fill=Field)) + 
-  geom_boxplot(alpha=0.9) +
+  # geom_boxplot(alpha=0.9) +
+  geom_violin(alpha=0.9) +
+  # geom_boxplot(alpha=0.9) +
+  stat_summary(fun='median', geom='point') +
   labs(title='Lnight per site, active days of operation', x ='Site', y ='Lnight (dBA)') +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
   geom_hline(yintercept=l_hsd_who, linetype='dotted', size=0.7, colour='red') +
@@ -234,4 +252,42 @@ print(p_lnight_site)
 
 # TODO: compare to inactive site dates
 
-# TODO -------------------------------
+# TODO: Sleep disturbance for nights of average and maximum Lnight, all sites ------
+# What is the risk of high sleep disturbance at these sites based on exposure-response relationships?
+
+# TODO: Military-specific / low-frequency / onset / aircraft dB penalty adjustment?
+
+# Smith et al 2022 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9272916/
+eq_hsd_awakenings = function(Lnight) {
+  return(0.03132*(Lnight)^2 - 1.80203*(Lnight) + 31.28079)
+}
+eq_hsd_fallingasleep = function(Lnight) {
+  return(0.02204*(Lnight)^2 - 0.86230*(Lnight) + 12.42449)
+}
+eq_hsd_sleepdisturbance = function(Lnight) {
+  return(0.02664*(Lnight)^2 - 1.17389*(Lnight) + 16.46165)
+}
+eq_hsd_combinedestimate = function(Lnight) {
+  return(0.02502*(Lnight)^2 - 1.12624*(Lnight) + 17.07421)
+}
+
+p_hsd = ggplot() +
+  labs(x='Lnight (dBA)', y='%HSD', title='WHO - Percent Highly Annoyed') +
+  xlim(40, 70) +
+  ylim(0, 60) +
+  stat_function(fun=eq_hsd_awakenings,       color='pink') +
+  stat_function(fun=eq_hsd_fallingasleep,    color='magenta') +
+  stat_function(fun=eq_hsd_sleepdisturbance, color='purple') +
+  stat_function(fun=eq_hsd_combinedestimate) +
+  # geom_point(
+  #   data=combo,
+  #   aes(x=Lden, y=HA, color=factor(Stat)),
+  #   # label=rownames(median_lden_lnight_HSD),
+  #   size=3
+  # ) +
+  # geom_hline(yintercept=100, linetype='dashed') +
+  geom_vline(xintercept=65, linetype='dashed')
+print(p_hsd)
+
+# TODO: Sleep disturbance for events of average SEL, all sites ------
+# TODO

@@ -12,6 +12,12 @@ splToPressure = function(l) {
   p0*10^(l/20)
 }
 
+# Logarithmic energy average
+# NOTE: this is identical to Leq
+energyavg = function(L) {
+  10*log10(sum(10^(L/10))/length(L))
+}
+
 # Leq is the equivalent continuous sound pressure level, also known as the "time-averaged sound pressure level". This is the steady-state sound pressure level which, over a given period of time (t_start to t_end), has the same total acoustic energy as the actual fluctuating noise signal (L). In other words, the RMS sound level with the measurement duration used as the averaging time.
 
 # Calculate total Leq from level series over given time period (ISO 1996, Navy Technical Report)
