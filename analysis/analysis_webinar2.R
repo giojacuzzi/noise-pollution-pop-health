@@ -70,15 +70,14 @@ df_mean_ops_lden_day = data.frame(
   Lden  = c(energyavg_lden_day_ault, energyavg_lden_day_coup)
 )
 
-# TODO: change 0 ops days line to dashed style? or do levels with lines and ops with bars?
 p_mean_ops_field_day = ggplot() +
-  geom_line(data=df_mean_ops_lden_day, aes(x=Day, y=Ops, group=Field, color=Field), stat='identity') +
+  geom_bar(data=df_mean_ops_lden_day, aes(x=Day, y=Ops, fill=Field), stat='identity', position='dodge', alpha=0.9) +
   labs(title='Average flight operations per day',
-       subtitle=paste('Ault:', sum(mean_ops_day_ault), 'ops per week\nCoup:', sum(mean_ops_day_coup), 'ops per week'),
+       subtitle=paste('Ault:', round(sum(mean_ops_day_ault)), 'ops per week\nCoup:', round(sum(mean_ops_day_coup)), 'ops per week'),
        x='',
        y='Operations')
 p_mean_lden_field_day = ggplot() +
-  geom_bar(data=df_mean_ops_lden_day, aes(x=Day, y=Lden, fill=Field), stat='identity', position='dodge', alpha=0.9) +
+  geom_line(data=df_mean_ops_lden_day, aes(x=Day, y=Lden, group=Field, color=Field), stat='identity') +
   scale_y_continuous(name='Lden (dBA)', limits=c(50,90), oob=rescale_none) +
   labs(title='Average daily Lden',
        subtitle=paste('Sentinel sites', get_site_name_for_ID(sentinel_sites[1]),
@@ -273,17 +272,18 @@ df_mean_ops_hour = data.frame(
   Leq   = c(energyavg_leq_hour_ault, energyavg_leq_hour_coup)
 )
 
-# TODO: histogram per period instead?
 p_mean_ops_field_hour = ggplot() +
-  geom_line(data=df_mean_ops_hour, aes(x=Hour, y=Ops, group=Field, color=Field), stat='identity') +
-  geom_vline(xintercept='22', linetype='dotted', size=0.7, colour='red') + # Lnight
+  geom_bar(data=df_mean_ops_hour, aes(x=Hour, y=Ops, fill=Field), stat='identity', position='dodge', alpha=0.9) +
   labs(title='Average active day flight operations per hour',
        subtitle=paste('Ault:', round(sum(mean_ops_hour_ault)), 'ops per day\nCoup:', round(sum(mean_ops_hour_coup)), 'ops per day'),
        x='',
        y='Operations')
 p_mean_leq_field_hour = ggplot() +
-  geom_bar(data=df_mean_ops_hour, aes(x=Hour, y=Leq, fill=Field), stat='identity', position='dodge', alpha=0.9) +
+  geom_line(data=df_mean_ops_hour, aes(x=Hour, y=Leq, group=Field, color=Field), stat='identity') +
   scale_y_continuous(name='Leq (dBA)', limits=c(40,90), oob=rescale_none) +
+  geom_rect(aes(xmin='00', xmax = '07', ymin = -Inf, ymax = Inf), fill = 'blue', alpha = 0.09) +
+  geom_rect(aes(xmin='19', xmax = '22', ymin = -Inf, ymax = Inf), fill = 'purple', alpha = 0.06) +
+  geom_rect(aes(xmin='22', xmax = '23', ymin = -Inf, ymax = Inf), fill = 'blue', alpha = 0.09) +
   labs(title='Average active day Leq per hour',
        subtitle=paste('Sentinel sites', get_site_name_for_ID(sentinel_sites[1]),
                       'and', get_site_name_for_ID(sentinel_sites[2])))
@@ -313,18 +313,6 @@ combined_night_data_metrics = rbind(inactive_night_site_date_metrics, active_nig
 combined_night_data_metrics$Activity = factor(combined_night_data_metrics$Activity)
 combined_night_data_metrics$Field = factor(combined_night_data_metrics$Field)
 combined_night_data_metrics = combined_night_data_metrics[with(combined_night_data_metrics, order(Activity)), ]
-
-
-p_lnight_site = ggplot(active_night_site_date_metrics, aes(x=reorder(Name, Lden_Lnight, FUN=median), y=Lden_Lnight, fill=Field)) + 
-  # geom_boxplot(alpha=0.9) +
-  geom_violin(alpha=0.9) +
-  # geom_boxplot(alpha=0.9) +
-  stat_summary(fun='median', geom='point') +
-  labs(title='Lnight per site, active nights of operation', x ='Site', y ='Lnight (dBA)') +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
-  geom_hline(yintercept=l_hsd_who, linetype='dotted', size=0.7, colour='red') +
-  coord_flip()
-print(p_lnight_site)
 
 p_lnight_site_detail = ggplot(combined_night_data_metrics) +
   labs(title='Lnight per site, all nights', x ='Site', y ='Lnight (dBA)') +
@@ -421,14 +409,55 @@ p_hsd_site = ggplot() +
 print(p_hsd_site)
 
 # Num events above 60 dB -------------------------------------------------------
+# Stacked per-airfield barplots of sentinel site mean noise event count per hour across periods grouped by loudness (+ number of operations at the airfield on second y axis?)
 
+factor_breaks = c(0,40,50,60,70,80,90,1000)
+factor_lables = c('<40', '40-50', '50-60','60-70','70-80','80-90','90+')
 
 for (site in sentinel_sites) {
   events_site = data_events[data_events$SiteID==site,]
   ops_field = data_ops[data_ops$Field==get_field_name_for_ID(site),]
+  events_site$Range_LAeq_Lmax = cut(events_site$LAeq_Lmax, breaks=factor_breaks, right=F)
   
-  factor_breaks = c(0,40,50,60,70,80,90,1000)
-  factor_lables = c('<40', '40-50', '50-60','60-70','70-80','80-90','90+')
+  # Average events across 4 periods
+  num_events_per_range_day = tapply(X=events_site$Range_LAeq_Lmax, INDEX=events_site$Day, FUN=summary)
+  mean_events_per_range_day = lapply(num_events_per_range_day, function(x){x/4})
+  
+  pdata_daily = data.frame()
+  for (day in names(mean_events_per_range_day)) {
+    nevnt = mean_events_per_range_day[[day]]
+    range = names(mean_events_per_range_day[[day]])
+    pdata_daily = rbind(pdata_daily, data.frame(
+      Day=factor(day, levels=days),
+      Events=nevnt,
+      Range=range
+    ))
+  }
+  pdata_daily$Day = as.factor(pdata_daily$Day)
+  pdata_daily$Range = factor(pdata_daily$Range, labels=factor_lables)
+  
+  # Average ops across 4 periods
+  num_ops_per_day = summary(ops_field$Day)
+  mean_ops_daily = lapply(num_ops_per_day, function(x){x/4})
+  pops_daily = as.data.frame(as.table(unlist(mean_ops_daily)))
+  names(pops_daily) = c('Day', 'Ops')
+  
+  p = ggplot() +
+    geom_bar(data=pdata_daily[order(pdata_daily$Day), ], aes(x=Day, y=Events, group=Range, fill=Range), stat='identity') +
+    scale_fill_viridis_d(option='magma') +
+    labs(title=paste('Mean noise event Lmax vs flight operations -', data_sites[data_sites$ID==site,'Region']),
+         subtitle=paste('Site', site, '- average', sum(pops_daily$Ops), 'operations per week'),
+         x ='Day',
+         fill='Range (dBA)') +
+    geom_point(data=pops_daily, aes(x=Day, y=Ops), size=2, color='black') +
+    geom_line(data=pops_daily, aes(x=Day, y=Ops), group=1, size=1, color='black') +
+    scale_y_continuous(name='Noise events', sec.axis=sec_axis(trans=~.*1, name='Flight operations'))
+  print(p)
+}
+
+for (site in sentinel_sites) {
+  events_site = data_events[data_events$SiteID==site,]
+  ops_field = data_ops[data_ops$Field==get_field_name_for_ID(site),]
   events_site$Range_LAeq_Lmax = cut(events_site$LAeq_Lmax, breaks=factor_breaks, right=F)
   
   # Average events across all 4 periods
@@ -463,41 +492,6 @@ for (site in sentinel_sites) {
          fill='Range (dBA)') +
     geom_point(data=pops_hourly, aes(x=Hour, y=Ops), size=2, color='black') +
     geom_line(data=pops_hourly, aes(x=Hour, y=Ops), group=1, size=1, color='black') +
-    scale_y_continuous(name='Noise events', sec.axis=sec_axis(trans=~.*1, name='Flight operations'))
-  print(p)
-  
-  # Average events across 4 periods
-  num_events_per_range_day = tapply(X=events_site$Range_LAeq_Lmax, INDEX=events_site$Day, FUN=summary)
-  mean_events_per_range_day = lapply(num_events_per_range_day, function(x){x/4})
-  
-  pdata_daily = data.frame()
-  for (day in names(mean_events_per_range_day)) {
-    nevnt = mean_events_per_range_day[[day]]
-    range = names(mean_events_per_range_day[[day]])
-    pdata_daily = rbind(pdata_daily, data.frame(
-      Day=factor(day, levels=days),
-      Events=nevnt,
-      Range=range
-    ))
-  }
-  pdata_daily$Day = as.factor(pdata_daily$Day)
-  pdata_daily$Range = factor(pdata_daily$Range, labels=factor_lables)
-  
-  # Average ops across 4 periods
-  num_ops_per_day = summary(ops_field$Day)
-  mean_ops_daily = lapply(num_ops_per_day, function(x){x/4})
-  pops_daily = as.data.frame(as.table(unlist(mean_ops_daily)))
-  names(pops_daily) = c('Day', 'Ops')
-  
-  p = ggplot() +
-    geom_bar(data=pdata_daily[order(pdata_daily$Day), ], aes(x=Day, y=Events, group=Range, fill=Range), stat='identity') +
-    scale_fill_viridis_d(option='magma') +
-    labs(title=paste('Mean noise event Lmax vs flight operations -', data_sites[data_sites$ID==site,'Region']),
-         subtitle=paste('Site', site, '- average', sum(pops_daily$Ops), 'operations per week'),
-         x ='Day',
-         fill='Range (dBA)') +
-    geom_point(data=pops_daily, aes(x=Day, y=Ops), size=2, color='black') +
-    geom_line(data=pops_daily, aes(x=Day, y=Ops), group=1, size=1, color='black') +
     scale_y_continuous(name='Noise events', sec.axis=sec_axis(trans=~.*1, name='Flight operations'))
   print(p)
 }

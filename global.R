@@ -86,7 +86,7 @@ get_ID_for_site_name = function(name) {
 }
 
 # Day, evening, or night for hours 00-23
-get_den_period_for_hours = function(h) {
+get_den_period_for_hours = function(h=0:23) {
   den_period = cut(as.numeric(h),
                    breaks=c(-1,6,18,21,23),
                    labels=c('Night','Day','Evening','Night'))
