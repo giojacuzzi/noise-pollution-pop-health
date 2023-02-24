@@ -2,6 +2,7 @@ source('global.R')
 source('data/metrics/metrics.R')
 library(mapview)
 library(dplyr)
+library(tidyr)
 library(scales)
 library(patchwork)
 
@@ -15,6 +16,7 @@ data_metrics = na.omit(data_metrics)
 data_metrics = data_metrics[data_metrics$Org=='NAVY',]
 
 data_ops = get_data_ops()
+data_events = get_data_events()
 
 # Monitoring site map  ---------------------------------------------------------
 
@@ -200,7 +202,7 @@ energyavg_lden_HA = data.frame(
 combo = rbind(median_lden_HA, energyavg_lden_HA)
 
 p_ha = ggplot() +
-  labs(title='Percent population highly annoyed per site - all dates') +
+  labs(title='Percent population highly annoyed per site, all dates') +
   stat_function(fun=regression_WHO, xlim=c(40,75), size=.7) +
   stat_function(fun=regression_WHO, xlim=c(75,100), linetype='dashed') +
   stat_function(fun=regression_MO, xlim=c(40,75), size=.7, color='red') +
@@ -220,6 +222,15 @@ p_ha = ggplot() +
   geom_hline(yintercept=100, linetype='dotted') +
   labs(color='Site Lden')
 print(p_ha)
+
+energyavg_lden_HA$Name = sapply(rownames(energyavg_lden_HA), get_site_name_for_ID)
+energyavg_lden_HA_long = pivot_longer(energyavg_lden_HA[,c('HA_WHO', 'HA_JAPAN', 'HA_MO', 'Name')], cols=c('HA_WHO', 'HA_JAPAN', 'HA_MO'), names_to='ERF', values_to='HA')
+
+p_ha_site = ggplot() +
+  geom_bar(data=energyavg_lden_HA_long, aes(x=reorder(Name, HA), y=HA, fill=ERF), stat='identity', position='dodge') +
+  labs(title='Percent population highly annoyed per site, all dates', x ='Site', y ='%HA') +
+  coord_flip()
+print(p_ha_site)
 
 # Maximum Leq hourly heatmap per day -------------------------------------------
 data_hour_day_levels = data.frame()
@@ -383,11 +394,10 @@ energyavg_lnight_HSD = data.frame(
 )
 
 # NOTE: Time scale for ERFs is long-term, typically one year, so single-date maximum Ldens are not appropriate
-
 combo = rbind(median_lnight_HSD, energyavg_lnight_HSD)
 
 p_hsd = ggplot() +
-  labs(title='Percent population highly sleep disturbed per site - all dates') +
+  labs(title='Probability of high sleep disturbance per site, all dates') +
   stat_function(fun=eq_hsd_combinedestimate, xlim=c(40,65), size=.7) +
   stat_function(fun=eq_hsd_combinedestimate, xlim=c(65,80), linetype='dashed') +
   # geom_ribbon(data=data.frame(
@@ -403,11 +413,19 @@ p_hsd = ggplot() +
   labs(color='Site Lnight')
 print(p_hsd)
 
+energyavg_lnight_HSD$Name = sapply(rownames(energyavg_lnight_HSD), get_site_name_for_ID)
+p_hsd_site = ggplot() +
+  geom_bar(data=energyavg_lnight_HSD, aes(x=reorder(Name, HSD_smith), y=HSD_smith), stat='identity') +
+  labs(title='Probability of high sleep disturbance', x ='Site', y ='%HSD') +
+  coord_flip()
+print(p_hsd_site)
+
 # Num events above 60 dB -------------------------------------------------------
 
+
 for (site in sentinel_sites) {
-  events_site = events[events$SiteID==site,]
-  ops_field = ops[ops$Field==get_field_name_for_ID(site),]
+  events_site = data_events[data_events$SiteID==site,]
+  ops_field = data_ops[data_ops$Field==get_field_name_for_ID(site),]
   
   factor_breaks = c(0,40,50,60,70,80,90,1000)
   factor_lables = c('<40', '40-50', '50-60','60-70','70-80','80-90','90+')
@@ -439,7 +457,7 @@ for (site in sentinel_sites) {
   p = ggplot() +
     geom_bar(data=pdata_hourly, aes(x=Hour, y=Events, group=Range, fill=Range), stat='identity') +
     scale_fill_viridis_d(option='magma') +
-    labs(title=paste('Mean noise event Lmax vs flight operations -', sites[sites$ID==site,'Region']),
+    labs(title=paste('Mean noise event Lmax vs flight operations -', data_sites[data_sites$ID==site,'Region']),
          subtitle=paste('Site', site, '- average', sum(pops_hourly$Ops), 'operations per week'),
          x ='Hour',
          fill='Range (dBA)') +
@@ -474,7 +492,7 @@ for (site in sentinel_sites) {
   p = ggplot() +
     geom_bar(data=pdata_daily[order(pdata_daily$Day), ], aes(x=Day, y=Events, group=Range, fill=Range), stat='identity') +
     scale_fill_viridis_d(option='magma') +
-    labs(title=paste('Mean noise event Lmax vs flight operations -', sites[sites$ID==site,'Region']),
+    labs(title=paste('Mean noise event Lmax vs flight operations -', data_sites[data_sites$ID==site,'Region']),
          subtitle=paste('Site', site, '- average', sum(pops_daily$Ops), 'operations per week'),
          x ='Day',
          fill='Range (dBA)') +
@@ -483,6 +501,8 @@ for (site in sentinel_sites) {
     scale_y_continuous(name='Noise events', sec.axis=sec_axis(trans=~.*1, name='Flight operations'))
   print(p)
 }
+
+# NOTE: ASA/ANSI TR S12.9 PART 6 withdrawn in 2018
 
 # TODO: Sleep disturbance for events of average SEL, all sites ------
 # TODO
