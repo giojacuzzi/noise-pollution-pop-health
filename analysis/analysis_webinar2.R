@@ -241,12 +241,12 @@ p_ha = ggplot() +
   stat_function(fun=regression_ISO_Miedema, xlim=c(40,76), size=.7, aes(color='ISO 2016')) +
   stat_function(fun=regression_japan, xlim=c(65,100), color='blue', linetype='dashed') +
   stat_function(fun=regression_japan, xlim=c(40,65), size=.7, aes(color='Yokoshima 2021')) +
-  scale_color_manual(name='Exposure-Response', values=erf_colors) +
+  scale_color_manual(name='Exposure-response', values=erf_colors) +
   # Measurement points
   geom_point(data=combo, aes(x=Lden, y=HA_WHO,    fill=Stat), shape=21, stroke=0, size=pt_size, alpha=pt_alpha) +
   geom_point(data=combo, aes(x=Lden, y=HA_JAPAN,  fill=Stat), shape=21, stroke=0, size=pt_size, alpha=pt_alpha) +
   geom_point(data=combo, aes(x=Lden, y=HA_ISO_MO, fill=Stat), shape=21, stroke=0, size=pt_size, alpha=pt_alpha) +
-  scale_fill_manual(name='Site Lden Statistic', values=stat_colors) +
+  scale_fill_manual(name='Site Lden statistic', values=stat_colors) +
   # Plot configuration
   labs(title='Percent population highly annoyed per site, all dates') +
   labs(color='Lden per site') +
@@ -405,6 +405,12 @@ ci_lower_hsd_combinedestimate = function(Lnight) {
   return(0.027883*Lnight^2 - 1.680477*Lnight + 30.550446) 
 }
 
+ci_hsd_combinedestimate = data.frame(
+  Lnight = seq(from=40, to=65, by=1),
+  Lower  = ci_lower_hsd_combinedestimate(seq(from=40, to=65, by=1)),
+  Upper  = ci_upper_hsd_combinedestimate(seq(from=40, to=65, by=1))
+)
+
 # NOTE: Limitations - "The rapid onset time in particular means that a given aircraft is probably more likely to induce an awakening than one that is much more gradual, like a civil aircraft. But of course physiological disturbance such as this and self-reported long-term %HSD are not the same thing, and do not necessarily correlate all that well."
 
 # NOTE: Time scale for ERFs is long-term, typically one year, so single-date maximum Lnights are not appropriate. "Equivalent noise levels are often used in surveys and epidemiologic studies as long-term average exposure metrics, and are therefore also often found in legislative and policy contexts. For example, the Night Noise Guidelines for Europe of the World Health Organization (WHO) define effects of nocturnal noise based on annual average outdoor Lnight ranges. The value of equivalent noise levels in describing the effects of noise on sleep is more limited, as different noise scenarios may calculate to the same equivalent noise level, but differ substantially in their sleep disturbing properties. There is general agreement that the number and acoustical properties of single noise events better reflect the actual degree of nocturnal sleep disturbance in a single night. It is thus questionable whether Lnight can be used as the only indicator for predicting the effects of noise on sleep and the consequences of noise-induced sleep disturbance, or whether supplemental noise indicators are needed
@@ -428,23 +434,25 @@ energyavg_lnight_HSD = data.frame(
 # NOTE: Time scale for ERFs is long-term, typically one year, so single-date maximum Ldens are not appropriate
 combo = rbind(median_lnight_HSD, energyavg_lnight_HSD)
 
+erf_colors = c('Smith 2022'='black')
+
 p_hsd = ggplot() +
-  labs(title='Probability of high sleep disturbance per site, all dates') +
-  stat_function(fun=eq_hsd_combinedestimate, xlim=c(40,65), size=.7) +
-  stat_function(fun=eq_hsd_combinedestimate, xlim=c(65,80), linetype='dashed') +
-  stat_function(fun=ci_upper_hsd_combinedestimate, xlim=c(40,65), color='purple', linetype='dotted') +
-  stat_function(fun=ci_lower_hsd_combinedestimate, xlim=c(40,65), color='purple', linetype='dotted') +
-  # geom_ribbon(data=data.frame(
-  #   Lden=  c(40,    45,    50,    55,    60,    65),
-  #   HAmin= c(8.1,  22.2,  33.7,  45.9, 58.8, 69.0),
-  #   HAmax= c(21.0, 30.1,  42.4,  54.6, 66.7, 82.0)
-  # ), aes(x=Lden,ymin=HAmin,ymax=HAmax), fill='blue', alpha=0.2) +
-  # stat_function(fun=regression_japan, xlim=c(40,65), size=.7, color= 'purple') +
-  # stat_function(fun=regression_japan, xlim=c(65,100), color= 'purple', linetype='dashed') +
-  geom_point(data=combo, aes(x=Lnight, y=HSD_smith, color=factor(Stat)), size=2, alpha=0.7) +
+  # Confidence intervals
+  geom_ribbon(ci_hsd_combinedestimate, mapping=aes(x=Lnight,ymin=Lower,ymax=Upper), fill='purple', alpha=0.1) +
+  # stat_function(fun=ci_upper_hsd_combinedestimate, xlim=c(40,65), color='purple', linetype='dotted') +
+  # stat_function(fun=ci_lower_hsd_combinedestimate, xlim=c(40,65), color='purple', linetype='dotted') +
+  # Exposure-response function(s)
+  stat_function(fun=eq_hsd_combinedestimate, xlim=c(65,80), linetype='dashed', color='black') +
+  stat_function(fun=eq_hsd_combinedestimate, xlim=c(40,65), size=.7, aes(color='Smith 2022')) +
+  scale_color_manual(name='Exposure-response', values=erf_colors) +
+  # Measurement points
+  geom_point(data=combo, aes(x=Lnight, y=HSD_smith, fill=factor(Stat)), shape=21, stroke=0, size=pt_size, alpha=pt_alpha) +
+  scale_fill_manual(name='Site Lnight statistic', values=stat_colors) +
+  # Plot configuration
   scale_x_continuous(name='Lnight (dBA)', limits=c(40,80), oob=rescale_none) +
   scale_y_continuous(name='%HSD', n.breaks=9, limits=c(0,90), oob=rescale_none) +
-  labs(color='Site Lnight')
+  labs(title='Probability of high sleep disturbance per site, all dates') +
+  labs(color='Site Lnight statistic')
 print(p_hsd)
 
 energyavg_lnight_HSD$Name = sapply(rownames(energyavg_lnight_HSD), get_site_name_for_ID)
