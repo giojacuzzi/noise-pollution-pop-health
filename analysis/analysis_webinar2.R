@@ -175,14 +175,24 @@ regression_ISO_Fidell = function(Lden) {
   )
 }
 regression_ISO_Miedema = function(Lden) {
-  # Includes ISO recommended 7 dB adjustment
+  # Includes ISO recommended 7 dB adjustment, based on Miedema curve
   return(-9.199 * 10^-5 * (Lden - 40)^3 + 3.932 * 10^-2 * (Lden - 40)^2 + 0.294 * (Lden - 40))
 }
+ci_iso_miedema = data.frame(
+  Lden=  c(43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76),
+  Lower= c(0.3,0.4,0.4,0.5,0.6,0.7,0.9,1.0,1.2,1.4,1.7,1.9,2.2,2.6,3.0,3.4,3.9,4.4,5.0,5.7,6.4,7.2,8.1,9.0,10.0,11.1,12.3,13.6,15.0,16.4,18.0,19.6,21.3,23.1),
+  Upper= c(33.5,35.7,38.0,40.3,42.7,45.1,47.5,49.9,52.3,54.7,57.1,59.5,61.8,64.1,66.3,68.5,70.6,72.7,74.7,76.6,78.4,80.1,81.8,83.4,84.8,86.2,87.5,88.7,89.9,90.9,91.9,92.7,93.6,94.3)
+)
 
 # Yokoshima et al 2021
 regression_japan = function(Lden) {
   return(-68.080 + 1.838 * Lden + 0.006 * Lden^2) # (R^2 = 0.994)
 }
+ci_japan = data=data.frame(
+  Lden=  c(40,   45,  50,  55, 60, 65),
+  Lower= c(8.1,  22.2, 33.7, 45.9, 58.8, 69.0),
+  Upper= c(21.0, 30.1, 42.4, 54.6, 66.7, 82.0)
+)
 
 # Median
 median_lden = tapply(data_metrics$Lden, data_metrics$ID, median)
@@ -191,7 +201,8 @@ median_lden_HA = data.frame(
   Lden=sort(median_lden),
   HA_WHO=regression_WHO(sort(median_lden)),
   HA_JAPAN=regression_japan(sort(median_lden)),
-  HA_MO=regression_MO(sort(median_lden))
+  HA_MO=regression_MO(sort(median_lden)),
+  HA_ISO_MO=regression_ISO_Miedema(sort(median_lden))
 )
 
 # Energy average
@@ -201,7 +212,8 @@ energyavg_lden_HA = data.frame(
   Lden=sort(energyavg_lden),
   HA_WHO=regression_WHO(sort(energyavg_lden)),
   HA_JAPAN=regression_japan(sort(energyavg_lden)),
-  HA_MO=regression_MO(sort(energyavg_lden))
+  HA_MO=regression_MO(sort(energyavg_lden)),
+  HA_ISO_MO=regression_ISO_Miedema(sort(energyavg_lden))
 )
 
 # NOTE: Time scale for ERFs is long-term, typically one year, so single-date maximum Ldens are not appropriate
@@ -209,34 +221,30 @@ energyavg_lden_HA = data.frame(
 combo = rbind(median_lden_HA, energyavg_lden_HA)
 
 p_ha = ggplot() +
-  labs(title='Percent population highly annoyed per site, all dates') +
-  stat_function(fun=regression_WHO, xlim=c(40,75), size=.7) +
+  # Confidence intervals
+  geom_ribbon(ci_iso_miedema, mapping=aes(x=Lden,ymin=Lower,ymax=Upper), fill='purple', alpha=0.1) +
+  # geom_line(ci_iso_miedema, mapping=aes(x=Lden, y=Lower), color='purple', linetype='dotted') +
+  # geom_line(ci_iso_miedema, mapping=aes(x=Lden, y=Upper), color='purple', linetype='dotted') +
+  geom_ribbon(ci_japan, mapping=aes(x=Lden,ymin=Lower,ymax=Upper), fill='blue', alpha=0.1) +
+  # geom_line(ci_japan, mapping=aes(x=Lden, y=Lower), color='blue', linetype='dotted') +
+  # geom_line(ci_japan, mapping=aes(x=Lden, y=Upper), color='blue', linetype='dotted') +
+  # Exposure-response functions
   stat_function(fun=regression_WHO, xlim=c(75,100), linetype='dashed') +
-  # stat_function(fun=regression_ISO_Fidell, xlim=c(40,80), size=.7, color='green') +
-  # stat_function(fun=regression_ISO_Fidell, xlim=c(80,200), color='green', linetype='dashed') +
-  stat_function(fun=regression_ISO_Miedema, xlim=c(40,76), size=.7, color='green') +
-  stat_function(fun=regression_ISO_Miedema, xlim=c(76, 200), color='green', linetype='dashed') +
-  geom_ribbon(data=data.frame(
-    Lden=  c(43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76),
-    HAmin= c(0.3,0.4,0.4,0.5,0.6,0.7,0.9,1.0,1.2,1.4,1.7,1.9,2.2,2.6,3.0,3.4,3.9,4.4,5.0,5.7,6.4,7.2,8.1,9.0,10.0,11.1,12.3,13.6,15.0,16.4,18.0,19.6,21.3,23.1),
-    HAmax= c(33.5,35.7,38.0,40.3,42.7,45.1,47.5,49.9,52.3,54.7,57.1,59.5,61.8,64.1,66.3,68.5,70.6,72.7,74.7,76.6,78.4,80.1,81.8,83.4,84.8,86.2,87.5,88.7,89.9,90.9,91.9,92.7,93.6,94.3)
-  ), aes(x=Lden,ymin=HAmin,ymax=HAmax), fill='green', alpha=0.2) +
-  stat_function(fun=regression_MO, xlim=c(40,75), size=.7, color='red') +
-  stat_function(fun=regression_MO, xlim=c(75,200), color='red', linetype='dashed') +
-  geom_ribbon(data=data.frame(
-    Lden=  c(40,    45,    50,    55,    60,    65),
-    HAmin= c(8.1,  22.2,  33.7,  45.9, 58.8, 69.0),
-    HAmax= c(21.0, 30.1,  42.4,  54.6, 66.7, 82.0)
-  ), aes(x=Lden,ymin=HAmin,ymax=HAmax), fill='blue', alpha=0.2) +
-  stat_function(fun=regression_japan, xlim=c(40,65), size=.7, color= 'purple') +
-  stat_function(fun=regression_japan, xlim=c(65,100), color= 'purple', linetype='dashed') +
-  geom_point(data=combo, aes(x=Lden, y=HA_WHO,   color=factor(Stat)), size=2, alpha=0.7) +
-  geom_point(data=combo, aes(x=Lden, y=HA_JAPAN, color=factor(Stat)), size=2, alpha=0.7) +
-  geom_point(data=combo, aes(x=Lden, y=HA_MO,    color=factor(Stat)), size=2, alpha=0.7) +
+  stat_function(fun=regression_WHO, xlim=c(40,75), size=.7) +
+  stat_function(fun=regression_ISO_Miedema, xlim=c(76, 200), color='purple', linetype='dashed') +
+  stat_function(fun=regression_ISO_Miedema, xlim=c(40,76), size=.7, color='purple') +
+  stat_function(fun=regression_japan, xlim=c(65,100), color='blue', linetype='dashed') +
+  stat_function(fun=regression_japan, xlim=c(40,65), size=.7, color='blue') +
+  # Measurement points
+  geom_point(data=combo, aes(x=Lden, y=HA_WHO,    color=factor(Stat)), size=2, alpha=0.8) +
+  geom_point(data=combo, aes(x=Lden, y=HA_JAPAN,  color=factor(Stat)), size=2, alpha=0.8) +
+  geom_point(data=combo, aes(x=Lden, y=HA_ISO_MO, color=factor(Stat)), size=2, alpha=0.8) +
+  # Plot configuration
+  labs(title='Percent population highly annoyed per site, all dates') +
+  labs(color='Site Lden') +
   scale_x_continuous(name='Lden (dBA)', limits=c(45,85), oob=rescale_none) +
   scale_y_continuous(name='%HA', n.breaks=9, limits=c(0,110), oob=rescale_none) +
-  geom_hline(yintercept=100, linetype='dotted') +
-  labs(color='Site Lden')
+  geom_hline(yintercept=100, linetype='dotted')
 print(p_ha)
 
 energyavg_lden_HA$Name = sapply(rownames(energyavg_lden_HA), get_site_name_for_ID)
