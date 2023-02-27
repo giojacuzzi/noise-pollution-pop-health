@@ -465,11 +465,13 @@ print(p_hsd_site)
 # Num events above 60 dB -------------------------------------------------------
 # Stacked per-airfield barplots of sentinel site mean noise event count per hour across periods grouped by loudness (+ number of operations at the airfield on second y axis?)
 
-factor_breaks = c(0,40,50,60,70,80,90,1000)
-factor_lables = c('<40', '40-50', '50-60','60-70','70-80','80-90','90+')
+factor_breaks = c(60,70,80,90,1000)
+factor_lables = c('60-70','70-80','80-90','90+')
+factor_colors = c('#721F81FF','#B63679FF','#F1605DFF','#FED395FF') #show_col(viridis(7, option='magma'))
+event_Lmax_min = 60
 
 for (site in sentinel_sites) {
-  events_site = data_events[data_events$SiteID==site,]
+  events_site = data_events[data_events$SiteID==site & data_events$LAeq_Lmax>=event_Lmax_min,]
   ops_field = data_ops[data_ops$Field==get_field_name_for_ID(site),]
   events_site$Range_LAeq_Lmax = cut(events_site$LAeq_Lmax, breaks=factor_breaks, right=F)
   
@@ -498,11 +500,11 @@ for (site in sentinel_sites) {
   
   p = ggplot() +
     geom_bar(data=pdata_daily[order(pdata_daily$Day), ], aes(x=Day, y=Events, group=Range, fill=Range), stat='identity') +
-    scale_fill_viridis_d(option='magma') +
+    scale_fill_manual(values=factor_colors) +
     labs(title=paste('Mean noise event Lmax vs flight operations -', data_sites[data_sites$ID==site,'Region']),
          subtitle=paste('Site', site, '- average', sum(pops_daily$Ops), 'operations per week'),
          x ='Day',
-         fill='Range (dBA)') +
+         fill='Lmax (dBA)') +
     geom_point(data=pops_daily, aes(x=Day, y=Ops), size=2, color='black') +
     geom_line(data=pops_daily, aes(x=Day, y=Ops), group=1, size=1, color='black') +
     scale_y_continuous(name='Noise events', sec.axis=sec_axis(trans=~.*1, name='Flight operations'))
@@ -510,7 +512,7 @@ for (site in sentinel_sites) {
 }
 
 for (site in sentinel_sites) {
-  events_site = data_events[data_events$SiteID==site,]
+  events_site = data_events[data_events$SiteID==site & data_events$LAeq_Lmax>=event_Lmax_min,]
   ops_field = data_ops[data_ops$Field==get_field_name_for_ID(site),]
   events_site$Range_LAeq_Lmax = cut(events_site$LAeq_Lmax, breaks=factor_breaks, right=F)
   
@@ -539,7 +541,7 @@ for (site in sentinel_sites) {
   
   p = ggplot() +
     geom_bar(data=pdata_hourly, aes(x=Hour, y=Events, group=Range, fill=Range), stat='identity') +
-    scale_fill_viridis_d(option='magma') +
+    scale_fill_manual(values=factor_colors) +
     labs(title=paste('Mean noise event Lmax vs flight operations -', data_sites[data_sites$ID==site,'Region']),
          subtitle=paste('Site', site, '- average', sum(pops_hourly$Ops), 'operations per week'),
          x ='Hour',
