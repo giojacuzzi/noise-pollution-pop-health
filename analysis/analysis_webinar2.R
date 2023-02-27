@@ -219,6 +219,12 @@ energyavg_lden_HA = data.frame(
 # NOTE: Time scale for ERFs is long-term, typically one year, so single-date maximum Ldens are not appropriate
 
 combo = rbind(median_lden_HA, energyavg_lden_HA)
+combo$Stat = factor(combo$Stat)
+
+erf_colors = c('ISO 2016'='purple', 'Yokoshima 2021'='blue', 'WHO 2018'='black')
+stat_colors = c('salmon','dodgerblue')
+pt_size = 2.5
+pt_alpha = 0.8
 
 p_ha = ggplot() +
   # Confidence intervals
@@ -230,29 +236,32 @@ p_ha = ggplot() +
   # geom_line(ci_japan, mapping=aes(x=Lden, y=Upper), color='blue', linetype='dotted') +
   # Exposure-response functions
   stat_function(fun=regression_WHO, xlim=c(75,100), linetype='dashed') +
-  stat_function(fun=regression_WHO, xlim=c(40,75), size=.7) +
+  stat_function(fun=regression_WHO, xlim=c(40,75), size=.7, aes(color='WHO 2018')) +
   stat_function(fun=regression_ISO_Miedema, xlim=c(76, 200), color='purple', linetype='dashed') +
-  stat_function(fun=regression_ISO_Miedema, xlim=c(40,76), size=.7, color='purple') +
+  stat_function(fun=regression_ISO_Miedema, xlim=c(40,76), size=.7, aes(color='ISO 2016')) +
   stat_function(fun=regression_japan, xlim=c(65,100), color='blue', linetype='dashed') +
-  stat_function(fun=regression_japan, xlim=c(40,65), size=.7, color='blue') +
+  stat_function(fun=regression_japan, xlim=c(40,65), size=.7, aes(color='Yokoshima 2021')) +
+  scale_color_manual(name='Exposure-Response', values=erf_colors) +
   # Measurement points
-  geom_point(data=combo, aes(x=Lden, y=HA_WHO,    color=factor(Stat)), size=2, alpha=0.8) +
-  geom_point(data=combo, aes(x=Lden, y=HA_JAPAN,  color=factor(Stat)), size=2, alpha=0.8) +
-  geom_point(data=combo, aes(x=Lden, y=HA_ISO_MO, color=factor(Stat)), size=2, alpha=0.8) +
+  geom_point(data=combo, aes(x=Lden, y=HA_WHO,    fill=Stat), shape=21, stroke=0, size=pt_size, alpha=pt_alpha) +
+  geom_point(data=combo, aes(x=Lden, y=HA_JAPAN,  fill=Stat), shape=21, stroke=0, size=pt_size, alpha=pt_alpha) +
+  geom_point(data=combo, aes(x=Lden, y=HA_ISO_MO, fill=Stat), shape=21, stroke=0, size=pt_size, alpha=pt_alpha) +
+  scale_fill_manual(name='Site Lden Statistic', values=stat_colors) +
   # Plot configuration
   labs(title='Percent population highly annoyed per site, all dates') +
-  labs(color='Site Lden') +
+  labs(color='Lden per site') +
   scale_x_continuous(name='Lden (dBA)', limits=c(45,85), oob=rescale_none) +
   scale_y_continuous(name='%HA', n.breaks=9, limits=c(0,110), oob=rescale_none) +
   geom_hline(yintercept=100, linetype='dotted')
 print(p_ha)
 
 energyavg_lden_HA$Name = sapply(rownames(energyavg_lden_HA), get_site_name_for_ID)
-energyavg_lden_HA_long = pivot_longer(energyavg_lden_HA[,c('HA_WHO', 'HA_JAPAN', 'HA_MO', 'Name')], cols=c('HA_WHO', 'HA_JAPAN', 'HA_MO'), names_to='ERF', values_to='HA')
+energyavg_lden_HA_long = pivot_longer(energyavg_lden_HA[,c('HA_WHO', 'HA_JAPAN', 'HA_ISO_MO', 'Name')], cols=c('HA_WHO', 'HA_JAPAN', 'HA_ISO_MO'), names_to='ERF', values_to='HA')
 
 p_ha_site = ggplot() +
   geom_bar(data=energyavg_lden_HA_long, aes(x=reorder(Name, HA), y=HA, fill=ERF), stat='identity', position='dodge') +
-  labs(title='Percent population highly annoyed per site, all dates', x ='Site', y ='%HA') +
+  scale_fill_manual(name='Exposure-Response', values=c('black','purple','blue')) +
+  labs(title='Percent population highly annoyed per site, energy average all dates', x ='Site', y ='%HA') +
   coord_flip()
 print(p_ha_site)
 
