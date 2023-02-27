@@ -49,7 +49,7 @@ get_data_ops = function() {
   if (!exists('data_ops')) {
     data_ops = read.csv('data/flight_ops/output/ops.csv')
     data_ops$Time   = as.POSIXct(data_ops$Time, tz='UTC')
-    data_ops$Hour   = format(data_ops$Time, format='%H') #as.factor(strftime(data_ops$Time, format='%H'))
+    data_ops$Hour   = as.factor(format(data_ops$Time, format='%H'))
     data_ops$DEN    = get_den_period_for_hours(data_ops$Hour)
     data_ops$Day    = factor(weekdays(data_ops$Time, abbreviate=T), levels=days)
     data_ops$Date   = factor(format(data_ops$Time, format_date))

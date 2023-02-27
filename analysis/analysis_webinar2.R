@@ -84,8 +84,8 @@ p_mean_lden_field_day = ggplot() +
                       'and', get_site_name_for_ID(sentinel_sites[2])))
 print(p_mean_ops_field_day / p_mean_lden_field_day)
 
-# Lden per site and airfield on days of activity -------------------------------
-# During days of activity, what are overall levels throughout the region?
+# Lden per site and airfield -------------------------------
+# During days of activity/inactivity, what are overall levels throughout the region?
 
 days_ault_active = df_mean_ops_lden_day[df_mean_ops_lden_day$Field=='Ault' & df_mean_ops_lden_day$Ops > 0,]$Day
 days_coup_active = df_mean_ops_lden_day[df_mean_ops_lden_day$Field=='Coup' & df_mean_ops_lden_day$Ops > 0,]$Day
@@ -148,9 +148,7 @@ p_lden_site_all = ggplot(combined_data_metrics, aes(x=reorder(Name, Lden, FUN=me
   coord_flip()
 print(p_lden_site_all)
 
-# TODO: compare with inactive site dates
-
-# Annoyance for days of average and maximum activity, all sites ----------------
+# Annoyance ----------------
 # What is the risk of high annoyance at these sites based on exposure-response relationships?
 
 # TODO: Annoyance on a longer, "proper" timescale? Energy averaged across the four monitoring periods?
@@ -369,6 +367,7 @@ print(p_lnight_site_all)
 # TODO: Military-specific / low-frequency / onset / aircraft dB penalty adjustment?
 
 # Smith et al 2022 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9272916/
+# Restricted only to survey questions where noise was explicitly mentioned
 eq_hsd_awakenings = function(Lnight) {
   return(0.03132*(Lnight)^2 - 1.80203*(Lnight) + 31.28079)
 }
@@ -379,8 +378,17 @@ eq_hsd_sleepdisturbance = function(Lnight) {
   return(0.02664*(Lnight)^2 - 1.17389*(Lnight) + 16.46165)
 }
 eq_hsd_combinedestimate = function(Lnight) {
-  return(0.02502*(Lnight)^2 - 1.12624*(Lnight) + 17.07421)
+  return(0.025015*(Lnight)^2 - 1.12624*(Lnight) + 17.074213)
 }
+
+ci_upper_hsd_combinedestimate = function(Lnight) {
+  return(0.0221483*Lnight^2 - 0.5720120*Lnight + 3.5979810)
+}
+ci_lower_hsd_combinedestimate = function(Lnight) {
+  return(0.027883*Lnight^2 - 1.680477*Lnight + 30.550446) 
+}
+
+# NOTE: Limitations - "The rapid onset time in particular means that a given aircraft is probably more likely to induce an awakening than one that is much more gradual, like a civil aircraft. But of course physiological disturbance such as this and self-reported long-term %HSD are not the same thing, and do not necessarily correlate all that well."
 
 # NOTE: Time scale for ERFs is long-term, typically one year, so single-date maximum Lnights are not appropriate. "Equivalent noise levels are often used in surveys and epidemiologic studies as long-term average exposure metrics, and are therefore also often found in legislative and policy contexts. For example, the Night Noise Guidelines for Europe of the World Health Organization (WHO) define effects of nocturnal noise based on annual average outdoor Lnight ranges. The value of equivalent noise levels in describing the effects of noise on sleep is more limited, as different noise scenarios may calculate to the same equivalent noise level, but differ substantially in their sleep disturbing properties. There is general agreement that the number and acoustical properties of single noise events better reflect the actual degree of nocturnal sleep disturbance in a single night. It is thus questionable whether Lnight can be used as the only indicator for predicting the effects of noise on sleep and the consequences of noise-induced sleep disturbance, or whether supplemental noise indicators are needed
 
@@ -407,6 +415,8 @@ p_hsd = ggplot() +
   labs(title='Probability of high sleep disturbance per site, all dates') +
   stat_function(fun=eq_hsd_combinedestimate, xlim=c(40,65), size=.7) +
   stat_function(fun=eq_hsd_combinedestimate, xlim=c(65,80), linetype='dashed') +
+  stat_function(fun=ci_upper_hsd_combinedestimate, xlim=c(40,65), color='purple', linetype='dotted') +
+  stat_function(fun=ci_lower_hsd_combinedestimate, xlim=c(40,65), color='purple', linetype='dotted') +
   # geom_ribbon(data=data.frame(
   #   Lden=  c(40,    45,    50,    55,    60,    65),
   #   HAmin= c(8.1,  22.2,  33.7,  45.9, 58.8, 69.0),
