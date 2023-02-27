@@ -48,8 +48,8 @@ get_data_metrics = function() {
 get_data_ops = function() {
   if (!exists('data_ops')) {
     data_ops = read.csv('data/flight_ops/output/ops.csv')
-    data_ops$Time   = as.POSIXct(data_ops$Time)
-    data_ops$Hour   = as.factor(strftime(data_ops$Time, format='%H'))
+    data_ops$Time   = as.POSIXct(data_ops$Time, tz='UTC')
+    data_ops$Hour   = format(data_ops$Time, format='%H') #as.factor(strftime(data_ops$Time, format='%H'))
     data_ops$DEN    = get_den_period_for_hours(data_ops$Hour)
     data_ops$Day    = factor(weekdays(data_ops$Time, abbreviate=T), levels=days)
     data_ops$Date   = factor(format(data_ops$Time, format_date))
@@ -61,10 +61,11 @@ get_data_ops = function() {
 get_data_events = function() {
   if (!exists('data_events')) {
     data_events = read.csv('data/events/output/events.csv')
-    data_events$StartTime  = as.POSIXct(data_events$StartTime)
-    data_events$Hour       = strftime(data_events$StartTime, format='%H')
+    data_events$StartTime  = as.POSIXct(data_events$StartTime, tz='UTC')
+    data_events$Hour       = format(data_events$StartTime, format='%H')
     data_events$DEN        = get_den_period_for_hours(data_events$Hour)
     data_events$Day        = factor(weekdays(data_events$StartTime, abbreviate=T), levels=days)
+    data_events$Date       = factor(format(data_events$StartTime, format_date))
     data_events$Period     = get_navy_monitoring_period_for_times(data_events$StartTime)
   }
   return(data_events)

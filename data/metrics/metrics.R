@@ -42,19 +42,20 @@ SelFromLevels = function(L) {
 # Exceedance levels (Lx) represent the percent of the time that was measured above a certain level. For example, an L50 of 44 dB means that for 50% of the time, the level exceeded 44 dB.
 
 # Calculate exceedance for the given percentage of time (0-100)
+# https://www.larsondavis.com/ContentStore/mktg/LD_Manuals/831%20Manual.pdf
 LxFromLevels = function(L, p = 50) {
   if (anyNA(L) | length(L) == 0) {
     warning('Missing data. Unable to calculate Lx')
     return(NA)
   }
   if (p == 0) {
-    return(max(L))
+    return(max(L) - 0.1) # 0.1 dB adjustment to establish exceedance
   } else if (p == 100) {
-    return(min(L))
+    return(min(L) - 0.1)
   }
   Lsorted = L[order(L, decreasing=TRUE)] # TODO: does this account correctly for repeated values?
   i = floor(length(L) * p/100.0)
-  return(Lsorted[i])
+  return(Lsorted[i] - 0.1)
 }
 
 # Hourly Leq for the given interval
