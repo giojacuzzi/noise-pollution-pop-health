@@ -232,7 +232,7 @@ for (hour in debug_hour) { # TODO: hours
       # Navy flight operation
       geom_vline(xintercept=ops_q$Time, color='blue', linetype='dashed') +
       geom_hline(yintercept=threshold_navy, color='gray') +
-      geom_hline(yintercept=threshold_custom, color='green') +
+      # geom_hline(yintercept=threshold_custom, color='green') +
       geom_line(ma, mapping=aes(x=Time, y=MA), color='magenta')
 
     # Spectral heatmap
@@ -267,5 +267,6 @@ for (hour in debug_hour) { # TODO: hours
   }
 }
 
+# Distribution of events
 
 
