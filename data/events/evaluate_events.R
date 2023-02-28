@@ -61,7 +61,7 @@ debug_hour = '20'
 
 my_events = data.frame()
 
-threshold_custom = 60 # Here, only look at events > 60 dB
+# threshold_custom = 60 # Here, only look at events > 60 dB
 
 # 10-second moving average
 data$Lma = rollmean(data$LAeq, 10, align='center', fill=NA)
@@ -69,7 +69,8 @@ for (hour in debug_hour) {
   # NOTE: Navy threshold is L90 + 10 of each hour +/- 30 min 
   data_hour = data[data$Hour==hour,]
   L90 = LxFromLevels(data_hour$LAeq, 90)
-  threshold = threshold_custom # Use custom threshold instead
+  # threshold = threshold_custom # Use custom threshold instead
+  threshold = L90 + 10
 
   sec = 1
   while (sec<=nrow(data_hour)) {
@@ -93,18 +94,18 @@ for (hour in debug_hour) {
       }
       # End event ---
       message(paste('END EVENT', data_hour$Time[sec]))
-      event_end = sec
-      idx_end = sec
+      event_end = min(nrow(data_hour), sec)
+      idx_end = min(nrow(data_hour), sec)
       idx_local_maxima = which(ggpmisc:::find_peaks(data_hour$Lma[idx_start:idx_end])) + idx_start - 1
       # Filter only 'prominent' maxima > L25 of the event itself, and only maximums of level segments crossing over L25
-      # TODO: can segments have multiple maximums??
       L25 = LxFromLevels(na.omit(data_hour[idx_start:idx_end,'Lma']), 25)
       values_over = which(data_hour[idx_start:idx_end,'Lma']>=L25) + idx_start - 1
       segments = cumsum(c(1, abs(values_over[-length(values_over)] - values_over[-1]) > 1))
       segments = by(values_over, segments, identity)
       peaks = c()
       for (segment in segments) {
-        peaks = append(peaks, segment[which(data_hour[segment,'Lma']==max(data_hour[segment, 'Lma']))])
+        peak = segment[which(data_hour[segment,'Lma']==max(data_hour[segment, 'Lma']))][1]
+        peaks = append(peaks, peak)
       }
 
       if (length(peaks) >  0) {
@@ -148,14 +149,18 @@ for (hour in debug_hour) {
             }
           }
 
+          time_start = data_hour$Time[idx_start]
+          time_end = data_hour$Time[idx_end]
           levels = data_hour$LAeq[idx_start:idx_end]
           lmax = max(levels)
           idx_lmax = which(data_hour[idx_start:idx_end,'LAeq']==lmax)[1]
           lstart = data_hour$LAeq[idx_start]
           onset = (lmax - lstart)/(idx_lmax) # dBA per sec
+          onset = round(onset, 2)
           event = data.frame(
-            TimeStart=data_hour$Time[idx_start],
-            TimeEnd=data_hour$Time[idx_end],
+            TimeStart=time_start,
+            TimeEnd=time_end,
+            Duration=as.numeric(time_end - time_start),
             Lmax=lmax,
             Onset=onset
           )
@@ -174,9 +179,7 @@ for (hour in debug_hour) {
               geom_vline(xintercept=data_hour[idx_end,'Time'], color='blue') +
               geom_hline(yintercept=threshold, color='gray') +
               geom_hline(yintercept=LxFromLevels(data_hour[buff_start:buff_end,'LAeq'], 25), color='green') +
-              geom_vline(xintercept=data_hour[idx_local_maxima, 'Time'], color='orange', linetype='dotted') +
-              geom_vline(xintercept=data_hour[idx_local_min, 'Time'], color='turquoise', linetype='dotted')
-            plot(p_time)
+              geom_vline(xintercept=data_hour[idx_local_maxima, 'Time'], color='orange', linetype='dotted')
 
           idx_start = idx_end # Split point becomes start of next event
           if (idx_end >= event_end | idx_start >= event_end) {
