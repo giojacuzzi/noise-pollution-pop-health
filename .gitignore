@@ -17,6 +17,11 @@
 *.lock
 *.poi
 
+# Binary image files
+*.jpg
+*.jpeg
+*.png
+
 # Apple files
 .DS_Store
 

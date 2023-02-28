@@ -1,5 +1,10 @@
 source('global.R')
 
+# NOTE: According to Stusnick,
+# 0 dB adjustment for onset_rate <= 15 db/sec
+# 11*log10(onset_rate) - 12.9 adjustment for 15 db/sec <= onset_rate <= 150 db/sec
+# 11 dB adjustment for onset_rate >= 150 db/sec
+
 # https://drive.google.com/drive/u/0/folders/1wWnqevA6S3ANlzIVyh5lu_bcuR0cOybx
 # A sound eventis characterized bythe sound exposure level LEA, and the maximum sound pressure level LpASmax or LpAeq1smax
 

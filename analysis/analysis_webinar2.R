@@ -6,6 +6,10 @@ library(tidyr)
 library(scales)
 library(patchwork)
 
+ggsave_output_path = 'analysis/output/'
+ggsave_width = 7
+ggsave_height = 6
+
 data_sites = get_data_sites()
 
 data_metrics = get_data_metrics()
@@ -83,6 +87,7 @@ p_mean_lden_field_day = ggplot() +
        subtitle=paste('Sentinel sites', get_site_name_for_ID(sentinel_sites[1]),
                       'and', get_site_name_for_ID(sentinel_sites[2])))
 print(p_mean_ops_field_day / p_mean_lden_field_day)
+ggsave(p_mean_ops_field_day / p_mean_lden_field_day, file=paste0(ggsave_output_path, 'lden_ops_daily.png'), width=ggsave_width, height=ggsave_height)
 
 # Lden per site and airfield -------------------------------
 # During days of activity/inactivity, what are overall levels throughout the region?
@@ -116,26 +121,6 @@ combined_data_metrics$Activity = factor(combined_data_metrics$Activity)
 combined_data_metrics$Field = factor(combined_data_metrics$Field)
 combined_data_metrics = combined_data_metrics[with(combined_data_metrics, order(Activity)), ]
 
-p_lden_site_detail = ggplot(combined_data_metrics) +
-  labs(title='Lden per site, all days', x ='Site', y ='Lden (dBA)') +
-  geom_violin(aes(x=reorder(Name, Lden, FUN=median), y=Lden, color=Field), alpha=1.0) +
-  stat_summary(mapping=aes(x=Name, y=Lden), fun='median', geom='crossbar', width=0.5, fatten=1.0) +
-  geom_dotplot(aes(x=reorder(Name, Lden, FUN=median), y=Lden, fill=Activity), binaxis='y', binwidth=1, stackdir='center', stackratio=1.2, dotsize=0.5, alpha=0.5, color=NA) +
-  scale_fill_manual(values=c('Active'='red', 'Inactive'='darkgray')) +
-  coord_flip()
-print(p_lden_site_detail)
-
-p_lden_site_active = ggplot(combined_data_metrics[combined_data_metrics$Field=='Coup',], aes(x=reorder(Name, Lden, FUN=median), y=Lden, fill=Activity)) + 
-  geom_violin(alpha=0.9) +
-  # geom_boxplot(alpha=0.9) +
-  stat_summary(fun='median', geom='crossbar', width=0.1, fatten=1.0) +
-  labs(title='Lden per Coupeville site, active vs inactive days of operation', x ='Site', y ='Lden (dBA)') +
-  geom_hline(yintercept=l_hudfaa, linetype='dotted', size=0.7, colour='red') +
-  geom_hline(yintercept=l_epa, linetype='dotted', size=0.7, colour='red') +
-  geom_hline(yintercept=l_who, linetype='dotted', size=0.7, colour='red') +
-  coord_flip()
-print(p_lden_site_active)
-
 p_lden_site_all = ggplot(combined_data_metrics, aes(x=reorder(Name, Lden, FUN=median), y=Lden, fill=Field)) + 
   geom_violin(alpha=0.9) +
   # geom_boxplot(alpha=0.9) +
@@ -147,6 +132,29 @@ p_lden_site_all = ggplot(combined_data_metrics, aes(x=reorder(Name, Lden, FUN=me
   geom_hline(yintercept=l_who, linetype='dotted', size=0.7, colour='red') +
   coord_flip()
 print(p_lden_site_all)
+ggsave(p_lden_site_all, file=paste0(ggsave_output_path, 'lden_site.png'), width=ggsave_width, height=ggsave_height)
+
+p_lden_site_detail = ggplot(combined_data_metrics) +
+  labs(title='Lden per site, all days', x ='Site', y ='Lden (dBA)') +
+  geom_violin(aes(x=reorder(Name, Lden, FUN=median), y=Lden, color=Field), alpha=1.0) +
+  stat_summary(mapping=aes(x=Name, y=Lden), fun='median', geom='crossbar', width=0.5, fatten=1.0) +
+  geom_dotplot(aes(x=reorder(Name, Lden, FUN=median), y=Lden, fill=Activity), binaxis='y', binwidth=1, stackdir='center', stackratio=1.2, dotsize=0.5, alpha=0.5, color=NA) +
+  scale_fill_manual(values=c('Active'='red', 'Inactive'='darkgray')) +
+  coord_flip()
+print(p_lden_site_detail)
+ggsave(p_lden_site_detail, file=paste0(ggsave_output_path, 'lden_site_detail.png'), width=ggsave_width, height=ggsave_height)
+
+p_lden_site_active = ggplot(combined_data_metrics[combined_data_metrics$Field=='Coup',], aes(x=reorder(Name, Lden, FUN=median), y=Lden, fill=Activity)) + 
+  geom_violin(alpha=0.9) +
+  # geom_boxplot(alpha=0.9) +
+  stat_summary(fun='median', geom='crossbar', width=0.1, fatten=1.0) +
+  labs(title='Lden per Coupeville site, active vs inactive days of operation', x ='Site', y ='Lden (dBA)') +
+  geom_hline(yintercept=l_hudfaa, linetype='dotted', size=0.7, colour='red') +
+  geom_hline(yintercept=l_epa, linetype='dotted', size=0.7, colour='red') +
+  geom_hline(yintercept=l_who, linetype='dotted', size=0.7, colour='red') +
+  coord_flip()
+print(p_lden_site_active)
+ggsave(p_lden_site_active, file=paste0(ggsave_output_path, 'lden_site_activity.png'), width=ggsave_width, height=ggsave_height)
 
 # Annoyance ----------------
 # What is the risk of high annoyance at these sites based on exposure-response relationships?
@@ -254,6 +262,7 @@ p_ha = ggplot() +
   scale_y_continuous(name='%HA', n.breaks=9, limits=c(0,110), oob=rescale_none) +
   geom_hline(yintercept=100, linetype='dotted')
 print(p_ha)
+ggsave(p_ha, file=paste0(ggsave_output_path, 'erf_ha.png'), width=ggsave_width, height=ggsave_height)
 
 energyavg_lden_HA$Name = sapply(rownames(energyavg_lden_HA), get_site_name_for_ID)
 energyavg_lden_HA_long = pivot_longer(energyavg_lden_HA[,c('HA_WHO', 'HA_JAPAN', 'HA_ISO_MO', 'Name')], cols=c('HA_WHO', 'HA_JAPAN', 'HA_ISO_MO'), names_to='ERF', values_to='HA')
@@ -283,6 +292,7 @@ p_heatmap = ggplot(data_hour_day_levels[order(as.numeric(data_hour_day_levels$Da
   scale_x_continuous('Hour', labels = as.character(0:23), breaks = 0:23) +
   coord_flip()
 print(p_heatmap)
+ggsave(p_heatmap, file=paste0(ggsave_output_path, 'lmax_heatmap.png'), width=ggsave_width, height=ggsave_height)
 
 # Average active day Leq and ops per hour --------------------------------------
 # TODO: show distribution as well, some days are much worse and late at night
@@ -322,6 +332,7 @@ p_mean_leq_field_hour = ggplot() +
        subtitle=paste('Sentinel sites', get_site_name_for_ID(sentinel_sites[1]),
                       'and', get_site_name_for_ID(sentinel_sites[2])))
 print(p_mean_ops_field_hour / p_mean_leq_field_hour)
+ggsave(p_mean_ops_field_hour / p_mean_leq_field_hour, file=paste0(ggsave_output_path, 'lden_ops_hourly.png'), width=ggsave_width, height=ggsave_height)
 
 # Lnight per site and airfield on days of activity -----------------------------
 
@@ -348,24 +359,6 @@ combined_night_data_metrics$Activity = factor(combined_night_data_metrics$Activi
 combined_night_data_metrics$Field = factor(combined_night_data_metrics$Field)
 combined_night_data_metrics = combined_night_data_metrics[with(combined_night_data_metrics, order(Activity)), ]
 
-p_lnight_site_detail = ggplot(combined_night_data_metrics) +
-  labs(title='Lnight per site, all nights', x ='Site', y ='Lnight (dBA)') +
-  geom_violin(aes(x=reorder(Name, Lden_Lnight, FUN=median), y=Lden_Lnight, color=Field), alpha=1.0) +
-  stat_summary(mapping=aes(x=Name, y=Lden_Lnight), fun='median', geom='crossbar', width=0.5, fatten=1.0) +
-  geom_dotplot(aes(x=reorder(Name, Lden_Lnight, FUN=median), y=Lden_Lnight, fill=Activity), binaxis='y', binwidth=1, stackdir='center', stackratio=1.2, dotsize=0.5, alpha=0.5, color=NA) +
-  scale_fill_manual(values=c('Active'='red', 'Inactive'='darkgray')) +
-  coord_flip()
-print(p_lnight_site_detail)
-
-p_lnight_site_active = ggplot(combined_night_data_metrics, aes(x=reorder(Name, Lden_Lnight, FUN=median), y=Lden_Lnight, fill=Activity)) + 
-  geom_violin(alpha=0.9) +
-  # geom_boxplot(alpha=0.9) +
-  stat_summary(fun='median', geom='crossbar', width=0.1, fatten=1.0) +
-  labs(title='Lnight per site, active vs inactive nights of operation', x ='Site', y ='Lnight (dBA)') +
-  geom_hline(yintercept=l_hsd_who, linetype='dotted', size=0.7, colour='red') +
-  coord_flip()
-print(p_lnight_site_active)
-
 p_lnight_site_all = ggplot(combined_data_metrics, aes(x=reorder(Name, Lden_Lnight, FUN=median), y=Lden_Lnight, fill=Field)) + 
   geom_violin(alpha=0.9) +
   # geom_boxplot(alpha=0.9) +
@@ -375,6 +368,27 @@ p_lnight_site_all = ggplot(combined_data_metrics, aes(x=reorder(Name, Lden_Lnigh
   geom_hline(yintercept=l_hsd_who, linetype='dotted', size=0.7, colour='red') +
   coord_flip()
 print(p_lnight_site_all)
+ggsave(p_lnight_site_all, file=paste0(ggsave_output_path, 'lnight_site.png'), width=ggsave_width, height=ggsave_height)
+
+p_lnight_site_detail = ggplot(combined_night_data_metrics) +
+  labs(title='Lnight per site, all nights', x ='Site', y ='Lnight (dBA)') +
+  geom_violin(aes(x=reorder(Name, Lden_Lnight, FUN=median), y=Lden_Lnight, color=Field), alpha=1.0) +
+  stat_summary(mapping=aes(x=Name, y=Lden_Lnight), fun='median', geom='crossbar', width=0.5, fatten=1.0) +
+  geom_dotplot(aes(x=reorder(Name, Lden_Lnight, FUN=median), y=Lden_Lnight, fill=Activity), binaxis='y', binwidth=1, stackdir='center', stackratio=1.2, dotsize=0.5, alpha=0.5, color=NA) +
+  scale_fill_manual(values=c('Active'='red', 'Inactive'='darkgray')) +
+  coord_flip()
+print(p_lnight_site_detail)
+ggsave(p_lnight_site_detail, file=paste0(ggsave_output_path, 'lnight_site_detail.png'), width=ggsave_width, height=ggsave_height)
+
+p_lnight_site_active = ggplot(combined_night_data_metrics, aes(x=reorder(Name, Lden_Lnight, FUN=median), y=Lden_Lnight, fill=Activity)) + 
+  geom_violin(alpha=0.9) +
+  # geom_boxplot(alpha=0.9) +
+  stat_summary(fun='median', geom='crossbar', width=0.1, fatten=1.0) +
+  labs(title='Lnight per site, active vs inactive nights of operation', x ='Site', y ='Lnight (dBA)') +
+  geom_hline(yintercept=l_hsd_who, linetype='dotted', size=0.7, colour='red') +
+  coord_flip()
+print(p_lnight_site_active)
+ggsave(p_lnight_site_active, file=paste0(ggsave_output_path, 'lnight_site_activity.png'), width=ggsave_width, height=ggsave_height)
 
 # TODO: compare to inactive site dates
 
@@ -454,6 +468,7 @@ p_hsd = ggplot() +
   labs(title='Probability of high sleep disturbance per site, all dates') +
   labs(color='Site Lnight statistic')
 print(p_hsd)
+ggsave(p_hsd, file=paste0(ggsave_output_path, 'erf_hsd.png'), width=ggsave_width, height=ggsave_height)
 
 energyavg_lnight_HSD$Name = sapply(rownames(energyavg_lnight_HSD), get_site_name_for_ID)
 p_hsd_site = ggplot() +
@@ -470,7 +485,9 @@ factor_lables = c('60-70','70-80','80-90','90+')
 factor_colors = c('#721F81FF','#B63679FF','#F1605DFF','#FED395FF') #show_col(viridis(7, option='magma'))
 event_Lmax_min = 60
 
-for (site in sentinel_sites) {
+p_events_ops_daily = list()
+for (s in 1:length(sentinel_sites)) {
+  site = sentinel_sites[s]
   events_site = data_events[data_events$SiteID==site & data_events$LAeq_Lmax>=event_Lmax_min,]
   ops_field = data_ops[data_ops$Field==get_field_name_for_ID(site),]
   events_site$Range_LAeq_Lmax = cut(events_site$LAeq_Lmax, breaks=factor_breaks, right=F)
@@ -508,10 +525,15 @@ for (site in sentinel_sites) {
     geom_point(data=pops_daily, aes(x=Day, y=Ops), size=2, color='black') +
     geom_line(data=pops_daily, aes(x=Day, y=Ops), group=1, size=1, color='black') +
     scale_y_continuous(name='Noise events', sec.axis=sec_axis(trans=~.*1, name='Flight operations'))
-  print(p)
+  # print(p)
+  p_events_ops_daily[[s]] = p
 }
+print(p_events_ops_daily[[1]] / p_events_ops_daily[[2]])
+ggsave(p_events_ops_daily[[1]] / p_events_ops_daily[[2]], file=paste0(ggsave_output_path, 'events_ops_daily.png'), width=ggsave_width, height=ggsave_height)
 
-for (site in sentinel_sites) {
+p_events_ops_hourly = list()
+for (s in 1:length(sentinel_sites)) {
+  site = sentinel_sites[s]
   events_site = data_events[data_events$SiteID==site & data_events$LAeq_Lmax>=event_Lmax_min,]
   ops_field = data_ops[data_ops$Field==get_field_name_for_ID(site),]
   events_site$Range_LAeq_Lmax = cut(events_site$LAeq_Lmax, breaks=factor_breaks, right=F)
@@ -545,12 +567,15 @@ for (site in sentinel_sites) {
     labs(title=paste('Mean noise event Lmax vs flight operations -', data_sites[data_sites$ID==site,'Region']),
          subtitle=paste('Site', site, '- average', sum(pops_hourly$Ops), 'operations per week'),
          x ='Hour',
-         fill='Range (dBA)') +
+         fill='Lmax (dBA)') +
     geom_point(data=pops_hourly, aes(x=Hour, y=Ops), size=2, color='black') +
     geom_line(data=pops_hourly, aes(x=Hour, y=Ops), group=1, size=1, color='black') +
     scale_y_continuous(name='Noise events', sec.axis=sec_axis(trans=~.*1, name='Flight operations'))
-  print(p)
+  # print(p)
+  p_events_ops_hourly[[s]] = p
 }
+print(p_events_ops_hourly[[1]] / p_events_ops_hourly[[2]])
+ggsave(p_events_ops_hourly[[1]] / p_events_ops_hourly[[2]], file=paste0(ggsave_output_path, 'events_ops_hourly.png'), width=ggsave_width, height=ggsave_height)
 
 # NOTE: ASA/ANSI TR S12.9 PART 6 withdrawn in 2018
 
