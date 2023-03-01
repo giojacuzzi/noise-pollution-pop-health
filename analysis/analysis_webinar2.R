@@ -373,18 +373,21 @@ ggsave(p_mean_ops_field_hour / p_mean_leq_field_hour, file=paste0(ggsave_output_
 # WHO Guideline 'strong' recommendation. Evidence for a relevant absolute risk of sleep disturbance related to night noise exposure from aircraft at 40 dB Lnight was rated moderate quality. 
 l_hsd_who = 40
 
-nights_ault_active = unique(data_ops[data_ops$Field=='Ault' & data_ops$DEN=='Night','Date'])
-nights_coup_active = unique(data_ops[data_ops$Field=='Coup' & data_ops$DEN=='Night','Date'])
+# Use weekday/weekend split as marker of high/low ("active/inactive") activity
+nights_ault_active = c('Mon','Tue','Wed','Thu','Fri')
+# For operations: unique(data_ops[data_ops$Field=='Ault' & data_ops$DEN=='Night','Date'])
+nights_coup_active = c('Mon','Tue','Wed','Thu','Fri')
+# For operations: unique(data_ops[data_ops$Field=='Coup' & data_ops$DEN=='Night','Date'])
 
-active_night_site_date_metrics = rbind(
-  data_metrics[data_metrics$Field=='Ault' & factor(format(data_metrics$Date, format_date)) %in% nights_ault_active,],
-  data_metrics[data_metrics$Field=='Coup' & factor(format(data_metrics$Date, format_date)) %in% nights_coup_active,]
+active_night_site_date_metrics = rbind( # factor(format(data_metrics$Date, format_date))
+  data_metrics[data_metrics$Field=='Ault' & data_metrics$Day %in% nights_ault_active,],
+  data_metrics[data_metrics$Field=='Coup' & data_metrics$Day %in% nights_coup_active,]
 )
 active_night_site_date_metrics$Activity='Active'
 
 inactive_night_site_date_metrics = rbind(
-  data_metrics[data_metrics$Field=='Ault' & !(factor(format(data_metrics$Date, format_date)) %in% nights_ault_active),],
-  data_metrics[data_metrics$Field=='Coup' & !(factor(format(data_metrics$Date, format_date)) %in% nights_coup_active),]
+  data_metrics[data_metrics$Field=='Ault' & !(data_metrics$Day %in% nights_ault_active),],
+  data_metrics[data_metrics$Field=='Coup' & !(data_metrics$Day %in% nights_coup_active),]
 )
 inactive_night_site_date_metrics$Activity='Inactive'
 
@@ -393,17 +396,18 @@ combined_night_data_metrics$Activity = factor(combined_night_data_metrics$Activi
 combined_night_data_metrics$Field = factor(combined_night_data_metrics$Field)
 combined_night_data_metrics = combined_night_data_metrics[with(combined_night_data_metrics, order(Activity)), ]
 
-p_lnight_site_all = ggplot(combined_data_metrics, aes(x=reorder(Name, Lden_Lnight, FUN=median), y=Lden_Lnight, fill=Field)) + 
-  geom_violin(alpha=0.9) +
-  # geom_boxplot(alpha=0.9) +
-  stat_summary(mapping=aes(y=Lden_Lnight), fun='median', geom='crossbar', width=0.5, fatten=1.0) +
-  stat_summary(mapping=aes(y=Lden_Lnight), fun='energyavg', geom='point') +
-  labs(title='Lnight per site, all days', x ='Site', y ='Lnight (dBA)') +
-  geom_hline(yintercept=l_hsd_who, linetype='dotted', size=0.7, colour='red') +
+# Overview
+p_lnight_site_all = ggplot() + 
+  geom_boxplot(data=combined_data_metrics, mapping=aes(x=reorder(Name, Lden_Lnight, FUN=energyavg), y=Lden_Lnight, color=Field), outlier.size=0.9) +
+  stat_summary(data=combined_data_metrics, mapping=aes(x=reorder(Name, Lden_Lnight, FUN=energyavg), y=Lden_Lnight, shape='Energy average', color=Field), fun='energyavg', geom='point', size=3, fill='white') +
+  scale_shape_manual('', values=c('Energy average'=21)) +
+  labs(title='Lnight per site', x ='Site', y ='Lnight (dBA)', color='Airfield') +
+  # geom_hline(yintercept=l_hsd_who, linetype='dotted', size=0.7, colour='red') +
   coord_flip()
 print(p_lnight_site_all)
 ggsave(p_lnight_site_all, file=paste0(ggsave_output_path, 'lnight_site.png'), width=ggsave_width, height=ggsave_height)
 
+# Detailed view
 p_lnight_site_detail = ggplot(combined_night_data_metrics) +
   labs(title='Lnight per site, all nights', x ='Site', y ='Lnight (dBA)') +
   geom_violin(aes(x=reorder(Name, Lden_Lnight, FUN=median), y=Lden_Lnight, color=Field), alpha=1.0) +
@@ -414,12 +418,15 @@ p_lnight_site_detail = ggplot(combined_night_data_metrics) +
 print(p_lnight_site_detail)
 ggsave(p_lnight_site_detail, file=paste0(ggsave_output_path, 'lnight_site_detail.png'), width=ggsave_width, height=ggsave_height)
 
-p_lnight_site_active = ggplot(combined_night_data_metrics, aes(x=reorder(Name, Lden_Lnight, FUN=median), y=Lden_Lnight, fill=Activity)) + 
-  geom_violin(alpha=0.9) +
-  # geom_boxplot(alpha=0.9) +
-  stat_summary(fun='median', geom='crossbar', width=0.1, fatten=1.0) +
-  labs(title='Lnight per site, active vs inactive nights of operation', x ='Site', y ='Lnight (dBA)') +
-  geom_hline(yintercept=l_hsd_who, linetype='dotted', size=0.7, colour='red') +
+# Active vs inactive view
+activity_colors = c('salmon','gray')
+p_lnight_site_active = ggplot() + 
+  geom_boxplot(data=combined_night_data_metrics, mapping=aes(x=reorder(Name, Lden_Lnight, FUN=energyavg), y=Lden_Lnight, fill=Activity), color='gray30', outlier.size=0.6) +
+  stat_summary(data=combined_night_data_metrics, mapping=aes(x=reorder(Name, Lden_Lnight, FUN=energyavg), y=Lden_Lnight, shape='Energy average', fill=Activity), fun='energyavg', geom='point', size=3, color='gray30', position=position_dodge(width=0.75)) +
+  scale_shape_manual('', values=c('Energy average'=21)) +
+  scale_fill_manual(name='Flight activity', values=activity_colors) +
+  labs(title='Lnight per site by flight activity', subtitle='(Weekday vs weekend)', x ='Site', y ='Lnight (dBA)') +
+  # geom_hline(yintercept=l_hsd_who, linetype='dotted', size=0.7, colour='red') +
   coord_flip()
 print(p_lnight_site_active)
 ggsave(p_lnight_site_active, file=paste0(ggsave_output_path, 'lnight_site_activity.png'), width=ggsave_width, height=ggsave_height)
