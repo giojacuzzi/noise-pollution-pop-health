@@ -80,18 +80,15 @@ df_mean_ops_lden_day = data.frame(
 
 p_mean_ops_field_day = ggplot() +
   geom_bar(data=df_mean_ops_lden_day, aes(x=Day, y=Ops, fill=Field), stat='identity', position='dodge', alpha=0.9) +
-  labs(title='Average flight operations per day',
-       subtitle=paste('Ault:', round(sum(mean_ops_day_ault)), 'ops per week\nCoup:', round(sum(mean_ops_day_coup)), 'ops per week'),
-       x='',
-       y='Operations')
+  labs(title='Average flight operations per day', x='', y='Operations')
 p_mean_lden_field_day = ggplot() +
   geom_line(data=df_mean_ops_lden_day, aes(x=Day, y=Lden, group=Field, color=Field), stat='identity') +
   scale_y_continuous(name='Lden (dBA)', limits=c(50,90), oob=rescale_none) +
-  labs(title='Average daily Lden',
-       subtitle=paste('Sentinel sites', get_site_name_for_ID(sentinel_sites[1]),
-                      'and', get_site_name_for_ID(sentinel_sites[2])))
+  labs(title='Average daily Lden', subtitle='(Sentinel sites)')
 print(p_mean_ops_field_day / p_mean_lden_field_day)
 ggsave(p_mean_ops_field_day / p_mean_lden_field_day, file=paste0(ggsave_output_path, 'lden_ops_daily.png'), width=ggsave_width, height=ggsave_height)
+
+# paste('Ault:', round(sum(mean_ops_day_ault)), 'ops per week\nCoup:', round(sum(mean_ops_day_coup)), 'ops per week')
 
 # Lden per site ----------------------------------------------------------------
 # During days of activity/inactivity, what are overall levels throughout the region?
@@ -351,21 +348,18 @@ df_mean_ops_hour = data.frame(
 
 p_mean_ops_field_hour = ggplot() +
   geom_bar(data=df_mean_ops_hour, aes(x=Hour, y=Ops, fill=Field), stat='identity', position='dodge', alpha=0.9) +
-  labs(title='Average active day flight operations per hour',
-       subtitle=paste('Ault:', round(sum(mean_ops_hour_ault)), 'ops per day\nCoup:', round(sum(mean_ops_hour_coup)), 'ops per day'),
-       x='',
-       y='Operations')
+  labs(title='Average flight operations per hour', subtitle='(Active day)', x='', y='Operations')
 p_mean_leq_field_hour = ggplot() +
   geom_line(data=df_mean_ops_hour, aes(x=Hour, y=Leq, group=Field, color=Field), stat='identity') +
   scale_y_continuous(name='Leq (dBA)', limits=c(40,90), oob=rescale_none) +
   geom_rect(aes(xmin='00', xmax = '07', ymin = -Inf, ymax = Inf), fill = 'blue', alpha = 0.09) +
   geom_rect(aes(xmin='19', xmax = '22', ymin = -Inf, ymax = Inf), fill = 'purple', alpha = 0.06) +
   geom_rect(aes(xmin='22', xmax = '23', ymin = -Inf, ymax = Inf), fill = 'blue', alpha = 0.09) +
-  labs(title='Average active day Leq per hour',
-       subtitle=paste('Sentinel sites', get_site_name_for_ID(sentinel_sites[1]),
-                      'and', get_site_name_for_ID(sentinel_sites[2])))
+  labs(title='Average hourly Leq', subtitle='(Sentinel sites)')
 print(p_mean_ops_field_hour / p_mean_leq_field_hour)
 ggsave(p_mean_ops_field_hour / p_mean_leq_field_hour, file=paste0(ggsave_output_path, 'lden_ops_hourly.png'), width=ggsave_width, height=ggsave_height)
+
+# paste('Ault:', round(sum(mean_ops_hour_ault)), 'ops per day\nCoup:', round(sum(mean_ops_hour_coup)), 'ops per day')
 
 # Lnight per site and airfield -----------------------------
 # Dependencies: any dataset for overview, only NAVY dataset for in/activity detail
