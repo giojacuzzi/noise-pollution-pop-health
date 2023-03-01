@@ -92,12 +92,9 @@ p_mean_lden_field_day = ggplot() +
 print(p_mean_ops_field_day / p_mean_lden_field_day)
 ggsave(p_mean_ops_field_day / p_mean_lden_field_day, file=paste0(ggsave_output_path, 'lden_ops_daily.png'), width=ggsave_width, height=ggsave_height)
 
-# Lden per site and airfield -------------------------------
+# Lden per site ----------------------------------------------------------------
 # During days of activity/inactivity, what are overall levels throughout the region?
 # Dependencies: any dataset for overview, only NAVY dataset for in/activity detail
-
-days_ault_active = df_mean_ops_lden_day[df_mean_ops_lden_day$Field=='Ault' & df_mean_ops_lden_day$Ops > 0,]$Day
-days_coup_active = df_mean_ops_lden_day[df_mean_ops_lden_day$Field=='Coup' & df_mean_ops_lden_day$Ops > 0,]$Day
 
 # HUD and Federal Aviation Regulation Part 150 incompatible for
 # residential land use
@@ -107,6 +104,9 @@ l_epa = 55
 # WHO Guideline 'strong' recommendation. Evidence for a relevant absolute risk
 # of annoyance at 45 dB Lden was rated moderate quality.
 l_who = 45
+
+days_ault_active = df_mean_ops_lden_day[df_mean_ops_lden_day$Field=='Ault' & df_mean_ops_lden_day$Ops > 0,]$Day
+days_coup_active = df_mean_ops_lden_day[df_mean_ops_lden_day$Field=='Coup' & df_mean_ops_lden_day$Ops > 0,]$Day
 
 active_site_date_metrics = rbind(
   data_metrics[data_metrics$Field=='Ault' & data_metrics$Day %in% days_ault_active,],
@@ -125,19 +125,19 @@ combined_data_metrics$Activity = factor(combined_data_metrics$Activity)
 combined_data_metrics$Field = factor(combined_data_metrics$Field)
 combined_data_metrics = combined_data_metrics[with(combined_data_metrics, order(Activity)), ]
 
-p_lden_site_all = ggplot(combined_data_metrics, aes(x=reorder(Name, Lden, FUN=median), y=Lden, fill=Field)) + 
-  geom_violin(alpha=0.9) +
-  # geom_boxplot(alpha=0.9) +
-  stat_summary(mapping=aes(y=Lden), fun='median', geom='crossbar', width=0.5, fatten=1.0) +
-  stat_summary(mapping=aes(y=Lden), fun='energyavg', geom='point') +
-  labs(title='Lden per site, all days', x ='Site', y ='Lden (dBA)') +
-  geom_hline(yintercept=l_hudfaa, linetype='dotted', size=0.7, colour='red') +
-  geom_hline(yintercept=l_epa, linetype='dotted', size=0.7, colour='red') +
-  geom_hline(yintercept=l_who, linetype='dotted', size=0.7, colour='red') +
+# Overview
+p_lden_site_all = ggplot() +
+  geom_boxplot(data=combined_data_metrics, mapping=aes(x=reorder(Name, Lden, FUN=energyavg), y=Lden, color=Field), alpha=0.9) +
+  stat_summary(data=combined_data_metrics, mapping=aes(x=reorder(Name, Lden, FUN=energyavg), y=Lden, shape='Energy average'), fun='energyavg', geom='point', size=3, fill='gray36', stroke=0) +
+  scale_shape_manual('', values=c('Energy average'=21)) +
+  labs(title='Lden per site', x ='Site', y ='Lden (dBA)', color='Airfield') +
+  # geom_hline(yintercept=l_hudfaa, linetype='dotted', size=0.7, colour='red') +
+  # geom_hline(yintercept=l_epa, linetype='dotted', size=0.7, colour='red') +
   coord_flip()
 print(p_lden_site_all)
 ggsave(p_lden_site_all, file=paste0(ggsave_output_path, 'lden_site.png'), width=ggsave_width, height=ggsave_height)
 
+# Detailed view
 p_lden_site_detail = ggplot(combined_data_metrics) +
   labs(title='Lden per site, all days', x ='Site', y ='Lden (dBA)') +
   geom_violin(aes(x=reorder(Name, Lden, FUN=median), y=Lden, color=Field), alpha=1.0) +
@@ -148,14 +148,16 @@ p_lden_site_detail = ggplot(combined_data_metrics) +
 print(p_lden_site_detail)
 ggsave(p_lden_site_detail, file=paste0(ggsave_output_path, 'lden_site_detail.png'), width=ggsave_width, height=ggsave_height)
 
-p_lden_site_active = ggplot(combined_data_metrics[combined_data_metrics$Field=='Coup',], aes(x=reorder(Name, Lden, FUN=median), y=Lden, fill=Activity)) + 
-  geom_violin(alpha=0.9) +
-  # geom_boxplot(alpha=0.9) +
-  stat_summary(fun='median', geom='crossbar', width=0.1, fatten=1.0) +
-  labs(title='Lden per Coupeville site, active vs inactive days of operation', x ='Site', y ='Lden (dBA)') +
-  geom_hline(yintercept=l_hudfaa, linetype='dotted', size=0.7, colour='red') +
-  geom_hline(yintercept=l_epa, linetype='dotted', size=0.7, colour='red') +
-  geom_hline(yintercept=l_who, linetype='dotted', size=0.7, colour='red') +
+# Active vs inactive view
+stat_colors = c('salmon','gray')
+p_lden_site_active = ggplot(combined_data_metrics[combined_data_metrics$Field=='Coup',], aes(x=reorder(Name, Lden, FUN=energyavg), y=Lden, fill=Activity)) +
+  geom_boxplot(data=combined_data_metrics, mapping=aes(x=reorder(Name, Lden, FUN=energyavg), y=Lden, fill=Activity), alpha=0.9) +
+  stat_summary(data=combined_data_metrics, mapping=aes(x=reorder(Name, Lden, FUN=energyavg), y=Lden, shape='Energy average'), fun='energyavg', geom='point', size=3, position=position_dodge(width=0.75)) +
+  scale_shape_manual('', values=c('Energy average'=21)) +
+  scale_fill_manual(name='Flight activity', values=stat_colors) +
+  labs(title='Lden per site by flight activity', subtitle='(Weekday vs weekend)', x ='Site', y ='Lden (dBA)') +
+  # geom_hline(yintercept=l_hudfaa, linetype='dotted', size=0.7, colour='red') +
+  # geom_hline(yintercept=l_epa, linetype='dotted', size=0.7, colour='red') +
   coord_flip()
 print(p_lden_site_active)
 ggsave(p_lden_site_active, file=paste0(ggsave_output_path, 'lden_site_activity.png'), width=ggsave_width, height=ggsave_height)
