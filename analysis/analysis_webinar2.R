@@ -7,6 +7,7 @@ library(dplyr)
 library(tidyr)
 library(scales)
 library(patchwork)
+library(ggpmisc)
 
 # Figure output file configuration
 ggsave_output_path = 'analysis/output/'
@@ -233,46 +234,75 @@ energyavg_lden_HA = data.frame(
   HA_MO=regression_MO(sort(energyavg_lden)),
   HA_ISO_MO=regression_ISO_Miedema(sort(energyavg_lden))
 )
+energyavg_lden_HA$Site = 'Monitoring site'
+energyavg_lden_HA$Site = factor(energyavg_lden_HA$Site)
 
 # NOTE: Time scale for ERFs is long-term, typically one year, so single-date maximum Ldens are not appropriate
 
-combo = rbind(median_lden_HA, energyavg_lden_HA)
-combo$Stat = factor(combo$Stat)
+# combo = rbind(median_lden_HA, energyavg_lden_HA)
+# combo$Stat = factor(combo$Stat)
+erf_names = c('Military (Yokoshima 2021)','Guideline (WHO 2018)', 'Standard (ISO 2016)')
+erf_colors = c('royalblue', 'black', 'darkorchid2')
+names(erf_colors) = erf_names
+pt_size = 2.7
+pt_alpha = 0.7
 
-erf_colors = c('ISO 2016'='purple', 'Yokoshima 2021'='blue', 'WHO 2018'='black')
-stat_colors = c('salmon','dodgerblue')
-pt_size = 2.5
-pt_alpha = 0.8
-
+# Without points
 p_ha = ggplot() +
   # Confidence intervals
   geom_ribbon(ci_iso_miedema, mapping=aes(x=Lden,ymin=Lower,ymax=Upper), fill='purple', alpha=0.1) +
-  # geom_line(ci_iso_miedema, mapping=aes(x=Lden, y=Lower), color='purple', linetype='dotted') +
-  # geom_line(ci_iso_miedema, mapping=aes(x=Lden, y=Upper), color='purple', linetype='dotted') +
   geom_ribbon(ci_japan, mapping=aes(x=Lden,ymin=Lower,ymax=Upper), fill='blue', alpha=0.1) +
-  # geom_line(ci_japan, mapping=aes(x=Lden, y=Lower), color='blue', linetype='dotted') +
-  # geom_line(ci_japan, mapping=aes(x=Lden, y=Upper), color='blue', linetype='dotted') +
   # Exposure-response functions
-  stat_function(fun=regression_WHO, xlim=c(75,100), linetype='dashed') +
-  stat_function(fun=regression_WHO, xlim=c(40,75), size=.7, aes(color='WHO 2018')) +
-  stat_function(fun=regression_ISO_Miedema, xlim=c(76, 200), color='purple', linetype='dashed') +
-  stat_function(fun=regression_ISO_Miedema, xlim=c(40,76), size=.7, aes(color='ISO 2016')) +
-  stat_function(fun=regression_japan, xlim=c(65,100), color='blue', linetype='dashed') +
-  stat_function(fun=regression_japan, xlim=c(40,65), size=.7, aes(color='Yokoshima 2021')) +
-  scale_color_manual(name='Exposure-response', values=erf_colors) +
-  # Measurement points
-  geom_point(data=combo, aes(x=Lden, y=HA_WHO,    fill=Stat), shape=21, stroke=0, size=pt_size, alpha=pt_alpha) +
-  geom_point(data=combo, aes(x=Lden, y=HA_JAPAN,  fill=Stat), shape=21, stroke=0, size=pt_size, alpha=pt_alpha) +
-  geom_point(data=combo, aes(x=Lden, y=HA_ISO_MO, fill=Stat), shape=21, stroke=0, size=pt_size, alpha=pt_alpha) +
-  scale_fill_manual(name='Site Lden statistic', values=stat_colors) +
+  stat_function(fun=regression_WHO, xlim=c(75,100), color=erf_colors['Guideline (WHO 2018)'], linetype='dashed') +
+  stat_function(fun=regression_WHO, xlim=c(40,75), size=.7, aes(color='Guideline (WHO 2018)')) +
+  stat_function(fun=regression_ISO_Miedema, xlim=c(76, 200), color=erf_colors['Standard (ISO 2016)'], linetype='dashed') +
+  stat_function(fun=regression_ISO_Miedema, xlim=c(40,76), size=.7, aes(color='Standard (ISO 2016)')) +
+  stat_function(fun=regression_japan, xlim=c(65,100), color=erf_colors['Military (Yokoshima 2021)'], linetype='dashed') +
+  stat_function(fun=regression_japan, xlim=c(40,65), size=.7, aes(color='Military (Yokoshima 2021)')) +
+  scale_color_manual(name='Exposure-response', values=erf_colors, breaks=erf_names) +
   # Plot configuration
-  labs(title='Percent population highly annoyed per site, all dates') +
-  labs(color='Lden per site') +
+  labs(title='Percent population estimated highly annoyed per site') +
   scale_x_continuous(name='Lden (dBA)', limits=c(45,85), oob=rescale_none) +
   scale_y_continuous(name='%HA', n.breaks=9, limits=c(0,110), oob=rescale_none) +
   geom_hline(yintercept=100, linetype='dotted')
 print(p_ha)
 ggsave(p_ha, file=paste0(ggsave_output_path, 'erf_ha.png'), width=ggsave_width, height=ggsave_height)
+
+# With points
+p_ha = ggplot() +
+  # Confidence intervals
+  geom_ribbon(ci_iso_miedema, mapping=aes(x=Lden,ymin=Lower,ymax=Upper), fill='purple', alpha=0.1) +
+  geom_ribbon(ci_japan, mapping=aes(x=Lden,ymin=Lower,ymax=Upper), fill='blue', alpha=0.1) +
+  # Exposure-response functions
+  stat_function(fun=regression_WHO, xlim=c(75,100), color=erf_colors['Guideline (WHO 2018)'], linetype='dashed') +
+  stat_function(fun=regression_WHO, xlim=c(40,75), size=.7, aes(color='Guideline (WHO 2018)')) +
+  stat_function(fun=regression_ISO_Miedema, xlim=c(76, 200), color=erf_colors['Standard (ISO 2016)'], linetype='dashed') +
+  stat_function(fun=regression_ISO_Miedema, xlim=c(40,76), size=.7, aes(color='Standard (ISO 2016)')) +
+  stat_function(fun=regression_japan, xlim=c(65,100), color=erf_colors['Military (Yokoshima 2021)'], linetype='dashed') +
+  stat_function(fun=regression_japan, xlim=c(40,65), size=.7, aes(color='Military (Yokoshima 2021)')) +
+  scale_color_manual(name='Exposure-response', values=erf_colors, breaks=erf_names) +
+  # Measurement points
+  geom_point(data=energyavg_lden_HA, aes(x=Lden, y=HA_WHO, fill=Site), shape=21, size=pt_size, alpha=pt_alpha) +
+  geom_point(data=energyavg_lden_HA, aes(x=Lden, y=HA_JAPAN, fill=Site), shape=21, size=pt_size, alpha=pt_alpha) +
+  geom_point(data=energyavg_lden_HA, aes(x=Lden, y=HA_ISO_MO, fill=Site), shape=21, size=pt_size, alpha=pt_alpha) +
+  scale_fill_manual(name='', values='white') +
+  # Plot configuration
+  labs(title='Percent population estimated highly annoyed per site') +
+  scale_x_continuous(name='Lden (dBA)', limits=c(45,85), oob=rescale_none) +
+  scale_y_continuous(name='%HA', n.breaks=9, limits=c(0,110), oob=rescale_none) +
+  geom_hline(yintercept=100, linetype='dotted')
+print(p_ha)
+ggsave(p_ha, file=paste0(ggsave_output_path, 'erf_ha_points.png'), width=ggsave_width, height=ggsave_height)
+
+# Table
+ha_table = data.frame(sapply(rownames(ha_table), get_site_name_for_ID))
+ha_table = cbind(ha_table, round(energyavg_lden_HA[,c('HA_JAPAN','HA_WHO','HA_ISO_MO')]))
+colnames(ha_table) = c('Site', 'Military', 'Guideline', ' Standard')
+ha_table = ha_table[order(ha_table$Military, decreasing=T), ]
+p_ha_table = ggplot() +
+  annotate(geom='table', size=4, x=0, y=0, label=list(ha_table), table.theme=ttheme_gtlight) + theme_void()
+print(p_ha_table)
+ggsave(p_ha_table, file=paste0(ggsave_output_path, 'erf_ha_table.png'), width=ggsave_width, height=ggsave_height)
 
 energyavg_lden_HA$Name = sapply(rownames(energyavg_lden_HA), get_site_name_for_ID)
 energyavg_lden_HA_long = pivot_longer(energyavg_lden_HA[,c('HA_WHO', 'HA_JAPAN', 'HA_ISO_MO', 'Name')], cols=c('HA_WHO', 'HA_JAPAN', 'HA_ISO_MO'), names_to='ERF', values_to='HA')
