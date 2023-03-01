@@ -105,8 +105,11 @@ l_epa = 55
 # of annoyance at 45 dB Lden was rated moderate quality.
 l_who = 45
 
-days_ault_active = df_mean_ops_lden_day[df_mean_ops_lden_day$Field=='Ault' & df_mean_ops_lden_day$Ops > 0,]$Day
-days_coup_active = df_mean_ops_lden_day[df_mean_ops_lden_day$Field=='Coup' & df_mean_ops_lden_day$Ops > 0,]$Day
+# Use weekday/weekend split as marker of high/low ("active/inactive") activity
+days_ault_active = c('Mon','Tue','Wed','Thu','Fri')
+# For operations: df_mean_ops_lden_day[df_mean_ops_lden_day$Field=='Ault' & df_mean_ops_lden_day$Ops > 0,]$Day
+days_coup_active = c('Mon','Tue','Wed','Thu','Fri')
+# For operations: df_mean_ops_lden_day[df_mean_ops_lden_day$Field=='Coup' & df_mean_ops_lden_day$Ops > 0,]$Day
 
 active_site_date_metrics = rbind(
   data_metrics[data_metrics$Field=='Ault' & data_metrics$Day %in% days_ault_active,],
@@ -127,8 +130,8 @@ combined_data_metrics = combined_data_metrics[with(combined_data_metrics, order(
 
 # Overview
 p_lden_site_all = ggplot() +
-  geom_boxplot(data=combined_data_metrics, mapping=aes(x=reorder(Name, Lden, FUN=energyavg), y=Lden, color=Field), alpha=0.9) +
-  stat_summary(data=combined_data_metrics, mapping=aes(x=reorder(Name, Lden, FUN=energyavg), y=Lden, shape='Energy average'), fun='energyavg', geom='point', size=3, fill='gray36', stroke=0) +
+  geom_boxplot(data=combined_data_metrics, mapping=aes(x=reorder(Name, Lden, FUN=energyavg), y=Lden, color=Field), outlier.size=0.9) +
+  stat_summary(data=combined_data_metrics, mapping=aes(x=reorder(Name, Lden, FUN=energyavg), y=Lden, shape='Energy average', color=Field), fun='energyavg', geom='point', size=3, fill='white') +
   scale_shape_manual('', values=c('Energy average'=21)) +
   labs(title='Lden per site', x ='Site', y ='Lden (dBA)', color='Airfield') +
   # geom_hline(yintercept=l_hudfaa, linetype='dotted', size=0.7, colour='red') +
@@ -149,12 +152,12 @@ print(p_lden_site_detail)
 ggsave(p_lden_site_detail, file=paste0(ggsave_output_path, 'lden_site_detail.png'), width=ggsave_width, height=ggsave_height)
 
 # Active vs inactive view
-stat_colors = c('salmon','gray')
-p_lden_site_active = ggplot(combined_data_metrics[combined_data_metrics$Field=='Coup',], aes(x=reorder(Name, Lden, FUN=energyavg), y=Lden, fill=Activity)) +
-  geom_boxplot(data=combined_data_metrics, mapping=aes(x=reorder(Name, Lden, FUN=energyavg), y=Lden, fill=Activity), alpha=0.9) +
-  stat_summary(data=combined_data_metrics, mapping=aes(x=reorder(Name, Lden, FUN=energyavg), y=Lden, shape='Energy average'), fun='energyavg', geom='point', size=3, position=position_dodge(width=0.75)) +
+activity_colors = c('salmon','gray')
+p_lden_site_active = ggplot() +
+  geom_boxplot(data=combined_data_metrics, mapping=aes(x=reorder(Name, Lden, FUN=energyavg), y=Lden, fill=Activity), color='gray30', outlier.size=0.6) +
+  stat_summary(data=combined_data_metrics, mapping=aes(x=reorder(Name, Lden, FUN=energyavg), y=Lden, shape='Energy average', fill=Activity), fun='energyavg', geom='point', size=3, color='gray30', position=position_dodge(width=0.75)) +
   scale_shape_manual('', values=c('Energy average'=21)) +
-  scale_fill_manual(name='Flight activity', values=stat_colors) +
+  scale_fill_manual(name='Flight activity', values=activity_colors) +
   labs(title='Lden per site by flight activity', subtitle='(Weekday vs weekend)', x ='Site', y ='Lden (dBA)') +
   # geom_hline(yintercept=l_hudfaa, linetype='dotted', size=0.7, colour='red') +
   # geom_hline(yintercept=l_epa, linetype='dotted', size=0.7, colour='red') +
