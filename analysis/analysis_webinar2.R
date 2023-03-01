@@ -295,24 +295,14 @@ print(p_ha)
 ggsave(p_ha, file=paste0(ggsave_output_path, 'erf_ha_points.png'), width=ggsave_width, height=ggsave_height)
 
 # Table
-ha_table = data.frame(sapply(rownames(ha_table), get_site_name_for_ID))
+ha_table = data.frame(sapply(rownames(energyavg_lden_HA), get_site_name_for_ID))
 ha_table = cbind(ha_table, round(energyavg_lden_HA[,c('HA_JAPAN','HA_WHO','HA_ISO_MO')]))
-colnames(ha_table) = c('Site', 'Military', 'Guideline', ' Standard')
+colnames(ha_table) = c('Site', 'Military', 'Guideline', 'Standard')
 ha_table = ha_table[order(ha_table$Military, decreasing=T), ]
 p_ha_table = ggplot() +
   annotate(geom='table', size=4, x=0, y=0, label=list(ha_table), table.theme=ttheme_gtlight) + theme_void()
 print(p_ha_table)
 ggsave(p_ha_table, file=paste0(ggsave_output_path, 'erf_ha_table.png'), width=ggsave_width, height=ggsave_height)
-
-energyavg_lden_HA$Name = sapply(rownames(energyavg_lden_HA), get_site_name_for_ID)
-energyavg_lden_HA_long = pivot_longer(energyavg_lden_HA[,c('HA_WHO', 'HA_JAPAN', 'HA_ISO_MO', 'Name')], cols=c('HA_WHO', 'HA_JAPAN', 'HA_ISO_MO'), names_to='ERF', values_to='HA')
-
-p_ha_site = ggplot() +
-  geom_bar(data=energyavg_lden_HA_long, aes(x=reorder(Name, HA), y=HA, fill=ERF), stat='identity', position='dodge') +
-  scale_fill_manual(name='Exposure-Response', values=c('black','purple','blue')) +
-  labs(title='Percent population highly annoyed per site, energy average all dates', x ='Site', y ='%HA') +
-  coord_flip()
-print(p_ha_site)
 
 # Maximum Leq hourly heatmap per day -------------------------------------------
 # Dependencies: any dataset
@@ -489,38 +479,60 @@ energyavg_lnight_HSD = data.frame(
   Lnight=sort(energyavg_lnight),
   HSD_smith=eq_hsd_combinedestimate(sort(energyavg_lnight))
 )
+energyavg_lnight_HSD$Site = 'Monitoring site'
+energyavg_lnight_HSD$Site = factor(energyavg_lnight_HSD$Site)
 
 # NOTE: Time scale for ERFs is long-term, typically one year, so single-date maximum Ldens are not appropriate
-combo = rbind(median_lnight_HSD, energyavg_lnight_HSD)
+# combo = rbind(median_lnight_HSD, energyavg_lnight_HSD)
 
-erf_colors = c('Smith 2022'='black')
+erf_names = c('Smith 2022')
+erf_colors = c('darkorchid2')
+names(erf_colors) = erf_names
+pt_size = 2.7
+pt_alpha = 0.7
 
+# Without points
 p_hsd = ggplot() +
   # Confidence intervals
   geom_ribbon(ci_hsd_combinedestimate, mapping=aes(x=Lnight,ymin=Lower,ymax=Upper), fill='purple', alpha=0.1) +
-  # stat_function(fun=ci_upper_hsd_combinedestimate, xlim=c(40,65), color='purple', linetype='dotted') +
-  # stat_function(fun=ci_lower_hsd_combinedestimate, xlim=c(40,65), color='purple', linetype='dotted') +
   # Exposure-response function(s)
-  stat_function(fun=eq_hsd_combinedestimate, xlim=c(65,80), linetype='dashed', color='black') +
+  stat_function(fun=eq_hsd_combinedestimate, xlim=c(65,80), linetype='dashed', color=erf_colors['Smith 2022']) +
   stat_function(fun=eq_hsd_combinedestimate, xlim=c(40,65), size=.7, aes(color='Smith 2022')) +
-  scale_color_manual(name='Exposure-response', values=erf_colors) +
-  # Measurement points
-  geom_point(data=combo, aes(x=Lnight, y=HSD_smith, fill=factor(Stat)), shape=21, stroke=0, size=pt_size, alpha=pt_alpha) +
-  scale_fill_manual(name='Site Lnight statistic', values=stat_colors) +
+  scale_color_manual(name='Exposure-response', values=erf_colors, breaks=erf_names) +
   # Plot configuration
   scale_x_continuous(name='Lnight (dBA)', limits=c(40,80), oob=rescale_none) +
   scale_y_continuous(name='%HSD', n.breaks=9, limits=c(0,90), oob=rescale_none) +
-  labs(title='Probability of high sleep disturbance per site, all dates') +
-  labs(color='Site Lnight statistic')
+  labs(title='Probability of high sleep disturbance per site')
 print(p_hsd)
 ggsave(p_hsd, file=paste0(ggsave_output_path, 'erf_hsd.png'), width=ggsave_width, height=ggsave_height)
 
-energyavg_lnight_HSD$Name = sapply(rownames(energyavg_lnight_HSD), get_site_name_for_ID)
-p_hsd_site = ggplot() +
-  geom_bar(data=energyavg_lnight_HSD, aes(x=reorder(Name, HSD_smith), y=HSD_smith), stat='identity') +
-  labs(title='Probability of high sleep disturbance', x ='Site', y ='%HSD') +
-  coord_flip()
-print(p_hsd_site)
+# With points
+p_hsd = ggplot() +
+  # Confidence intervals
+  geom_ribbon(ci_hsd_combinedestimate, mapping=aes(x=Lnight,ymin=Lower,ymax=Upper), fill='purple', alpha=0.1) +
+  # Exposure-response function(s)
+  stat_function(fun=eq_hsd_combinedestimate, xlim=c(65,80), linetype='dashed', color=erf_colors['Smith 2022']) +
+  stat_function(fun=eq_hsd_combinedestimate, xlim=c(40,65), size=.7, aes(color='Smith 2022')) +
+  scale_color_manual(name='Exposure-response', values=erf_colors, breaks=erf_names) +
+  # Measurement points
+  geom_point(data=energyavg_lnight_HSD, aes(x=Lnight, y=HSD_smith, fill=Site), shape=21, size=pt_size, alpha=pt_alpha) +
+  scale_fill_manual(name='', values='white') +
+  # Plot configuration
+  scale_x_continuous(name='Lnight (dBA)', limits=c(40,80), oob=rescale_none) +
+  scale_y_continuous(name='%HSD', n.breaks=9, limits=c(0,90), oob=rescale_none) +
+  labs(title='Probability of high sleep disturbance per site')
+print(p_hsd)
+ggsave(p_hsd, file=paste0(ggsave_output_path, 'erf_hsd_points.png'), width=ggsave_width, height=ggsave_height)
+
+# Table
+hsd_table = data.frame(sapply(rownames(energyavg_lnight_HSD), get_site_name_for_ID))
+hsd_table = cbind(hsd_table, round(energyavg_lnight_HSD[,c('HSD_smith')]))
+colnames(hsd_table) = c('Site', '%HSD')
+hsd_table = hsd_table[order(hsd_table[,'%HSD'], decreasing=T), ]
+p_hsd_table = ggplot() +
+  annotate(geom='table', size=4, x=0, y=0, label=list(hsd_table), table.theme=ttheme_gtlight) + theme_void()
+print(p_hsd_table)
+ggsave(p_hsd_table, file=paste0(ggsave_output_path, 'erf_hsd_table.png'), width=ggsave_width, height=ggsave_height)
 
 # Num events above 60 dB -------------------------------------------------------
 # Dependencies: NAVY dataset
