@@ -544,6 +544,11 @@ factor_lables = c('60-70','70-80','80-90','90+')
 factor_colors = c('#721F81FF','#B63679FF','#F1605DFF','#FED395FF') #show_col(viridis(7, option='magma'))
 event_Lmax_min = 60
 
+# For each sentinel site, get all events from all monitoring periods recorded at that site
+# Separate the events by day of week
+# Separate the events further into 10dB bins based on their maximum level
+# Average the number of events in each bin across all four monitoring periods (i.e. divide by 4)
+# The result is an average number of events per day of week, organized by 10dB level range
 p_events_ops_daily = list()
 for (s in 1:length(sentinel_sites)) {
   site = sentinel_sites[s]
