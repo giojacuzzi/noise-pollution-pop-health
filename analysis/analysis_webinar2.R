@@ -1,3 +1,5 @@
+# Analyses and figures for Webinar 2
+
 source('global.R')
 source('data/metrics/metrics.R')
 library(mapview)
@@ -6,21 +8,21 @@ library(tidyr)
 library(scales)
 library(patchwork)
 
+# Figure output file configuration
 ggsave_output_path = 'analysis/output/'
 ggsave_width = 7
 ggsave_height = 6
 
+# Data dependencies
 data_sites = get_data_sites()
-
+data_ops = get_data_ops()
+data_events = get_data_events()
 data_metrics = get_data_metrics()
 data_metrics$Field = unlist(lapply(data_metrics$ID, get_field_name_for_ID))
 
 # NOTE: only look at Navy data for now
 data_metrics = na.omit(data_metrics)
 data_metrics = data_metrics[data_metrics$Org=='NAVY',]
-
-data_ops = get_data_ops()
-data_events = get_data_events()
 
 # Monitoring site map  ---------------------------------------------------------
 
@@ -38,6 +40,7 @@ mapview(
 
 # Average Lden and total/field ops sentinel Whidbey sites all days -------------
 # When is the navy active throughout the week, and how does it affect overall levels?
+# Dependencies: NAVY dataset
 
 # TODO: show distribution as well
 
@@ -91,6 +94,7 @@ ggsave(p_mean_ops_field_day / p_mean_lden_field_day, file=paste0(ggsave_output_p
 
 # Lden per site and airfield -------------------------------
 # During days of activity/inactivity, what are overall levels throughout the region?
+# Dependencies: any dataset for overview, only NAVY dataset for in/activity detail
 
 days_ault_active = df_mean_ops_lden_day[df_mean_ops_lden_day$Field=='Ault' & df_mean_ops_lden_day$Ops > 0,]$Day
 days_coup_active = df_mean_ops_lden_day[df_mean_ops_lden_day$Field=='Coup' & df_mean_ops_lden_day$Ops > 0,]$Day
@@ -158,6 +162,7 @@ ggsave(p_lden_site_active, file=paste0(ggsave_output_path, 'lden_site_activity.p
 
 # Annoyance ----------------
 # What is the risk of high annoyance at these sites based on exposure-response relationships?
+# Dependencies: any dataset
 
 # TODO: Annoyance on a longer, "proper" timescale? Energy averaged across the four monitoring periods?
 
@@ -275,6 +280,8 @@ p_ha_site = ggplot() +
 print(p_ha_site)
 
 # Maximum Leq hourly heatmap per day -------------------------------------------
+# Dependencies: any dataset
+
 data_hour_day_levels = data.frame()
 for (hour in 0:23) {
   leq_hr = paste('Leq', formatC(hour, width=2, flag='0'), sep='')
@@ -295,6 +302,7 @@ print(p_heatmap)
 ggsave(p_heatmap, file=paste0(ggsave_output_path, 'lmax_heatmap.png'), width=ggsave_width, height=ggsave_height)
 
 # Average active day Leq and ops per hour --------------------------------------
+# Dependencies: NAVY dataset
 # TODO: show distribution as well, some days are much worse and late at night
 
 ops_hour_ault = c()
@@ -334,7 +342,8 @@ p_mean_leq_field_hour = ggplot() +
 print(p_mean_ops_field_hour / p_mean_leq_field_hour)
 ggsave(p_mean_ops_field_hour / p_mean_leq_field_hour, file=paste0(ggsave_output_path, 'lden_ops_hourly.png'), width=ggsave_width, height=ggsave_height)
 
-# Lnight per site and airfield on days of activity -----------------------------
+# Lnight per site and airfield -----------------------------
+# Dependencies: any dataset for overview, only NAVY dataset for in/activity detail
 
 # WHO Guideline 'strong' recommendation. Evidence for a relevant absolute risk of sleep disturbance related to night noise exposure from aircraft at 40 dB Lnight was rated moderate quality. 
 l_hsd_who = 40
@@ -392,7 +401,8 @@ ggsave(p_lnight_site_active, file=paste0(ggsave_output_path, 'lnight_site_activi
 
 # TODO: compare to inactive site dates
 
-# TODO: Sleep disturbance for nights of average and maximum Lnight, all sites ------
+# Sleep disturbance for nights of average and maximum Lnight, all sites ------
+# Dependencies: any dataset
 # What is the risk of high sleep disturbance at these sites based on exposure-response relationships?
 
 # TODO: Military-specific / low-frequency / onset / aircraft dB penalty adjustment?
@@ -478,6 +488,7 @@ p_hsd_site = ggplot() +
 print(p_hsd_site)
 
 # Num events above 60 dB -------------------------------------------------------
+# Dependencies: NAVY dataset
 # Stacked per-airfield barplots of sentinel site mean noise event count per hour across periods grouped by loudness (+ number of operations at the airfield on second y axis?)
 
 factor_breaks = c(60,70,80,90,1000)
@@ -584,6 +595,7 @@ ggsave(p_events_ops_hourly[[1]] / p_events_ops_hourly[[2]], file=paste0(ggsave_o
 
 
 # Hearing loss ----------------------
+# Dependencies: any dataset
 
 occupational_standards = read.csv('analysis/OshaNiosh.csv')
 
@@ -611,8 +623,3 @@ unique(data_metrics[data_metrics$Leq>=70,'ID'])
 # Noise-induced hearing loss is generally from exposures to higher noise frequencies ranging from 3,000 to 6,000 Hz
 # https://drive.google.com/file/d/1WZX8iRGYmG4wTG41XTzZzUyjHAkpPr2L/view
 unique(data_metrics[data_metrics$Lmax>=115,'ID'])
-
-
-
-# Recommended max onset rate of 60 dB / sec
-# https://drive.google.com/drive/u/0/search?q=Low-altitude%20overflights%20of%20fighters%20the%20risk%20of%20hearing%20loss

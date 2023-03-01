@@ -269,4 +269,6 @@ for (hour in debug_hour) { # TODO: hours
 
 # Distribution of events
 
+# Recommended max onset rate of 60 dB / sec
+# https://drive.google.com/drive/u/0/search?q=Low-altitude%20overflights%20of%20fighters%20the%20risk%20of%20hearing%20loss
 
