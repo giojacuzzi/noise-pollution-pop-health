@@ -160,7 +160,7 @@ for (hour in debug_hour) {
           event = data.frame(
             TimeStart=time_start,
             TimeEnd=time_end,
-            Duration=as.numeric(time_end - time_start),
+            Duration=as.numeric(difftime(time_end, time_start, units='secs')),
             Lmax=lmax,
             Onset=onset
           )
