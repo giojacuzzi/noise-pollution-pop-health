@@ -22,8 +22,8 @@ data_metrics = get_data_metrics()
 data_metrics$Field = unlist(lapply(data_metrics$ID, get_field_name_for_ID))
 
 # NOTE: only look at Navy data for now
-data_metrics = na.omit(data_metrics)
-data_metrics = data_metrics[data_metrics$Org=='NAVY',]
+navy_metrics = na.omit(data_metrics)
+navy_metrics = navy_metrics[navy_metrics$Org=='NAVY',]
 
 # Monitoring site map  ---------------------------------------------------------
 
@@ -49,8 +49,8 @@ sentinel_sites = c(
   '8B_SG', # Ault Field
   '24A_B'  # OLF Coupeville
 )
-sentinel_metrics_ault = data_metrics[data_metrics$ID==sentinel_sites[1],]
-sentinel_metrics_coup = data_metrics[data_metrics$ID==sentinel_sites[2],]
+sentinel_metrics_ault = navy_metrics[navy_metrics$ID==sentinel_sites[1],]
+sentinel_metrics_coup = navy_metrics[navy_metrics$ID==sentinel_sites[2],]
 
 energyavg_lden_day_ault = tapply(X=sentinel_metrics_ault$Lden, INDEX=sentinel_metrics_ault$Day, FUN=energyavg)
 energyavg_lden_day_coup = tapply(X=sentinel_metrics_coup$Lden, INDEX=sentinel_metrics_coup$Day, FUN=energyavg)
@@ -71,9 +71,12 @@ ops_coup_df = data.frame(
 )
 mean_ops_day_coup = tapply(ops_coup_df$Ops, ops_coup_df$Day, mean)
 
+names = c(paste(get_site_name_for_ID(sentinel_sites[1]), '(Ault)'), paste(get_site_name_for_ID(sentinel_sites[2]), '(Coup)'))
+
 df_mean_ops_lden_day = data.frame(
   Day   = factor(rep(days,2), levels=days),
   Field = factor(c(rep('Ault',7), rep('Coup',7))),
+  Name  = factor(c(rep(names[1],7), rep(names[2],7))),
   Ops   = c(mean_ops_day_ault, mean_ops_day_coup),
   Lden  = c(energyavg_lden_day_ault, energyavg_lden_day_coup)
 )
@@ -82,7 +85,7 @@ p_mean_ops_field_day = ggplot() +
   geom_bar(data=df_mean_ops_lden_day, aes(x=Day, y=Ops, fill=Field), stat='identity', position='dodge', alpha=0.9) +
   labs(title='Average flight operations per day', x='', y='Operations')
 p_mean_lden_field_day = ggplot() +
-  geom_line(data=df_mean_ops_lden_day, aes(x=Day, y=Lden, group=Field, color=Field), stat='identity') +
+  geom_line(data=df_mean_ops_lden_day, aes(x=Day, y=Lden, group=Name, color=Name), stat='identity') +
   scale_y_continuous(name='Lden (dBA)', limits=c(50,90), oob=rescale_none) +
   labs(title='Average daily Lden', subtitle='(Sentinel sites)')
 print(p_mean_ops_field_day / p_mean_lden_field_day)
@@ -110,14 +113,14 @@ days_coup_active = c('Mon','Tue','Wed','Thu','Fri')
 # For operations: df_mean_ops_lden_day[df_mean_ops_lden_day$Field=='Coup' & df_mean_ops_lden_day$Ops > 0,]$Day
 
 active_site_date_metrics = rbind(
-  data_metrics[data_metrics$Field=='Ault' & data_metrics$Day %in% days_ault_active,],
-  data_metrics[data_metrics$Field=='Coup' & data_metrics$Day %in% days_coup_active,]
+  navy_metrics[navy_metrics$Field=='Ault' & navy_metrics$Day %in% days_ault_active,],
+  navy_metrics[navy_metrics$Field=='Coup' & navy_metrics$Day %in% days_coup_active,]
 )
 active_site_date_metrics$Activity='Active'
 
 inactive_site_date_metrics = rbind(
-  data_metrics[data_metrics$Field=='Ault' & !(data_metrics$Day %in% days_ault_active),],
-  data_metrics[data_metrics$Field=='Coup' & !(data_metrics$Day %in% days_coup_active),]
+  navy_metrics[navy_metrics$Field=='Ault' & !(navy_metrics$Day %in% days_ault_active),],
+  navy_metrics[navy_metrics$Field=='Coup' & !(navy_metrics$Day %in% days_coup_active),]
 )
 inactive_site_date_metrics$Activity='Inactive'
 
@@ -126,12 +129,15 @@ combined_data_metrics$Activity = factor(combined_data_metrics$Activity)
 combined_data_metrics$Field = factor(combined_data_metrics$Field)
 combined_data_metrics = combined_data_metrics[with(combined_data_metrics, order(Activity)), ]
 
+lden_metrics = data_metrics[!is.na(data_metrics$Lden),]
+
 # Overview
+# NOTE: to organize by field, add `color=Field` to geom_boxplot and stat_summary
 p_lden_site_all = ggplot() +
-  geom_boxplot(data=combined_data_metrics, mapping=aes(x=reorder(Name, Lden, FUN=energyavg), y=Lden, color=Field), outlier.size=0.9) +
-  stat_summary(data=combined_data_metrics, mapping=aes(x=reorder(Name, Lden, FUN=energyavg), y=Lden, shape='Energy average', color=Field), fun='energyavg', geom='point', size=3, fill='white') +
+  geom_boxplot(data=combined_data_metrics, mapping=aes(x=reorder(Name, Lden, FUN=energyavg), y=Lden), outlier.size=0.9) +
+  stat_summary(data=combined_data_metrics, mapping=aes(x=reorder(Name, Lden, FUN=energyavg), y=Lden, shape='Energy average'), fun='energyavg', geom='point', size=3, fill='white') +
   scale_shape_manual('', values=c('Energy average'=21)) +
-  labs(title='Lden per site', x ='Site', y ='Lden (dBA)', color='Airfield') +
+  labs(title='Lden per site', x ='Site', y ='Lden (dBA)') +
   # geom_hline(yintercept=l_hudfaa, linetype='dotted', size=0.7, colour='red') +
   # geom_hline(yintercept=l_epa, linetype='dotted', size=0.7, colour='red') +
   coord_flip()
@@ -163,6 +169,9 @@ p_lden_site_active = ggplot() +
 print(p_lden_site_active)
 ggsave(p_lden_site_active, file=paste0(ggsave_output_path, 'lden_site_activity.png'), width=ggsave_width, height=ggsave_height)
 
+# Active vs inactive difference
+tapply(active_site_date_metrics$Lden, active_site_date_metrics$Name, energyavg) - tapply(inactive_site_date_metrics$Lden, inactive_site_date_metrics$Name, energyavg)
+
 # Annoyance ----------------
 # What is the risk of high annoyance at these sites based on exposure-response relationships?
 # Dependencies: any dataset
@@ -176,6 +185,7 @@ ggsave(p_lden_site_active, file=paste0(ggsave_output_path, 'lden_site_activity.p
 regression_WHO = function(Lden) {
   return(-50.9693 + 1.0168 * Lden + 0.0072 * Lden^2)
 }
+bounds_who = c(40,75)
 
 # Miedema and Oudshoorn 2001
 regression_MO = function(Lden) {
@@ -199,6 +209,7 @@ ci_iso_miedema = data.frame(
   Lower= c(0.3,0.4,0.4,0.5,0.6,0.7,0.9,1.0,1.2,1.4,1.7,1.9,2.2,2.6,3.0,3.4,3.9,4.4,5.0,5.7,6.4,7.2,8.1,9.0,10.0,11.1,12.3,13.6,15.0,16.4,18.0,19.6,21.3,23.1),
   Upper= c(33.5,35.7,38.0,40.3,42.7,45.1,47.5,49.9,52.3,54.7,57.1,59.5,61.8,64.1,66.3,68.5,70.6,72.7,74.7,76.6,78.4,80.1,81.8,83.4,84.8,86.2,87.5,88.7,89.9,90.9,91.9,92.7,93.6,94.3)
 )
+bounds_iso_miedema = c(40,76)
 
 # Yokoshima et al 2021
 regression_japan = function(Lden) {
@@ -209,6 +220,7 @@ ci_japan = data=data.frame(
   Lower= c(8.1,  22.2, 33.7, 45.9, 58.8, 69.0),
   Upper= c(21.0, 30.1, 42.4, 54.6, 66.7, 82.0)
 )
+bounds_japan = c(40,65)
 
 # Median
 median_lden = tapply(data_metrics$Lden, data_metrics$ID, median)
@@ -250,18 +262,17 @@ p_ha = ggplot() +
   geom_ribbon(ci_iso_miedema, mapping=aes(x=Lden,ymin=Lower,ymax=Upper), fill='purple', alpha=0.1) +
   geom_ribbon(ci_japan, mapping=aes(x=Lden,ymin=Lower,ymax=Upper), fill='blue', alpha=0.1) +
   # Exposure-response functions
-  stat_function(fun=regression_WHO, xlim=c(75,100), color=erf_colors['Guideline (WHO 2018)'], linetype='dashed') +
-  stat_function(fun=regression_WHO, xlim=c(40,75), size=.7, aes(color='Guideline (WHO 2018)')) +
-  stat_function(fun=regression_ISO_Miedema, xlim=c(76, 200), color=erf_colors['Standard (ISO 2016)'], linetype='dashed') +
-  stat_function(fun=regression_ISO_Miedema, xlim=c(40,76), size=.7, aes(color='Standard (ISO 2016)')) +
-  stat_function(fun=regression_japan, xlim=c(65,100), color=erf_colors['Military (Yokoshima 2021)'], linetype='dashed') +
-  stat_function(fun=regression_japan, xlim=c(40,65), size=.7, aes(color='Military (Yokoshima 2021)')) +
+  # stat_function(fun=regression_WHO, xlim=c(bounds_who[1],100), color=erf_colors['Guideline (WHO 2018)'], linetype='dashed') +
+  stat_function(fun=regression_WHO, xlim=bounds_who, linewidth=.7, aes(color='Guideline (WHO 2018)')) +
+  # stat_function(fun=regression_ISO_Miedema, xlim=c(bounds_iso_miedema[1], 200), color=erf_colors['Standard (ISO 2016)'], linetype='dashed') +
+  stat_function(fun=regression_ISO_Miedema, xlim=bounds_iso_miedema, linewidth=.7, aes(color='Standard (ISO 2016)')) +
+  # stat_function(fun=regression_japan, xlim=c(bounds_japan[1],100), color=erf_colors['Military (Yokoshima 2021)'], linetype='dashed') +
+  stat_function(fun=regression_japan, xlim=bounds_japan, linewidth=.7, aes(color='Military (Yokoshima 2021)')) +
   scale_color_manual(name='Exposure-response', values=erf_colors, breaks=erf_names) +
   # Plot configuration
   labs(title='Percent population estimated highly annoyed per site') +
-  scale_x_continuous(name='Lden (dBA)', limits=c(45,85), oob=rescale_none) +
-  scale_y_continuous(name='%HA', n.breaks=9, limits=c(0,110), oob=rescale_none) +
-  geom_hline(yintercept=100, linetype='dotted')
+  scale_x_continuous(name='Lden (dBA)', limits=c(45,76), oob=rescale_none) +
+  scale_y_continuous(name='%HA', n.breaks=9, limits=c(0,90), oob=rescale_none)
 print(p_ha)
 ggsave(p_ha, file=paste0(ggsave_output_path, 'erf_ha.png'), width=ggsave_width, height=ggsave_height)
 
@@ -271,12 +282,12 @@ p_ha = ggplot() +
   geom_ribbon(ci_iso_miedema, mapping=aes(x=Lden,ymin=Lower,ymax=Upper), fill='purple', alpha=0.1) +
   geom_ribbon(ci_japan, mapping=aes(x=Lden,ymin=Lower,ymax=Upper), fill='blue', alpha=0.1) +
   # Exposure-response functions
-  stat_function(fun=regression_WHO, xlim=c(75,100), color=erf_colors['Guideline (WHO 2018)'], linetype='dashed') +
-  stat_function(fun=regression_WHO, xlim=c(40,75), size=.7, aes(color='Guideline (WHO 2018)')) +
-  stat_function(fun=regression_ISO_Miedema, xlim=c(76, 200), color=erf_colors['Standard (ISO 2016)'], linetype='dashed') +
-  stat_function(fun=regression_ISO_Miedema, xlim=c(40,76), size=.7, aes(color='Standard (ISO 2016)')) +
-  stat_function(fun=regression_japan, xlim=c(65,100), color=erf_colors['Military (Yokoshima 2021)'], linetype='dashed') +
-  stat_function(fun=regression_japan, xlim=c(40,65), size=.7, aes(color='Military (Yokoshima 2021)')) +
+  stat_function(fun=regression_WHO, xlim=c(bounds_who[1],100), color=erf_colors['Guideline (WHO 2018)'], linetype='dashed') +
+  stat_function(fun=regression_WHO, xlim=bounds_who, size=.7, aes(color='Guideline (WHO 2018)')) +
+  stat_function(fun=regression_ISO_Miedema, xlim=c(bounds_iso_miedema[1], 200), color=erf_colors['Standard (ISO 2016)'], linetype='dashed') +
+  stat_function(fun=regression_ISO_Miedema, xlim=bounds_iso_miedema, size=.7, aes(color='Standard (ISO 2016)')) +
+  stat_function(fun=regression_japan, xlim=c(bounds_japan[1],100), color=erf_colors['Military (Yokoshima 2021)'], linetype='dashed') +
+  stat_function(fun=regression_japan, xlim=bounds_japan, size=.7, aes(color='Military (Yokoshima 2021)')) +
   scale_color_manual(name='Exposure-response', values=erf_colors, breaks=erf_names) +
   # Measurement points
   geom_point(data=energyavg_lden_HA, aes(x=Lden, y=HA_WHO, fill=Site), shape=21, size=pt_size, alpha=pt_alpha) +
@@ -293,11 +304,15 @@ ggsave(p_ha, file=paste0(ggsave_output_path, 'erf_ha_points.png'), width=ggsave_
 
 # Table
 ha_table = data.frame(sapply(rownames(energyavg_lden_HA), get_site_name_for_ID))
-ha_table = cbind(ha_table, round(energyavg_lden_HA[,c('HA_JAPAN','HA_WHO','HA_ISO_MO')]))
-colnames(ha_table) = c('Site', 'Military', 'Guideline', 'Standard')
+ha_table = cbind(ha_table, energyavg_lden_HA[,c('HA_JAPAN','HA_WHO','HA_ISO_MO','Lden')])
+colnames(ha_table) = c('Site', 'Military', 'Guideline', 'Standard', 'Lden')
+ha_table[,c('Military','Guideline','Standard')] = round(ha_table[,c('Military','Guideline','Standard')])
 ha_table = ha_table[order(ha_table$Military, decreasing=T), ]
+ha_table$Military[which(ha_table$Lden>bounds_japan[2])] = paste('≥', round(regression_japan(bounds_japan[2])))
+ha_table$Guideline[which(ha_table$Lden>bounds_who[2])] = paste('≥', round(regression_WHO(bounds_who[2])))
+ha_table$Standard[which(ha_table$Lden>bounds_iso_miedema[2])] = paste('≥', round(regression_ISO_Miedema(bounds_iso_miedema[2])))
 p_ha_table = ggplot() +
-  annotate(geom='table', size=4, x=0, y=0, label=list(ha_table), table.theme=ttheme_gtlight) + theme_void()
+  annotate(geom='table', size=4, x=0, y=0, label=list(ha_table[,!names(ha_table) %in% c('Lden')]), table.theme=ttheme_gtlight) + theme_void()
 print(p_ha_table)
 ggsave(p_ha_table, file=paste0(ggsave_output_path, 'erf_ha_table.png'), width=ggsave_width, height=ggsave_height)
 
@@ -342,6 +357,7 @@ energyavg_leq_hour_coup = sapply(active_coup_hour_metrics, energyavg)
 df_mean_ops_hour = data.frame(
   Hour  = factor(rep(hours,2), levels=hours),
   Field = factor(c(rep('Ault',24), rep('Coup',24))),
+  Name  = factor(c(rep(names[1],24), rep(names[2],24))),
   Ops   = c(mean_ops_hour_ault, mean_ops_hour_coup),
   Leq   = c(energyavg_leq_hour_ault, energyavg_leq_hour_coup)
 )
@@ -350,7 +366,7 @@ p_mean_ops_field_hour = ggplot() +
   geom_bar(data=df_mean_ops_hour, aes(x=Hour, y=Ops, fill=Field), stat='identity', position='dodge', alpha=0.9) +
   labs(title='Average flight operations per hour', subtitle='(Active day)', x='', y='Operations')
 p_mean_leq_field_hour = ggplot() +
-  geom_line(data=df_mean_ops_hour, aes(x=Hour, y=Leq, group=Field, color=Field), stat='identity') +
+  geom_line(data=df_mean_ops_hour, aes(x=Hour, y=Leq, group=Name, color=Name), stat='identity') +
   scale_y_continuous(name='Leq (dBA)', limits=c(40,90), oob=rescale_none) +
   geom_rect(aes(xmin='00', xmax = '07', ymin = -Inf, ymax = Inf), fill = 'blue', alpha = 0.09) +
   geom_rect(aes(xmin='19', xmax = '22', ymin = -Inf, ymax = Inf), fill = 'purple', alpha = 0.06) +
@@ -374,14 +390,14 @@ nights_coup_active = c('Mon','Tue','Wed','Thu','Fri')
 # For operations: unique(data_ops[data_ops$Field=='Coup' & data_ops$DEN=='Night','Date'])
 
 active_night_site_date_metrics = rbind( # factor(format(data_metrics$Date, format_date))
-  data_metrics[data_metrics$Field=='Ault' & data_metrics$Day %in% nights_ault_active,],
-  data_metrics[data_metrics$Field=='Coup' & data_metrics$Day %in% nights_coup_active,]
+  navy_metrics[navy_metrics$Field=='Ault' & navy_metrics$Day %in% nights_ault_active,],
+  navy_metrics[navy_metrics$Field=='Coup' & navy_metrics$Day %in% nights_coup_active,]
 )
 active_night_site_date_metrics$Activity='Active'
 
 inactive_night_site_date_metrics = rbind(
-  data_metrics[data_metrics$Field=='Ault' & !(data_metrics$Day %in% nights_ault_active),],
-  data_metrics[data_metrics$Field=='Coup' & !(data_metrics$Day %in% nights_coup_active),]
+  navy_metrics[navy_metrics$Field=='Ault' & !(navy_metrics$Day %in% nights_ault_active),],
+  navy_metrics[navy_metrics$Field=='Coup' & !(navy_metrics$Day %in% nights_coup_active),]
 )
 inactive_night_site_date_metrics$Activity='Inactive'
 
@@ -390,10 +406,12 @@ combined_night_data_metrics$Activity = factor(combined_night_data_metrics$Activi
 combined_night_data_metrics$Field = factor(combined_night_data_metrics$Field)
 combined_night_data_metrics = combined_night_data_metrics[with(combined_night_data_metrics, order(Activity)), ]
 
+lnight_metrics = data_metrics[!is.na(data_metrics$Lden_Lnight),]
+
 # Overview
 p_lnight_site_all = ggplot() + 
-  geom_boxplot(data=combined_data_metrics, mapping=aes(x=reorder(Name, Lden_Lnight, FUN=energyavg), y=Lden_Lnight, color=Field), outlier.size=0.9) +
-  stat_summary(data=combined_data_metrics, mapping=aes(x=reorder(Name, Lden_Lnight, FUN=energyavg), y=Lden_Lnight, shape='Energy average', color=Field), fun='energyavg', geom='point', size=3, fill='white') +
+  geom_boxplot(data=combined_night_data_metrics, mapping=aes(x=reorder(Name, Lden_Lnight, FUN=energyavg), y=Lden_Lnight), outlier.size=0.9) +
+  stat_summary(data=combined_night_data_metrics, mapping=aes(x=reorder(Name, Lden_Lnight, FUN=energyavg), y=Lden_Lnight, shape='Energy average'), fun='energyavg', geom='point', size=3, fill='white') +
   scale_shape_manual('', values=c('Energy average'=21)) +
   labs(title='Lnight per site', x ='Site', y ='Lnight (dBA)', color='Airfield') +
   # geom_hline(yintercept=l_hsd_who, linetype='dotted', size=0.7, colour='red') +
@@ -425,6 +443,10 @@ p_lnight_site_active = ggplot() +
 print(p_lnight_site_active)
 ggsave(p_lnight_site_active, file=paste0(ggsave_output_path, 'lnight_site_activity.png'), width=ggsave_width, height=ggsave_height)
 
+# Active vs inactive difference
+tapply(active_night_site_date_metrics$Lden_Lnight, active_night_site_date_metrics$Name, energyavg) - tapply(inactive_night_site_date_metrics$Lden_Lnight, inactive_night_site_date_metrics$Name, energyavg)
+
+
 # TODO: compare to inactive site dates
 
 # Sleep disturbance for nights of average and maximum Lnight, all sites ------
@@ -454,12 +476,12 @@ ci_upper_hsd_combinedestimate = function(Lnight) {
 ci_lower_hsd_combinedestimate = function(Lnight) {
   return(0.027883*Lnight^2 - 1.680477*Lnight + 30.550446) 
 }
-
 ci_hsd_combinedestimate = data.frame(
   Lnight = seq(from=40, to=65, by=1),
   Lower  = ci_lower_hsd_combinedestimate(seq(from=40, to=65, by=1)),
   Upper  = ci_upper_hsd_combinedestimate(seq(from=40, to=65, by=1))
 )
+bounds_hsd = c(40,65)
 
 # NOTE: Limitations - "The rapid onset time in particular means that a given aircraft is probably more likely to induce an awakening than one that is much more gradual, like a civil aircraft. But of course physiological disturbance such as this and self-reported long-term %HSD are not the same thing, and do not necessarily correlate all that well."
 
@@ -497,12 +519,12 @@ p_hsd = ggplot() +
   # Confidence intervals
   geom_ribbon(ci_hsd_combinedestimate, mapping=aes(x=Lnight,ymin=Lower,ymax=Upper), fill='purple', alpha=0.1) +
   # Exposure-response function(s)
-  stat_function(fun=eq_hsd_combinedestimate, xlim=c(65,80), linetype='dashed', color=erf_colors['Smith 2022']) +
-  stat_function(fun=eq_hsd_combinedestimate, xlim=c(40,65), size=.7, aes(color='Smith 2022')) +
+  # stat_function(fun=eq_hsd_combinedestimate, xlim=c(bounds_hsd[2],80), linetype='dashed', color=erf_colors['Smith 2022']) +
+  stat_function(fun=eq_hsd_combinedestimate, xlim=bounds_hsd, size=.7, aes(color='Smith 2022')) +
   scale_color_manual(name='Exposure-response', values=erf_colors, breaks=erf_names) +
   # Plot configuration
-  scale_x_continuous(name='Lnight (dBA)', limits=c(40,80), oob=rescale_none) +
-  scale_y_continuous(name='%HSD', n.breaks=9, limits=c(0,90), oob=rescale_none) +
+  scale_x_continuous(name='Lnight (dBA)', limits=c(40,65), oob=rescale_none) +
+  scale_y_continuous(name='%HSD', n.breaks=9, limits=c(0,60), oob=rescale_none) +
   labs(title='Probability of high sleep disturbance per site')
 print(p_hsd)
 ggsave(p_hsd, file=paste0(ggsave_output_path, 'erf_hsd.png'), width=ggsave_width, height=ggsave_height)
@@ -512,8 +534,8 @@ p_hsd = ggplot() +
   # Confidence intervals
   geom_ribbon(ci_hsd_combinedestimate, mapping=aes(x=Lnight,ymin=Lower,ymax=Upper), fill='purple', alpha=0.1) +
   # Exposure-response function(s)
-  stat_function(fun=eq_hsd_combinedestimate, xlim=c(65,80), linetype='dashed', color=erf_colors['Smith 2022']) +
-  stat_function(fun=eq_hsd_combinedestimate, xlim=c(40,65), size=.7, aes(color='Smith 2022')) +
+  stat_function(fun=eq_hsd_combinedestimate, xlim=c(bounds_hsd[2],80), linetype='dashed', color=erf_colors['Smith 2022']) +
+  stat_function(fun=eq_hsd_combinedestimate, xlim=bounds_hsd, size=.7, aes(color='Smith 2022')) +
   scale_color_manual(name='Exposure-response', values=erf_colors, breaks=erf_names) +
   # Measurement points
   geom_point(data=energyavg_lnight_HSD, aes(x=Lnight, y=HSD_smith, fill=Site), shape=21, size=pt_size, alpha=pt_alpha) +
@@ -527,11 +549,13 @@ ggsave(p_hsd, file=paste0(ggsave_output_path, 'erf_hsd_points.png'), width=ggsav
 
 # Table
 hsd_table = data.frame(sapply(rownames(energyavg_lnight_HSD), get_site_name_for_ID))
-hsd_table = cbind(hsd_table, round(energyavg_lnight_HSD[,c('HSD_smith')]))
-colnames(hsd_table) = c('Site', '%HSD')
+hsd_table = cbind(hsd_table, energyavg_lnight_HSD[,c('HSD_smith','Lnight')])
+hsd_table[,c('HSD_smith')] = round(hsd_table[,c('HSD_smith')])
+colnames(hsd_table) = c('Site', '%HSD','Lnight')
 hsd_table = hsd_table[order(hsd_table[,'%HSD'], decreasing=T), ]
+hsd_table[which(hsd_table$Lnight>bounds_hsd[2]),'%HSD'] = paste('≥', round(eq_hsd_combinedestimate(bounds_hsd[2])))
 p_hsd_table = ggplot() +
-  annotate(geom='table', size=4, x=0, y=0, label=list(hsd_table), table.theme=ttheme_gtlight) + theme_void()
+  annotate(geom='table', size=4, x=0, y=0, label=list(hsd_table[,!names(hsd_table) %in% c('Lnight')]), table.theme=ttheme_gtlight) + theme_void()
 print(p_hsd_table)
 ggsave(p_hsd_table, file=paste0(ggsave_output_path, 'erf_hsd_table.png'), width=ggsave_width, height=ggsave_height)
 

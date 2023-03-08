@@ -32,7 +32,7 @@ get_data_sites = function() {
 get_data_metrics = function() {
   if (!exists('data_metrics')) {
     data_metrics = rbind(read.csv('data/metrics/output/metrics_NAVY.csv'),
-                         read.csv('data/metrics/output/metrics_NPS.csv'),
+                         # read.csv('data/metrics/output/metrics_NPS.csv'), # NOTE: do not include Navy data from 2015
                          read.csv('data/metrics/output/metrics_SDA.csv'))
     # NOTE: Some SDA measurements were recorded with overloaded gains (i.e. distortion) that result in erroneously high values during flybys. Here, we remove site dates with measurements exceeding 110 dB.
     data_metrics = data_metrics[-which(data_metrics$Org == 'SDA' & data_metrics$Lmax > 110.0),]
