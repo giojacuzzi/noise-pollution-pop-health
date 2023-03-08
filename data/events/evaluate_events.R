@@ -65,6 +65,7 @@ my_events = data.frame()
 
 # 10-second moving average
 data$Lma = rollmean(data$LAeq, 10, align='center', fill=NA)
+# data$LmaX = rollmean(data$Lma, 30, align='center', fill=NA) # Further smoothing
 for (hour in debug_hour) {
   # NOTE: Navy threshold is L90 + 10 of each hour +/- 30 min 
   data_hour = data[data$Hour==hour,]
@@ -119,9 +120,10 @@ for (hour in debug_hour) {
       buff_start = max(1, idx_start-10)
       buff_end = min(nrow(data_hour), idx_end+10)
       p_time = ggplot(data_hour[buff_start:buff_end,]) +
-        labs(title=paste('Event')) +
+        labs(title=paste('Event', nrow(my_events) + 1)) +
         geom_line(aes(x=Time, y=LAeq)) +
         geom_line(aes(x=Time, y=Lma), color='magenta') +
+        # geom_line(aes(x=Time, y=LmaX), color='red') +
         geom_vline(xintercept=data_hour[idx_start,'Time'], color='blue') +
         geom_vline(xintercept=data_hour[idx_end,'Time'], color='blue') +
         geom_hline(yintercept=threshold, color='gray') +
@@ -174,12 +176,14 @@ for (hour in debug_hour) {
               labs(title=paste('Split event', nrow(my_events))) +
               geom_line(aes(x=Time, y=LAeq)) +
               geom_line(aes(x=Time, y=Lma), color='magenta') +
+              # geom_line(aes(x=Time, y=LmaX), color='red') +
               geom_vline(xintercept=data_hour[idx_start,'Time'], color='blue') +
               geom_vline(xintercept=data_hour[idx_start+idx_lmax-1,'Time'], color='red', linetype='dotted') +
               geom_vline(xintercept=data_hour[idx_end,'Time'], color='blue') +
               geom_hline(yintercept=threshold, color='gray') +
               geom_hline(yintercept=LxFromLevels(data_hour[buff_start:buff_end,'LAeq'], 25), color='green') +
               geom_vline(xintercept=data_hour[idx_local_maxima, 'Time'], color='orange', linetype='dotted')
+            plot(p_time)
 
           idx_start = idx_end # Split point becomes start of next event
           if (idx_end >= event_end | idx_start >= event_end) {
@@ -197,75 +201,75 @@ for (hour in debug_hour) {
 
 # Plot hour in 15 min chunks ------------------------
 
-
-for (hour in debug_hour) { # TODO: hours
-  data_hour = data[data$Hour==hour,]
-
-  L50 = LxFromLevels(data_hour$LAeq, 50)
-  L90 = LxFromLevels(data_hour$LAeq, 90)
-  message(paste('Hour', hour, 'L90', L90))
-  # Navy threshold is L90 + 10 of each hour +/- 30 min
-  threshold_navy = L90 + 10
-
-  events_hour = events[events$Hour==hour,]
-  ops_hour = ops[ops$Hour==hour,]
-
-  for (q in 1:4) {
-    start = (q-1)*(nrow(data_hour) / 4) + 1
-    end = start + (nrow(data_hour) / 4) - 1
-
-    data_q = data_hour[start:end,]
-    events_q = events_hour[events_hour$StartTime %in% data_hour[start:end, 'Time'],]
-    ops_q = ops_hour[ops_hour$Time %in% data_hour[start:end, 'Time'],]
-
-    # ma = na.omit(data.frame(Time=data_q$Time, MA=movavg(data_q$LAeq)))
-    ma = na.omit(data.frame(
-      Time=data_q$Time,
-      MA=rollmean(data_q$LAeq, 10, align='center', fill=NA)
-    ))
-
-    # Leq time series
-    p_leq = ggplot(data_q) +
-      geom_line(aes(x=Time, y=LAeq)) +
-      # Navy automated event starts
-      geom_vline(xintercept=events_q$StartTime, color='red', linetype='dotted') +
-      # Navy flight operation
-      geom_vline(xintercept=ops_q$Time, color='blue', linetype='dashed') +
-      geom_hline(yintercept=threshold_navy, color='gray') +
-      # geom_hline(yintercept=threshold_custom, color='green') +
-      geom_line(ma, mapping=aes(x=Time, y=MA), color='magenta')
-
-    # Spectral heatmap
-    spectrum = data_q[,c(1, 31:61)] # NOTE: 6.3 Hz starts at index 26
-    names(spectrum) = gsub('1/3 LZeq ', '', names(spectrum))
-
-    spectrum_total = data.frame()
-    for (s in 1:nrow(spectrum)) {
-      sec = as.POSIXct(spectrum$Time[s])
-      band = rownames(t(spectrum[s,c(-1)]))
-      lzeq = unname(spectrum[s,c(-1)])
-      spectrum_sec = data.frame(
-        sec,
-        band,
-        t(lzeq)
-      )
-      rownames(spectrum_sec) = c()
-      colnames(spectrum_sec) = c('Time', 'Band', 'LZeq')
-      spectrum_total = rbind(spectrum_total, spectrum_sec)
-    }
-    spectrum_total$Band = as.character(as.numeric(spectrum_total$Band))
-    spectrum_total$Band = factor(spectrum_total$Band)
-    sorted_levels = as.character(sort(as.numeric(levels(spectrum_total$Band))))
-    spectrum_total$Band = factor(spectrum_total$Band, levels=sorted_levels)
-
-    p_spectral = ggplot(spectrum_total, aes(x=Time, y=Band, fill=LZeq)) +
-      geom_tile() +
-      scale_fill_viridis(option='A') +
-      labs(x='Time', y='Band')
-
-    print(p_spectral / p_leq)
-  }
-}
+# 
+# for (hour in debug_hour) { # TODO: hours
+#   data_hour = data[data$Hour==hour,]
+# 
+#   L50 = LxFromLevels(data_hour$LAeq, 50)
+#   L90 = LxFromLevels(data_hour$LAeq, 90)
+#   message(paste('Hour', hour, 'L90', L90))
+#   # Navy threshold is L90 + 10 of each hour +/- 30 min
+#   threshold_navy = L90 + 10
+# 
+#   events_hour = events[events$Hour==hour,]
+#   ops_hour = ops[ops$Hour==hour,]
+# 
+#   for (q in 1:4) {
+#     start = (q-1)*(nrow(data_hour) / 4) + 1
+#     end = start + (nrow(data_hour) / 4) - 1
+# 
+#     data_q = data_hour[start:end,]
+#     events_q = events_hour[events_hour$StartTime %in% data_hour[start:end, 'Time'],]
+#     ops_q = ops_hour[ops_hour$Time %in% data_hour[start:end, 'Time'],]
+# 
+#     # ma = na.omit(data.frame(Time=data_q$Time, MA=movavg(data_q$LAeq)))
+#     ma = na.omit(data.frame(
+#       Time=data_q$Time,
+#       MA=rollmean(data_q$LAeq, 10, align='center', fill=NA)
+#     ))
+# 
+#     # Leq time series
+#     p_leq = ggplot(data_q) +
+#       geom_line(aes(x=Time, y=LAeq)) +
+#       # Navy automated event starts
+#       geom_vline(xintercept=events_q$StartTime, color='red', linetype='dotted') +
+#       # Navy flight operation
+#       geom_vline(xintercept=ops_q$Time, color='blue', linetype='dashed') +
+#       geom_hline(yintercept=threshold_navy, color='gray') +
+#       # geom_hline(yintercept=threshold_custom, color='green') +
+#       geom_line(ma, mapping=aes(x=Time, y=MA), color='magenta')
+# 
+#     # Spectral heatmap
+#     spectrum = data_q[,c(1, 31:61)] # NOTE: 6.3 Hz starts at index 26
+#     names(spectrum) = gsub('1/3 LZeq ', '', names(spectrum))
+# 
+#     spectrum_total = data.frame()
+#     for (s in 1:nrow(spectrum)) {
+#       sec = as.POSIXct(spectrum$Time[s])
+#       band = rownames(t(spectrum[s,c(-1)]))
+#       lzeq = unname(spectrum[s,c(-1)])
+#       spectrum_sec = data.frame(
+#         sec,
+#         band,
+#         t(lzeq)
+#       )
+#       rownames(spectrum_sec) = c()
+#       colnames(spectrum_sec) = c('Time', 'Band', 'LZeq')
+#       spectrum_total = rbind(spectrum_total, spectrum_sec)
+#     }
+#     spectrum_total$Band = as.character(as.numeric(spectrum_total$Band))
+#     spectrum_total$Band = factor(spectrum_total$Band)
+#     sorted_levels = as.character(sort(as.numeric(levels(spectrum_total$Band))))
+#     spectrum_total$Band = factor(spectrum_total$Band, levels=sorted_levels)
+# 
+#     p_spectral = ggplot(spectrum_total, aes(x=Time, y=Band, fill=LZeq)) +
+#       geom_tile() +
+#       scale_fill_viridis(option='A') +
+#       labs(x='Time', y='Band')
+# 
+#     print(p_spectral / p_leq)
+#   }
+# }
 
 # Distribution of events
 
