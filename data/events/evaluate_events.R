@@ -56,12 +56,9 @@ events = data_events[data_events$SiteID==id & data_events$Date==date,]
 ops = data_ops[data_ops$Date==date,]
 
 library(zoo)
-# movavg = function(x, n = 5){filter(x, rep(1 / n, n), sides = 2)}
 debug_hour = '20'
 
 my_events = data.frame()
-
-# threshold_custom = 60 # Here, only look at events > 60 dB
 
 # 10-second moving average
 data$Lma = rollmean(data$LAeq, 10, align='center', fill=NA)
@@ -158,11 +155,13 @@ for (hour in debug_hour) {
           idx_lmax = which(data_hour[idx_start:idx_end,'LAeq']==lmax)[1]
           lstart = data_hour$LAeq[idx_start]
           onset = (lmax - lstart)/(idx_lmax) # dBA per sec
-          onset = round(onset, 2)
+          onset = round(onset, 1)
           event = data.frame(
             TimeStart=time_start,
             TimeEnd=time_end,
             Duration=as.numeric(difftime(time_end, time_start, units='secs')),
+            Leq=round(LeqTotal(levels),1),
+            SEL=round(SelFromLevels(levels),1),
             Lmax=lmax,
             Onset=onset
           )

@@ -131,6 +131,11 @@ combined_data_metrics = combined_data_metrics[with(combined_data_metrics, order(
 
 lden_metrics = data_metrics[!is.na(data_metrics$Lden),]
 
+# Energy average Ldn
+tapply(combined_data_metrics$Ldn, combined_data_metrics$ID, energyavg)
+# Energy average Lden
+tapply(combined_data_metrics$Lden, combined_data_metrics$ID, energyavg)
+
 # Overview
 # NOTE: to organize by field, add `color=Field` to geom_boxplot and stat_summary
 p_lden_site_all = ggplot() +
@@ -179,6 +184,15 @@ tapply(active_site_date_metrics$Lden, active_site_date_metrics$Name, energyavg) 
 # TODO: Annoyance on a longer, "proper" timescale? Energy averaged across the four monitoring periods?
 
 # See ISO 1996-1 2016 Annex E/F and Lct
+
+# ISO 1996
+# (3.2.2): Long-term time interval - Specified time interval over which the sound of series of reference time intervals is averaged or assessed; The long-term time interval is determined for the purpose of describing environmental noise as it is generally designated by responsible authorities; For long-term assessments and land-use planning long-term time intervals that represent some significant fraction of year should be used (e.g 3 months, 6 months, and 1 year)
+# 
+# (8.1): Estimation of long-term annoyance response of communities - Noise assessments representing a long-term time interval, typically year, are used to estimate the annoyance  response of communities to the overall, steady sound situation. Annex E or Annex F (Gio: we are using Annex F, a dose-response regression) should be sued to estimate the long-term annoyance of communities to airport, road-traffic, or railroad noise. Each of these two annexes provides estimates of the percentage of a typical population that is likely to be highly annoyed by that environmental noise due to a specific annual average adjusted day-night sound level.
+# 
+# (D.4): Qualifications to the dose-response functions - These formulae are applicable only to long-term environmental sounds such as the yearly average; These formulae should not be used with shorter time periods such as weekends single season or busy days, rather, the annual average or some other long-term period should be used; These formulae are not applicable to short-term environmental sound such as from an increase in road traffic due to short-duration construction project; These formulae are only applicable to existing situations
+# 
+# Note that the WHO guidelines for Ldn/Lden/Lday/Lnight are based on this same 1996 standard –– in their words, "an average sound pressure level over all days, evenings and nights in a year ".
 
 # The percent predicted to be highly annoyed in relation to exposure to aircraft traffic noise. Based on the WHO regression equation %HA = −50.9693 + 1.0168 × Lden + 0.0072 × Lden^2 derived from the systematic review (Guski et al., 2017).
 # TODO: should be only defined for Lden [40, 75]

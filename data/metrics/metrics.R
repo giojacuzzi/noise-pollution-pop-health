@@ -12,10 +12,16 @@ splToPressure = function(l) {
   p0*10^(l/20)
 }
 
-# Logarithmic energy average
-# NOTE: this is identical to Leq
+# NOTE: this is identical to Leq, i.e.
+# "equivalent continuous sound pressure level"
+# "time-averaged sound pressure level"
+# "energy average" (logarithmic)
 energyavg = function(L) {
   10*log10(sum(10^(L/10))/length(L))
+}
+
+energyavg_pressure = function(p) {
+  10*log10( (sum(p^2)/length(p)) / (p0^2) )
 }
 
 # Leq is the equivalent continuous sound pressure level, also known as the "time-averaged sound pressure level". This is the steady-state sound pressure level which, over a given period of time (t_start to t_end), has the same total acoustic energy as the actual fluctuating noise signal (L). In other words, the RMS sound level with the measurement duration used as the averaging time.
@@ -48,13 +54,14 @@ LxFromLevels = function(L, p = 50) {
     warning('Missing data. Unable to calculate Lx')
     return(NA)
   }
-  if (p == 0) {
-    return(max(L) - 0.1) # 0.1 dB adjustment to establish exceedance
+  if (p <= 0 | p > 100) {
+    warning('x given to Lx is invalid')
+    return(NA)
   } else if (p == 100) {
-    return(min(L) - 0.1)
+    return(min(L) - 0.1) # 0.1 dB adjustment to establish exceedance
   }
   Lsorted = L[order(L, decreasing=TRUE)] # TODO: does this account correctly for repeated values?
-  i = floor(length(L) * p/100.0)
+  i = max(floor(length(L) * p/100.0), 1)
   return(Lsorted[i] - 0.1)
 }
 
@@ -154,6 +161,36 @@ LdenFromLevels = function(Levels, Times) {
   
   return(list(
     'Lden'     = Lden,
+    'Lday'     = Lday,
+    'Levening' = Levening,
+    'Lnight'   = Lnight,
+    'Leqh'     = Leqh
+  ))
+}
+
+CnelFromLevels = function(Levels, Times) {
+  Leqh_night_am = LeqHourly(Levels, Times, '00:00:00', '06:59:59')
+  Leqh_day      = LeqHourly(Levels, Times, '07:00:00', '18:59:59')
+  Leqh_evening  = LeqHourly(Levels, Times, '19:00:00', '21:59:59')
+  Leqh_night_pm = LeqHourly(Levels, Times, '22:00:00', '23:59:59')
+  Leqh_night = c(Leqh_night_am, Leqh_night_pm)
+  Leqh = c(Leqh_night_am, Leqh_day, Leqh_evening, Leqh_night_pm)
+  
+  if (anyNA(Leqh)) {
+    warning('Hourly Leq incomplete. Unable to calculate Ldn.')
+  }
+  
+  Tday     = length(Leqh_day)
+  Tevening = length(Leqh_evening)
+  Tnight   = length(Leqh_night)
+  Lday     = LeqTotal(Leqh_day)
+  Levening = LeqTotal(Leqh_evening)
+  Lnight   = LeqTotal(Leqh_night)
+  # NOTE: +4.77dB adjustment for evening, +10dB for night
+  Cnel = 10*log10((Tday*10^(Lday/10) + Tevening*10^((Levening+4.77)/10) + Tnight*10^((Lnight+10)/10))/24)
+  
+  return(list(
+    'Cnel'     = Cnel,
     'Lday'     = Lday,
     'Levening' = Levening,
     'Lnight'   = Lnight,
