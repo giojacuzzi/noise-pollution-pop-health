@@ -5,7 +5,11 @@ library(ggplot2)
 library(viridis)
 theme_set(theme_minimal())
 
-database_path = '~/../../Volumes/SAFS Backup/PHI Project Data'
+# Path to directory containing the PHI database
+database_path = {
+  # '~/../../Volumes/SAFS Backup/PHI'
+  '~/../../Volumes/SAFS Work/PHI'
+}
 
 format_date = '%Y-%m-%d'
 format_time = '%H:%M:%S'
