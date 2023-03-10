@@ -4,10 +4,11 @@ library(mapview)
 
 # Monitoring site map  ---------------------------------------------------------
 
-# Only use Whidbey Island sites with present data
+# Only use Whidbey Island sites with present SPL data
 data_sites = get_data_sites()
 data_sites = na.omit(data_sites)
 data_sites = data_sites[data_sites$Region=='Whidbey Island',]
+data_sites = data_sites[data_sites$Data=='SPL' | data_sites$Data=='SPL,AUDIO',]
 
 mapviewOptions(legend.pos='bottomright')
 mapview(

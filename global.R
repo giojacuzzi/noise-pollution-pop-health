@@ -5,6 +5,8 @@ library(ggplot2)
 library(viridis)
 theme_set(theme_minimal())
 
+database_path = '~/../../Volumes/SAFS Backup/PHI Project Data'
+
 format_date = '%Y-%m-%d'
 format_time = '%H:%M:%S'
 time_24hr = 24 * 60 * 60 # total number of seconds in a day

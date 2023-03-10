@@ -2,46 +2,32 @@
 source('global.R')
 library(readxl)
 
-get_name_from_file_jgl = function(file) {
-  name = basename(file)
-  name = gsub('_','', name)
-  name = gsub('\\s+',' ', name)
-  name = substring(name, 1, gregexpr(".xlsx", name)[[1]][1] - 1)
-  name = substring(name, 1, tail(unlist(gregexpr(' ', name)), n=1) - 1)
-  message(paste('got name', name))
-  return(name)
+get_id_from_file_jgl = function(file) {
+  return(substring(basename(file), 1, 4))
 }
 
 get_date_from_file_jgl = function(file) {
-  # TODO: Support dates other than 2019
-  date = basename(file)
-  date = substring(date, 1, gregexpr(".xlsx", date)[[1]][1] - 1)
-  date = substring(date, tail(unlist(gregexpr(' ', date)), n=1) + 1, nchar(date))
-  breaks = unlist(gregexpr('-', date))
-  month = substring(date, 1, breaks[1]-1)
-  day = substring(date, breaks[1]+1, breaks[2]-1)
-  date = format(as.Date(paste0('2019-',month,'-',day)), format=format_date)
-  message(paste('got date', date))
+  date = substring(basename(file), 6)
+  date = gsub('.xlsx', '', date)
   return(date)
 }
 
 # Scrape site names, id, and measurement dates from files and save to csv
 map_files_jgl_csv = function() {
-  # All 2019 xlsx files from the JGL database
+  # xlsx files from the JGL database
   # TODO: include other years (with different file formatting)
   message('Mapping files to jgl site dates...')
-  files = list.files(path='~/Desktop/PHI Project Data/JGL/Data', pattern="*.xlsx", full.names=TRUE, recursive=FALSE)
+  files = list.files(path=paste0(database_path,'/JGL/Data'), pattern="*.xlsx", full.names=TRUE, recursive=FALSE)
   data_txt = data.frame()
   for (file in files) {
     message(paste0('Mapping file ',file,'...'))
     date = get_date_from_file_jgl(file)
-    name = get_name_from_file_jgl(file)
-    id = get_ID_for_site_name(name)
+    id = get_id_from_file_jgl(file)
+    name = get_site_name_for_ID(id)
     if (length(id) == 0) {
       warning(paste('Could not find site id for ', name, ' - skipping...'))
       next
     }
-    message(paste('got id', id))
     r = data.frame(Date=date, Name=name, ID=id, File=file)
     data_txt = rbind(data_txt, r)
   }
@@ -100,8 +86,8 @@ get_file_map_jgl = function() {
 # )
 
 # DEBUG FILE LOADING -------------------------------
-file = get_file_map_jgl()[1,'File']
-xlsx = readxl::read_excel(file)
+# file = get_file_map_jgl()[1,'File']
+# xlsx = readxl::read_excel(file)
 
 # Takes an absolute path to a 2019 JGL .xlsx file, returns a list containing a data frame
 # load_file_jgl = function(path) {
