@@ -86,8 +86,8 @@ get_file_map_jgl = function() {
 # )
 
 # DEBUG FILE LOADING -------------------------------
-# file = get_file_map_jgl()[1,'File']
-# xlsx = readxl::read_excel(file)
+file = get_file_map_jgl()[1,'File']
+xlsx = readxl::read_excel(file)
 
 # Takes an absolute path to a 2019 JGL .xlsx file, returns a list containing a data frame
 # load_file_jgl = function(path) {
