@@ -20,6 +20,7 @@ days  = c('Mon','Tue','Wed','Thu','Fri','Sat','Sun')
 get_file_map = function() {
   if (!exists('file_map')) {
     file_map = rbind(read.csv('data/load/output/file_map_navy.csv'),
+                     read.csv('data/load/output/file_map_jgl.csv'),
                      read.csv('data/load/output/file_map_sda.csv'),
                      read.csv('data/load/output/file_map_nps.csv'))
   }

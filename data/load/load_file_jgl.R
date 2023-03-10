@@ -1,5 +1,5 @@
 ### Load data from JGL spl files
-source('global.R')
+debugSource('global.R')
 
 get_id_from_file_jgl = function(file) {
   return(substring(basename(file), 1, 4))
@@ -72,9 +72,10 @@ load_file_jgl = function(file) {
   return (results)
 }
 
-for (file in get_file_map_jgl()$File) {
-  message(paste('loading', file))
-  result = load_file_jgl(file)
-  print(head(result[[1]]))
-  print(tail(result[[1]]))
-}
+# TEST:
+# for (file in get_file_map_jgl()$File) {
+#   message(paste('loading', file))
+#   result = load_file_jgl(file)
+#   print(head(result[[1]]))
+#   print(tail(result[[1]]))
+# }

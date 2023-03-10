@@ -1,5 +1,6 @@
 source('global.R')
 source('data/load/load_file_navy.R')
+source('data/load/load_file_jgl.R')
 source('data/load/load_file_sda.R')
 source('data/load/load_file_nps.R')
 
@@ -25,6 +26,8 @@ load_site_date = function(id, date) {
     # Load the file data
     if (org == 'NAVY') {
       data_file = load_file_navy(file)
+    } else if (org == 'JGL') {
+      data_file = load_file_jgl(file)
     } else if (org == 'SDA') {
       data_file = load_file_sda(file)
     } else if (org == 'NPS') {

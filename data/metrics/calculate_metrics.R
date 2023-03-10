@@ -1,10 +1,11 @@
 source('data/metrics/metrics.R')
-source('data/load/load_site_date.R')
+debugSource('data/load/load_site_date.R')
 
 get_levels_for_org = function(data, org) {
   org = toupper(org)
   return(switch(org,
                 'NAVY'=data$LAeq,
+                'JGL'=data$LAeq,
                 'SDA'=data$Value,
                 'NPS'=data$dbA,
                 NULL))
@@ -27,6 +28,9 @@ calculate_metrics_csv = function(orgarg = '') {
     num_processed = num_processed + 1
     name = get_site_name_for_ID(id)
     message(paste0('Processing site ', id, ' \"', name , '\" - ', num_processed, ' of ', length(unique(file_map$ID))))
+    message('herewego...')
+    
+    # readline('Press [enter] to continue...')
     
     for (date in unique(file_map[file_map$ID==id, 'Date'])) { # for every date at that site
       
@@ -75,16 +79,20 @@ calculate_metrics_csv = function(orgarg = '') {
       # NOTE: Primarily A-weighted and time-equalized (`LAeq`) values are used here, but different frequency weightings (C, Z) and time-weightings (slow, fast, impulse) could be used as well
       Leq    = round(LeqTotal(site_date_levels), digits=2) # Leq total (24hr)
       SEL    = ifelse(length(site_date_levels) > 0, round(SelFromLevels(site_date_levels), digits=2), NA)
-      Lmax   = ifelse(length(site_date_levels) > 0, max(site_date_levels), NA)
-      if (org == 'NAVY') {
-        LCpeak = ifelse(length(site_date_levels) > 0, max(site_date_data$LCpeak), NA)
+      if ('Lmax' %in% colnames(site_date_data)) {
+        Lmax = ifelse(length(site_date_levels) > 0, max(na.omit(site_date_data$LAFmax)), NA)
+      } else {
+        Lmax = ifelse(length(site_date_levels) > 0, max(site_date_levels), NA)
+      }
+      if ('LCpeak' %in% colnames(site_date_data)) {
+        LCpeak = ifelse(length(site_date_levels) > 0, max(na.omit(site_date_data$LCpeak)), NA)
       } else {
         LCpeak = NA
       }
-      L10    = LxFromLevels(site_date_levels, 10)
-      L25    = LxFromLevels(site_date_levels, 25)
-      L50    = LxFromLevels(site_date_levels, 50)
-      L90    = LxFromLevels(site_date_levels, 90)
+      L10    = round(LxFromLevels(site_date_levels, 10),2)
+      L25    = round(LxFromLevels(site_date_levels, 25),2)
+      L50    = round(LxFromLevels(site_date_levels, 50),2)
+      L90    = round(LxFromLevels(site_date_levels, 90),2)
       
       site_date_metrics = data.frame(
         # Metadata
@@ -119,6 +127,8 @@ calculate_metrics_csv = function(orgarg = '') {
   } else {
     file_name = paste0(file_name, 'metrics_', orgarg, '.csv')
   }
-  write.csv(metrics, file=file_name, row.names=FALSE)
+  write.csv(metrics, file=file_name, row.names=F)
   return(metrics)
 }
+
+calculate_metrics_csv(orgarg='JGL')

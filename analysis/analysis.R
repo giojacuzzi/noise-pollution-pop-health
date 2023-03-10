@@ -1,6 +1,7 @@
 source('global.R')
 source('data/metrics/metrics.R')
 library(mapview)
+library(leafem)
 
 # Monitoring site map  ---------------------------------------------------------
 
@@ -12,9 +13,7 @@ data_sites = data_sites[data_sites$Data=='SPL' | data_sites$Data=='SPL,AUDIO',]
 
 mapviewOptions(legend.pos='bottomright')
 mapview(
-  data_sites,
-  xcol='Longitude', ycol='Latitude', zcol='Org',
-  crs=4269, grid=FALSE, legend=TRUE,
-  col.regions=c('darkgoldenrod2', 'navy', 'green3', 'darkturquoise'),
-  layer.name = 'Organization'
-)
+  data_sites, xcol='Longitude', ycol='Latitude', zcol='Org',
+  layer.name = 'Organization', crs=4269, grid=F, legend=T,
+  col.regions=c('darkgoldenrod2', 'navy', 'green3', 'darkturquoise')
+) %>% addStaticLabels(label=data_sites$ID, direction='top')
