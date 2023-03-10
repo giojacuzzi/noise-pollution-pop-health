@@ -1,5 +1,4 @@
 ### Global variables, functions, settings
-
 library(stringr)
 library(ggplot2)
 library(viridis)
@@ -40,6 +39,7 @@ get_data_sites = function() {
 get_data_metrics = function() {
   if (!exists('data_metrics')) {
     data_metrics = rbind(read.csv('data/metrics/output/metrics_NAVY.csv'),
+                         read.csv('data/metrics/output/metrics_JGL.csv'),
                          read.csv('data/metrics/output/metrics_NPS.csv'),
                          read.csv('data/metrics/output/metrics_SDA.csv'))
     # NOTE: Some SDA measurements were recorded with overloaded gains (i.e. distortion) that result in erroneously high values during flybys. Here, we remove site dates with measurements exceeding 110 dB.

@@ -1,5 +1,5 @@
 source('data/metrics/metrics.R')
-debugSource('data/load/load_site_date.R')
+source('data/load/load_site_date.R')
 
 get_levels_for_org = function(data, org) {
   org = toupper(org)
@@ -28,7 +28,6 @@ calculate_metrics_csv = function(orgarg = '') {
     num_processed = num_processed + 1
     name = get_site_name_for_ID(id)
     message(paste0('Processing site ', id, ' \"', name , '\" - ', num_processed, ' of ', length(unique(file_map$ID))))
-    message('herewego...')
     
     # readline('Press [enter] to continue...')
     

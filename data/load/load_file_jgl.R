@@ -1,5 +1,5 @@
 ### Load data from JGL spl files
-debugSource('global.R')
+source('global.R')
 
 get_id_from_file_jgl = function(file) {
   return(substring(basename(file), 1, 4))
