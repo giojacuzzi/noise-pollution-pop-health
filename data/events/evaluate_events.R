@@ -25,6 +25,81 @@ source('global.R')
 # Event identification (informed by ops info) >
 #  > Reports of aircraft sound events, missing, or unidentified
 
+# localMaxima <- function(x) {
+#   # Use -Inf instead if x is numeric (non-integer)
+#   y <- diff(c(-.Machine$integer.max, x)) > 0L
+#   rle(y)$lengths
+#   y <- cumsum(rle(y)$lengths)
+#   y <- y[seq.int(1L, length(y), 2L)]
+#   if (x[[1]] == x[[2]]) {
+#     y <- y[-1]
+#   }
+#   y
+# }
+
+library(dplyr)
+locate_xtrem <- function (x, last = FALSE)
+{
+  # use rle to deal with duplicates
+  x_rle <- rle(x)
+  
+  # force the first value to be identified as an extrema
+  first_value <- x_rle$values[1] - x_rle$values[2]
+  
+  # differentiate the series, keep only the sign, and use 'rle' function to
+  # locate increase or decrease concerning multiple successive values.
+  # The result values is a series of (only) -1 and 1.
+  #
+  # ! NOTE: with this method, last value will be considered as an extrema
+  diff_sign_rle <- c(first_value, diff(x_rle$values)) %>% sign() %>% rle()
+  
+  # this vector will be used to get the initial positions
+  diff_idx <- cumsum(diff_sign_rle$lengths)
+  
+  # find min and max
+  diff_min <- diff_idx[diff_sign_rle$values < 0]
+  diff_max <- diff_idx[diff_sign_rle$values > 0]
+  
+  # get the min and max indexes in the original series
+  x_idx <- cumsum(x_rle$lengths)
+  if (last) {
+    min <- x_idx[diff_min]
+    max <- x_idx[diff_max]
+  } else {
+    min <- x_idx[diff_min] - x_rle$lengths[diff_min] + 1
+    max <- x_idx[diff_max] - x_rle$lengths[diff_max] + 1
+  }
+  # just get number of occurences
+  min_nb <- x_rle$lengths[diff_min]
+  max_nb <- x_rle$lengths[diff_max]
+  
+  # format the result as a tibble
+  bind_rows(
+    tibble(Idx = min, Values = x[min], NB = min_nb, Status = "min"),
+    tibble(Idx = max, Values = x[max], NB = max_nb, Status = "max")) %>%
+    arrange(.data$Idx) %>%
+    mutate(Last = last) %>%
+    mutate_at(vars(.data$Idx, .data$NB), as.integer)
+}
+
+# x <- c(1.2,2.1,9.1,9.1,2.1,1.1,1.1,5.1,5.1,1.1)
+# localMaxima(x) # 3, 8
+# fdsa = locate_xtrem(x)
+# unname(unlist(fdsa[fdsa$Status=='max','Idx']))
+# x <- c(2.1,2.1,9.1,9.1,2.1,1.1,1.1,5.1,5.1,1.1)
+# localMaxima(x) # 3, 8
+# fdsa = locate_xtrem(x)
+# unname(unlist(fdsa[fdsa$Status=='max','Idx']))
+# x <- c(3.1,2.1,9.1,9.1,2.1,1.1,1.1,5.1,5.1,1.1)
+# localMaxima(x) # 1, 3, 8
+# fdsa = locate_xtrem(x)
+# unname(unlist(fdsa[fdsa$Status=='max','Idx']))
+# x <- c(1, 2, 2, 3, 2, 1) # 4
+# localMaxima(x)
+# fdsa = locate_xtrem(x)
+# unname(unlist(fdsa[fdsa$Status=='max','Idx']))
+
+
 # -----------------------------------------------------------------------------
 
 # Sound event detection (5.3.2) criteria:
@@ -94,7 +169,11 @@ for (hour in debug_hour) {
       message(paste('END EVENT', data_hour$Time[sec]))
       event_end = min(nrow(data_hour), sec)
       idx_end = min(nrow(data_hour), sec)
-      idx_local_maxima = which(ggpmisc:::find_peaks(data_hour$Lma[idx_start:idx_end])) + idx_start - 1
+      # idx_local_maxima = which(ggpmisc:::find_peaks(data_hour$Lma[idx_start:idx_end])) + idx_start - 1
+      idx_local_maxima = locate_xtrem(data_hour$Lma[idx_start:idx_end])
+      idx_local_maxima = unname(unlist(idx_local_maxima[idx_local_maxima$Status=='max','Idx']))
+      idx_local_maxima = idx_local_maxima + idx_start - 1
+      
       # DEBUG
       if (nrow(my_events) + 1 == 26) {
       if (length(idx_local_maxima) > 1) {
