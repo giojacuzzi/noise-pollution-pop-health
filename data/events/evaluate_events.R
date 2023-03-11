@@ -72,7 +72,7 @@ for (hour in debug_hour) {
 
   sec = 1
   while (sec<=nrow(data_hour)) {
-    message(paste('sec',sec))
+    # message(paste('sec',sec))
     while (is.na(data_hour$Lma[sec])) sec = sec + 1
     if (data_hour$Lma[sec] > threshold) {
       # Start event ---
@@ -95,16 +95,83 @@ for (hour in debug_hour) {
       event_end = min(nrow(data_hour), sec)
       idx_end = min(nrow(data_hour), sec)
       idx_local_maxima = which(ggpmisc:::find_peaks(data_hour$Lma[idx_start:idx_end])) + idx_start - 1
-      # Filter only 'prominent' maxima > L25 of the event itself, and only maximums of level segments crossing over L25
-      L25 = LxFromLevels(na.omit(data_hour[idx_start:idx_end,'Lma']), 25)
-      values_over = which(data_hour[idx_start:idx_end,'Lma']>=L25) + idx_start - 1
-      segments = cumsum(c(1, abs(values_over[-length(values_over)] - values_over[-1]) > 1))
-      segments = by(values_over, segments, identity)
-      peaks = c()
-      for (segment in segments) {
-        peak = segment[which(data_hour[segment,'Lma']==max(data_hour[segment, 'Lma']))][1]
-        peaks = append(peaks, peak)
+      # DEBUG
+      if (nrow(my_events) + 1 == 26) {
+      if (length(idx_local_maxima) > 1) {
+        # Plot the entire event with a +/- 10 sec buffer
+        buff_start = max(1, idx_start-10)
+        buff_end = min(nrow(data_hour), idx_end+10)
+        p_time = ggplot(data_hour[buff_start:buff_end,]) +
+          labs(title=paste('Raw maxima event', nrow(my_events) + 1)) +
+          geom_line(aes(x=Time, y=LAeq)) +
+          geom_line(aes(x=Time, y=Lma), color='magenta') +
+          # geom_line(aes(x=Time, y=LmaX), color='red') +
+          geom_vline(xintercept=data_hour[idx_start,'Time'], color='blue') +
+          geom_vline(xintercept=data_hour[idx_end,'Time'], color='blue') +
+          geom_hline(yintercept=threshold, color='gray') +
+          # geom_hline(yintercept=L25, color='green') +
+          geom_vline(xintercept=data_hour[idx_local_maxima, 'Time'], color='yellow', linetype='dashed')
+        plot(p_time)
+        # readline(paste('Raw maxima event plotted.', length(idx_local_maxima), 'local maxima found. Press [enter] to continue...'))
       }
+      } # DEBUG
+      
+      # DEBUG
+      if (nrow(my_events) + 1 == 26) {
+        message('herewego')
+      }
+      
+      # TODO: Find all local maxima that are at least 10 dB greater than their lowest neighboring minima:
+      # Lowest neighboring minima are the min values on the left and right between where the maxima is and it's next >= value on the left or right
+      if (length(idx_local_maxima) > 1) {
+        threshy = 10
+        trimmed_idx_local_maxima = c()
+        for (i in idx_local_maxima) { # for each local maxima
+          local_max_level = data_hour[i,'Lma']
+          
+          if (nrow(my_events) + 1 == 26) {
+            message(local_max_level)
+          }
+          # find the nearest local minima between it and its neighboring >= value
+          l = i - 1
+          # l_idx_min = i
+          while (l >= idx_start & data_hour[l,'Lma'] <= local_max_level & data_hour[l,'Lma'] > (local_max_level-threshy)) {
+            # if (data_hour[l,'Lma'] < data_hour[l_idx_min,'Lma']) l_idx_min = l
+            l = l - 1
+          }
+          r = i + 1
+          # r_idx_min = i
+          while (r <= idx_end & data_hour[r,'Lma'] <= local_max_level & data_hour[r,'Lma'] > (local_max_level-threshy)) {
+            # if (data_hour[r,'Lma'] < data_hour[r_idx_min,'Lma']) r_idx_min = r
+            r = r + 1
+          }
+          if (nrow(my_events) + 1 == 26) {
+            message(paste('l', l, 'i', i, 'r', r))
+          }
+          if ((local_max_level - data_hour[l,'Lma'] >= threshy) & (local_max_level - data_hour[r,'Lma'] >= threshy)) {
+            trimmed_idx_local_maxima = append(trimmed_idx_local_maxima, i)
+          }
+        }
+        if (length(trimmed_idx_local_maxima) == 0) {
+          idx_local_maxima = idx_local_maxima[which(data_hour[idx_local_maxima,'Lma']==max(data_hour[idx_local_maxima,'Lma']))][1]
+        } else {
+          idx_local_maxima = trimmed_idx_local_maxima
+        }
+      }
+      
+      
+      # SCRAP--------------------
+      # # Filter only 'prominent' maxima > L25 of the event itself, and only maximums of level segments crossing over L25
+      # L25 = LxFromLevels(na.omit(data_hour[idx_start:idx_end,'Lma']), 25)
+      # values_over = which(data_hour[idx_start:idx_end,'Lma']>=L25) + idx_start - 1
+      # segments = cumsum(c(1, abs(values_over[-length(values_over)] - values_over[-1]) > 1))
+      # segments = by(values_over, segments, identity)
+      # peaks = c()
+      # for (segment in segments) {
+      #   peak = segment[which(data_hour[segment,'Lma']==max(data_hour[segment, 'Lma']))][1]
+      #   peaks = append(peaks, peak)
+      # }
+      peaks = idx_local_maxima
 
       if (length(peaks) >  0) {
         idx_local_maxima = peaks
@@ -117,16 +184,18 @@ for (hour in debug_hour) {
       buff_start = max(1, idx_start-10)
       buff_end = min(nrow(data_hour), idx_end+10)
       p_time = ggplot(data_hour[buff_start:buff_end,]) +
-        labs(title=paste('Event', nrow(my_events) + 1)) +
+        labs(title=paste('Peak threshold event', nrow(my_events) + 1)) +
         geom_line(aes(x=Time, y=LAeq)) +
         geom_line(aes(x=Time, y=Lma), color='magenta') +
         # geom_line(aes(x=Time, y=LmaX), color='red') +
         geom_vline(xintercept=data_hour[idx_start,'Time'], color='blue') +
         geom_vline(xintercept=data_hour[idx_end,'Time'], color='blue') +
         geom_hline(yintercept=threshold, color='gray') +
-        geom_hline(yintercept=L25, color='green') +
+        # geom_hline(yintercept=L25, color='green') +
         geom_vline(xintercept=data_hour[idx_local_maxima, 'Time'], color='orange', linetype='dotted')
       plot(p_time)
+      
+      # readline('Peak threshold event plotted. Press [enter] to continue...')
       
       # -------------------------- Multi-event
       if (length(idx_local_maxima)>1) {
@@ -135,7 +204,7 @@ for (hour in debug_hour) {
       
         # Split multiple local maxima into separate events
         for (i in 1:length(idx_local_maxima)) {
-          message(paste('maxima', i))
+          # message(paste('maxima', i))
           if (length(idx_local_maxima)>1) {
             idx_lmax = idx_local_maxima[i]
             if (i < length(idx_local_maxima)) {
@@ -167,22 +236,26 @@ for (hour in debug_hour) {
           )
           my_events = rbind(my_events, event)
           message(paste('nrow event/my_events ', nrow(event), '/', nrow(my_events)))
-
+          # if (length(idx_local_maxima)>1) {
+          if (nrow(my_events) + 1 >= 26) { # DEBUG
           # Plot sub-events with a +/- 10 sec buffer
             buff_start = max(1, idx_start-10)
             buff_end = min(nrow(data_hour), idx_end+10)
             p_time = ggplot(data_hour[buff_start:buff_end,]) +
-              labs(title=paste('Split event', nrow(my_events))) +
+              labs(title=paste('Final event', nrow(my_events))) +
               geom_line(aes(x=Time, y=LAeq)) +
               geom_line(aes(x=Time, y=Lma), color='magenta') +
               # geom_line(aes(x=Time, y=LmaX), color='red') +
               geom_vline(xintercept=data_hour[idx_start,'Time'], color='blue') +
               geom_vline(xintercept=data_hour[idx_start+idx_lmax-1,'Time'], color='red', linetype='dotted') +
               geom_vline(xintercept=data_hour[idx_end,'Time'], color='blue') +
-              geom_hline(yintercept=threshold, color='gray') +
-              geom_hline(yintercept=LxFromLevels(data_hour[buff_start:buff_end,'LAeq'], 25), color='green') +
-              geom_vline(xintercept=data_hour[idx_local_maxima, 'Time'], color='orange', linetype='dotted')
+              geom_hline(yintercept=threshold, color='gray')
+              # geom_hline(yintercept=LxFromLevels(data_hour[buff_start:buff_end,'LAeq'], 25), color='green') +
+              # geom_vline(xintercept=data_hour[idx_local_maxima, 'Time'], color='orange', linetype='dotted')
             plot(p_time)
+            # readline('Final event plotted. Press [enter] to continue...')
+          # }
+          } # DEBUG
 
           idx_start = idx_end # Split point becomes start of next event
           if (idx_end >= event_end | idx_start >= event_end) {
