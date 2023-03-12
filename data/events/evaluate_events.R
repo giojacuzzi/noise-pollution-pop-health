@@ -1,9 +1,12 @@
-source('global.R')
-
+# Identify individual sound events
+#
 # NOTE: According to Stusnick,
 # 0 dB adjustment for onset_rate <= 15 db/sec
 # 11*log10(onset_rate) - 12.9 adjustment for 15 db/sec <= onset_rate <= 150 db/sec
 # 11 dB adjustment for onset_rate >= 150 db/sec
+
+# Recommended max onset rate of 60 dB / sec
+# https://drive.google.com/drive/u/0/search?q=Low-altitude%20overflights%20of%20fighters%20the%20risk%20of%20hearing%20loss
 
 # https://drive.google.com/drive/u/0/folders/1wWnqevA6S3ANlzIVyh5lu_bcuR0cOybx
 # A sound eventis characterized bythe sound exposure level LEA, and the maximum sound pressure level LpASmax or LpAeq1smax
@@ -25,7 +28,28 @@ source('global.R')
 # Event identification (informed by ops info) >
 #  > Reports of aircraft sound events, missing, or unidentified
 
+# Sound event detection (5.3.2) criteria:
+# a) The sound is not steady state, but also not imulsive (i.e. its duration lies within specified limits)
+# b) The sound level exceeds a threshold level by at least a specified amount
+# c) When an event terminates, the sound level does not rise again above a specified level within a specified time
+
+
+# Navy used a detection threshold of L90 + 10 for the hour
+# ISO 3.13.4 states that background sound may be estimated by the 95% exceedance level of total sound (LpAS95) 
+
+# a) Use moving average (exponential?)
+# b) Use L95 exceedance threshold
+# c) Multiple peaks splitting
+
+source('global.R')
+source('data/metrics/metrics.R')
+source('data/load/load_site_date.R')
 library(dplyr)
+library(patchwork)
+
+debug_plot = F # switch to plot events
+
+# Finds indices of maxima and minima
 find_extrema = function (x, last=F) {
   x_rle <- rle(x) # handle duplicates
   # force first value to be recognized as an extreme
@@ -68,56 +92,41 @@ find_extrema = function (x, last=F) {
 
 # -----------------------------------------------------------------------------
 
-# Sound event detection (5.3.2) criteria:
-# a) The sound is not steady state, but also not imulsive (i.e. its duration lies within specified limits)
-# b) The sound level exceeds a threshold level by at least a specified amount
-# c) When an event terminates, the sound level does not rise again above a specified level within a specified time
+# data_events = get_data_events()
+# data_ops = get_data_ops()
+# navy_events = data_events[data_events$SiteID==id & data_events$Date==date,]
+# navy_ops = data_ops[data_ops$Date==date,]
 
-
-# Navy used a detection threshold of L90 + 10 for the hour
-# ISO 3.13.4 states that background sound may be estimated by the 95% exceedance level of total sound (LpAS95) 
-source('data/metrics/metrics.R')
-library(patchwork)
-
-# a) Use moving average (exponential?)
-# b) Use L95 exceedance threshold
-# c) Multiple peaks splitting
-
-data_events = get_data_events()
-data_ops = get_data_ops()
-
-source('data/load/load_site_date.R')
 id = 'KysH' #'24A_B'
-date = '2019-06-18' #'2021-08-10'
+date = '2019-06-21' #'2021-08-10'
 data = load_site_date(id, date)
 
 data$Time = as.POSIXct(data$Time)
 data$Hour = format(data$Time, format = '%H')
 
-navy_events = data_events[data_events$SiteID==id & data_events$Date==date,]
-navy_ops = data_ops[data_ops$Date==date,]
-
-library(zoo)
-
 events = data.frame()
-
-# NOTE: Navy threshold is L90 + 10 of each hour +/- 30 min 
-# threshold = LxFromLevels(data$LAeq, 90) + 10
-
-# NOTE: ISO standard 20906:2009 suggests background residual sound may be estimated by L95, and aircraft maxima should be at least 15 dB above the residual sound
-# As some data are not entire-day recordings and thus lack an actual reference background, take the minimum of this and X, a baseline 35 dB + 15 ambient value
-threshold_buffer = 15
-threshold_min_ambience = 35 + threshold_buffer
-threshold = min(LxFromLevels(na.omit(data$LAeq), 95) + threshold_buffer, threshold_min_ambience)[1]
 
 # Replace any missing LAeq measurements with 0.0
 data[is.na(data$LAeq),'LAeq'] = 0.0
 
 # 10-second moving average
-data$Lma = rollmean(data$LAeq, 10, align='center', fill=threshold-threshold_buffer)
+data$Lma = rollmean(data$LAeq, 10, align='center', fill=0.0)
 
 sec = 1
 while (sec<=nrow(data)) {
+  
+  # NOTE: Navy threshold is L90 + 10 of each hour +/- 30 min 
+  # threshold = LxFromLevels(data$LAeq, 90) + 10
+  # NOTE: ISO standard 20906:2009 suggests background residual sound may be estimated by L95, and aircraft maxima should be at least 15 dB above the residual sound
+  # As some data are not entire-day recordings and thus lack an actual reference background, take the minimum of this and X, a baseline 35 dB + 15 ambient value
+  
+  # Set threshold as the L95+15 calculated over a specified time period
+  threshold_time = 1800 # +/- 30 min
+  threshold_buffer = 15
+  threshold_min_ambience = 35 + threshold_buffer
+  threshold = max(LxFromLevels(na.omit(data[max(1, sec-threshold_time):min(sec+threshold_time-1, nrow(data)), 'LAeq']), 95) + threshold_buffer, threshold_min_ambience)[1]
+  # message(threshold)
+  
   if (data$Lma[sec] > threshold) {
     message(paste('Event start found:', data$Time[sec]))
     event_start = sec
@@ -128,6 +137,9 @@ while (sec<=nrow(data)) {
       while (sec<=nrow(data) & data$Lma[sec] > threshold) {
         under_count = 0
         sec = sec + 1
+        
+        # update threshold
+        threshold = max(LxFromLevels(na.omit(data[max(1, sec-threshold_time):min(sec+threshold_time-1, nrow(data)), 'LAeq']), 95) + threshold_buffer, threshold_min_ambience)[1]
       }
       # below threshold again
       under_count = under_count + 1
@@ -198,21 +210,22 @@ while (sec<=nrow(data)) {
       valleys = append(valleys, which(data$Lma[curr_peak_idx:next_peak_idx]==min(data$Lma[curr_peak_idx:next_peak_idx]))[1] + curr_peak_idx - 1)
     }
     
-    # Plot the entire event with a +/- 45 sec buffer
-    buff_start = max(1, idx_start-45)
-    buff_end = min(nrow(data), idx_end+45)
-    p_time = ggplot(data[buff_start:buff_end,]) +
-      labs(title=paste('Peak threshold event', nrow(events) + 1)) +
-      geom_line(aes(x=Time, y=LAeq)) +
-      geom_line(aes(x=Time, y=Lma), color='magenta') +
-      geom_vline(xintercept=data[idx_start,'Time'], color='blue') +
-      geom_vline(xintercept=data[idx_end,'Time'], color='blue') +
-      geom_hline(yintercept=threshold, color='gray') +
-      geom_vline(xintercept=data[idx_peaks, 'Time'], color='orange', linetype='dotted') +
-      geom_vline(xintercept=data[valleys, 'Time'], color='purple', linetype='dotted')
-    plot(p_time)
-    
-    # readline('Peak threshold event plotted. Press [enter] to continue...')
+    if (debug_plot) {
+      # Plot the entire event with a +/- 45 sec buffer
+      buff_start = max(1, idx_start-45)
+      buff_end = min(nrow(data), idx_end+45)
+      p_time = ggplot(data[buff_start:buff_end,]) +
+        labs(title=paste('Peak threshold event', nrow(events) + 1)) +
+        geom_line(aes(x=Time, y=LAeq)) +
+        geom_line(aes(x=Time, y=Lma), color='magenta') +
+        geom_vline(xintercept=data[idx_start,'Time'], color='blue') +
+        geom_vline(xintercept=data[idx_end,'Time'], color='blue') +
+        geom_hline(yintercept=threshold, color='gray') +
+        geom_vline(xintercept=data[idx_peaks, 'Time'], color='orange', linetype='dotted') +
+        geom_vline(xintercept=data[valleys, 'Time'], color='purple', linetype='dotted')
+      plot(p_time)
+      readline('Peak threshold event plotted. Press [enter] to continue...')
+    }
     
     # -------------------------- Multi-event
     if (length(idx_peaks)>1) {
@@ -243,25 +256,28 @@ while (sec<=nrow(data)) {
         LAeq_Lmax=LAeq_Lmax,
         LAFmax=max(data$LAFmax[idx_start:idx_end]),
         LCpeak=max(data$LCpeak[idx_start:idx_end]),
-        Onset=onset
+        Onset=onset,
+        Threshold=threshold
       )
       events = rbind(events, event)
-      # message(paste('nrow event/events ', nrow(event), '/', nrow(events)))
+
+      if (debug_plot) {
+        # Plot sub-events with a +/- 45 sec buffer
+        buff_start = max(1, idx_start-45)
+        buff_end = min(nrow(data), idx_end+45)
+        p_time = ggplot(data[buff_start:buff_end,]) +
+          labs(title=paste('Final event', nrow(events))) +
+          geom_line(aes(x=Time, y=LAeq)) +
+          geom_line(aes(x=Time, y=Lma), color='magenta') +
+          geom_vline(xintercept=data[idx_start,'Time'], color='blue') +
+          geom_vline(xintercept=data[idx_start+idx_lmax-1,'Time'], color='red', linetype='dotted') +
+          geom_vline(xintercept=data[idx_end,'Time'], color='blue') +
+          geom_hline(yintercept=threshold, color='gray')
+        plot(p_time)
+        readline('Final event plotted. Press [enter] to continue...')
+      }
       
-      # Plot sub-events with a +/- 45 sec buffer
-      buff_start = max(1, idx_start-45)
-      buff_end = min(nrow(data), idx_end+45)
-      p_time = ggplot(data[buff_start:buff_end,]) +
-        labs(title=paste('Final event', nrow(events))) +
-        geom_line(aes(x=Time, y=LAeq)) +
-        geom_line(aes(x=Time, y=Lma), color='magenta') +
-        geom_vline(xintercept=data[idx_start,'Time'], color='blue') +
-        geom_vline(xintercept=data[idx_start+idx_lmax-1,'Time'], color='red', linetype='dotted') +
-        geom_vline(xintercept=data[idx_end,'Time'], color='blue') +
-        geom_hline(yintercept=threshold, color='gray')
-      plot(p_time)
-      
-      idx_start = idx_end # Split point becomes start of next event
+      idx_start = idx_end # split point becomes start of next event
     }
     if (length(idx_peaks)>1) {
       message('  ...finished splitting event')
@@ -270,81 +286,17 @@ while (sec<=nrow(data)) {
   sec = sec + 1
 }
 
-
-# Plot hour in 15 min chunks ------------------------
-
-# 
-# for (hour in debug_hour) { # TODO: hours
-#   data = data[data$Hour==hour,]
-# 
-#   L50 = LxFromLevels(data$LAeq, 50)
-#   L90 = LxFromLevels(data$LAeq, 90)
-#   message(paste('Hour', hour, 'L90', L90))
-#   # Navy threshold is L90 + 10 of each hour +/- 30 min
-#   threshold_navy = L90 + 10
-# 
-#   events_hour = events[events$Hour==hour,]
-#   ops_hour = ops[ops$Hour==hour,]
-# 
-#   for (q in 1:4) {
-#     start = (q-1)*(nrow(data) / 4) + 1
-#     end = start + (nrow(data) / 4) - 1
-# 
-#     data_q = data[start:end,]
-#     events_q = events_hour[events_hour$StartTime %in% data[start:end, 'Time'],]
-#     ops_q = ops_hour[ops_hour$Time %in% data[start:end, 'Time'],]
-# 
-#     # ma = na.omit(data.frame(Time=data_q$Time, MA=movavg(data_q$LAeq)))
-#     ma = na.omit(data.frame(
-#       Time=data_q$Time,
-#       MA=rollmean(data_q$LAeq, 10, align='center', fill=NA)
-#     ))
-# 
-#     # Leq time series
-#     p_leq = ggplot(data_q) +
-#       geom_line(aes(x=Time, y=LAeq)) +
-#       # Navy automated event starts
-#       geom_vline(xintercept=events_q$StartTime, color='red', linetype='dotted') +
-#       # Navy flight operation
-#       geom_vline(xintercept=ops_q$Time, color='blue', linetype='dashed') +
-#       geom_hline(yintercept=threshold_navy, color='gray') +
-#       # geom_hline(yintercept=threshold_custom, color='green') +
-#       geom_line(ma, mapping=aes(x=Time, y=MA), color='magenta')
-# 
-#     # Spectral heatmap
-#     spectrum = data_q[,c(1, 31:61)] # NOTE: 6.3 Hz starts at index 26
-#     names(spectrum) = gsub('1/3 LZeq ', '', names(spectrum))
-# 
-#     spectrum_total = data.frame()
-#     for (s in 1:nrow(spectrum)) {
-#       sec = as.POSIXct(spectrum$Time[s])
-#       band = rownames(t(spectrum[s,c(-1)]))
-#       lzeq = unname(spectrum[s,c(-1)])
-#       spectrum_sec = data.frame(
-#         sec,
-#         band,
-#         t(lzeq)
-#       )
-#       rownames(spectrum_sec) = c()
-#       colnames(spectrum_sec) = c('Time', 'Band', 'LZeq')
-#       spectrum_total = rbind(spectrum_total, spectrum_sec)
-#     }
-#     spectrum_total$Band = as.character(as.numeric(spectrum_total$Band))
-#     spectrum_total$Band = factor(spectrum_total$Band)
-#     sorted_levels = as.character(sort(as.numeric(levels(spectrum_total$Band))))
-#     spectrum_total$Band = factor(spectrum_total$Band, levels=sorted_levels)
-# 
-#     p_spectral = ggplot(spectrum_total, aes(x=Time, y=Band, fill=LZeq)) +
-#       geom_tile() +
-#       scale_fill_viridis(option='A') +
-#       labs(x='Time', y='Band')
-# 
-#     print(p_spectral / p_leq)
-#   }
-# }
-
-# Distribution of events
-
-# Recommended max onset rate of 60 dB / sec
-# https://drive.google.com/drive/u/0/search?q=Low-altitude%20overflights%20of%20fighters%20the%20risk%20of%20hearing%20loss
-
+plot_event = function(event_num) {
+  idx_start = which(data$Time==events[event_num,]$TimeStart)
+  idx_end   = which(data$Time==events[event_num,]$TimeEnd)
+  buff_start = max(1, idx_start-45)
+  buff_end   = min(nrow(data), idx_end+45)
+  p_time = ggplot(data[buff_start:buff_end,]) +
+    labs(title=paste('Event', event_num)) +
+    geom_line(aes(x=Time, y=LAeq)) +
+    geom_vline(xintercept=data[idx_start,'Time'], color='blue') +
+    # geom_vline(xintercept=data[idx_start+idx_lmax-1,'Time'], color='red', linetype='dotted') +
+    geom_vline(xintercept=data[idx_end,'Time'], color='blue') +
+    geom_hline(yintercept=events[event_num,'Threshold'], color='gray')
+  plot(p_time)
+}
