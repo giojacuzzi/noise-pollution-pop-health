@@ -121,9 +121,11 @@ data_events = get_data_events()
 data_ops = get_data_ops()
 
 source('data/load/load_site_date.R')
-id = '24A_B'
-date = '2021-08-10'
+id = 'KysH' #'24A_B'
+date = '2019-06-19' #'2021-08-10'
 data = load_site_date(id, date)
+
+data = data[!is.na(data$LAeq),]
 data$Time = as.POSIXct(data$Time)
 data$Hour = format(data$Time, format = '%H')
 
@@ -131,24 +133,25 @@ events = data_events[data_events$SiteID==id & data_events$Date==date,]
 ops = data_ops[data_ops$Date==date,]
 
 library(zoo)
-debug_hour = '20'
+# debug_hour = '20'
 
 my_events = data.frame()
 
+# NOTE: Navy threshold is L90 + 10 of each hour +/- 30 min 
+data_hour = data
+L90 = LxFromLevels(data_hour$LAeq, 90)
+# threshold = threshold_custom # Use custom threshold instead
+threshold = L90 + 10
+
 # 10-second moving average
-data$Lma = rollmean(data$LAeq, 10, align='center', fill=NA)
+data_hour$Lma = rollmean(data$LAeq, 10, align='center', fill=threshold-10)
 # data$LmaX = rollmean(data$Lma, 30, align='center', fill=NA) # Further smoothing
-for (hour in debug_hour) {
-  # NOTE: Navy threshold is L90 + 10 of each hour +/- 30 min 
-  data_hour = data[data$Hour==hour,]
-  L90 = LxFromLevels(data_hour$LAeq, 90)
-  # threshold = threshold_custom # Use custom threshold instead
-  threshold = L90 + 10
+# for (hour in debug_hour) {
 
   sec = 1
   while (sec<=nrow(data_hour)) {
-    # message(paste('sec',sec))
-    while (is.na(data_hour$Lma[sec])) sec = sec + 1
+    message(paste('sec',sec))
+    # while (is.na(data_hour$Lma[sec])) sec = sec + 1
     if (data_hour$Lma[sec] > threshold) {
       # Start event ---
       message(paste('START EVENT', data_hour$Time[sec]))
@@ -437,6 +440,10 @@ for (hour in debug_hour) {
         idx_lmax = which(data_hour[idx_start:idx_end,'LAeq']==lmax)[1]
         lstart = data_hour$LAeq[idx_start]
         onset = (lmax - lstart)/(idx_lmax) # dBA per sec
+        if (lstart == 0.0) {
+          # There was missing data, onset is not able to be calculated
+          onset = NA
+        }
         onset = round(onset, 1)
         event = data.frame(
           TimeStart=time_start,
@@ -471,15 +478,15 @@ for (hour in debug_hour) {
         # } # DEBUG
         
         idx_start = idx_end # Split point becomes start of next event
-        if (idx_end >= event_end | idx_start >= event_end) {
-          message('Overboard, breaking...')
-          next
-        }
+        # if (idx_end >= event_end | idx_start >= event_end) {
+        #   message('Overboard, breaking...')
+        #   next
+        # }
       }
     }
     sec = sec + 1
   }
-}
+# }
 
 
 
