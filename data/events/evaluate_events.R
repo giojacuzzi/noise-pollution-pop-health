@@ -92,203 +92,199 @@ find_extrema = function (x, last=F) {
 
 # -----------------------------------------------------------------------------
 
-# data_events = get_data_events()
-# data_ops = get_data_ops()
-# navy_events = data_events[data_events$SiteID==id & data_events$Date==date,]
-# navy_ops = data_ops[data_ops$Date==date,]
-
-id = 'KysH' #'24A_B'
-date = '2019-06-21' #'2021-08-10'
-data = load_site_date(id, date)
-
-data$Time = as.POSIXct(data$Time)
-data$Hour = format(data$Time, format = '%H')
-
-events = data.frame()
-
-# Replace any missing LAeq measurements with 0.0
-data[is.na(data$LAeq),'LAeq'] = 0.0
-
-# 10-second moving average
-data$Lma = rollmean(data$LAeq, 10, align='center', fill=0.0)
-
-sec = 1
-while (sec<=nrow(data)) {
+find_events_for_site_date = function(id, date) {
+  message(paste('Finding events for site date', id, date))
+  data = load_site_date(id, date)
   
-  # NOTE: Navy threshold is L90 + 10 of each hour +/- 30 min 
-  # threshold = LxFromLevels(data$LAeq, 90) + 10
-  # NOTE: ISO standard 20906:2009 suggests background residual sound may be estimated by L95, and aircraft maxima should be at least 15 dB above the residual sound
-  # As some data are not entire-day recordings and thus lack an actual reference background, take the minimum of this and X, a baseline 35 dB + 15 ambient value
+  site_date_events = data.frame()
+  if (ncol(data) <= 1) return(site_date_events)
   
-  # Set threshold as the L95+15 calculated over a specified time period
-  threshold_time = 1800 # +/- 30 min
-  threshold_buffer = 15
-  threshold_min_ambience = 35 + threshold_buffer
-  threshold = max(LxFromLevels(na.omit(data[max(1, sec-threshold_time):min(sec+threshold_time-1, nrow(data)), 'LAeq']), 95) + threshold_buffer, threshold_min_ambience)[1]
-  # message(threshold)
+  data$Time = as.POSIXct(data$Time)
+  data$Hour = format(data$Time, format = '%H')
   
-  if (data$Lma[sec] > threshold) {
-    message(paste('Event start found:', data$Time[sec]))
-    event_start = sec
-    idx_start = sec
-    under_count = 0
-    while (sec<=nrow(data) & under_count < 5) { # < threshold for 5 sec
-      while (is.na(data$Lma[sec])) sec = sec + 1
-      while (sec<=nrow(data) & data$Lma[sec] > threshold) {
-        under_count = 0
+  # Replace any missing LAeq measurements with 0.0
+  data[is.na(data$LAeq),'LAeq'] = 0.0
+  
+  # 10-second moving average
+  data$Lma = rollmean(data$LAeq, 10, align='center', fill=0.0)
+  
+  sec = 1
+  while (sec<=nrow(data)) {
+    
+    # NOTE: Navy threshold is L90 + 10 of each hour +/- 30 min 
+    # threshold = LxFromLevels(data$LAeq, 90) + 10
+    # NOTE: ISO standard 20906:2009 suggests background residual sound may be estimated by L95, and aircraft maxima should be at least 15 dB above the residual sound
+    # As some data are not entire-day recordings and thus lack an actual reference background, take the minimum of this and X, a baseline 35 dB + 15 ambient value
+    
+    # Set threshold as the L95+15 calculated over a specified time period
+    threshold_time = 1800 # +/- 30 min
+    threshold_buffer = 15
+    threshold_min_ambience = 35 + threshold_buffer
+    threshold = max(LxFromLevels(na.omit(data[max(1, sec-threshold_time):min(sec+threshold_time-1, nrow(data)), 'LAeq']), 95) + threshold_buffer, threshold_min_ambience)[1]
+    # message(threshold)
+    
+    if (data$Lma[sec] > threshold) {
+      message(paste('Event start found:', data$Time[sec]))
+      event_start = sec
+      idx_start = sec
+      under_count = 0
+      while (sec<=nrow(data) & under_count < 5) { # < threshold for 5 sec
+        while (is.na(data$Lma[sec])) sec = sec + 1
+        while (sec<=nrow(data) & data$Lma[sec] > threshold) {
+          under_count = 0
+          sec = sec + 1
+          
+          # update threshold
+          threshold = max(LxFromLevels(na.omit(data[max(1, sec-threshold_time):min(sec+threshold_time-1, nrow(data)), 'LAeq']), 95) + threshold_buffer, threshold_min_ambience)[1]
+        }
+        # below threshold again
+        under_count = under_count + 1
         sec = sec + 1
-        
-        # update threshold
-        threshold = max(LxFromLevels(na.omit(data[max(1, sec-threshold_time):min(sec+threshold_time-1, nrow(data)), 'LAeq']), 95) + threshold_buffer, threshold_min_ambience)[1]
       }
-      # below threshold again
-      under_count = under_count + 1
-      sec = sec + 1
-    }
-    message(paste('Event end found:', data$Time[sec]))
-    event_end = min(nrow(data), sec)
-    idx_end = min(nrow(data), sec)
-    idx_peaks = find_extrema(data$Lma[idx_start:idx_end])
-    idx_peaks = unname(unlist(idx_peaks[idx_peaks$Status=='max','idx']))
-    idx_peaks = idx_peaks + idx_start - 1
-    
-    # Find all local maxima that are at least `peak_prominence` dB greater than their lowest neighboring minima
-    peak_prominence = 10
-    if (length(idx_peaks) > 1) {
-      trimmed_idx_peaks = c()
-      for (i in idx_peaks) { # for each local maxima
-        local_max_level = data[i,'Lma']
-        if (nrow(events) + 1 == 26) {
-          message(local_max_level)
-        }
-        l = i - 1
-        while (l >= idx_start
-               & data[l,'Lma'] <= local_max_level
-               & data[l,'Lma'] > (local_max_level-peak_prominence)) {
-          l = l - 1
-        }
-        r = i + 1
-        while (r <= idx_end
-               & data[r,'Lma'] <= local_max_level
-               & data[r,'Lma'] > (local_max_level-peak_prominence)) {
-          r = r + 1
-        }
-        if ((local_max_level - data[l,'Lma'] >= peak_prominence)
-            & (local_max_level - data[r,'Lma'] >= peak_prominence)) {
-          trimmed_idx_peaks = append(trimmed_idx_peaks, i)
-        }
-      }
-      if (length(trimmed_idx_peaks) == 0) {
-        idx_peaks = idx_peaks[which(data[idx_peaks,'Lma']==max(data[idx_peaks,'Lma']))][1]
-      } else {
-        idx_peaks = trimmed_idx_peaks
-      }
-    }
-    
-    # If no 'prominent' maxima, just take the max peak
-    if (length(idx_peaks)==0) {
-      idx_peaks = idx_peaks[which(data$Lma[idx_peaks]==max(data$Lma[idx_peaks]))[1]]
-    }
-    
-    # Keep only peaks within 10 sec of each other
-    trimmed_idx_peaks = c()
-    trimmed_idx_peaks = append(trimmed_idx_peaks, idx_peaks[1])
-    for (i in 1:length(idx_peaks)) {
-      curr_peak_idx = idx_peaks[i]
-      next_peak_idx = ifelse(i < length(idx_peaks), idx_peaks[i+1], idx_end)
-      if (next_peak_idx - curr_peak_idx > 10 & next_peak_idx != idx_end) {
-        trimmed_idx_peaks = append(trimmed_idx_peaks, next_peak_idx)
-      }
-    }
-    idx_peaks = trimmed_idx_peaks
-    
-    # Between each orange peak (and start/1st, last/end), find the minimum Lmc. That is the split point.
-    valleys = c()
-    for (i in 1:length(idx_peaks)) {
-      curr_peak_idx = idx_peaks[i]
-      next_peak_idx = ifelse(i < length(idx_peaks), idx_peaks[i+1], idx_end)
-      valleys = append(valleys, which(data$Lma[curr_peak_idx:next_peak_idx]==min(data$Lma[curr_peak_idx:next_peak_idx]))[1] + curr_peak_idx - 1)
-    }
-    
-    if (debug_plot) {
-      # Plot the entire event with a +/- 45 sec buffer
-      buff_start = max(1, idx_start-45)
-      buff_end = min(nrow(data), idx_end+45)
-      p_time = ggplot(data[buff_start:buff_end,]) +
-        labs(title=paste('Peak threshold event', nrow(events) + 1)) +
-        geom_line(aes(x=Time, y=LAeq)) +
-        geom_line(aes(x=Time, y=Lma), color='magenta') +
-        geom_vline(xintercept=data[idx_start,'Time'], color='blue') +
-        geom_vline(xintercept=data[idx_end,'Time'], color='blue') +
-        geom_hline(yintercept=threshold, color='gray') +
-        geom_vline(xintercept=data[idx_peaks, 'Time'], color='orange', linetype='dotted') +
-        geom_vline(xintercept=data[valleys, 'Time'], color='purple', linetype='dotted')
-      plot(p_time)
-      readline('Peak threshold event plotted. Press [enter] to continue...')
-    }
-    
-    # -------------------------- Multi-event
-    if (length(idx_peaks)>1) {
-      message(paste('  Splitting event into', length(idx_peaks),'...'))
-    }
-    
-    for (i in 1:length(valleys)) {
-      idx_end = ifelse(i<length(valleys), valleys[i], event_end)
+      message(paste('Event end found:', data$Time[sec]))
+      event_end = min(nrow(data), sec)
+      idx_end = min(nrow(data), sec)
+      idx_peaks = find_extrema(data$Lma[idx_start:idx_end])
+      idx_peaks = unname(unlist(idx_peaks[idx_peaks$Status=='max','idx']))
+      idx_peaks = idx_peaks + idx_start - 1
       
-      time_start = data$Time[idx_start]
-      time_end = data$Time[idx_end]
-      levels = data$LAeq[idx_start:idx_end]
-      LAeq_Lmax = max(levels)
-      idx_lmax = which(data[idx_start:idx_end,'LAeq']==LAeq_Lmax)[1]
-      lstart = data$LAeq[idx_start]
-      onset = (LAeq_Lmax - lstart)/(idx_lmax) # dBA per sec
-      if (lstart == 0.0) {
-        # There was missing data, onset is not able to be calculated
-        onset = NA
+      # Find all local maxima that are at least `peak_prominence` dB greater than their lowest neighboring minima
+      peak_prominence = 10
+      if (length(idx_peaks) > 1) {
+        trimmed_idx_peaks = c()
+        for (i in idx_peaks) { # for each local maxima
+          local_max_level = data[i,'Lma']
+          l = i - 1
+          while (l >= idx_start
+                 & data[l,'Lma'] <= local_max_level
+                 & data[l,'Lma'] > (local_max_level-peak_prominence)) {
+            l = l - 1
+          }
+          r = i + 1
+          while (r <= idx_end
+                 & data[r,'Lma'] <= local_max_level
+                 & data[r,'Lma'] > (local_max_level-peak_prominence)) {
+            r = r + 1
+          }
+          if ((local_max_level - data[l,'Lma'] >= peak_prominence)
+              & (local_max_level - data[r,'Lma'] >= peak_prominence)) {
+            trimmed_idx_peaks = append(trimmed_idx_peaks, i)
+          }
+        }
+        if (length(trimmed_idx_peaks) == 0) {
+          idx_peaks = idx_peaks[which(data[idx_peaks,'Lma']==max(data[idx_peaks,'Lma']))][1]
+        } else {
+          idx_peaks = trimmed_idx_peaks
+        }
       }
-      onset = round(onset, 1)
-      event = data.frame(
-        TimeStart=time_start,
-        TimeEnd=time_end,
-        Duration=as.numeric(difftime(time_end, time_start, units='secs')),
-        LAeq=round(LeqTotal(levels),1),
-        SEL=round(SelFromLevels(levels),1),
-        LAeq_Lmax=LAeq_Lmax,
-        LAFmax=max(data$LAFmax[idx_start:idx_end]),
-        LCpeak=max(data$LCpeak[idx_start:idx_end]),
-        Onset=onset,
-        Threshold=threshold
-      )
-      events = rbind(events, event)
-
+      
+      # If no 'prominent' maxima, just take the max peak
+      if (length(idx_peaks)==0) {
+        idx_peaks = idx_peaks[which(data$Lma[idx_peaks]==max(data$Lma[idx_peaks]))[1]]
+      }
+      
+      # Keep only peaks within 10 sec of each other
+      trimmed_idx_peaks = c()
+      trimmed_idx_peaks = append(trimmed_idx_peaks, idx_peaks[1])
+      for (i in 1:length(idx_peaks)) {
+        curr_peak_idx = idx_peaks[i]
+        next_peak_idx = ifelse(i < length(idx_peaks), idx_peaks[i+1], idx_end)
+        if (next_peak_idx - curr_peak_idx > 10 & next_peak_idx != idx_end) {
+          trimmed_idx_peaks = append(trimmed_idx_peaks, next_peak_idx)
+        }
+      }
+      idx_peaks = trimmed_idx_peaks
+      
+      # Between each orange peak (and start/1st, last/end), find the minimum Lmc. That is the split point.
+      valleys = c()
+      for (i in 1:length(idx_peaks)) {
+        curr_peak_idx = idx_peaks[i]
+        next_peak_idx = ifelse(i < length(idx_peaks), idx_peaks[i+1], idx_end)
+        valleys = append(valleys, which(data$Lma[curr_peak_idx:next_peak_idx]==min(data$Lma[curr_peak_idx:next_peak_idx]))[1] + curr_peak_idx - 1)
+      }
+      
       if (debug_plot) {
-        # Plot sub-events with a +/- 45 sec buffer
+        # Plot the entire event with a +/- 45 sec buffer
         buff_start = max(1, idx_start-45)
         buff_end = min(nrow(data), idx_end+45)
         p_time = ggplot(data[buff_start:buff_end,]) +
-          labs(title=paste('Final event', nrow(events))) +
+          labs(title=paste('Peak threshold event', nrow(site_date_events) + 1)) +
           geom_line(aes(x=Time, y=LAeq)) +
           geom_line(aes(x=Time, y=Lma), color='magenta') +
           geom_vline(xintercept=data[idx_start,'Time'], color='blue') +
-          geom_vline(xintercept=data[idx_start+idx_lmax-1,'Time'], color='red', linetype='dotted') +
           geom_vline(xintercept=data[idx_end,'Time'], color='blue') +
-          geom_hline(yintercept=threshold, color='gray')
+          geom_hline(yintercept=threshold, color='gray') +
+          geom_vline(xintercept=data[idx_peaks, 'Time'], color='orange', linetype='dotted') +
+          geom_vline(xintercept=data[valleys, 'Time'], color='purple', linetype='dotted')
         plot(p_time)
-        readline('Final event plotted. Press [enter] to continue...')
+        readline('Peak threshold event plotted. Press [enter] to continue...')
       }
       
-      idx_start = idx_end # split point becomes start of next event
+      # -------------------------- Multi-event
+      if (length(idx_peaks)>1) {
+        message(paste('  Splitting event into', length(idx_peaks),'...'))
+      }
+      
+      for (i in 1:length(valleys)) {
+        idx_end = ifelse(i<length(valleys), valleys[i], event_end)
+        
+        time_start = data$Time[idx_start]
+        time_end = data$Time[idx_end]
+        levels = data$LAeq[idx_start:idx_end]
+        LAeq_Lmax = max(levels)
+        idx_lmax = which(data[idx_start:idx_end,'LAeq']==LAeq_Lmax)[1]
+        lstart = data$LAeq[idx_start]
+        onset = (LAeq_Lmax - lstart)/(idx_lmax) # dBA per sec
+        if (lstart == 0.0) {
+          # There was missing data, onset is not able to be calculated
+          onset = NA
+        }
+        onset = round(onset, 1)
+        event = data.frame(
+          ID=id,
+          TimeStart=time_start,
+          TimeEnd=time_end,
+          Duration=as.numeric(difftime(time_end, time_start, units='secs')),
+          LAeq=round(LeqTotal(levels),1),
+          SEL=round(SelFromLevels(levels),1),
+          LAeq_Lmax=round(LAeq_Lmax,1),
+          LAFmax=ifelse('LAFmax' %in% colnames(data), round(max(data$LAFmax[idx_start:idx_end]),1), NA),
+          LCpeak=ifelse('LCpeak' %in% colnames(data), round(max(data$LCpeak[idx_start:idx_end]),1), NA),
+          Onset=onset,
+          Threshold=threshold
+        )
+        site_date_events = rbind(site_date_events, event)
+        
+        if (debug_plot) {
+          # Plot sub-events with a +/- 45 sec buffer
+          buff_start = max(1, idx_start-45)
+          buff_end = min(nrow(data), idx_end+45)
+          p_time = ggplot(data[buff_start:buff_end,]) +
+            labs(title=paste('Final event', nrow(site_date_events))) +
+            geom_line(aes(x=Time, y=LAeq)) +
+            geom_line(aes(x=Time, y=Lma), color='magenta') +
+            geom_vline(xintercept=data[idx_start,'Time'], color='blue') +
+            geom_vline(xintercept=data[idx_start+idx_lmax-1,'Time'], color='red', linetype='dotted') +
+            geom_vline(xintercept=data[idx_end,'Time'], color='blue') +
+            geom_hline(yintercept=threshold, color='gray')
+          plot(p_time)
+          readline('Final event plotted. Press [enter] to continue...')
+        }
+        
+        idx_start = idx_end # split point becomes start of next event
+      }
+      if (length(idx_peaks)>1) {
+        message('  ...finished splitting event')
+      }
     }
-    if (length(idx_peaks)>1) {
-      message('  ...finished splitting event')
-    }
+    sec = sec + 1
   }
-  sec = sec + 1
+  return(site_date_events)
 }
 
 plot_event = function(event_num) {
-  idx_start = which(data$Time==events[event_num,]$TimeStart)
-  idx_end   = which(data$Time==events[event_num,]$TimeEnd)
+  idx_start = which(data$Time==site_date_events[event_num,]$TimeStart)
+  idx_end   = which(data$Time==site_date_events[event_num,]$TimeEnd)
   buff_start = max(1, idx_start-45)
   buff_end   = min(nrow(data), idx_end+45)
   p_time = ggplot(data[buff_start:buff_end,]) +
@@ -297,6 +293,57 @@ plot_event = function(event_num) {
     geom_vline(xintercept=data[idx_start,'Time'], color='blue') +
     # geom_vline(xintercept=data[idx_start+idx_lmax-1,'Time'], color='red', linetype='dotted') +
     geom_vline(xintercept=data[idx_end,'Time'], color='blue') +
-    geom_hline(yintercept=events[event_num,'Threshold'], color='gray')
+    geom_hline(yintercept=site_date_events[event_num,'Threshold'], color='gray')
   plot(p_time)
+}
+
+#-------------------------------------------------------------------------------
+
+# Calculate events for every site ID and date from an org database (or all, if none is specified), store in a data frame, and save as `data/events/output/events.csv`
+calculate_events_csv = function(orgarg = '') {
+  
+  options(warn = 1)
+  file_map = get_file_map()
+  if (orgarg != '') {
+    orgarg = toupper(orgarg)
+    file_map = file_map[file_map$Org==orgarg,]
+  }
+  
+  events = data.frame()
+  num_processed = 0
+  for (id in unique(file_map$ID)) { # for every site ID
+    
+    num_processed = num_processed + 1
+    name = get_site_name_for_ID(id)
+    message(paste0('Processing site ', id, ' \"', name , '\" - ', num_processed, ' of ', length(unique(file_map$ID))))
+    
+    # readline('Press [enter] to continue...')
+    
+    for (date in unique(file_map[file_map$ID==id, 'Date'])) { # for every date at that site
+      
+      # Retrieve the measured sound pressure levels
+      # site_date_data = load_site_date(id, date)
+      # org = unique(file_map[file_map$ID==id & file_map$Date==date,]$Org)
+      # site_date_levels = get_levels_for_org(site_date_data, org)
+      # if (is.null(site_date_levels)) {
+      #   # TODO: If NAVY, scrape any pre-calculated events from the 'Summary' sheet
+      #   warning(paste('Unable to get levels for', id, date, '- skipping...'))
+      #   next
+      # }
+      site_date_events = find_events_for_site_date(id, date)
+      
+      # Add all events for the date to `events`
+      events = rbind(events, site_date_events)
+    }
+  }
+  
+  # Save all events data to csv
+  file_name = 'data/events/output/'
+  if (orgarg == '') {
+    file_name = paste0(file_name, 'events.csv')
+  } else {
+    file_name = paste0(file_name, 'events_', orgarg, '.csv')
+  }
+  write.csv(events, file=file_name, row.names=F)
+  return(events)
 }

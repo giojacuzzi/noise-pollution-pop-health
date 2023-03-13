@@ -56,9 +56,10 @@ load_site_date = function(id, date) {
   # If unable to load data for a date, create a representative dataframe of NAs
   if (nrow(data_date) == 0) {
     warning(paste('Unable to load data for date', date,'from files -', files_for_date))
-    data_date = data.frame(matrix(nrow=time_24hr,ncol=2))
+    data_date = data.frame(matrix(nrow=time_24hr,ncol=1))
     data_date[1] = get_24hr_time_window(date)
-    colnames(data_date) = c('Time','Value')
+    colnames(data_date) = c('Time')
+    return(data_date)
   }
   
   if (total_measurements != nrow(na.omit(data_date))) {

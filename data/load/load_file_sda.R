@@ -81,6 +81,7 @@ load_file_sda = function(file) {
   
   # Subset data for desired measurements and clean
   data = data_raw[, c('Time', 'Value')]
+  names(data)[names(data) == 'Value'] = 'LAeq'
   data = na.omit(data)
   
   # Force data to 24-hour standardized format for each date recorded

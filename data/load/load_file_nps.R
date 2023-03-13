@@ -111,6 +111,8 @@ load_file_nps = function(file) {
   # Subset data for desired measurements and rename time column
   data = data_raw[, selected_columns_nps]
   names(data)[names(data) == 'STime'] = 'Time'
+  names(data)[names(data) == 'dbA'] = 'LAeq'
+  names(data)[names(data) == 'dbC'] = 'LCeq'
 
   # Force data to 24-hour standardized format for each date recorded
   results = list()

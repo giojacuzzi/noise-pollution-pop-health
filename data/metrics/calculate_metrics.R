@@ -6,8 +6,8 @@ get_levels_for_org = function(data, org) {
   return(switch(org,
                 'NAVY'=data$LAeq,
                 'JGL'=data$LAeq,
-                'SDA'=data$Value,
-                'NPS'=data$dbA,
+                'SDA'=data$LAeq,
+                'NPS'=data$LAeq,
                 NULL))
 }
 
@@ -129,5 +129,3 @@ calculate_metrics_csv = function(orgarg = '') {
   write.csv(metrics, file=file_name, row.names=F)
   return(metrics)
 }
-
-calculate_metrics_csv(orgarg='JGL')
