@@ -2,6 +2,13 @@
 library(stringr)
 library(ggplot2)
 library(viridis)
+library(mapview)
+library(leafem)
+library(dplyr)
+library(tidyr)
+library(scales)
+library(patchwork)
+library(ggpmisc)
 theme_set(theme_minimal())
 
 # Path to directory containing the PHI database
@@ -10,11 +17,17 @@ database_path = {
   '~/../../Volumes/SAFS Work/PHI'
 }
 
+# Figure output file configuration
+ggsave_output_path = 'analysis/output/'
+ggsave_width = 7
+ggsave_height = 6
+
 format_date = '%Y-%m-%d'
 format_time = '%H:%M:%S'
 time_24hr = 24 * 60 * 60 # total number of seconds in a day
 hours = str_pad(0:23, 2, pad = '0')
 days  = c('Mon','Tue','Wed','Thu','Fri','Sat','Sun')
+months = c('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec')
 
 get_file_map = function() {
   if (!exists('file_map')) {
@@ -68,15 +81,43 @@ get_data_ops = function() {
 
 get_data_events = function() {
   if (!exists('data_events')) {
-    data_events = read.csv('data/events/output/events.csv')
-    data_events$StartTime  = as.POSIXct(data_events$StartTime, tz='UTC')
-    data_events$Hour       = format(data_events$StartTime, format='%H')
+    events_jgl = read.csv('data/events/output/events_JGL.csv')
+    events_jgl$Org = 'JGL'
+    events_navy = read.csv('data/events/output/events_NAVY.csv')
+    events_navy$Org = 'NAVY'
+    events_nps = read.csv('data/events/output/events_NPS.csv')
+    events_nps$Org = 'NPS'
+    events_sda = read.csv('data/events/output/events_SDA.csv')
+    events_sda$Org = 'SDA'
+    data_events = rbind(events_jgl,
+                        events_navy,
+                        events_nps,
+                        events_sda)
+    
+    # NOTE: Some SDA measurements were recorded with overloaded gains (i.e. distortion) that result in erroneously high values during flybys. Here, we remove events with measurements exceeding 110 dB.
+    # data_events = data_events[-which(data_events$Org == 'SDA' & data_events$LAeq > 110.0),]
+    
+    data_events$TimeStart  = as.POSIXct(data_events$TimeStart, tz='UTC')
+    data_events$Hour       = format(data_events$TimeStart, format='%H')
     data_events$DEN        = get_den_period_for_hours(data_events$Hour)
-    data_events$Day        = factor(weekdays(data_events$StartTime, abbreviate=T), levels=days)
-    data_events$Date       = factor(format(data_events$StartTime, format_date))
-    data_events$Period     = get_navy_monitoring_period_for_times(data_events$StartTime)
+    data_events$Day        = factor(weekdays(data_events$TimeStart, abbreviate=T), levels=days)
+    data_events$Date       = factor(format(data_events$TimeStart, format_date))
+    data_events$Period     = get_navy_monitoring_period_for_times(data_events$TimeStart)
   }
   return(data_events)
+}
+
+get_data_navy_events_reported = function() {
+  if (!exists('data_navy_events_reported')) {
+    data_navy_events_reported = read.csv('data/events/output/navy_reported_events.csv')
+    data_navy_events_reported$StartTime  = as.POSIXct(data_navy_events_reported$StartTime, tz='UTC')
+    data_navy_events_reported$Hour       = format(data_navy_events_reported$StartTime, format='%H')
+    data_navy_events_reported$DEN        = get_den_period_for_hours(data_navy_events_reported$Hour)
+    data_navy_events_reported$Day        = factor(weekdays(data_navy_events_reported$StartTime, abbreviate=T), levels=days)
+    data_navy_events_reported$Date       = factor(format(data_navy_events_reported$StartTime, format_date))
+    data_navy_events_reported$Period     = get_navy_monitoring_period_for_times(data_navy_events_reported$StartTime)
+  }
+  return(data_navy_events_reported)
 }
 
 get_field_name_for_ID = function(id) {
@@ -92,6 +133,14 @@ get_site_name_for_ID = function(id) {
 get_ID_for_site_name = function(name) {
   data_sites = get_data_sites()
   return(unique(na.omit(data_sites[data_sites$Name==name,])$ID))
+}
+
+get_org_for_site_date = function(id, date) {
+  file_map = get_file_map()
+  entries_for_date = file_map[file_map$ID==id & file_map$Date==date,]
+  files_for_date = entries_for_date$File
+  org = unique(entries_for_date$Org)
+  return(org)
 }
 
 # Day, evening, or night for hours 00-23

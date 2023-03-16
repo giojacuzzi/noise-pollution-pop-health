@@ -64,6 +64,6 @@ for (pdf in files) {
   # write.csv(period_data, path, row.names=F)
   # message(paste('Created', path))
 }
-path = 'data/events/output/navy_events.csv'
+path = 'data/events/output/navy_reported_events.csv'
 write.csv(data, path, row.names=F)
 message(paste('Created', path))

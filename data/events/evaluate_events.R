@@ -279,6 +279,7 @@ find_events_for_site_date = function(id, date) {
     }
     sec = sec + 1
   }
+  site_date_events$Org = get_org_for_site_date(id, date)
   return(site_date_events)
 }
 
