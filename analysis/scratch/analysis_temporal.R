@@ -1,8 +1,9 @@
 # Lden per day, per season, per airfield
+source('global.R')
 
 library(ggplot2)
-sites = read.csv('data/sites/sites.csv')
-metrics = read.csv('data/metrics/output/metrics_NAVY.csv')
+sites = get_data_sites()
+metrics = get_data_metrics()
 
 sites_ault = sites[sites$Org=='NAVY' & sites$Region=='Ault Field', 'ID']
 sites_coup = sites[sites$Org=='NAVY' & sites$Region=='OLF Coupeville', 'ID']
@@ -57,3 +58,4 @@ p_coup_levels_daily = ggplot(levels_daily_coup[order(levels_daily_coup$Day), ], 
   labs(title='Lden per day - OLF Coupeville Sites, Seasonal', x ='Day', y ='Lden (dBA)') +
   geom_hline(yintercept=65, linetype='dotted', colour='red') # HUD / FAA
 print(p_coup_levels_daily)
+
