@@ -8,14 +8,16 @@ source('data/load/load_file_nps.R')
 load_site_date = function(id, date) {
   org = get_org_for_site_date(id, date)
   file = paste0(database_path, '/converted/site_dates/', org, '/', id, '_', date, '.csv')
+  if (!file.exists(file)) {
+    warning(paste('File does not exist:', file))
+    return(NULL)
+  }
   
   data_date = NULL
-  
   data_date = read.csv(file)
-  
   if (is.null(data_date)) {
     warning(paste('Unable to load', file))
-    next
+    return(NULL)
   }
   
   # If unable to load data for a date, create a representative dataframe of NAs

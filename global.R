@@ -90,7 +90,7 @@ get_data_events = function() {
     events_sda = read.csv('data/events/output/events_SDA.csv')
     events_sda$Org = 'SDA'
     
-    # Special case for SDA peaks >= 95 dB due to equipment error
+    # Special case for SDA peaks >= 95 dB due to equipment error. Some SDA measurements were recorded with overloaded gains (i.e. distortion) that result in erroneously high values during flybys.
     events_sda[events_sda$LAeq_Lmax >= 95, 'LAeq']      = NA
     events_sda[events_sda$LAeq_Lmax >= 95, 'SEL']       = NA
     events_sda[events_sda$LAeq_Lmax >= 95, 'LAFmax']    = NA
@@ -102,9 +102,6 @@ get_data_events = function() {
                         events_navy,
                         events_nps,
                         events_sda)
-    
-    # NOTE: Some SDA measurements were recorded with overloaded gains (i.e. distortion) that result in erroneously high values during flybys. Here, we remove events with measurements exceeding 110 dB.
-    # data_events = data_events[-which(data_events$Org == 'SDA' & data_events$LAeq > 110.0),]
     
     data_events$TimeStart  = as.POSIXct(data_events$TimeStart, tz='UTC')
     data_events$Hour       = format(data_events$TimeStart, format='%H')

@@ -97,8 +97,9 @@ find_events_for_site_date = function(id, date) {
   message(paste('Finding events for site date', id, date))
   org = get_org_for_site_date(id, date)
   data = load_site_date(id, date)
-  
   site_date_events = data.frame()
+  
+  if (is.null(data)) return(site_date_events)
   if (ncol(data) <= 1) return(site_date_events)
   
   data$Time = as.POSIXct(data$Time)
@@ -293,7 +294,7 @@ find_events_for_site_date = function(id, date) {
     }
     sec = sec + 1
   }
-  site_date_events$Org = org
+  if (nrow(site_date_events)>0) site_date_events$Org = org
   return(site_date_events)
 }
 
@@ -359,6 +360,6 @@ calculate_events_csv = function(orgarg = '') {
   } else {
     file_name = paste0(file_name, 'events_', orgarg, '.csv')
   }
-  write.csv(events, file=file_name, row.names=F)
+  write.csv(events, file=file_name, row.names=T)
   return(events)
 }
