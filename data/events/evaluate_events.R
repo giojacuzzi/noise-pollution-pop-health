@@ -298,19 +298,30 @@ find_events_for_site_date = function(id, date) {
   return(site_date_events)
 }
 
-plot_event = function(event_num) {
-  idx_start = which(data$Time==site_date_events[event_num,]$TimeStart)
-  idx_end   = which(data$Time==site_date_events[event_num,]$TimeEnd)
-  buff_start = max(1, idx_start-45)
-  buff_end   = min(nrow(data), idx_end+45)
-  p_time = ggplot(data[buff_start:buff_end,]) +
-    labs(title=paste('Event', event_num)) +
-    geom_line(aes(x=Time, y=LAeq)) +
-    geom_vline(xintercept=data[idx_start,'Time'], color='blue') +
-    # geom_vline(xintercept=data[idx_start+idx_lmax-1,'Time'], color='red', linetype='dotted') +
-    geom_vline(xintercept=data[idx_end,'Time'], color='blue') +
-    geom_hline(yintercept=site_date_events[event_num,'Threshold'], color='gray')
-  plot(p_time)
+plot_events = function(id, date, event_num=0) {
+  org = get_org_for_site_date(id, date)
+  data = load_site_date(id, date)
+  events = get_data_events()
+  events = events[events$ID==id & events$Date==date, ]
+  if (event_num > 0) {
+    events = events[events$X==event_num, ]
+  }
+  
+  for (e in 1:nrow(events)) {
+    event = events[e,]
+    
+    idx_start = which(data$Time==event$TimeStart)
+    idx_end   = which(data$Time==event$TimeEnd)
+    buff_start = max(1, idx_start-45)
+    buff_end   = min(nrow(data), idx_end+45)
+    p_time = ggplot(data[buff_start:buff_end,]) +
+      labs(title=paste('Event', event$X)) +
+      geom_line(aes(x=Time, y=LAeq)) +
+      geom_vline(xintercept=data[idx_start,'Time'], color='blue') +
+      # geom_vline(xintercept=data[idx_start+idx_lmax-1,'Time'], color='red', linetype='dotted') +
+      geom_vline(xintercept=data[idx_end,'Time'], color='blue')
+    plot(p_time)
+  }
 }
 
 #-------------------------------------------------------------------------------

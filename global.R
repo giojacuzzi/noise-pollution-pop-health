@@ -104,6 +104,7 @@ get_data_events = function() {
                         events_sda)
     
     data_events$TimeStart  = as.POSIXct(data_events$TimeStart, tz='UTC')
+    data_events$TimeEnd    = as.POSIXct(data_events$TimeEnd, tz='UTC')
     data_events$Hour       = format(data_events$TimeStart, format='%H')
     data_events$DEN        = get_den_period_for_hours(data_events$Hour)
     data_events$Day        = factor(weekdays(data_events$TimeStart, abbreviate=T), levels=days)
@@ -117,6 +118,7 @@ get_data_navy_events_reported = function() {
   if (!exists('data_navy_events_reported')) {
     data_navy_events_reported = read.csv('data/events/output/navy_reported_events.csv')
     data_navy_events_reported$StartTime  = as.POSIXct(data_navy_events_reported$StartTime, tz='UTC')
+    data_navy_events_reported$LAeq_LmaxTime = as.POSIXct(data_navy_events_reported$LAeq_LmaxTime, tz='UTC')
     data_navy_events_reported$Hour       = format(data_navy_events_reported$StartTime, format='%H')
     data_navy_events_reported$DEN        = get_den_period_for_hours(data_navy_events_reported$Hour)
     data_navy_events_reported$Day        = factor(weekdays(data_navy_events_reported$StartTime, abbreviate=T), levels=days)
