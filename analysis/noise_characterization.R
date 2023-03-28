@@ -36,7 +36,7 @@ ggplot(data_events[data_events$LAeq_Lmax>=threshold & data_events$Org!='SDA',], 
 
 # Hearing loss -----------------------------------------------------------------
 # Dependencies: any dataset
-
+# TODO: include non-navy data
 occupational_standards = read.csv('analysis/OshaNiosh.csv')
 
 # OSHA action level
