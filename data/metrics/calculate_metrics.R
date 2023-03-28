@@ -12,7 +12,7 @@ get_levels_for_org = function(data, org) {
 }
 
 # Calculate metrics for every site ID and date from an org database (or all, if none is specified), store in a data frame, and save as `data/metrics/metrics.csv`
-calculate_metrics_csv = function(orgarg = '') {
+calculate_site_date_metrics_csv = function(orgarg = '') {
 
   options(warn = 1)
   file_map = get_file_map()

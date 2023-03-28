@@ -23,7 +23,7 @@ get_date_from_file_navy = function(file) {
 map_files_navy_csv = function() {
   # All xlsx spreadsheet files from the NAVY database
   message('Mapping files to navy site dates...')
-  files = list.files(path='~/Desktop/PHI Project Data/NAVY', pattern="*.xlsx", full.names=TRUE, recursive=TRUE)
+  files = list.files(path=paste0(database_path,'/NAVY/Acoustic Data/Data'), pattern="*.xlsx", full.names=TRUE, recursive=TRUE)
   data_xlsx = data.frame()
   for (file in files) {
     message(paste0('Mapping file',file,'...'))

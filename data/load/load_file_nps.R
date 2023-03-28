@@ -16,7 +16,7 @@ get_date_from_file_nps = function(file) {
 map_files_nps_csv = function() {
   # All txt files from the NPS database
   message('Mapping files to nps site dates...')
-  files = list.files(path='~/Desktop/PHI Project Data/NPS', pattern="*.txt", full.names=TRUE, recursive=TRUE)
+  files = list.files(path=paste0(database_path,'/NPS/EBLA/NVSPL'), pattern="*.txt", full.names=TRUE, recursive=TRUE)
   data_txt = data.frame()
   for (file in files) {
     message(paste0('Mapping file',file,'...'))

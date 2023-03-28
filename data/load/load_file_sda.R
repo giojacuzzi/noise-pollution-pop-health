@@ -28,7 +28,7 @@ get_dates_from_file_sda = function(file) {
 map_files_sda_csv = function() {
   # All xls spreadsheet files from the SDA database
   message('Mapping files to sda site dates...')
-  files = list.files(path='~/Desktop/PHI Project Data/SDA', pattern="*.XLS", full.names=TRUE, recursive=TRUE)
+  files = list.files(path=paste0(database_path,'/SDA/Whidbey Island Comm Noise_Data/SLM Data'), pattern="*.XLS", full.names=TRUE, recursive=TRUE)
   data_xls = data.frame()
   options(warn = 1) # OPTION: Present warnings immediately
   for (file in files) {
@@ -37,7 +37,7 @@ map_files_sda_csv = function() {
     name = get_name_from_file_sda(file)
     id = get_ID_for_site_name(name)
     for (date in dates) {
-      # message(paste(id, basename(file), 'contains', date))
+      message(paste(id, basename(file), 'contains', date))
       r = data.frame(Date=date, Name=name, ID=id, File=file)
       data_xls = rbind(data_xls, r)
     }
