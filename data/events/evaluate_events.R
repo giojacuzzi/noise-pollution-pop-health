@@ -46,6 +46,7 @@ source('data/metrics/metrics.R')
 source('data/load/load_site_date.R')
 library(dplyr)
 library(patchwork)
+library(zoo)
 
 debug_plot = F # switch to plot events
 
@@ -94,6 +95,7 @@ find_extrema = function (x, last=F) {
 
 find_events_for_site_date = function(id, date) {
   message(paste('Finding events for site date', id, date))
+  org = get_org_for_site_date(id, date)
   data = load_site_date(id, date)
   
   site_date_events = data.frame()
@@ -253,6 +255,18 @@ find_events_for_site_date = function(id, date) {
           Onset=onset,
           Threshold=threshold
         )
+        
+        # # Special case for SDA peaks >= 95 dB due to equipment error
+        # if (org == 'SDA' & sum(levels >= 95) > 0) {
+        #   message('SDA equipment error')
+        #   event$LAeq=NA
+        #   event$SEL=NA
+        #   event$LAeq_Lmax=NA
+        #   event$LAFmax=NA
+        #   event$LCpeak=NA
+        #   event$Onset=onset
+        # }
+        
         site_date_events = rbind(site_date_events, event)
         
         if (debug_plot) {
@@ -279,7 +293,7 @@ find_events_for_site_date = function(id, date) {
     }
     sec = sec + 1
   }
-  site_date_events$Org = get_org_for_site_date(id, date)
+  site_date_events$Org = org
   return(site_date_events)
 }
 

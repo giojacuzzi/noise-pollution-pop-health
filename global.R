@@ -89,6 +89,15 @@ get_data_events = function() {
     events_nps$Org = 'NPS'
     events_sda = read.csv('data/events/output/events_SDA.csv')
     events_sda$Org = 'SDA'
+    
+    # Special case for SDA peaks >= 95 dB due to equipment error
+    events_sda[events_sda$LAeq_Lmax >= 95, 'LAeq']      = NA
+    events_sda[events_sda$LAeq_Lmax >= 95, 'SEL']       = NA
+    events_sda[events_sda$LAeq_Lmax >= 95, 'LAFmax']    = NA
+    events_sda[events_sda$LAeq_Lmax >= 95, 'LCpeak']    = NA
+    events_sda[events_sda$LAeq_Lmax >= 95, 'Onset']     = NA
+    events_sda[events_sda$LAeq_Lmax >= 95, 'LAeq_Lmax'] = NA
+    
     data_events = rbind(events_jgl,
                         events_navy,
                         events_nps,
