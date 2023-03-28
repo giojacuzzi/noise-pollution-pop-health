@@ -4,8 +4,13 @@ source('data/load/load_file_jgl.R')
 source('data/load/load_file_sda.R')
 source('data/load/load_file_nps.R')
 
-# Load data for given site ID at given date
+# Load data for given site ID at given date from converted csv
 load_site_date = function(id, date) {
+  # TODO
+}
+
+# Load data for given site ID at given date from raw database files (slow)
+load_site_date_raw = function(id, date) {
   
   file_map = get_file_map()
   
@@ -72,16 +77,37 @@ load_site_date = function(id, date) {
   return(data_date)
 }
 
-# # SDA test
-# id = 'KntP'
-# date = '2020-07-07'
-# site_date_data = load_site_date(id, date)
-# site_date_dnl_metrics = LdnFromLevels(site_date_data$Value, site_date_data$Time)
-# dnlplot(site_date_dnl_metrics, id, date)
-# 
-# # NAVY test
-# id = '24A_B'
-# date = '2021-06-08'
-# site_date_data = load_site_date(id, date)
-# site_date_dnl_metrics = LdnFromLevels(site_date_data$LAeq, site_date_data$Time)
-# dnlplot(site_date_dnl_metrics, id, date)
+create_site_date_csvs = function(orgarg) {
+  
+  options(warn = 1)
+  file_map = get_file_map()
+  if (orgarg != '') {
+    orgarg = toupper(orgarg)
+    file_map = file_map[file_map$Org==orgarg,]
+  }
+
+  num_processed = 0
+  for (id in unique(file_map$ID)) { # for every site ID
+    
+    num_processed = num_processed + 1
+    name = get_site_name_for_ID(id)
+    message(paste0('Processing site ', id, ' \"', name , '\" - ', num_processed, ' of ', length(unique(file_map$ID))))
+    
+    for (date in unique(file_map[file_map$ID==id, 'Date'])) { # for every date at that site
+      
+      site_date_data = load_site_date_raw(id, date)
+      org = unique(file_map[file_map$ID==id & file_map$Date==date,]$Org)
+      site_date_levels = site_date_data$LAeq
+      if (is.null(site_date_levels)) {
+        warning(paste('Unable to get levels for', id, date, '- skipping...'))
+        next
+      }
+      
+      # Save all site_dates data to csv
+      path =paste0(database_path,'/converted/site_dates/')
+      path = paste0(path, org, '/', id, '_', date, '.csv')
+      write.csv(site_date_data[!is.na(site_date_data$LAeq),], file=path, row.names=F)
+      message(paste('Wrote', path))
+    }
+  }
+}
