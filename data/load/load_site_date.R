@@ -4,10 +4,38 @@ source('data/load/load_file_jgl.R')
 source('data/load/load_file_sda.R')
 source('data/load/load_file_nps.R')
 
-# Load data for given site ID at given date from converted csv
+# Load data for given site ID at given date from converted csv (fast)
 load_site_date = function(id, date) {
-  # TODO
+  org = get_org_for_site_date(id, date)
+  file = paste0(database_path, '/converted/site_dates/', org, '/', id, '_', date, '.csv')
+  
+  data_date = NULL
+  
+  data_date = read.csv(file)
+  
+  if (is.null(data_date)) {
+    warning(paste('Unable to load', file))
+    next
+  }
+  
+  # If unable to load data for a date, create a representative dataframe of NAs
+  if (nrow(data_date) == 0) {
+    warning(paste('Unable to load data for date', date))
+    data_date = data.frame(matrix(nrow=time_24hr,ncol=1))
+    data_date[1] = get_24hr_time_window(date)
+    colnames(data_date) = c('Time')
+    return(data_date)
+  }
+  
+  data_date$Time = as.POSIXct(data_date$Time, paste(format_date,format_time), tz='UTC')
+  
+  data_date = fit_24hr_time_window(data_date) # NOTE: missing seconds will produce NAs
+  if (nrow(data_date) != time_24hr) stop(paste('Error fitting data to 24-hr window for date', date))
+  
+  return(data_date)
 }
+
+
 
 # Load data for given site ID at given date from raw database files (slow)
 load_site_date_raw = function(id, date) {
