@@ -41,6 +41,8 @@ SelFromLeq = function(Leq, duration) {
 }
 
 # Calculate SEL from level series
+# Also known as "sound exposure level", LE, (3.1.5 of ISO 1996)
+# When applied to single event the sound exposure level is called single-event sound exposure level
 SelFromLevels = function(L) {
   10*log10(sum(splToPressure(L)^2) / p0^2)
 }
@@ -156,6 +158,8 @@ LdenFromLevels = function(Levels, Times) {
   Lday     = LeqTotal(Leqh_day)
   Levening = LeqTotal(Leqh_evening)
   Lnight   = LeqTotal(Leqh_night)
+  
+  # Day-evening-night sound level, calculated from continuous whole-day levels (ISO 1996, 3.6.4)
   # NOTE: +5dB adjustment for evening, +10dB for night
   Lden = 10*log10((Tday*10^(Lday/10) + Tevening*10^((Levening+5)/10) + Tnight*10^((Lnight+10)/10))/24)
   
@@ -196,4 +200,22 @@ CnelFromLevels = function(Levels, Times) {
     'Lnight'   = Lnight,
     'Leqh'     = Leqh
   ))
+}
+
+# Day-evening-night sound level, calculated as composite whole-day rating level for single events
+# (ISO 1996, 6.5)
+lden_composite = function() {
+  LR = 10*log10(sum(10^(SELi/10))/n)
+  Kd = 0
+  Ke = 5
+  Kn = 10
+  Lden_Le = 10*log10((d/24)*(10^((LRd+Kd)/10))+
+                       (e/24)*(10^((LRe+Ke)/10))+
+                       (24-d-e/24)*(10^((LRn+Kn)/10)))
+}
+
+# see page 43 https://www.navfac.navy.mil/Portals/68/Documents/Business-Lines/Asset-Management/Sound/Read-Me-Files/Technical_Report_Real-time_Aircraft_Sound_Monitoring_FINAL.pdf?ver=11ABujLRXHVyNY9tGQNZsA%3d%3d
+dnl_composite = function() {
+  dnl = 10*log10((15/24)*(1/54000)*sum(10^(SELsDay/10))) +
+    10*log10( (9/24)*(1/32400)*sum(10^(SELsNight/10)))
 }

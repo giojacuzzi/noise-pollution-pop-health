@@ -81,7 +81,7 @@ data.frame(
 # Explanation for using continuous Lden for Navy sites
 # - We do not have the data or tools necessary to classify noise events of Navy sites. Other sites (JGL, NPS, and SDA) had in-person operators validating the presence of noise events due to aircraft operations
 # - Aircraft operations produce the dominant noise events in the area, and their influence on overall level values far outweighs that of any transient noise*
-# - Lden values are within +/- 3 dB of Navy reported values for Navy sites (excluding Lopez and PT)
+# - Ldn values are within +/- 3 dB of Navy reported values for Navy sites (excluding Lopez and PT)
 # * This may not be the case for sites far from the airfields, specifically Lopez 5B_SG and Port Townsend 33_SG
 
 

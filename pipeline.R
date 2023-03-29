@@ -40,10 +40,7 @@ calculate_events_csv('NPS')
 # outputs: 'data/events/output/navy_reported_events.csv'
 source('data/events/load_events_navy.R')
 
-# 4. Validate noise events for each site date ----------------------------------
-# Ensuring they are aircraft events
-
-# # 5. Calculate metrics for each site date ------------------------------------
+# 4. Calculate metrics for each site date --------------------------------------
 # source('analysis/calculate_metrics.R')
 # Produce 'data/metrics/metrics.csv'
 # calculate_site_date_metrics_csv()
