@@ -22,11 +22,6 @@ mapview(
   col.regions=c('darkgoldenrod2', 'navy', 'green3', 'darkturquoise')
 ) %>% addStaticLabels(label=sites_with_events$ID, direction='top')
 
-## Max event level per site ----------------------------------------------------
-# Do not include SDA monitoring in Lmax analyses due to instrument error
-sort(tapply(data_events[data_events$Org!='SDA', 'LAeq_Lmax'],
-            data_events[data_events$Org!='SDA', 'ID'], max), decreasing=T)
-
 ## Box plot event LAeq_Lmax per site > a threshold value
 threshold=0
 ggplot(data_events[data_events$LAeq_Lmax>=threshold & data_events$Org!='SDA',], aes(x=ID, y=LAeq_Lmax)) +
@@ -34,36 +29,96 @@ ggplot(data_events[data_events$LAeq_Lmax>=threshold & data_events$Org!='SDA',], 
   geom_jitter(color="black", size=0.4, alpha=0.5) +
   coord_flip()
 
-# Hearing loss -----------------------------------------------------------------
-# Dependencies: any dataset
-# TODO: include non-navy data
-occupational_standards = read.csv('analysis/OshaNiosh.csv')
+## Max events per site ---------------------------------------------------------
+# TODO
+events_lmax = data_events[!is.na(data_events$LAeq_Lmax),]
+events_lmax = events_lmax[events_lmax$Org!='SDA',] # do not include SDA data in lmax calculations due to instrumentation error
+library(dplyr)
+events_lmax = events_lmax %>% group_by(ID) %>% slice(which.max(LAeq_Lmax))
+# max event recorded was 561 KysH (119.8 dBA max, 136.2 dBC peak)
+source('data/events/evaluate_events.R')
+for (i in 1:nrow(events_lmax)) {
+  id   = events_lmax[i,'ID'][[1]]
+  date = substr(as.character(events_lmax[1,'TimeStart'][[1]]), 1, 10)
+  num  = events_lmax[i,'X'][[1]]
+  plot_events(id, date, num)
+}
+# Events manually visually verified as aircraft with `plot_events(id, date, num)`:
+# TODO: Those with '???' need to be verified with spectral data
+# 753 20B_SG
+# 9758 24A_B
+# 10304 25B_T
+# 13327 26B_SG
+# 16290 27A_SG
+# 18086 2B_T   2020-12-15
+# 20831 33_SG  2020-12-16 <<<<<< ???
+# 24947 3A_T   2021-04-01
+# 26233 5B_SG  2020-12-14 <<<<<< ???
+# 134 AdmB   2019-06-24
+# 302 CrcF   2019-07-03
+# 764 EBLA0… 2015-06-29
+# 2508 EBLA0… 1992-07-13 <<<<<<<< ???
+# 561 KysH   2019-06-18
+# 914 LckS   2016-02-02
+# 999 LnPM   2019-06-18
+# 1079 RshF   2019-07-01
+# 1148 TrnC   2019-06-18
 
-# OSHA action level
-# https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.95AppA#:~:text=(2)%20The%20eight%2Dhour,to%20the%20measured%20sound%20level
-unique(occupational_standards[occupational_standards$OshaTWA>=85,'ID'])
+## 
+# Subset of a 4-day period (2019-06-18 through 21) that included 10 sorties
+source('data/load/load_site_date.R')
+data_date_1 = load_site_date('KysH', '2019-06-18')
+data_date_2 = load_site_date('KysH', '2019-06-19')
+data_date = rbind(data_date_1, data_date_2)
+# data_date = na.omit(data_date)
+start_idx = which(data_date$Time==as.POSIXct('2019-06-18 20:00:00', tz='UTC'))
+end_idx   = which(data_date$Time==as.POSIXct('2019-06-19 00:25:00', tz='UTC'))
+data_date = data_date[start_idx:end_idx,]
+ggplot(data_date, aes(x=Time, y=LAeq)) +
+  geom_line()
 
-# NIOSH recommended exposure limit
-# https://www.cdc.gov/niosh/docs/98-126/pdfs/98-126.pdf?id=10.26616/NIOSHPUB98126
-unique(occupational_standards[occupational_standards$NioshTWA>=85,'ID'])
+## Frequency spectrum of FCLP event --------------------------------------------
 
-# FAA Hearing Conservation Program action level trigger
-# https://www.faa.gov/documentLibrary/media/Order/Order_3900.66A.pdf
-# "The AL or the TWA exposure which requires program inclusion is 82 dBA, or a dose of 50 percent. FS employees exposed to this level for 30 days or more per year require inclusion in the HCP."
-unique(occupational_standards[occupational_standards$NioshTWA>=82,'ID'])
-
-# According to ISO 1999, exposure to environmental and leisure-time noise with LAeq,24h values < 70 dB(A) does not cause hearing impairment in the large majority of people (> 95%). In other words, an exposure limit of >70 dBA LAeq over a 24 hour period from environmental and leisure noise can pose a risk of hearing impairment.
-# https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1637786/pdf/envhper00310-0128.pdf
-# The EPA identifies a 24-hour exposure level of 70 decibels as the level of environmental noise which will prevent any measurable hearing loss over a lifetime.
-# https://www.epa.gov/archive/epa/aboutepa/epa-identifies-noise-levels-affecting-health-and-welfare.html#:~:text=The%20document%20identifies%20a%2024,hearing%20loss%20over%20a%20lifetime
-unique(data_metrics[data_metrics$Leq>=70,'ID'])
-
-# Direct physiological effects related to potential health impairments and risks are found, as a rule, only where maximal sound levels are above ca 115 d B(A) Criteria for the risk of inner ear damage due to high peak noise levels (> 115 d B)
-# https://drive.google.com/drive/u/0/search?q=Low-altitude%20overflights%20of%20fighters%20the%20risk%20of%20hearing%20loss
-# Noise-induced hearing loss is generally from exposures to higher noise frequencies ranging from 3,000 to 6,000 Hz
-# https://drive.google.com/file/d/1WZX8iRGYmG4wTG41XTzZzUyjHAkpPr2L/view
-unique(data_metrics[data_metrics$Lmax>=115,'ID'])
-
-## Ldens across sites
-temp = data_metrics[-which(is.na(data_metrics$Lden)),]
-sort(tapply(temp$Lden, temp$ID, energyavg), decreasing=T)
+# buffer = 30
+# event = data_events[e,]
+# event_data = data[which(data$Time==(event$TimeStart-buffer)):which(data$Time==(event$TimeEnd+buffer)),]
+# 
+# # Leq time series
+# p_leq = ggplot(event_data) +
+#   geom_line(aes(x=Time, y=LAeq)) +
+#   labs(x='Time', y='Leq (dBA)')
+# 
+# # Spectral heatmap
+# spectrum = event_data[,c(1, 26:61)] # NOTE: 6.3 Hz starts at index 26, 20 Hz at 31
+# names(spectrum) = gsub('1/3 LZeq ', '', names(spectrum))
+# 
+# spectrum_total = data.frame()
+# for (s in 1:nrow(spectrum)) {
+#   sec = as.POSIXct(spectrum$Time[s])
+#   band = rownames(t(spectrum[s,c(-1)]))
+#   lzeq = unname(spectrum[s,c(-1)])
+#   spectrum_sec = data.frame(
+#     sec,
+#     band,
+#     t(lzeq)
+#   )
+#   rownames(spectrum_sec) = c()
+#   colnames(spectrum_sec) = c('Time', 'Band', 'LZeq')
+#   spectrum_total = rbind(spectrum_total, spectrum_sec)
+# }
+# spectrum_total$Band = as.character(as.numeric(spectrum_total$Band))
+# spectrum_total$Band = factor(spectrum_total$Band)
+# sorted_levels = as.character(sort(as.numeric(levels(spectrum_total$Band))))
+# spectrum_total$Band = factor(spectrum_total$Band, levels=sorted_levels)
+# 
+# freq_labels = c( # levels(spectrum_total$Band)
+#   "",   "8",     "",   "12.5",  "",    "20",    "",    "31.5",  "",    "50",    "",    "80",    "",   "125",   "",   "200",   "",   "315",   "",   "500",   "",   "800",   "",  "1250",  "",  "2000",  "",  "3150",  "",  "5000",  "",  "8000",  "", "12500", "", "20000"
+# )
+# 
+# p_spectral = ggplot(spectrum_total, aes(x=Time, y=Band, fill=LZeq)) +
+#   geom_tile() +
+#   scale_fill_viridis(option='A') +
+#   scale_y_discrete(labels=freq_labels) +
+#   labs(title='', x='', y='Frequency (Hz)', fill='Leq (dBZ)')
+# 
+# print(p_spectral / p_leq)
