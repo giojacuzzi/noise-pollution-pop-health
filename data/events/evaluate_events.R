@@ -298,13 +298,13 @@ find_events_for_site_date = function(id, date) {
   return(site_date_events)
 }
 
-plot_events = function(id, date, event_num=0) {
+plot_events = function(id, date, event_nums=0) {
   org = get_org_for_site_date(id, date)
   data = load_site_date(id, date)
   events = get_data_events()
   events = events[events$ID==id & events$Date==date, ]
-  if (event_num > 0) {
-    events = events[events$X==event_num, ]
+  if (sum(event_nums) > 0) {
+    events = events[events$X %in% event_nums, ]
   }
   
   for (e in 1:nrow(events)) {
