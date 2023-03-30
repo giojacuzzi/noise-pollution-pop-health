@@ -105,20 +105,26 @@ events_sesh= data_events[
 source('data/load/load_site_date.R')
 site_data = load_site_date('25B_T', date)
 # plot_events('25B_T', date, events_sesh[11,'X'])
-event = events_sesh[11,]
-event_data = site_data[which(site_data$Time==event$TimeStart):which(site_data$Time==event$TimeEnd),]
-names(event_data) = gsub('X1.3.LZeq.', '', names(event_data))
-event_data = event_data[,c(1, 26:61)]
+session_freq_avg = data.frame()
+for (e in 1:nrow(events_sesh)) {
+  event = events_sesh[e,]
+  event_data = site_data[which(site_data$Time==event$TimeStart):which(site_data$Time==event$TimeEnd),]
+  names(event_data) = gsub('X1.3.LZeq.', '', names(event_data))
+  event_data = event_data[,c(1, 26:61)]
+  
+  event_avg = data.frame(event_data[,-c(1)])
+  event_avg = sapply(event_avg, energyavg)
+  event_avg = data.frame(
+    Band=gsub('X','',names(event_avg)),
+    dBZ=event_avg
+  )
+  session_freq_avg = rbind(session_freq_avg, event_avg)
+}
 
-event_avg = data.frame(event_data[,-c(1)])
-event_avg = sapply(event_avg, energyavg)
-event_avg = data.frame(
-  Band=gsub('X','',names(event_avg)),
-  dBZ=event_avg
-)
-event_avg$Band = as.character(as.numeric(event_avg$Band))
-event_avg$Band = factor(event_avg$Band)
-sorted_levels = as.character(sort(as.numeric(levels(event_avg$Band))))
-event_avg$Band = factor(event_avg$Band, levels=sorted_levels)
-ggplot(event_avg, aes(x=Band, y=dBZ)) + 
+session_freq_avg$Band = as.character(as.numeric(session_freq_avg$Band))
+session_freq_avg$Band = factor(session_freq_avg$Band)
+sorted_levels = as.character(sort(as.numeric(levels(session_freq_avg$Band))))
+session_freq_avg$Band = factor(session_freq_avg$Band, levels=sorted_levels)
+session_freq_avg = session_freq_avg%>%group_by(Band)%>%summarise(EnergyAvg=energyavg(dBZ))
+ggplot(as.data.frame(session_freq_avg), aes(x=Band, y=EnergyAvg)) + 
   geom_bar(stat = "identity")
