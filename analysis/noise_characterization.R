@@ -82,49 +82,51 @@ date = '2020-12-15'
 # 17:01-18:10
 # 18:31-19:40
 
-events_sesh= data_events[
-  data_events$ID=='25B_T' &
-    data_events$Date=='2020-12-15' &
-    (# Session 1
-    (data_events$TimeStart>as.POSIXct('2020-12-15 12:36:00', tz='UTC') &
-       data_events$TimeStart<as.POSIXct('2020-12-15 13:12:00', tz='UTC')) |
-    # Session 2
-    (data_events$TimeStart>as.POSIXct('2020-12-15 14:28:00', tz='UTC') &
-       data_events$TimeStart<as.POSIXct('2020-12-15 15:02:00', tz='UTC')) |
-    # Session 3
-    (data_events$TimeStart>as.POSIXct('2020-12-15 17:00:00', tz='UTC') &
-       data_events$TimeStart<as.POSIXct('2020-12-15 18:11:00', tz='UTC')) |
-    # Session 4
-    (data_events$TimeStart>as.POSIXct('2020-12-15 18:30:00', tz='UTC') &
-       data_events$TimeStart<as.POSIXct('2020-12-15 19:41:00', tz='UTC')
-     ))
-  , ]
-# plot_events('25B_T', date, events_sesh$X)
-
-# DEBUG: look at octave bands for one event
 source('data/load/load_site_date.R')
-site_data = load_site_date('25B_T', date)
-# plot_events('25B_T', date, events_sesh[11,'X'])
-session_freq_avg = data.frame()
-for (e in 1:nrow(events_sesh)) {
-  event = events_sesh[e,]
-  event_data = site_data[which(site_data$Time==event$TimeStart):which(site_data$Time==event$TimeEnd),]
-  names(event_data) = gsub('X1.3.LZeq.', '', names(event_data))
-  event_data = event_data[,c(1, 26:61)]
+for (id in ids) {
+  message(id)
+  events_sesh=data_events[
+    data_events$ID==id &
+      data_events$Date=='2020-12-15' &
+      (# Session 1
+        (data_events$TimeStart>as.POSIXct('2020-12-15 12:36:00', tz='UTC') &
+           data_events$TimeStart<as.POSIXct('2020-12-15 13:12:00', tz='UTC')) |
+          # Session 2
+          (data_events$TimeStart>as.POSIXct('2020-12-15 14:28:00', tz='UTC') &
+             data_events$TimeStart<as.POSIXct('2020-12-15 15:02:00', tz='UTC')) |
+          # Session 3
+          (data_events$TimeStart>as.POSIXct('2020-12-15 17:00:00', tz='UTC') &
+             data_events$TimeStart<as.POSIXct('2020-12-15 18:11:00', tz='UTC')) |
+          # Session 4
+          (data_events$TimeStart>as.POSIXct('2020-12-15 18:30:00', tz='UTC') &
+             data_events$TimeStart<as.POSIXct('2020-12-15 19:41:00', tz='UTC')
+          ))
+    , ]
+  # plot_events('25B_T', date, events_sesh$X)
   
-  event_avg = data.frame(event_data[,-c(1)])
-  event_avg = sapply(event_avg, energyavg)
-  event_avg = data.frame(
-    Band=gsub('X','',names(event_avg)),
-    dBZ=event_avg
-  )
-  session_freq_avg = rbind(session_freq_avg, event_avg)
+  site_data = load_site_date(id, date)
+  session_freq_avg = data.frame()
+  for (e in 1:nrow(events_sesh)) {
+    event = events_sesh[e,]
+    event_data = site_data[which(site_data$Time==event$TimeStart):which(site_data$Time==event$TimeEnd),]
+    names(event_data) = gsub('X1.3.LZeq.', '', names(event_data))
+    event_data = event_data[,c(1, 26:61)]
+    
+    event_avg = data.frame(event_data[,-c(1)])
+    event_avg = sapply(event_avg, energyavg)
+    event_avg = data.frame(
+      Band=gsub('X','',names(event_avg)),
+      dBZ=event_avg
+    )
+    session_freq_avg = rbind(session_freq_avg, event_avg)
+  }
+  
+  session_freq_avg$Band = as.character(as.numeric(session_freq_avg$Band))
+  session_freq_avg$Band = factor(session_freq_avg$Band)
+  sorted_levels = as.character(sort(as.numeric(levels(session_freq_avg$Band))))
+  session_freq_avg$Band = factor(session_freq_avg$Band, levels=sorted_levels)
+  session_freq_avg = session_freq_avg%>%group_by(Band)%>%summarise(EnergyAvg=energyavg(dBZ))
+  p_sesh = ggplot(as.data.frame(session_freq_avg), aes(x=Band, y=EnergyAvg)) + 
+    geom_bar(stat = "identity")
+  print(p_sesh)
 }
-
-session_freq_avg$Band = as.character(as.numeric(session_freq_avg$Band))
-session_freq_avg$Band = factor(session_freq_avg$Band)
-sorted_levels = as.character(sort(as.numeric(levels(session_freq_avg$Band))))
-session_freq_avg$Band = factor(session_freq_avg$Band, levels=sorted_levels)
-session_freq_avg = session_freq_avg%>%group_by(Band)%>%summarise(EnergyAvg=energyavg(dBZ))
-ggplot(as.data.frame(session_freq_avg), aes(x=Band, y=EnergyAvg)) + 
-  geom_bar(stat = "identity")
