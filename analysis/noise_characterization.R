@@ -121,12 +121,18 @@ for (id in ids) {
     session_freq_avg = rbind(session_freq_avg, event_avg)
   }
   
+  session_LAeq_Lmax_avg = 0
+  session_LCpeak_avg = 0
+  session_SEL_avg = 0
+  
   session_freq_avg$Band = as.character(as.numeric(session_freq_avg$Band))
   session_freq_avg$Band = factor(session_freq_avg$Band)
   sorted_levels = as.character(sort(as.numeric(levels(session_freq_avg$Band))))
   session_freq_avg$Band = factor(session_freq_avg$Band, levels=sorted_levels)
   session_freq_avg = session_freq_avg%>%group_by(Band)%>%summarise(EnergyAvg=energyavg(dBZ))
   p_sesh = ggplot(as.data.frame(session_freq_avg), aes(x=Band, y=EnergyAvg)) + 
-    geom_bar(stat = "identity")
+    geom_bar(stat = "identity") +
+    labs(title = paste0('FCLP Event 1/3 octave band spectrum', id),
+         subtitle = paste('LAeq_Lmax', round(energyavg(events_sesh$LAeq_Lmax),1), 'LCpeak', round(energyavg(events_sesh$LCpeak),1), 'SEL', round(energyavg(events_sesh$SEL),1)))
   print(p_sesh)
 }
