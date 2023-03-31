@@ -10,12 +10,12 @@ refdur_niosh = function(L) {
   return(8/(2^((L-85)/3))) # hours
 }
 
-ggplot() +
-  labs(title='Refdur vs Level') +
-  stat_function(fun=refdur_osha, color='blue') +
-  stat_function(fun=refdur_niosh, color='red') +
-  scale_x_continuous(limits = c(0, 100)) +
-  scale_y_continuous(limits = c(0, 100))
+# ggplot() +
+#   labs(title='Refdur vs Level') +
+#   stat_function(fun=refdur_osha, color='blue') +
+#   stat_function(fun=refdur_niosh, color='red') +
+#   scale_x_continuous(limits = c(0, 100)) +
+#   scale_y_continuous(limits = c(0, 100))
 
 # Level to achieve 100% dose for duration t in hours
 level_from_refdur_osha = function(t) {
@@ -39,12 +39,12 @@ twa_niosh = function(d) {
   10 * log10(d/100) + 85
 }
 
-ggplot() +
-  labs(title='TWA vs Dose') +
-  stat_function(fun=twa_osha, color='blue') +
-  stat_function(fun=twa_niosh, color='red') +
-  scale_x_continuous(limits = c(0, 100)) +
-  scale_y_continuous(limits = c(0, 100))
+# ggplot() +
+#   labs(title='TWA vs Dose') +
+#   stat_function(fun=twa_osha, color='blue') +
+#   stat_function(fun=twa_niosh, color='red') +
+#   scale_x_continuous(limits = c(0, 100)) +
+#   scale_y_continuous(limits = c(0, 100))
 
 dose_osha = function(l, c) {
   t = refdur_osha(l)
@@ -70,33 +70,33 @@ t = refdur_osha(l) # reference duration for that level
 d = 100*sum(c/t)
 message(paste0(d,'%'))
 
-# Dose via hourly Leqs
-data_metrics = get_data_metrics()
-for (i in 1:nrow(data_metrics)) {
-  test_date = data_metrics[i, which(colnames(data_metrics)=='Leq00'):which(colnames(data_metrics)=='Leq23')]
-  if (anyNA(test_date)) next
-  l = unlist(test_date)
-  c = rep(1, 24)
+# # Dose via hourly Leqs
+# data_metrics = get_data_metrics()
+# for (i in 1:nrow(data_metrics)) {
+#   test_date = data_metrics[i, which(colnames(data_metrics)=='Leq00'):which(colnames(data_metrics)=='Leq23')]
+#   if (anyNA(test_date)) next
+#   l = unlist(test_date)
+#   c = rep(1, 24)
+#   
+#   t = refdur_osha(l)
+#   d = round(100*sum(c/t),1)
+#   osha_action_trigger = (twa_osha(d) >= 85)
+#   if (osha_action_trigger) { # OSHA requires employers to implement a hearing conservation program when noise exposure is at or above 85 decibels averaged over 8 working hours
+#     message(paste0('OSHA ', data_metrics[i,'ID'], ' ', data_metrics[i,'Date'], ' Lden ', data_metrics[i,'Lden'], ' dose ', d,'%, twa ', twa_osha(d)))
+#   }
+#   
+#   t = refdur_niosh(l)
+#   d = round(100*sum(c/t),1)
+#   niosh_recommended_limitr_trigger = (twa_niosh(d) >= 85)
+#   if (niosh_recommended_limitr_trigger) { # NIOSH recommended exposure limit (REL) is 85 decibels, A-weighted, as an 8-hr time-weighted average
+#     message(paste0('NIOSH ', data_metrics[i,'ID'], ' ', data_metrics[i,'Date'], ' Lden ', data_metrics[i,'Lden'], ' dose ', d,'%, twa ', twa_niosh(d)))
+#   }
+# }
 
-  t = refdur_osha(l)
-  d = round(100*sum(c/t),1)
-  osha_action_trigger = (twa_osha(d) >= 85)
-  if (osha_action_trigger) { # OSHA requires employers to implement a hearing conservation program when noise exposure is at or above 85 decibels averaged over 8 working hours
-    message(paste0('OSHA ', data_metrics[i,'ID'], ' ', data_metrics[i,'Date'], ' Lden ', data_metrics[i,'Lden'], ' dose ', d,'%, twa ', twa_osha(d)))
-  }
-
-  t = refdur_niosh(l)
-  d = round(100*sum(c/t),1)
-  niosh_recommended_limitr_trigger = (twa_niosh(d) >= 85)
-  if (niosh_recommended_limitr_trigger) { # NIOSH recommended exposure limit (REL) is 85 decibels, A-weighted, as an 8-hr time-weighted average
-    message(paste0('NIOSH ', data_metrics[i,'ID'], ' ', data_metrics[i,'Date'], ' Lden ', data_metrics[i,'Lden'], ' dose ', d,'%, twa ', twa_niosh(d)))
-  }
-}
-
-# TODO: Evaluate FAA Hearing Conservation Program action level trigger
-# https://www.faa.gov/documentLibrary/media/Order/Order_3900.66A.pdf
-# "The AL or the TWA exposure which requires program inclusion is 82 dBA, or a dose of 50 percent. FS employees exposed to this level for 30 days or more per year require inclusion in the HCP."
-results[results$NioshTWA>=82,]
+# # TODO: Evaluate FAA Hearing Conservation Program action level trigger
+# # https://www.faa.gov/documentLibrary/media/Order/Order_3900.66A.pdf
+# # "The AL or the TWA exposure which requires program inclusion is 82 dBA, or a dose of 50 percent. FS employees exposed to this level for 30 days or more per year require inclusion in the HCP."
+# results[results$NioshTWA>=82,]
 
 
 source('data/load/load_site_date.R')
@@ -105,6 +105,7 @@ source('data/metrics/metrics.R')
 data_metrics = get_data_metrics()
 results = data.frame()
 for (r in 1:nrow(data_metrics)) {
+  message(paste('Site date',r,'of',nrow(data_metrics)))
   if (data_metrics[r,'Org'] != 'NAVY') {
     message('NOTE: slow time-weighted level required')
     next
@@ -150,4 +151,4 @@ for (r in 1:nrow(data_metrics)) {
   ))
 }
 
-write.csv(results, 'analysis/output/osha_niosh.csv', row.names=F)
+write.csv(results, 'data/metrics/output/osha_niosh.csv', row.names=F)
