@@ -73,10 +73,24 @@ ldn_comparison[ldn_comparison$ID=='25B_T', 'NavyDNL']  = 69.9
 ldn_comparison[ldn_comparison$ID=='26B_SG', 'NavyDNL'] = 74.2
 ldn_comparison[ldn_comparison$ID=='27A_SG', 'NavyDNL'] = 69.2
 ldn_comparison[ldn_comparison$ID=='33_SG', 'NavyDNL']  = 39.9
+# TODO: average flight operations in aggregate model instead of taking max
+ldn_comparison$ModeledDNL = NA # taken from NOISEMAP aggregate .poi
+ldn_comparison[ldn_comparison$ID=='2B_T', 'ModeledDNL']   = 74.1
+ldn_comparison[ldn_comparison$ID=='3A_T', 'ModeledDNL']   = 73.8
+ldn_comparison[ldn_comparison$ID=='5B_SG', 'ModeledDNL']  = 53.4
+ldn_comparison[ldn_comparison$ID=='8B_SG', 'ModeledDNL']  = 79.8
+ldn_comparison[ldn_comparison$ID=='9B_SG', 'ModeledDNL']  = 79.4
+ldn_comparison[ldn_comparison$ID=='20B_SG', 'ModeledDNL'] = 83.5
+ldn_comparison[ldn_comparison$ID=='24A_B', 'ModeledDNL']  = 89.1
+ldn_comparison[ldn_comparison$ID=='25B_T', 'ModeledDNL']  = 73.6
+ldn_comparison[ldn_comparison$ID=='26B_SG', 'ModeledDNL'] = 83.4
+ldn_comparison[ldn_comparison$ID=='27A_SG', 'ModeledDNL'] = 79.2
+ldn_comparison[ldn_comparison$ID=='33_SG', 'ModeledDNL']  = 44.7
 # NOTE: difference for Lopez (5B_SG) and PT (33_SG) is significant, potentially due to higher ambient noise from coastal wind, watercraft, and (in the case of PT) city activity. Note that the difference in Lden between these two sites during active and inactive days (below) is minimal, indicating a negligible effect of aircraft noise events on overall noise levels during this monitoring period. Therefore, we may choose to forgo including them in the health analysis.
 data.frame(
   ID=ldn_comparison$ID,
-  Difference=(ldn_comparison$Ldn - ldn_comparison$NavyDNL)
+  DifferenceLdnNavyDNL=(ldn_comparison$Ldn - ldn_comparison$NavyDNL),
+  DifferenceLdnModeledDNL=(ldn_comparison$Ldn - ldn_comparison$ModeledDNL)
 )
 # Explanation for using continuous Lden for Navy sites
 # - We do not have the data or tools necessary to classify noise events of Navy sites. Other sites (JGL, NPS, and SDA) had in-person operators validating the presence of noise events due to aircraft operations
