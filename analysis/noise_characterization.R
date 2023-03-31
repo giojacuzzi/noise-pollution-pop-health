@@ -1,5 +1,6 @@
 ## Noise characterization
 # How is the noise quantitatively characterized?
+# Requirements: PHI database
 
 source('global.R')
 source('data/metrics/metrics.R')
@@ -23,7 +24,7 @@ mapview(
 ) %>% addStaticLabels(label=sites_with_events$ID, direction='top')
 
 ## Box plot event LAeq_Lmax per site > a threshold value
-threshold=0
+threshold=80
 ggplot(data_events[data_events$LAeq_Lmax>=threshold & data_events$Org!='SDA',], aes(x=ID, y=LAeq_Lmax)) +
   geom_boxplot(fill="slateblue", alpha=0.0) +
   geom_jitter(color="black", size=0.4, alpha=0.5) +
@@ -82,9 +83,7 @@ date = '2020-12-15'
 # 17:01-18:10
 # 18:31-19:40
 
-source('data/load/load_site_date.R')
 for (id in ids) {
-  message(id)
   events_sesh=data_events[
     data_events$ID==id &
       data_events$Date=='2020-12-15' &
@@ -132,7 +131,7 @@ for (id in ids) {
   session_freq_avg = session_freq_avg%>%group_by(Band)%>%summarise(EnergyAvg=energyavg(dBZ))
   p_sesh = ggplot(as.data.frame(session_freq_avg), aes(x=Band, y=EnergyAvg)) + 
     geom_bar(stat = "identity") +
-    labs(title = paste0('FCLP Event 1/3 octave band spectrum', id),
+    labs(title = paste('FCLP Event 1/3 octave band spectrum', id),
          subtitle = paste('LAeq_Lmax', round(energyavg(events_sesh$LAeq_Lmax),1), 'LCpeak', round(energyavg(events_sesh$LCpeak),1), 'SEL', round(energyavg(events_sesh$SEL),1)))
   print(p_sesh)
 }
