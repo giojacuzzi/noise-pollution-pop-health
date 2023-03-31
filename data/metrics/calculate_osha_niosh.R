@@ -106,17 +106,13 @@ data_metrics = get_data_metrics()
 results = data.frame()
 for (r in 1:nrow(data_metrics)) {
   message(paste('Site date',r,'of',nrow(data_metrics)))
-  if (data_metrics[r,'Org'] != 'NAVY') {
-    message('NOTE: slow time-weighted level required')
-    next
-  }
   
   id = data_metrics[r,'ID']
   date = data_metrics[r,'Date']
   test_date = load_site_date(id, as.Date(as.character(date)))
   test_date = na.omit(test_date)
   
-  l = test_date$LAS
+  l = test_date$LAeq # NOTE: slow time-weighted levels expected
   c = rep(1/3600, length(l))
   
   t = refdur_osha(l)

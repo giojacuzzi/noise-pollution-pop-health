@@ -22,7 +22,16 @@ unique(occupational_standards[occupational_standards$OshaTWA>=85,'ID'])
 
 # NIOSH recommended exposure limit
 # https://www.cdc.gov/niosh/docs/98-126/pdfs/98-126.pdf?id=10.26616/NIOSHPUB98126
-unique(occupational_standards[occupational_standards$NioshTWA>=85,'ID'])
+niosh_sites = unique(occupational_standards[occupational_standards$NioshTWA>=85,'ID'])
+
+sites_with_metrics = data_sites[data_sites$ID %in% unique(niosh_sites),]
+mapviewOptions(legend.pos='bottomright')
+mapview(
+  sites_with_metrics,
+  xcol='Longitude', ycol='Latitude', zcol='Org',
+  layer.name = 'Organization', crs=4269, grid=F, legend=T,
+  col.regions=c('darkgoldenrod2', 'navy', 'green3', 'darkturquoise')
+) %>% addStaticLabels(label=sites_with_metrics$ID, direction='top')
 
 # FAA Hearing Conservation Program action level trigger
 # https://www.faa.gov/documentLibrary/media/Order/Order_3900.66A.pdf
