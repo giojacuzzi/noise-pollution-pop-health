@@ -66,6 +66,10 @@ for (period in periods) {
     bind_rows(data) %>% group_by(Profile) %>% slice(which.max(Num.Total))
   )
   
+  orgdata = bind_rows(data)
+  bind_rows(data) %>% group_by(Profile) %>% summarise_at(vars(Num.Total), list(name = max))
+  bind_rows(data) %>% group_by(Profile) %>% summarise_at(vars(Num.Total), list(name = mean))
+  
   # File name for aggregate results
   filename = paste('data/flight_ops/output/Period', period, 'Aggregate Flight Operations.csv')
   
@@ -109,7 +113,7 @@ for (period in periods) {
     '% Total'
   )
   
-  # Remove '% Total' values, as they may be incorrect after aggregation
+  # Remove '% Total' values, as they are incorrect after aggregation
   data_all_ops[,'% Total'] = NA
   
   # Create the aggregate .csv

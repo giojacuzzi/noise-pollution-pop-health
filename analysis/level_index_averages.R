@@ -36,31 +36,36 @@ ldn_comparison[ldn_comparison$ID=='25B_T', 'NavyDNL']  = 69.9
 ldn_comparison[ldn_comparison$ID=='26B_SG', 'NavyDNL'] = 74.2
 ldn_comparison[ldn_comparison$ID=='27A_SG', 'NavyDNL'] = 69.2
 ldn_comparison[ldn_comparison$ID=='33_SG', 'NavyDNL']  = 39.9
-# TODO: average flight operations in aggregate model instead of taking max
+# Average flight operations in aggregate model across all 4 navy periods
 ldn_comparison$ModeledDNL = NA # taken from NOISEMAP aggregate .poi
-ldn_comparison[ldn_comparison$ID=='2B_T', 'ModeledDNL']   = 74.1
-ldn_comparison[ldn_comparison$ID=='3A_T', 'ModeledDNL']   = 73.8
-ldn_comparison[ldn_comparison$ID=='5B_SG', 'ModeledDNL']  = 53.4
-ldn_comparison[ldn_comparison$ID=='8B_SG', 'ModeledDNL']  = 79.8
-ldn_comparison[ldn_comparison$ID=='9B_SG', 'ModeledDNL']  = 79.4
-ldn_comparison[ldn_comparison$ID=='20B_SG', 'ModeledDNL'] = 83.5
-ldn_comparison[ldn_comparison$ID=='24A_B', 'ModeledDNL']  = 89.1
-ldn_comparison[ldn_comparison$ID=='25B_T', 'ModeledDNL']  = 73.6
-ldn_comparison[ldn_comparison$ID=='26B_SG', 'ModeledDNL'] = 83.4
-ldn_comparison[ldn_comparison$ID=='27A_SG', 'ModeledDNL'] = 79.2
-ldn_comparison[ldn_comparison$ID=='33_SG', 'ModeledDNL']  = 44.7
+ldn_comparison[ldn_comparison$ID=='2B_T', 'ModeledDNL']   = 70.5
+ldn_comparison[ldn_comparison$ID=='3A_T', 'ModeledDNL']   = 70.6
+ldn_comparison[ldn_comparison$ID=='5B_SG', 'ModeledDNL']  = 50.3
+ldn_comparison[ldn_comparison$ID=='8B_SG', 'ModeledDNL']  = 78.9
+ldn_comparison[ldn_comparison$ID=='9B_SG', 'ModeledDNL']  = 75.8
+ldn_comparison[ldn_comparison$ID=='20B_SG', 'ModeledDNL'] = 80.6
+ldn_comparison[ldn_comparison$ID=='24A_B', 'ModeledDNL']  = 86.3
+ldn_comparison[ldn_comparison$ID=='25B_T', 'ModeledDNL']  = 69.8
+ldn_comparison[ldn_comparison$ID=='26B_SG', 'ModeledDNL'] = 79.5
+ldn_comparison[ldn_comparison$ID=='27A_SG', 'ModeledDNL'] = 76.4
+ldn_comparison[ldn_comparison$ID=='33_SG', 'ModeledDNL']  = 41.6
 
 # NOTE: difference for Lopez (5B_SG) and PT (33_SG) is significant, potentially due to higher ambient noise from coastal wind, watercraft, and (in the case of PT) city activity. Note that the difference in Lden between these two sites during active and inactive days (below) is minimal, indicating a negligible effect of aircraft noise events on overall noise levels during this monitoring period. Therefore, we may choose to forgo including them in the site-specific health analysis.
 data.frame(
   ID=ldn_comparison$ID,
-  DifferenceLdnNavyDNL=(ldn_comparison$Ldn - ldn_comparison$NavyDNL),
-  DifferenceLdnModeledDNL=(ldn_comparison$Ldn - ldn_comparison$ModeledDNL)
+  Ldn = ldn_comparison$Ldn,
+  DNL_Measured = ldn_comparison$NavyDNL,
+  DNL_Modeled  = ldn_comparison$ModeledDNL,
+  D_Ldn_DNL_Measured=(ldn_comparison$Ldn - ldn_comparison$NavyDNL),
+  D_Ldn_DNL_Modeled=(ldn_comparison$Ldn - ldn_comparison$ModeledDNL),
+  D_DNL_Measured_Modeled=(ldn_comparison$NavyDNL - ldn_comparison$ModeledDNL)
 )
 
 # Explanation for using continuous Lden for Navy sites
 # - We do not have the data or tools necessary to classify noise events of Navy sites. Other sites (JGL, NPS, and SDA) had in-person operators validating the presence of noise events due to aircraft operations
 # - Aircraft operations produce the dominant noise events in the area, and their influence on overall level values far outweighs that of any transient noise*
-# - Ldn values are within +/- 3 dB of Navy reported values for Navy sites (excluding Lopez and PT)
+# - Ldn values are within +/- 3 dB of Navy reported measured values for Navy sites (excluding Lopez and PT)
+# - Modeled DNL vaues are with +/- 10 dB of calculated Ldn values (excluding PT), mean absolute error 5.88 dB
 # * This may not be the case for sites far from the airfields, specifically Lopez 5B_SG and Port Townsend 33_SG
 
 # Energy average Lden

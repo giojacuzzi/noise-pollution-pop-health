@@ -11,7 +11,7 @@ The base data ('NASWI_MPX_Y_Noisemap - Flight Operations.xml' files) have been e
 
 Run both of these scripts to generate the per-period aggregates and the total singular aggregate csv outputs.
 
-Next, open the aggregate csv file(s) from `data/flight_ops/output` that you want to use with Excel, and re-save as xml file(s) in `data/flight_ops/modeling/data/`.
+Next, open the aggregate csv file(s) from `data/flight_ops/modeling/output` that you want to use with Excel, and re-save as xml file(s) in `data/flight_ops/modeling/data/`.
 NOTE: We currently only have day/night values (not evening) for the operations on average annual day, so in the next step, we cannot import any data from an 'evening' column.
 
 Run BaseOps, and open the corresponding .baseops case file from `data/flight_ops/modeling/data/`.
@@ -43,7 +43,7 @@ To import new flight operations into BaseOps:
   226A_FRS
   ...
 ```
-Press OK again. You  may need to manually match some flight profile tracks. Then, you can run the case, and plot maps by following instructions in the section below.
+Press OK again. You may need to manually match some flight profile tracks. Then, you can run the case, and plot maps by following instructions in the section below.
 
 ---
 
