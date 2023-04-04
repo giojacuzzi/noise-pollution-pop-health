@@ -58,18 +58,52 @@ mapview(wa_blockgroups_cb)
 
 # tidycensus
 library(tidycensus)
-# census_api_key('a9d9f05e0560c7fadaed6b4168bedc56d0e4686d')
+census_api_key('a9d9f05e0560c7fadaed6b4168bedc56d0e4686d')
+library(ggplot2)
+library(sf)
+source('global.R')
 
 wa_population = get_decennial(
-  geography = 'county',
+  geography = 'tract',
   variables = 'P1_001N',
   state = 'WA',
   year = 2020,
   geometry = TRUE
 )
-
 plot(wa_population['value'])
 
-library(ggplot2)
-wa_map = ggplot(wa_population, aes(fill = value)) + geom_sf()
+sites = st_as_sf(get_data_sites(),
+                 coords = c("Longitude", "Latitude"), 
+                 crs = 'NAD83', agr = "constant")
+sites = na.omit(sites)
+sites = sites[sites$ID %in% unique(get_data_metrics()[,'ID']), ]
+sites$Longitude = st_coordinates(sites$geometry)[,'X']
+sites$Latitude  = st_coordinates(sites$geometry)[,'Y']
+
+bounds_x = c(-123.2, -122.0) # [min, max]
+bounds_y = c(48.0, 48.6)
+bounds = data.frame(
+  x = c(bounds_x[1], bounds_x[1], bounds_x[2], bounds_x[2]),
+  y = c(bounds_y[1], bounds_y[2], bounds_y[2], bounds_y[1])
+)
+
+wa_map = ggplot() +
+  geom_sf(data = wa_counties_cb) +
+  geom_polygon(data = bounds, aes(x, y, group = 1), fill=NA, color = 'red')
 print(wa_map)
+
+path = 'data/flight_ops/modeling/baseops/Aggregated/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines.shp'
+shp_contours = st_read(path)
+ggplot() + geom_sf(data = shp_contours)
+
+library(ggrepel)
+area_map = ggplot() +
+  geom_sf(data = wa_population) + # aes(fill = value)
+  geom_sf(data = sites, size = 1, shape = 8, color = 'red') +
+  # geom_text_repel(data = sites,
+  #                 aes(x = Longitude, y = Latitude, label = ID),
+  #                 size = 2, col = 'black', fontface = 'bold', max.overlaps = 30,
+  #                 nudge_x = c(),
+  #                 nudge_y = c()) +
+  coord_sf(xlim = bounds_x, ylim = bounds_y)
+print(area_map)
