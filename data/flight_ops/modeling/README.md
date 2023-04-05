@@ -50,6 +50,16 @@ Press OK again. You may need to manually match some flight profile tracks. Then,
 # Noise contour map generation
 Maps are generated with NMap after running a BaseOps case and selecting "Plot"
 
+### Export options
+- From NMPlot, select File > Export to GIS
+- Click 'Properties'
+- Coordinate System > Export in the following coordinate system...
+- Level of Detail > Export with a level of detail appropriate for display at  a scale of...
+  - 1:24000
+  - 1 inch = 2000 feet
+- Save as "NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines_DNL"
+- OK
+
 ### Visual options
 Edit Options...
 - Contours > Levels

@@ -72,16 +72,18 @@ wa_population = get_decennial(
 )
 plot(wa_population['value'])
 
+crs = 'NAD83'
+
 sites = st_as_sf(get_data_sites(),
-                 coords = c("Longitude", "Latitude"), 
-                 crs = 'NAD83', agr = "constant")
+                 coords = c('Longitude', 'Latitude'), 
+                 crs = crs, agr = 'constant')
 sites = na.omit(sites)
 sites = sites[sites$ID %in% unique(get_data_metrics()[,'ID']), ]
 sites$Longitude = st_coordinates(sites$geometry)[,'X']
 sites$Latitude  = st_coordinates(sites$geometry)[,'Y']
 
-bounds_x = c(-123.2, -122.0) # [min, max]
-bounds_y = c(48.0, 48.6)
+bounds_x = c(-123.8, -121.2) # [min, max]
+bounds_y = c(47.6, 48.7)
 bounds = data.frame(
   x = c(bounds_x[1], bounds_x[1], bounds_x[2], bounds_x[2]),
   y = c(bounds_y[1], bounds_y[2], bounds_y[2], bounds_y[1])
@@ -92,9 +94,35 @@ wa_map = ggplot() +
   geom_polygon(data = bounds, aes(x, y, group = 1), fill=NA, color = 'red')
 print(wa_map)
 
-path = 'data/flight_ops/modeling/baseops/Aggregated/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines.shp'
+path = 'data/flight_ops/modeling/baseops/Aggregated/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines_DNL.shp'
 shp_contours = st_read(path)
-ggplot() + geom_sf(data = shp_contours)
+st_crs(shp_contours) = crs
+# ggplot() + geom_sf(data = shp_contours)
+
+# Default overlapping contours (i.e. 65 dB contour encapsulates contours of all levels >= 65)
+contours_polygon_overlap <- shp_contours %>% 
+  dplyr::group_by(Level) %>%
+  dplyr::summarize() %>%
+  sf::st_cast("MULTIPOLYGON")
+plot(contours_polygon_overlap)
+
+# Separate contours per level
+contours_polygon = st_make_valid(contours_polygon_overlap)
+for (r in 1:nrow(contours_polygon)) {
+  target = contours_polygon[r,]
+  level = target$Level
+  if (r < nrow(contours_polygon)) {
+    others = st_union(contours_polygon[which(contours_polygon$Level>level),])
+    diff = st_difference(st_geometry(target), st_geometry(others))
+    target$geometry = diff
+  }
+  contours_polygon[r,] = target
+
+  # p = ggplot() +
+  #   geom_sf(data = contours_polygon[r,], aes(fill = Level)) +
+  #   labs(title = level)
+  # print(p)
+}
 
 library(ggrepel)
 area_map = ggplot() +
@@ -105,5 +133,8 @@ area_map = ggplot() +
   #                 size = 2, col = 'black', fontface = 'bold', max.overlaps = 30,
   #                 nudge_x = c(),
   #                 nudge_y = c()) +
+  geom_sf(data = contours_polygon[contours_polygon$Level>=30,],
+          aes(fill = Level), alpha=0.25) +
+  scale_fill_viridis(option="magma") +
   coord_sf(xlim = bounds_x, ylim = bounds_y)
 print(area_map)
