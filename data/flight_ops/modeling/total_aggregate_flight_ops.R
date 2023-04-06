@@ -71,4 +71,19 @@ write.csv(total_ops,
           na='')
 message(paste('Created', filename))
 
-# Next, see README.md for instructions on how to convert csv to xml and import into BaseOps
+# Next, see README.md for instructions on how to convert csvs to xml and import into BaseOps
+
+## Nighttime ops only ----------------------------------------------------------
+# File name for nighttime aggregate results
+filename_night = paste('data/flight_ops/modeling/output/Total Aggregate Flight Operations - NIGHT.csv')
+
+night_ops = total_ops
+night_ops[,'Num Day']   = 0.0
+night_ops[,'Num Total'] = total_ops[,'Num Night']
+
+write.csv(night_ops,
+          file=filename_night,
+          row.names=F,
+          quote=F,
+          na='')
+message(paste('Created', filename_night))

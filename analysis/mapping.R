@@ -94,17 +94,42 @@ wa_map = ggplot() +
   geom_polygon(data = bounds, aes(x, y, group = 1), fill=NA, color = 'red')
 print(wa_map)
 
-path = 'data/flight_ops/modeling/baseops/Aggregated/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines_DNL.shp'
+sf_extSoftVersion()
+
+path = 'data/flight_ops/modeling/baseops/Aggregated/DNL/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines.shp'
+# path = 'data/flight_ops/modeling/baseops/Aggregated/DNL_NIGHT/NASWI_Aggregated_Noisemap_NIGHT - Aggregate_ContourLine_Lines.shp'
 shp_contours = st_read(path)
 st_crs(shp_contours) = crs
-# ggplot() + geom_sf(data = shp_contours)
+st_is_longlat(shp_contours)
+sf_use_s2(T)
+ggplot() + geom_sf(data = shp_contours)
+# st_buffer(test, dist=0) ???
 
 # Default overlapping contours (i.e. 65 dB contour encapsulates contours of all levels >= 65)
-contours_polygon_overlap <- shp_contours %>% 
-  dplyr::group_by(Level) %>%
-  dplyr::summarize() %>%
-  sf::st_cast("MULTIPOLYGON")
-plot(contours_polygon_overlap)
+# contours_polygon_overlap <- shp_contours %>% 
+#   dplyr::group_by(Level) %>%
+#   dplyr::summarize() %>%
+#   sf::st_cast("MULTIPOLYGON")
+contours_polygon_overlap = sf::st_cast(shp_contours, "MULTIPOLYGON")
+contours_polygon_overlap <- contours_polygon_overlap %>% dplyr::group_by(Level)
+
+st_is_valid(contours_polygon_overlap, reason = TRUE)
+contours_polygon_overlap = st_make_valid(contours_polygon_overlap)
+
+# 
+test = contours_polygon_overlap[11,]
+test_org = shp_contours[11,]
+st_is_valid(test, reason = TRUE)
+ggplot() + geom_sf(data = contours_polygon_overlap[11,])
+ggplot() + geom_sf(data = shp_contours[11,])
+
+#
+
+st_is_valid(contours_polygon_overlap, reason = TRUE)
+
+# contours_polygon_overlap <- contours_polygon_overlap %>% dplyr::summarize()
+
+plot(contours_polygon_overlap) # TODO: "polygons require at least 4 points"
 
 # Separate contours per level
 contours_polygon = st_make_valid(contours_polygon_overlap)
@@ -118,10 +143,10 @@ for (r in 1:nrow(contours_polygon)) {
   }
   contours_polygon[r,] = target
 
-  # p = ggplot() +
-  #   geom_sf(data = contours_polygon[r,], aes(fill = Level)) +
-  #   labs(title = level)
-  # print(p)
+  p = ggplot() +
+    geom_sf(data = contours_polygon[r,], aes(fill = Level)) +
+    labs(title = level)
+  print(p)
 }
 
 library(ggrepel)
