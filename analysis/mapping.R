@@ -96,20 +96,16 @@ print(wa_map)
 
 sf_extSoftVersion()
 
-path = 'data/flight_ops/modeling/baseops/Aggregated/DNL/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines - VALID/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines.shp'
-# TODO: NIGHT path = 'data/flight_ops/modeling/baseops/Aggregated/DNL_NIGHT/NASWI_Aggregated_Noisemap_NIGHT - Aggregate_ContourLine_Lines.shp'
+# Shapefiles validated to remove intersections via https://mapshaper.org/
+# path = 'data/flight_ops/modeling/baseops/Aggregated/DNL/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines - VALID/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines.shp'
+path = 'data/flight_ops/modeling/baseops/Aggregated/DNL_NIGHT/NASWI_Aggregated_Noisemap_NIGHT - Aggregate_ContourLine_Lines - VALID/NASWI_Aggregated_Noisemap_NIGHT - Aggregate_ContourLine_Lines.shp'
+# TODO: account for DNL nighttime penalties
 shp_contours = st_read(path)
-# st_crs(shp_contours) = crs
+if (is.na(st_crs(shp_contours))) st_crs(shp_contours) = crs
 st_is_longlat(shp_contours)
-# sf_use_s2(T)
 ggplot() + geom_sf(data = shp_contours)
-# st_buffer(test, dist=0) ???
 
 # Default overlapping contours (i.e. 65 dB contour encapsulates contours of all levels >= 65)
-# contours_polygon_overlap <- shp_contours %>% 
-#   dplyr::group_by(Level) %>%
-#   dplyr::summarize() %>%
-#   sf::st_cast("MULTIPOLYGON")
 contours_polygon_overlap = sf::st_cast(shp_contours, "MULTIPOLYGON")
 contours_polygon_overlap$Level = seq(from=10, by=5, length.out=nrow(contours_polygon_overlap))
 
@@ -117,14 +113,6 @@ contours_polygon_overlap <- contours_polygon_overlap %>% dplyr::group_by(Level)
 
 # st_is_valid(contours_polygon_overlap, reason = TRUE)
 contours_polygon_overlap = st_make_valid(contours_polygon_overlap)
-
-# 
-# test = contours_polygon_overlap[11,]
-# test_org = shp_contours[11,]
-# st_is_valid(test, reason = TRUE)
-# ggplot() + geom_sf(data = contours_polygon_overlap[11,])
-# ggplot() + geom_sf(data = shp_contours[11,])
-# st_is_valid(contours_polygon_overlap, reason = TRUE)
 
 plot(contours_polygon_overlap)
 
