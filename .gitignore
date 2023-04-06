@@ -1,6 +1,6 @@
 # NOISEMAP files
 #*.dbf
-*.prj
+#*.prj
 #*.shp
 *.shp.xml
 #*.shx

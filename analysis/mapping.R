@@ -96,12 +96,12 @@ print(wa_map)
 
 sf_extSoftVersion()
 
-path = 'data/flight_ops/modeling/baseops/Aggregated/DNL/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines.shp'
-# path = 'data/flight_ops/modeling/baseops/Aggregated/DNL_NIGHT/NASWI_Aggregated_Noisemap_NIGHT - Aggregate_ContourLine_Lines.shp'
+path = 'data/flight_ops/modeling/baseops/Aggregated/DNL/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines - VALID/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines.shp'
+# TODO: NIGHT path = 'data/flight_ops/modeling/baseops/Aggregated/DNL_NIGHT/NASWI_Aggregated_Noisemap_NIGHT - Aggregate_ContourLine_Lines.shp'
 shp_contours = st_read(path)
-st_crs(shp_contours) = crs
+# st_crs(shp_contours) = crs
 st_is_longlat(shp_contours)
-sf_use_s2(T)
+# sf_use_s2(T)
 ggplot() + geom_sf(data = shp_contours)
 # st_buffer(test, dist=0) ???
 
@@ -111,25 +111,22 @@ ggplot() + geom_sf(data = shp_contours)
 #   dplyr::summarize() %>%
 #   sf::st_cast("MULTIPOLYGON")
 contours_polygon_overlap = sf::st_cast(shp_contours, "MULTIPOLYGON")
+contours_polygon_overlap$Level = seq(from=10, by=5, length.out=nrow(contours_polygon_overlap))
+
 contours_polygon_overlap <- contours_polygon_overlap %>% dplyr::group_by(Level)
 
-st_is_valid(contours_polygon_overlap, reason = TRUE)
+# st_is_valid(contours_polygon_overlap, reason = TRUE)
 contours_polygon_overlap = st_make_valid(contours_polygon_overlap)
 
 # 
-test = contours_polygon_overlap[11,]
-test_org = shp_contours[11,]
-st_is_valid(test, reason = TRUE)
-ggplot() + geom_sf(data = contours_polygon_overlap[11,])
-ggplot() + geom_sf(data = shp_contours[11,])
+# test = contours_polygon_overlap[11,]
+# test_org = shp_contours[11,]
+# st_is_valid(test, reason = TRUE)
+# ggplot() + geom_sf(data = contours_polygon_overlap[11,])
+# ggplot() + geom_sf(data = shp_contours[11,])
+# st_is_valid(contours_polygon_overlap, reason = TRUE)
 
-#
-
-st_is_valid(contours_polygon_overlap, reason = TRUE)
-
-# contours_polygon_overlap <- contours_polygon_overlap %>% dplyr::summarize()
-
-plot(contours_polygon_overlap) # TODO: "polygons require at least 4 points"
+plot(contours_polygon_overlap)
 
 # Separate contours per level
 contours_polygon = st_make_valid(contours_polygon_overlap)
@@ -139,14 +136,16 @@ for (r in 1:nrow(contours_polygon)) {
   if (r < nrow(contours_polygon)) {
     others = st_union(contours_polygon[which(contours_polygon$Level>level),])
     diff = st_difference(st_geometry(target), st_geometry(others))
-    target$geometry = diff
+    st_geometry(target) = st_geometry(diff)
   }
-  contours_polygon[r,] = target
+  st_geometry(contours_polygon[r,]) = st_geometry(target)
+  contours_polygon[r,] = st_as_sf(contours_polygon[r,])
+  contours_polygon = st_as_sf(contours_polygon)
 
-  p = ggplot() +
-    geom_sf(data = contours_polygon[r,], aes(fill = Level)) +
-    labs(title = level)
-  print(p)
+  # p = ggplot() +
+  #   geom_sf(data = contours_polygon[r,], aes(fill = Level)) +
+  #   labs(title = level)
+  # print(p)
 }
 
 library(ggrepel)
@@ -159,7 +158,7 @@ area_map = ggplot() +
   #                 nudge_x = c(),
   #                 nudge_y = c()) +
   geom_sf(data = contours_polygon[contours_polygon$Level>=30,],
-          aes(fill = Level), alpha=0.25) +
+          aes(fill = Level), alpha=1.0) +
   scale_fill_viridis(option="magma") +
   coord_sf(xlim = bounds_x, ylim = bounds_y)
 print(area_map)
