@@ -1,9 +1,9 @@
 # NOISEMAP files
-*.dbf
+#*.dbf
 *.prj
-*.shp
+#*.shp
 *.shp.xml
-*.shx
+#*.shx
 *.i10
 *.log
 *.o10
