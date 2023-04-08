@@ -17,7 +17,7 @@ splToPressure = function(l) {
 # "time-averaged sound pressure level"
 # "energy average" (logarithmic)
 energyavg = function(L) {
-  10*log10(sum(10^(L/10))/length(L))
+  10*log10(mean(10^(L/10)))
 }
 
 energyavg_pressure = function(p) {

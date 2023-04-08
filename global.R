@@ -128,6 +128,41 @@ get_data_navy_events_reported = function() {
   return(data_navy_events_reported)
 }
 
+get_data_complaint_reports = function(y = c(), m = c(), d = c()) {
+  data_reports = read.csv(paste0(database_path, '/Quiet Skies/NoiseComplaintReports_2020-2021.csv'))
+  data_reports[data_reports == ''] = NA
+  data_reports = data_reports[!is.na(data_reports$ID),]
+  colnames(data_reports)[1] = 'Longitude'
+  colnames(data_reports)[2] = 'Latitude'
+  colnames(data_reports)[6] = 'Character'
+  colnames(data_reports)[8] = 'Month'
+  colnames(data_reports)[9] = 'Day'
+  colnames(data_reports)[10] = 'Year'
+  colnames(data_reports)[11] = 'Time'
+  data_reports$Longitude = as.numeric(data_reports$Longitude)
+  data_reports$Latitude = as.numeric(data_reports$Latitude)
+  # data_reports[abs(data_reports$Longitude)>180,'Longitude'] = NA
+  data_reports[abs(data_reports$Latitude)>90,'Latitude'] = NA
+  
+  data_reports$Character = tolower(data_reports$Character)
+  data_reports$Character = gsub(' ', data_reports$Character, replacement='_')
+  data_reports[is.na(data_reports$Character),'Character'] = 'not_reported'
+  data_reports$Character = factor(data_reports$Character)
+  data_reports$Aircraft = factor(data_reports$Aircraft)
+  data_reports$Year = factor(data_reports$Year)
+  data_reports$Month = factor(data_reports$Month)
+  if (length(y) > 0) {
+    data_reports = data_reports[data_reports$Year %in% y,]
+  }
+  if (length(m) > 0) {
+    data_reports = data_reports[data_reports$Month %in% m,]
+  }
+  if (length(d) > 0) {
+    data_reports = data_reports[data_reports$Day %in% d,]
+  }
+  return(data_reports)
+}
+
 get_field_name_for_ID = function(id) {
   data_sites = get_data_sites()
   return(data_sites[data_sites$ID==id,]$Field)
