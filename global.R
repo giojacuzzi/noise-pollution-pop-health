@@ -130,6 +130,8 @@ get_data_navy_events_reported = function() {
 
 get_data_complaint_reports = function(y = c(), m = c(), d = c()) {
   data_reports = read.csv(paste0(database_path, '/Quiet Skies/NoiseComplaintReports_2020-2021.csv'))
+  
+  # Clean data
   data_reports[data_reports == ''] = NA
   data_reports = data_reports[!is.na(data_reports$ID),]
   colnames(data_reports)[1] = 'Longitude'
@@ -141,9 +143,16 @@ get_data_complaint_reports = function(y = c(), m = c(), d = c()) {
   colnames(data_reports)[11] = 'Time'
   data_reports$Longitude = as.numeric(data_reports$Longitude)
   data_reports$Latitude = as.numeric(data_reports$Latitude)
-  # data_reports[abs(data_reports$Longitude)>180,'Longitude'] = NA
   data_reports[abs(data_reports$Latitude)>90,'Latitude'] = NA
   
+  # NA default shaw island coordinates
+  default_lat = 48.55987906
+  default_long = -122.9289694
+  default_idxs = which(data_reports$Latitude==default_lat & data_reports$Longitude==default_long)
+  data_reports[default_idxs,'Latitude'] = NA
+  data_reports[default_idxs,'Longitude'] = NA
+  
+  # Standardize and factor columns
   data_reports$Character = tolower(data_reports$Character)
   data_reports$Character = gsub(' ', data_reports$Character, replacement='_')
   data_reports[is.na(data_reports$Character),'Character'] = 'not_reported'

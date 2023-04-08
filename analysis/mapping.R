@@ -97,8 +97,8 @@ print(wa_map)
 sf_extSoftVersion()
 
 # Shapefiles validated to remove intersections via https://mapshaper.org/
-# path = 'data/flight_ops/modeling/baseops/Aggregated/DNL/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines - VALID/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines.shp'
-path = 'data/flight_ops/modeling/baseops/Aggregated/DNL_NIGHT/NASWI_Aggregated_Noisemap_NIGHT - Aggregate_ContourLine_Lines - VALID/NASWI_Aggregated_Noisemap_NIGHT - Aggregate_ContourLine_Lines.shp'
+path = 'data/flight_ops/modeling/baseops/Aggregated/DNL/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines - VALID/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines.shp'
+# path = 'data/flight_ops/modeling/baseops/Aggregated/DNL_NIGHT/NASWI_Aggregated_Noisemap_NIGHT - Aggregate_ContourLine_Lines - VALID/NASWI_Aggregated_Noisemap_NIGHT - Aggregate_ContourLine_Lines.shp'
 # TODO: account for DNL nighttime penalties
 shp_contours = st_read(path)
 if (is.na(st_crs(shp_contours))) st_crs(shp_contours) = crs
@@ -157,15 +157,14 @@ data_reports = data_reports[!is.na(data_reports$Longitude) & !is.na(data_reports
 sf_reports = st_as_sf(data_reports,
                  coords = c('Longitude', 'Latitude'),
                  crs = crs, agr = 'constant')
-# sf_reports = na.omit(sf_reports)
-# reports = reports[reports$ID %in% unique(get_data_metrics()[,'ID']), ]
 sf_reports$Longitude = st_coordinates(sf_reports$geometry)[,'X']
 sf_reports$Latitude  = st_coordinates(sf_reports$geometry)[,'Y']
 
 map_reports = ggplot() +
   geom_sf(data = wa_population) + # aes(fill = value)
-  geom_sf(data = sf_reports, size = 1, shape = 8, color = 'red') +
+  geom_sf(data = sf_reports, size = 1, shape = 19, color = 'red', alpha=0.1) +
   coord_sf(xlim = bounds_x, ylim = bounds_y)
 print(map_reports)
 
+# TODO: cull reports over water
 # TODO: reports for only the Navy monitoring weeks
