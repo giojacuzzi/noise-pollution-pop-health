@@ -63,15 +63,6 @@ library(ggplot2)
 library(sf)
 source('global.R')
 
-wa_population = get_decennial(
-  geography = 'tract',
-  variables = 'P1_001N',
-  state = 'WA',
-  year = 2020,
-  geometry = TRUE
-)
-plot(wa_population['value'])
-
 crs = 'NAD83'
 
 sites = st_as_sf(get_data_sites(),
@@ -82,8 +73,8 @@ sites = sites[sites$ID %in% unique(get_data_metrics()[,'ID']), ]
 sites$Longitude = st_coordinates(sites$geometry)[,'X']
 sites$Latitude  = st_coordinates(sites$geometry)[,'Y']
 
-bounds_x = c(-123.8, -121.2) # [min, max]
-bounds_y = c(47.6, 48.7)
+bounds_x = c(-123.8, -121.4) # [min, max]
+bounds_y = c(47.85, 48.65)
 bounds = data.frame(
   x = c(bounds_x[1], bounds_x[1], bounds_x[2], bounds_x[2]),
   y = c(bounds_y[1], bounds_y[2], bounds_y[2], bounds_y[1])
@@ -93,6 +84,17 @@ wa_map = ggplot() +
   geom_sf(data = wa_counties_cb) +
   geom_polygon(data = bounds, aes(x, y, group = 1), fill=NA, color = 'red')
 print(wa_map)
+
+wa_bg_population = get_decennial(
+  geography = 'block group',
+  variables = 'P1_001N',
+  state = 'WA',
+  year = 2020,
+  geometry = TRUE
+)
+wa_bg_population = st_crop(wa_bg_population, c(xmin=bounds_x[1], ymin=bounds_y[1], xmax=bounds_x[2], ymax=bounds_y[2]))
+plot(wa_bg_population['value'])
+mapview(wa_bg_population, zcol = 'value')
 
 sf_extSoftVersion()
 
@@ -130,15 +132,15 @@ for (r in 1:nrow(contours_polygon)) {
   contours_polygon[r,] = st_as_sf(contours_polygon[r,])
   contours_polygon = st_as_sf(contours_polygon)
 
-  # p = ggplot() +
-  #   geom_sf(data = contours_polygon[r,], aes(fill = Level)) +
-  #   labs(title = level)
-  # print(p)
+  p = ggplot() +
+    geom_sf(data = contours_polygon[r,], aes(fill = Level)) +
+    labs(title = level)
+  print(p)
 }
 
 library(ggrepel)
 area_map = ggplot() +
-  geom_sf(data = wa_population) + # aes(fill = value)
+  geom_sf(data = wa_bg_population) + # aes(fill = value)
   geom_sf(data = sites, size = 1, shape = 8, color = 'red') +
   # geom_text_repel(data = sites,
   #                 aes(x = Longitude, y = Latitude, label = ID),
@@ -151,6 +153,62 @@ area_map = ggplot() +
   coord_sf(xlim = bounds_x, ylim = bounds_y)
 print(area_map)
 
+#############################################################
+# Calculate overlap
+library(RColorBrewer)
+mapview(contours_polygon, zcol = 'Level') + mapview(wa_bg_population)
+
+ex_bg = wa_bg_population[wa_bg_population$GEOID==530299710001,]
+contours_polygon = st_transform(contours_polygon, crs)
+
+# Example with Coupeville block group
+ex_intersection = st_intersection(ex_bg, contours_polygon)
+mapview(ex_intersection, zcol='Level')
+areas = as.numeric(st_area(ex_intersection) / st_area(ex_bg)) # proportion
+level_areas = left_join(data.frame(Level=contours_polygon$Level), data.frame(Level=ex_intersection$Level, Area=areas), by = join_by(Level)) %>% replace(is.na(.), 0)
+
+# Full map
+intersection = st_intersection(wa_bg_population[,c('GEOID', 'NAME', 'value', 'geometry')], contours_polygon)
+mapview(intersection[as.numeric(intersection$Level)>=20, ], zcol='Level')
+
+bg_areas = data.frame()  # block group names, population, and area (m^2)
+bg_levels = data.frame() # block group level exposures (area, proportion, and estimated population)
+for (r in 1:nrow(wa_bg_population)) {
+  
+  bg = wa_bg_population[r,]
+  bg_area = st_area(bg)
+  
+  intersect = intersection[intersection$GEOID==bg$GEOID, ]
+  areas = data.frame(
+    area=as.numeric(st_area(intersect)),
+    proportion=as.numeric(st_area(intersect) / bg_area) # proportion of total block group area
+  )
+  bg_l = left_join(
+    data.frame(
+      geoid=unique(bg$GEOID),
+      Level=contours_polygon$Level
+    ),
+    data.frame(
+      Level=intersect$Level, areas
+    ),
+    by = join_by(Level)) %>% replace(is.na(.), 0)
+  bg_l$population = round(bg$value * bg_l$proportion) # population, assuming uniform distribution within block group
+  bg_levels = rbind(bg_levels, bg_l)
+  
+  bg_areas = rbind(bg_areas, data.frame(
+    geoid = bg$GEOID,
+    name = bg$NAME,
+    population = bg$value,
+    area_m2 = bg_area
+  ))
+}
+bg_levels$Level = as.numeric(bg_levels$Level)
+
+# e.g. number of people estimated to be exposed to >= 70 dB DNL:
+sum(bg_levels[bg_levels$Level>=70 & bg_levels$proportion > 0, 'population'])
+
+#############################################################
+
 ## Noise complaint reports
 data_reports = get_data_complaint_reports()
 data_reports = data_reports[!is.na(data_reports$Longitude) & !is.na(data_reports$Longitude),]
@@ -161,7 +219,7 @@ sf_reports$Longitude = st_coordinates(sf_reports$geometry)[,'X']
 sf_reports$Latitude  = st_coordinates(sf_reports$geometry)[,'Y']
 
 map_reports = ggplot() +
-  geom_sf(data = wa_population) + # aes(fill = value)
+  geom_sf(data = wa_bg_population) + # aes(fill = value)
   geom_sf(data = sf_reports, size = 1, shape = 19, color = 'red', alpha=0.1) +
   coord_sf(xlim = bounds_x, ylim = bounds_y)
 print(map_reports)
