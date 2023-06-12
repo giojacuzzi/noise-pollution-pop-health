@@ -8,6 +8,7 @@
 # 'tigris' package is an R interfaceto the US Census Bureau's TIGER/Line shapefile FTP server. No API key necessary'
 # 'sf' package implements simple features data model for vector spatial data in R, allowing for tidy spatial data analysis
 
+library(mapview)
 library(tigris)
 options(tigris_use_cache = T)
 
@@ -48,9 +49,6 @@ wa_tribal_census_tracts = tribal_census_tracts(year = 2021)
 
 wa_military = military(year = 2021)
 mapview(wa_military)
-
-# Interactive viewing via mapview
-library(mapview)
 
 mapview(wa_counties)
 mapview(wa_tracts_cb)
@@ -158,7 +156,6 @@ contours_polygon = st_transform(contours_polygon, crs)
 ex_intersection = st_intersection(ex_bg, contours_polygon)
 mapview(ex_intersection, zcol='Level')
 areas = as.numeric(st_area(ex_intersection) / st_area(ex_bg)) # proportion
-if (sum(areas) != 1) stop('sum should be 1!')
 ex_intersection$population = ex_intersection$value * areas
 mapview(ex_intersection, zcol='population')
 level_areas = left_join(data.frame(Level=contours_polygon$Level), data.frame(Level=ex_intersection$Level, Area=areas), by = join_by(Level)) %>% replace(is.na(.), 0)
@@ -177,6 +174,7 @@ for (r in 1:nrow(intersection)) {
 mapview(intersection, zcol='pop_prop')
 
 # Multiply population in each block group intersection by %HA to yield estimate of # highly annoyed persons
+source('analysis/exposure_response_functions.R')
 intersection$pop_HA_WHO = round(sapply(as.numeric(intersection$Level), exp_resp_WHO_bounded) * 0.01 * intersection$pop_prop)
 mapview(intersection, zcol='pop_HA_WHO')
 
@@ -188,10 +186,10 @@ mapview(intersection, zcol='pop_HA_Yokoshima')
 
 # Some general insights
 # Number of people estimated to be exposed to >= 70 dB DNL...
-# using 'block' ~ 8238?, 'block group' ~ 9072, 'tract' ~ 8542
+# using 'block' ~ 8238, 'block group' ~ 9072, 'tract' ~ 8542
 sum(st_drop_geometry(intersection[intersection$Level>=70, ])$pop_prop)
 # Number of people estimated to be highly annoyed according to WHO guidelines...
-# using 'block' ~ 19745?, 'block group' ~ 20626, 'tract' ~ 20616
+# using 'block' ~ 19745, 'block group' ~ 20626, 'tract' ~ 20616
 sum(st_drop_geometry(intersection)$pop_HA_WHO)
 
 ############################
