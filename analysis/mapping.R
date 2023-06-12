@@ -41,13 +41,13 @@ wa_landmarks = landmarks(state = 'WA', type = 'point')
 plot(wa_landmarks$geometry)
 
 wa_native = native_areas(year = 2021)
-# plot(wa_native$geometry)
+mapview(wa_native)
 
 wa_tribal_census_tracts = tribal_census_tracts(year = 2021)
 # plot(wa_tribal_census_tracts$geometry)
 
 wa_military = military(year = 2021)
-# plot(wa_military$geometry)
+mapview(wa_military)
 
 # Interactive viewing via mapview
 library(mapview)
@@ -73,8 +73,8 @@ sites = sites[sites$ID %in% unique(get_data_metrics()[,'ID']), ]
 sites$Longitude = st_coordinates(sites$geometry)[,'X']
 sites$Latitude  = st_coordinates(sites$geometry)[,'Y']
 
-bounds_x = c(-123.8, -121.4) # [min, max]
-bounds_y = c(47.85, 48.65)
+bounds_x = c(-123.72285, -121.23736) # [min, max]
+bounds_y = c(47.67722, 48.61497)
 bounds = data.frame(
   x = c(bounds_x[1], bounds_x[1], bounds_x[2], bounds_x[2]),
   y = c(bounds_y[1], bounds_y[2], bounds_y[2], bounds_y[1])
@@ -87,13 +87,13 @@ print(wa_map)
 
 wa_bg_population = get_decennial(
   geography = 'block group',
-  variables = 'P1_001N',
+  variables = 'P1_001N', # population
   state = 'WA',
   year = 2020,
   geometry = TRUE
 )
 # wa_bg_population = st_crop(wa_bg_population, c(xmin=bounds_x[1], ymin=bounds_y[1], xmax=bounds_x[2], ymax=bounds_y[2]))
-plot(wa_bg_population['value'])
+# plot(wa_bg_population['value'])
 mapview(wa_bg_population, zcol = 'value')
 
 sf_extSoftVersion()
@@ -105,17 +105,15 @@ path = 'data/flight_ops/modeling/baseops/Aggregated/DNL/NASWI_Aggregated_Noisema
 shp_contours = st_read(path)
 if (is.na(st_crs(shp_contours))) st_crs(shp_contours) = crs
 st_is_longlat(shp_contours)
-ggplot() + geom_sf(data = shp_contours)
+# ggplot() + geom_sf(data = shp_contours)
 # Default overlapping contours (i.e. 65 dB contour encapsulates contours of all levels >= 65)
 contours_polygon_overlap = sf::st_cast(shp_contours, "MULTIPOLYGON")
 contours_polygon_overlap$Level = seq(from=10, by=5, length.out=nrow(contours_polygon_overlap))
-
-contours_polygon_overlap <- contours_polygon_overlap %>% dplyr::group_by(Level)
+contours_polygon_overlap = contours_polygon_overlap %>% dplyr::group_by(Level)
 
 # st_is_valid(contours_polygon_overlap, reason = TRUE)
 contours_polygon_overlap = st_make_valid(contours_polygon_overlap)
-
-plot(contours_polygon_overlap)
+# plot(contours_polygon_overlap)
 
 # Separate contours per level
 contours_polygon = st_make_valid(contours_polygon_overlap)
@@ -131,10 +129,7 @@ for (r in 1:nrow(contours_polygon)) {
   contours_polygon[r,] = st_as_sf(contours_polygon[r,])
   contours_polygon = st_as_sf(contours_polygon)
 
-  p = ggplot() +
-    geom_sf(data = contours_polygon[r,], aes(fill = Level)) +
-    labs(title = level)
-  print(p)
+  # p = ggplot() + geom_sf(data = contours_polygon[r,], aes(fill = Level)) + labs(title = level); print(p)
 }
 
 library(ggrepel)
@@ -146,7 +141,7 @@ area_map = ggplot() +
   #                 size = 2, col = 'black', fontface = 'bold', max.overlaps = 30,
   #                 nudge_x = c(),
   #                 nudge_y = c()) +
-  geom_sf(data = contours_polygon[contours_polygon$Level>=30,],
+  geom_sf(data = contours_polygon[contours_polygon$Level>=0,],
           aes(fill = Level), alpha=1.0) +
   scale_fill_viridis(option="magma") +
   coord_sf(xlim = bounds_x, ylim = bounds_y)
@@ -154,7 +149,6 @@ print(area_map)
 
 #############################################################
 # Calculate overlap
-library(RColorBrewer)
 mapview(contours_polygon, zcol = 'Level') + mapview(wa_bg_population)
 
 ex_bg = wa_bg_population[wa_bg_population$GEOID==530299710001,]
@@ -171,7 +165,7 @@ level_areas = left_join(data.frame(Level=contours_polygon$Level), data.frame(Lev
 
 # Full map
 intersection = st_intersection(wa_bg_population[,c('GEOID', 'NAME', 'value', 'geometry')], contours_polygon)
-mapview(intersection[as.numeric(intersection$Level)>=20, ], zcol='Level')
+mapview(intersection[as.numeric(intersection$Level)>=0, ], zcol='Level')
 
 intersection$pop_prop = 0 # population total for an intersection feature, estimated as proportion of total block group population
 for (r in 1:nrow(intersection)) {
@@ -193,9 +187,11 @@ intersection$pop_HA_Yokoshima = round(sapply(as.numeric(intersection$Level), exp
 mapview(intersection, zcol='pop_HA_Yokoshima')
 
 # Some general insights
-# Number of people estimated to be exposed to >= 70 dB DNL
+# Number of people estimated to be exposed to >= 70 dB DNL...
+# using 'block' ~ 8238?, 'block group' ~ 9072, 'tract' ~ 8542
 sum(st_drop_geometry(intersection[intersection$Level>=70, ])$pop_prop)
-# Number of people estimated to be highly annoyed according to WHO guidelines
+# Number of people estimated to be highly annoyed according to WHO guidelines...
+# using 'block' ~ 19745?, 'block group' ~ 20626, 'tract' ~ 20616
 sum(st_drop_geometry(intersection)$pop_HA_WHO)
 
 ############################
