@@ -92,7 +92,7 @@ wa_bg_population = get_decennial(
   year = 2020,
   geometry = TRUE
 )
-wa_bg_population = st_crop(wa_bg_population, c(xmin=bounds_x[1], ymin=bounds_y[1], xmax=bounds_x[2], ymax=bounds_y[2]))
+# wa_bg_population = st_crop(wa_bg_population, c(xmin=bounds_x[1], ymin=bounds_y[1], xmax=bounds_x[2], ymax=bounds_y[2]))
 plot(wa_bg_population['value'])
 mapview(wa_bg_population, zcol = 'value')
 
@@ -106,7 +106,6 @@ shp_contours = st_read(path)
 if (is.na(st_crs(shp_contours))) st_crs(shp_contours) = crs
 st_is_longlat(shp_contours)
 ggplot() + geom_sf(data = shp_contours)
-
 # Default overlapping contours (i.e. 65 dB contour encapsulates contours of all levels >= 65)
 contours_polygon_overlap = sf::st_cast(shp_contours, "MULTIPOLYGON")
 contours_polygon_overlap$Level = seq(from=10, by=5, length.out=nrow(contours_polygon_overlap))
@@ -165,49 +164,41 @@ contours_polygon = st_transform(contours_polygon, crs)
 ex_intersection = st_intersection(ex_bg, contours_polygon)
 mapview(ex_intersection, zcol='Level')
 areas = as.numeric(st_area(ex_intersection) / st_area(ex_bg)) # proportion
+if (sum(areas) != 1) stop('sum should be 1!')
+ex_intersection$population = ex_intersection$value * areas
+mapview(ex_intersection, zcol='population')
 level_areas = left_join(data.frame(Level=contours_polygon$Level), data.frame(Level=ex_intersection$Level, Area=areas), by = join_by(Level)) %>% replace(is.na(.), 0)
 
 # Full map
 intersection = st_intersection(wa_bg_population[,c('GEOID', 'NAME', 'value', 'geometry')], contours_polygon)
 mapview(intersection[as.numeric(intersection$Level)>=20, ], zcol='Level')
 
-bg_areas = data.frame()  # block group names, population, and area (m^2)
-bg_levels = data.frame() # block group level exposures (area, proportion, and estimated population)
-for (r in 1:nrow(wa_bg_population)) {
-  
-  bg = wa_bg_population[r,]
-  bg_area = st_area(bg)
-  
-  intersect = intersection[intersection$GEOID==bg$GEOID, ]
-  areas = data.frame(
-    area=as.numeric(st_area(intersect)),
-    proportion=as.numeric(st_area(intersect) / bg_area) # proportion of total block group area
-  )
-  bg_l = left_join(
-    data.frame(
-      geoid=unique(bg$GEOID),
-      Level=contours_polygon$Level
-    ),
-    data.frame(
-      Level=intersect$Level, areas
-    ),
-    by = join_by(Level)) %>% replace(is.na(.), 0)
-  bg_l$population = round(bg$value * bg_l$proportion) # population, assuming uniform distribution within block group
-  bg_levels = rbind(bg_levels, bg_l)
-  
-  bg_areas = rbind(bg_areas, data.frame(
-    geoid = bg$GEOID,
-    name = bg$NAME,
-    population = bg$value,
-    area_m2 = bg_area
-  ))
+intersection$pop_prop = 0 # population total for an intersection feature, estimated as proportion of total block group population
+for (r in 1:nrow(intersection)) {
+  i = intersection[r,]
+  bg = wa_bg_population[wa_bg_population$GEOID==i$GEOID,]
+  proportion = as.numeric(st_area(i) / st_area(bg))
+  intersection[r, 'pop_prop'] = round(proportion * bg$value) # proportion of total block group population
 }
-bg_levels$Level = as.numeric(bg_levels$Level)
+mapview(intersection, zcol='pop_prop')
 
-# e.g. number of people estimated to be exposed to >= 70 dB DNL:
-sum(bg_levels[bg_levels$Level>=70 & bg_levels$proportion > 0, 'population'])
+# Multiply population in each block group intersection by %HA to yield estimate of # highly annoyed persons
+intersection$pop_HA_WHO = round(sapply(as.numeric(intersection$Level), exp_resp_WHO_bounded) * 0.01 * intersection$pop_prop)
+mapview(intersection, zcol='pop_HA_WHO')
 
-#############################################################
+intersection$pop_HA_ISO_Miedema = round(sapply(as.numeric(intersection$Level), exp_resp_ISO_Miedema_bounded) * 0.01 * intersection$pop_prop)
+mapview(intersection, zcol='pop_HA_ISO_Miedema')
+
+intersection$pop_HA_Yokoshima = round(sapply(as.numeric(intersection$Level), exp_resp_Yokoshima_bounded) * 0.01 * intersection$pop_prop)
+mapview(intersection, zcol='pop_HA_Yokoshima')
+
+# Some general insights
+# Number of people estimated to be exposed to >= 70 dB DNL
+sum(st_drop_geometry(intersection[intersection$Level>=70, ])$pop_prop)
+# Number of people estimated to be highly annoyed according to WHO guidelines
+sum(st_drop_geometry(intersection)$pop_HA_WHO)
+
+############################
 
 ## Noise complaint reports
 data_reports = get_data_complaint_reports()
@@ -223,6 +214,9 @@ map_reports = ggplot() +
   geom_sf(data = sf_reports, size = 1, shape = 19, color = 'red', alpha=0.1) +
   coord_sf(xlim = bounds_x, ylim = bounds_y)
 print(map_reports)
+
+mapview(sf_reports, zcol='Character')
+mapview(sf_reports) + mapview(intersection, zcol='Level')
 
 # TODO: cull reports over water
 # TODO: reports for only the Navy monitoring weeks
