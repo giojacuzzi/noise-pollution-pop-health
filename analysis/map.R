@@ -188,6 +188,16 @@ mapview(intersection_leq24[intersection_leq24$Level>=70, ], zcol='pop_prop', lay
 # Insights
 # Note that these numbers may be conservative estimates due to the lack of evening-time penalty in DNL calculations, and depending on the exposure-response function used.
 
+# WHO - "For average noise exposure, the GDG strongly recommends reducing noise levels produced by aircraft below 45 dB Lden, as aircraft noise above this level is associated with adverse health effects.
+mapview(intersection_DNL[as.numeric(intersection_DNL$Level)>=45,], zcol='Level') + mapview(wa_bg_population, col.regions=list('white'))
+print(ggplot() +
+  geom_sf(data = wa_bg_population) + # aes(fill = value)
+  geom_sf(data = sf_reports, size = 1, shape = 19, color = 'red', alpha=0.1)
+)
+
+# WHO - "For night noise exposure, the GDG strongly recommends reducing noise levels produced by aircraft during night time below 40 dB Lnight, as night- time aircraft noise above this level is associated with adverse effects on sleep."
+mapview(intersection_Lnight[as.numeric(intersection_Lnight$Level)>=45,], zcol='Level') + mapview(wa_bg_population, col.regions=list('white'))
+
 # Number of people estimated to be exposed to >= 70 dB Leq24 (EPA hearing loss over time)
 sum(st_drop_geometry(intersection_leq24[intersection_leq24$Level>=70, ])$pop_prop)
 
