@@ -77,3 +77,47 @@ exp_resp_Yokoshima_bounded = function(Lden) {
   }
   return(exp_resp_Yokoshima(Lden))
 }
+
+## Annoyance ------------------------------------------------------------------------------
+# TODO: Military-specific / low-frequency / onset / aircraft dB penalty adjustment?
+
+# Smith et al 2022 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9272916/
+# Restricted only to survey questions where noise was explicitly mentioned
+exp_resp_HSD_awakenings = function(Lnight) {
+  return(0.03132*(Lnight)^2 - 1.80203*(Lnight) + 31.28079)
+}
+exp_resp_HSD_fallingasleep = function(Lnight) {
+  return(0.02204*(Lnight)^2 - 0.86230*(Lnight) + 12.42449)
+}
+exp_resp_HSD_sleepdisturbance = function(Lnight) {
+  return(0.02664*(Lnight)^2 - 1.17389*(Lnight) + 16.46165)
+}
+exp_resp_HSD_combinedestimate = function(Lnight) {
+  return(0.025015*(Lnight)^2 - 1.12624*(Lnight) + 17.074213)
+}
+
+ci_upper_HSD_combinedestimate = function(Lnight) {
+  return(0.0221483*Lnight^2 - 0.5720120*Lnight + 3.5979810)
+}
+ci_lower_HSD_combinedestimate = function(Lnight) {
+  return(0.027883*Lnight^2 - 1.680477*Lnight + 30.550446) 
+}
+ci_HSD_combinedestimate = data.frame(
+  Lnight = seq(from=40, to=65, by=1),
+  Lower  = ci_lower_HSD_combinedestimate(seq(from=40, to=65, by=1)),
+  Upper  = ci_upper_HSD_combinedestimate(seq(from=40, to=65, by=1))
+)
+bounds_HSD = c(40,65)
+
+exp_resp_HSD_combinedestimate_bounded = function(Lnight) {
+  if (Lnight < bounds_HSD[1]) {
+    return(exp_resp_HSD_combinedestimate(bounds_HSD[1]))
+  } else if (Lnight > bounds_HSD[2]) {
+    return(exp_resp_HSD_combinedestimate(bounds_HSD[2]))
+  }
+  return(exp_resp_HSD_combinedestimate(Lnight))
+}
+
+# NOTE: Limitations - "The rapid onset time in particular means that a given aircraft is probably more likely to induce an awakening than one that is much more gradual, like a civil aircraft. But of course physiological disturbance such as this and self-reported long-term %HSD are not the same thing, and do not necessarily correlate all that well."
+
+# NOTE: Time scale for ERFs is long-term, typically one year, so single-date maximum Lnights are not appropriate. "Equivalent noise levels are often used in surveys and epidemiologic studies as long-term average exposure metrics, and are therefore also often found in legislative and policy contexts. For example, the Night Noise Guidelines for Europe of the World Health Organization (WHO) define effects of nocturnal noise based on annual average outdoor Lnight ranges. The value of equivalent noise levels in describing the effects of noise on sleep is more limited, as different noise scenarios may calculate to the same equivalent noise level, but differ substantially in their sleep disturbing properties. There is general agreement that the number and acoustical properties of single noise events better reflect the actual degree of nocturnal sleep disturbance in a single night. It is thus questionable whether Lnight can be used as the only indicator for predicting the effects of noise on sleep and the consequences of noise-induced sleep disturbance, or whether supplemental noise indicators are needed

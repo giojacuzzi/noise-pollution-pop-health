@@ -47,6 +47,12 @@ Press OK again. You may need to manually match some flight profile tracks. Then,
 
 ---
 
+### DNL and Lnight
+
+See NoiseMap and AEDT Gap Analysis Technical Report for further details of NoiseMap and BaseOps software. NoiseMap BaseOps cases have been made for both DNL (cumulative, see 4.1.1.1) and Lnight (9hr, see 4.1.1.2).
+
+---
+
 # Noise contour map generation
 Maps are generated with NMap after running a BaseOps case and selecting "Plot"
 

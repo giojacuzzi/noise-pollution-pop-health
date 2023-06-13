@@ -1,5 +1,6 @@
 ## Noise exposure spatial distribution
-# US Census Geography Hierarchy: Nation > Region > Division > State > County > Census Tract > Block Group > Block (+ AIANNH/Tribal Areas)
+# US Census Geography Hierarchy:
+#  Nation > Region > Division > State > County > Census Tract > Block Group > Block (+ AIANNH/Tribal Areas)
 # Legal entities (e.g. counties), statistical entities (e.g. tracts), geographic features
 # Census TIGER/Line shapefiles:
 # - Topologically Integrated Geographic Encoding and Referencing database
@@ -99,7 +100,7 @@ sf_extSoftVersion()
 # Shapefiles validated to remove intersections via https://mapshaper.org/
 path = 'data/flight_ops/modeling/baseops/Aggregated/DNL/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines - VALID/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines.shp'
 # path = 'data/flight_ops/modeling/baseops/Aggregated/DNL_NIGHT/NASWI_Aggregated_Noisemap_NIGHT - Aggregate_ContourLine_Lines - VALID/NASWI_Aggregated_Noisemap_NIGHT - Aggregate_ContourLine_Lines.shp'
-# TODO: account for DNL nighttime penalties
+# TODO: account for DNL nighttime penalties?
 shp_contours = st_read(path)
 if (is.na(st_crs(shp_contours))) st_crs(shp_contours) = crs
 st_is_longlat(shp_contours)
@@ -126,7 +127,6 @@ for (r in 1:nrow(contours_polygon)) {
   st_geometry(contours_polygon[r,]) = st_geometry(target)
   contours_polygon[r,] = st_as_sf(contours_polygon[r,])
   contours_polygon = st_as_sf(contours_polygon)
-
   # p = ggplot() + geom_sf(data = contours_polygon[r,], aes(fill = Level)) + labs(title = level); print(p)
 }
 
