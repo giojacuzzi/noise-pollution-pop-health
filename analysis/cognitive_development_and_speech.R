@@ -12,6 +12,7 @@ data_metrics = get_data_metrics()
 
 # WHO guidelines: Reading and oral comprehension 1–2-month delay per 5 dB (outdoor Lden) increase. Relevant RR increase of impaired reading and oral comprehension at 55 dB (1 month delay in reading and oral comprehension, as assessed by standardized tests)
 # https://nap.nationalacademies.org/catalog/22433/assessing-aircraft-noise-conditions-affecting-student-learning-volume-1-final-report
+# "Evidence for a relevant RR increase of impaired reading and oral comprehension at 55 dB Lden was rated moderate quality" (WHO Environmental Noise Guidelines, 2019)
 
 data_metrics[data_metrics$Lden>=55,]
 

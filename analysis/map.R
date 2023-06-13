@@ -94,6 +94,43 @@ mapview(intersection_DNL, zcol='pop_prop', layer.name='Population') +
   mapview(intersection_DNL, zcol='pop_HA_ISO_Miedema', at=breaks, layer.name='Population HA (ISO)') +
   mapview(intersection_DNL, zcol='pop_HA_Yokoshima', at=breaks, layer.name='Population HA (Yokoshima)')
 
+########################################################################################################
+# Children's learning and comprehension
+
+# DNL >= 55 dB poses risk of inhibited reading skills and oral comprehension in children (WHO, RANCH)
+DNL_gt55 = intersection_DNL[as.numeric(intersection_DNL$Level)>=55,]
+DNL_gt55_bounds = st_bbox(DNL_gt55) #intersection_DNL
+
+# https://nces.ed.gov/programs/edge/geographic/schoollocations
+dir = '/Volumes/SAFS Work/PHI/Schools'
+schools_public  = st_read(paste0(dir, '/EDGE_GEOCODE_PUBLICSCH_2021/Shapefile/EDGE_GEOCODE_PUBLICSCH_2021.shp'))
+schools_private = st_read(paste0(dir, '/EDGE_GEOCODE_PRIVATESCH_1920/Shapefile/EDGE_GEOCODE_PRIVATESCH_1920.shp'))
+schools_postsec = st_read(paste0(dir, '/EDGE_GEOCODE_POSTSECONDARYSCH_2021/Shapefile/EDGE_GEOCODE_POSTSECSCH_2021.shp'))
+schools_public  = st_transform(schools_public, crs)
+schools_private = st_transform(schools_private, crs)
+schools_postsec = st_transform(schools_postsec, crs)
+
+schools_public = st_crop(schools_public, DNL_gt55_bounds)
+schools_private = st_crop(schools_private, DNL_gt55_bounds)
+schools_postsec = st_crop(schools_postsec, DNL_gt55_bounds)
+
+schools_public  = schools_public[, c('NAME', 'ZIP', 'LAT', 'LON')]
+schools_public$TYPE = 'PUBLIC'
+schools_private = schools_private[, c('NAME', 'ZIP', 'LAT', 'LON')]
+schools_private$TYPE = 'PRIVATE'
+schools_postsec = schools_postsec[, c('NAME', 'ZIP', 'LAT', 'LON')]
+schools_postsec$TYPE = 'POSTSECONDARY'
+
+schools = bind_rows(bind_rows(schools_public, schools_private), schools_postsec)
+schools$TYPE = factor(schools$TYPE)
+schools_affected = st_intersection(schools, DNL_gt55) # affected schools
+schools_affected$DNL55 = TRUE
+schools_unaffected = schools[!(schools$NAME %in% schools_affected$NAME),]
+schools_unaffected$DNL55 = FALSE
+schools = bind_rows(schools_affected, schools_unaffected)
+
+mapview(DNL_gt55, zcol='Level', layer.name='DNL') + mapview(wa_bg_population, col.regions=list('white')) + mapview(schools, zcol='DNL55', col.regions=list('gray', 'red'))
+
 ###################################################################################################
 # Lnight - (Highly sleep disturbed)
 contours_Lnight = get_contours(path_Lnight)
@@ -118,7 +155,7 @@ intersection_Lnight$pop_HSD = round(sapply(as.numeric(intersection_Lnight$Level)
 mapview(intersection_Lnight, zcol='pop_prop', layer.name='Population') +
   mapview(intersection_Lnight, zcol='pop_HSD', at=seq(0, 350, 50), layer.name='Population HSD')
 
-#######
+###################################################################################################
 # Leq24
 contours_leq24 = get_contours(path_leq24)
 mapview(contours_leq24, zcol = 'Level') + mapview(wa_bg_population) # overlap
@@ -145,7 +182,7 @@ for (r in 1:nrow(intersection_leq24)) {
   intersection_leq24[r, 'pop_prop'] = round(proportion * bg$value) # proportion of block group pop
 }
 
-mapview(intersection_leq24[intersection_leq24$Level>=70, ], zcol='pop_prop', layer.name='Population 70+ dB Leq24') 
+mapview(intersection_leq24[intersection_leq24$Level>=70, ], zcol='pop_prop', layer.name='Population 70+ dB Leq24')
 
 ########################################################################################################
 # Insights
