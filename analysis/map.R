@@ -11,7 +11,6 @@ sf_extSoftVersion()
 source('analysis/exposure_response_functions.R')
 
 crs = 'NAD83'
-
 wa_bg_population = get_decennial(
   geography = 'block group',
   variables = 'P1_001N', # population
@@ -55,6 +54,7 @@ get_contours = function(path) {
 # Shapefiles validated to remove intersections via https://mapshaper.org/
 path_DNL = 'data/flight_ops/modeling/baseops/Aggregated/DNL/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines - VALID/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines.shp'
 path_Lnight = 'data/flight_ops/modeling/baseops/Aggregated/DNL_NIGHT/NASWI_Aggregated_Noisemap_NIGHT - Aggregate_ContourLine_Lines - VALID/NASWI_Aggregated_Noisemap_NIGHT - Aggregate_ContourLine_Lines.shp'
+path_leq24 = 'data/flight_ops/modeling/baseops/Aggregated/LEQ24/NASWI_Aggregated_Noisemap_LEQ - Aggregate_ContourLine_Lines - VALID/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines_LEQ24_ContourLine_Lines.shp'
 
 ###################################################################################################
 # DNL - (General exposure, annoyance, etc.)
@@ -101,7 +101,7 @@ mapview(contours_Lnight, zcol = 'Level') + mapview(wa_bg_population) # overlap
 
 # Full map
 intersection_Lnight = st_intersection(wa_bg_population[,c('GEOID', 'NAME', 'value', 'geometry')], contours_Lnight)
-mapview(intersection_Lnight, zcol='Level', layer.name='DNL') + mapview(wa_bg_population, col.regions=list('white'))
+mapview(intersection_Lnight, zcol='Level', layer.name='Lnight') + mapview(wa_bg_population, col.regions=list('white'))
 
 # population total for an intersection feature, estimated as proportion of total block group population
 intersection_Lnight$pop_prop = 0
@@ -115,20 +115,74 @@ for (r in 1:nrow(intersection_Lnight)) {
 # Multiply pop in each bg intersection by %HSD to yield estimate of # highly sleep-disturbed persons
 intersection_Lnight$pop_HSD = round(sapply(as.numeric(intersection_Lnight$Level), exp_resp_HSD_combinedestimate_bounded) * 0.01 * intersection_Lnight$pop_prop)
 
-mapview(intersection_DNL, zcol='pop_prop', layer.name='Population') +
+mapview(intersection_Lnight, zcol='pop_prop', layer.name='Population') +
   mapview(intersection_Lnight, zcol='pop_HSD', at=seq(0, 350, 50), layer.name='Population HSD')
+
+#######
+# Leq24
+contours_leq24 = get_contours(path_leq24)
+mapview(contours_leq24, zcol = 'Level') + mapview(wa_bg_population) # overlap
+
+# Full map
+intersection_leq24 = st_intersection(wa_bg_population[,c('GEOID', 'NAME', 'value', 'geometry')], contours_leq24)
+mapview(intersection_leq24, zcol='Level', layer.name='Leq24') + mapview(wa_bg_population, col.regions=list('white'))
+
+# population total for an intersection feature, estimated as proportion of total block group population
+intersection_leq24$pop_prop = 0
+for (r in 1:nrow(intersection_leq24)) {
+  i = intersection_leq24[r,]
+  bg = wa_bg_population[wa_bg_population$GEOID==i$GEOID,]
+  proportion = as.numeric(st_area(i) / st_area(bg))
+  intersection_leq24[r, 'pop_prop'] = round(proportion * bg$value) # proportion of block group pop
+}
+
+# population total for an intersection feature, estimated as proportion of total block group population
+intersection_leq24$pop_prop = 0
+for (r in 1:nrow(intersection_leq24)) {
+  i = intersection_leq24[r,]
+  bg = wa_bg_population[wa_bg_population$GEOID==i$GEOID,]
+  proportion = as.numeric(st_area(i) / st_area(bg))
+  intersection_leq24[r, 'pop_prop'] = round(proportion * bg$value) # proportion of block group pop
+}
+
+mapview(intersection_leq24[intersection_leq24$Level>=70, ], zcol='pop_prop', layer.name='Population 70+ dB Leq24') 
 
 ########################################################################################################
 # Insights
+# Note that these numbers may be conservative estimates due to the lack of evening-time penalty in DNL calculations, and depending on the exposure-response function used.
 
-# Number of people estimated to be exposed to >= 70 dB DNL...
-# using 'block' ~ 8238, 'block group' ~ 9072, 'tract' ~ 8542
-sum(st_drop_geometry(intersection_DNL[intersection_DNL$Level>=70, ])$pop_prop)
+# Number of people estimated to be exposed to >= 70 dB Leq24 (EPA hearing loss over time)
+sum(st_drop_geometry(intersection_leq24[intersection_leq24$Level>=70, ])$pop_prop)
 
 # Number of people estimated to be highly annoyed according to WHO guidelines...
 # using 'block' ~ 19745, 'block group' ~ 20626, 'tract' ~ 20616
+# ...and ISO, Yokoshima
 sum(st_drop_geometry(intersection_DNL)$pop_HA_WHO)
+sum(st_drop_geometry(intersection_DNL)$pop_HA_ISO_Miedema)
+sum(st_drop_geometry(intersection_DNL)$pop_HA_Yokoshima)
 
-# Number of people estimated to be highly sleep disturbed according to WHO (expanded) guidelines...
-# using 'block' ~ 19745, 'block group' ~ 20626, 'tract' ~ 20616
+# Number of people estimated to be highly sleep disturbed according to WHO (Smith expanded) guidelines...
 sum(st_drop_geometry(intersection_Lnight)$pop_HSD)
+
+########################################################################################################
+## Noise complaint reports
+source('global.R')
+
+data_reports = get_data_complaint_reports()
+data_reports = data_reports[!is.na(data_reports$Longitude) & !is.na(data_reports$Longitude),]
+sf_reports = st_as_sf(data_reports,
+                      coords = c('Longitude', 'Latitude'),
+                      crs = crs, agr = 'constant')
+sf_reports$Longitude = st_coordinates(sf_reports$geometry)[,'X']
+sf_reports$Latitude  = st_coordinates(sf_reports$geometry)[,'Y']
+
+map_reports = ggplot() +
+  geom_sf(data = wa_bg_population) + # aes(fill = value)
+  geom_sf(data = sf_reports, size = 1, shape = 19, color = 'red', alpha=0.1)
+print(map_reports)
+
+mapview(sf_reports, zcol='Character')
+mapview(sf_reports) + mapview(intersection_DNL, zcol='Level')
+
+# TODO: cull reports over water
+# TODO: reports for only the Navy monitoring weeks
