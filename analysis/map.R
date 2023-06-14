@@ -200,7 +200,10 @@ flighttracks = st_set_crs(flighttracks, crs)
 runways = st_read('data/flight_ops/modeling/baseops/Aggregated/DNL/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines - VALID/_Runways_Lines.shp')
 runways = st_set_crs(runways, crs)
 
-mapview(intersection_DNL, zcol='Level') + mapview(sites) + mapview(flighttracks, lwd = 0.5) + mapview(runways, lwd = 5)
+mapview(contours_DNL, zcol='Level') +
+  mapview(wa_bg_population, col.regions=list('white')) +
+  mapview(flighttracks, lwd = 0.5) + mapview(runways, lwd = 5) +
+  mapview(sites)
 
 ########################################################################################################
 # Insights
