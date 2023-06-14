@@ -9,6 +9,7 @@ census_api_key('a9d9f05e0560c7fadaed6b4168bedc56d0e4686d')
 sf_extSoftVersion()
 
 source('analysis/exposure_response_functions.R')
+source('global.R')
 
 crs = 'NAD83'
 wa_bg_population = get_decennial(
@@ -185,15 +186,28 @@ for (r in 1:nrow(intersection_leq24)) {
 mapview(intersection_leq24[intersection_leq24$Level>=70, ], zcol='pop_prop', layer.name='Population 70+ dB Leq24')
 
 ########################################################################################################
+# General map with sites and other features
+sites = st_as_sf(get_data_sites(),
+                 coords = c('Longitude', 'Latitude'), 
+                 crs = crs, agr = 'constant')
+sites = na.omit(sites)
+sites = sites[sites$ID %in% unique(get_data_metrics()[,'ID']), ]
+sites$Longitude = st_coordinates(sites$geometry)[,'X']
+sites$Latitude  = st_coordinates(sites$geometry)[,'Y']
+
+flighttracks = st_read('data/flight_ops/modeling/baseops/Aggregated/DNL/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines - VALID/_FlightTracks_Lines.shp')
+flighttracks = st_set_crs(flighttracks, crs)
+runways = st_read('data/flight_ops/modeling/baseops/Aggregated/DNL/NASWI_Aggregated_Noisemap - Aggregate_ContourLine_Lines - VALID/_Runways_Lines.shp')
+runways = st_set_crs(runways, crs)
+
+mapview(intersection_DNL, zcol='Level') + mapview(sites) + mapview(flighttracks, lwd = 0.5) + mapview(runways, lwd = 5)
+
+########################################################################################################
 # Insights
 # Note that these numbers may be conservative estimates due to the lack of evening-time penalty in DNL calculations, and depending on the exposure-response function used.
 
 # WHO - "For average noise exposure, the GDG strongly recommends reducing noise levels produced by aircraft below 45 dB Lden, as aircraft noise above this level is associated with adverse health effects.
 mapview(intersection_DNL[as.numeric(intersection_DNL$Level)>=45,], zcol='Level') + mapview(wa_bg_population, col.regions=list('white'))
-print(ggplot() +
-  geom_sf(data = wa_bg_population) + # aes(fill = value)
-  geom_sf(data = sf_reports, size = 1, shape = 19, color = 'red', alpha=0.1)
-)
 
 # WHO - "For night noise exposure, the GDG strongly recommends reducing noise levels produced by aircraft during night time below 40 dB Lnight, as night- time aircraft noise above this level is associated with adverse effects on sleep."
 mapview(intersection_Lnight[as.numeric(intersection_Lnight$Level)>=45,], zcol='Level') + mapview(wa_bg_population, col.regions=list('white'))
@@ -213,7 +227,6 @@ sum(st_drop_geometry(intersection_Lnight)$pop_HSD)
 
 ########################################################################################################
 ## Noise complaint reports
-source('global.R')
 
 data_reports = get_data_complaint_reports()
 data_reports = data_reports[!is.na(data_reports$Longitude) & !is.na(data_reports$Longitude),]
