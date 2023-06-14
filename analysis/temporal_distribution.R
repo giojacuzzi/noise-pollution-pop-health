@@ -22,21 +22,6 @@ mapview(
   col.regions=c('darkgoldenrod2', 'navy', 'green3', 'darkturquoise')
 ) %>% addStaticLabels(label=sites_with_metrics$ID, direction='top')
 
-# Hours of the day that included a noise event >95 dB LAeq (across all noise events)
-loud_events = data_events[data_events$LAeq>95, ]
-loud_events$Hour = factor(loud_events$Hour)
-loud_events_hour = data.frame(
-  Hour=names(summary(loud_events$Hour)),
-  Events=summary(loud_events$Hour)
-)
-leh = c()
-for (hour in hours) leh = c(leh, max(loud_events_hour[loud_events_hour$Hour==hour, 'Events'],0))
-loud_events_hour = data.frame(
-  Hour=hours,
-  Events=leh
-)
-ggplot(loud_events_hour, aes(x=Hour,y=Events)) + geom_bar(stat='identity') + labs(title='Number of `loud` noise events per hour')
-
 # Average Lden and total/field ops sentinel Whidbey sites all days -------------
 # When is the navy active throughout the week, and how does it affect overall levels?
 # Dependencies: NAVY dataset
@@ -232,3 +217,19 @@ ggplot(gather(fclp_ops[fclp_ops$Year==2021,], Period, Operations, Day:Night, fac
 ggplot(gather(fclp_ops[fclp_ops$Year==2022,], Period, Operations, Day:Night, factor_key=T), aes(fill=Period, y=Operations, x=Month)) +
   geom_bar(position='stack', stat='identity') +
   labs(title='Total FCLP operations, both fields, 2022')
+
+# Hours of the day that included a noise event >95 dB LAeq (across all noise events)
+threshold = 95
+loud_events = data_events[data_events$LAeq>threshold, ]
+loud_events$Hour = factor(loud_events$Hour)
+loud_events_hour = data.frame(
+  Hour=names(summary(loud_events$Hour)),
+  Events=summary(loud_events$Hour)
+)
+leh = c()
+for (hour in hours) leh = c(leh, max(loud_events_hour[loud_events_hour$Hour==hour, 'Events'],0))
+loud_events_hour = data.frame(
+  Hour=hours,
+  Events=leh
+)
+ggplot(loud_events_hour, aes(x=Hour,y=Events)) + geom_bar(stat='identity') + labs(title=paste0('Number of ', threshold, '+ dB noise events per hour'))

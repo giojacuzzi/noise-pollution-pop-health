@@ -31,7 +31,6 @@ ggplot(data_events[data_events$LAeq_Lmax>=threshold & data_events$Org!='SDA',], 
   coord_flip()
 
 ## Max events per site ---------------------------------------------------------
-# TODO
 events_lmax = data_events[!is.na(data_events$LAeq_Lmax),]
 # discard SDA data in lmax calculations due to instrumentation error
 events_lmax = events_lmax[events_lmax$Org!='SDA',]
@@ -39,6 +38,7 @@ events_lmax = events_lmax[events_lmax$Org!='SDA',]
 events_lmax = events_lmax[events_lmax$TimeStart >= as.POSIXct('2015-01-01 00:00:00', tz='UTC'), ]
 # discard events from site 33_SG (no discernable aircraft events recorded)
 events_lmax = events_lmax[events_lmax$ID!='33_SG',]
+events_lmax$ID = factor(events_lmax$ID)
 
 library(dplyr)
 source('data/events/evaluate_events.R')
@@ -46,19 +46,26 @@ events_lmax = events_lmax %>% group_by(ID) %>% slice(which.max(LAeq_Lmax))
 
 # Events manually visually verified as aircraft with `plot_events(id, date, num)`
 # max event recorded was 561, JGL, KysH (119.8 dBA max, 136.2 dBC peak) at 23:56:55
+events_lmax[which(events_lmax$LAeq_Lmax==max(events_lmax$LAeq_Lmax)),]
 plot_events(
-  events_lmax[14, 'ID'][[1]],
-  events_lmax[14, 'Date'][[1]],
-  events_lmax[14, 'X'][[1]]
+  events_lmax[events_lmax$X==561, 'ID'][[1]],
+  events_lmax[events_lmax$X==561, 'Date'][[1]],
+  events_lmax[events_lmax$X==561, 'X'][[1]]
 )
-# max navy event recorded was 9758, 24A_B, 2021-08-10  (115.1)
+# max navy event recorded was 9758, 24A_B, 2021-08-10  (115.1 dBA, 130.3 dBC peak)
+events_lmax_navy = events_lmax[events_lmax$Org=='NAVY',]
+events_lmax_navy[which(events_lmax_navy$LAeq_Lmax==max(events_lmax_navy$LAeq_Lmax)),]
 plot_events(
-  events_lmax[2, 'ID'][[1]],
-  events_lmax[2, 'Date'][[1]],
-  events_lmax[2, 'X'][[1]]
+  events_lmax[events_lmax$X==9758, 'ID'][[1]],
+  events_lmax[events_lmax$X==9758, 'Date'][[1]],
+  events_lmax[events_lmax$X==9758, 'X'][[1]]
 )
 
-## 
+# Median event metrics per site
+tapply(events_lmax$LAeq_Lmax, events_lmax$ID, median)
+tapply(events_lmax$LCpeak,    events_lmax$ID, median)
+tapply(events_lmax$SEL,       events_lmax$ID, median)
+
 # Subset of a 4-day period (2019-06-18 through 21) that included 10 FCLP sessions
 source('data/load/load_site_date.R')
 data_date_1 = load_site_date('KysH', '2019-06-18')

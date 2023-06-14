@@ -215,6 +215,26 @@ mapview(intersection_DNL[as.numeric(intersection_DNL$Level)>=45,], zcol='Level')
 # WHO - "For night noise exposure, the GDG strongly recommends reducing noise levels produced by aircraft during night time below 40 dB Lnight, as night- time aircraft noise above this level is associated with adverse effects on sleep."
 mapview(intersection_Lnight[as.numeric(intersection_Lnight$Level)>=45,], zcol='Level') + mapview(wa_bg_population, col.regions=list('white'))
 
+# Total area within Leq24 noise contours (note this does not include the MOAs)
+contour_area = st_area(st_make_valid(st_union(contours_leq24)))
+units::set_units(contour_area, km^2)
+units::set_units(contour_area, mi^2)
+# Total area where noise is audible, according to an arbitrary ambient noise level threshold
+audibility_threshold = 35
+contour_area = st_area(st_make_valid(st_union(contours_leq24[contours_leq24$Level>audibility_threshold,])))
+units::set_units(contour_area, km^2)
+units::set_units(contour_area, mi^2)
+
+# Estimated number of people within Ldn noise contours (note this does not include the MOAs)
+sum(st_drop_geometry(intersection_leq24[intersection_leq24, ])$pop_prop)
+# Estimated number of people for whom the noise is audible, according to an arbitrary ambient noise level threshold
+sum(st_drop_geometry(intersection_leq24[intersection_leq24$Level>=audibility_threshold, ])$pop_prop)
+
+# Population exposure per 5 dB
+level_pops = st_drop_geometry(intersection_DNL) %>% group_by(Level) %>% summarise(sum_pop= sum(pop_prop))
+level_pops$Level = factor(level_pops$Level)
+ggplot(level_pops, aes(x=Level, y=sum_pop)) + geom_bar(position='dodge', stat='identity') + ggtitle('Estimated population exposed per 5dB Ldn') + xlab('Ldn (dB)') + ylab('Estimated population')
+
 # Number of people estimated to be exposed to >= 70 dB Leq24 (EPA hearing loss over time)
 sum(st_drop_geometry(intersection_leq24[intersection_leq24$Level>=70, ])$pop_prop)
 

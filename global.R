@@ -43,7 +43,7 @@ get_file_map = function() {
 # `abbreviate(gsub(',','',data_sites[is.na(data_sites$ID),'Name']), named=F)`
 get_data_sites = function() {
   if (!exists('data_sites')) {
-    data_sites = read.csv('data/sites/sites.csv')
+    data_sites = read.csv('data/load/sites/sites.csv')
     data_sites[data_sites==''] = NA
   }
   return(data_sites)

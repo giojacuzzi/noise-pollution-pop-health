@@ -5,7 +5,7 @@ library(ggplot2)
 library(patchwork)
 library(stringr)
 
-sites = read.csv('data/sites/sites.csv')
+sites = read.csv('data/load/sites/sites.csv')
 sites = sites[sites$Org=='NAVY' & (sites$Region=='Ault Field' | sites$Region=='OLF Coupeville'), ]
 
 events = read.csv('data/events/output/events.csv')

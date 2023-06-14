@@ -51,21 +51,25 @@ ldn_comparison[ldn_comparison$ID=='27A_SG', 'ModeledDNL'] = 76.4
 ldn_comparison[ldn_comparison$ID=='33_SG', 'ModeledDNL']  = 41.6
 
 # NOTE: difference for Lopez (5B_SG) and PT (33_SG) is significant, potentially due to higher ambient noise from coastal wind, watercraft, and (in the case of PT) city activity. Note that the difference in Lden between these two sites during active and inactive days (below) is minimal, indicating a negligible effect of aircraft noise events on overall noise levels during this monitoring period. Therefore, we may choose to forgo including them in the site-specific health analysis.
-data.frame(
-  ID=ldn_comparison$ID,
-  Ldn = ldn_comparison$Ldn,
-  DNL_Measured = ldn_comparison$NavyDNL,
-  DNL_Modeled  = ldn_comparison$ModeledDNL,
-  D_Ldn_DNL_Measured=(ldn_comparison$Ldn - ldn_comparison$NavyDNL),
-  D_Ldn_DNL_Modeled=(ldn_comparison$Ldn - ldn_comparison$ModeledDNL),
-  D_DNL_Measured_Modeled=(ldn_comparison$NavyDNL - ldn_comparison$ModeledDNL)
+comparison = data.frame(
+  ID=factor(ldn_comparison$ID),
+  Ldn_PhiMeasured    = ldn_comparison$Ldn,
+  DNL_PhiModeled     = ldn_comparison$ModeledDNL,
+  DNL_NavyMeasured   = ldn_comparison$NavyDNL,
+  D_LdnPhiMeasured_DNLNavyMeasured = (ldn_comparison$Ldn - ldn_comparison$NavyDNL),
+  D_LdnPhiMeasured_DNLPhiModeled  = (ldn_comparison$Ldn - ldn_comparison$ModeledDNL),
+  D_DNLNavyMeasured_DNL_PhiModeled = (ldn_comparison$NavyDNL - ldn_comparison$ModeledDNL)
 )
+ggplot(gather(comparison, Source, Level, Ldn_PhiMeasured:DNL_NavyMeasured, factor_key=T), aes(x = ID, y = Level, color = Source)) +
+  geom_point(shape = 1)
 
 # Explanation for using continuous Lden for Navy sites
 # - We do not have the data or tools necessary to classify noise events of Navy sites. Other sites (JGL, NPS, and SDA) had in-person operators validating the presence of noise events due to aircraft operations
 # - Aircraft operations produce the dominant noise events in the area, and their influence on overall level values far outweighs that of any transient noise*
 # - Ldn values are within +/- 3 dB of Navy reported measured values for Navy sites (excluding Lopez and PT)
+summary(comparison[!(comparison$ID %in% c('5B_SG', '33_SG')), 'D_LdnPhiMeasured_DNLNavyMeasured'])
 # - Modeled DNL vaues are with +/- 10 dB of calculated Ldn values (excluding PT), mean absolute error 5.88 dB
+summary(comparison[!(comparison$ID %in% c('5B_SG', '33_SG')), 'D_LdnPhiMeasured_DNLPhiModeled'])
 # * This may not be the case for sites far from the airfields, specifically Lopez 5B_SG and Port Townsend 33_SG
 
 # Energy average Lden
