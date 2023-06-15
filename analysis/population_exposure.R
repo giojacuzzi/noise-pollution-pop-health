@@ -3,6 +3,9 @@
 source('global.R')
 source('analysis/spatial_distribution.R')
 
+library(tigris)
+options(tigris_use_cache = T)
+
 library(tidycensus)
 census_api_key('a9d9f05e0560c7fadaed6b4168bedc56d0e4686d')
 
@@ -100,4 +103,11 @@ units::set_units(contour_area, mi^2)
 # Estimated number of people subject to noise exposure levels associated with adverse health effects
 sum(st_drop_geometry(exposure_Ldn[exposure_Ldn$Level>=lden_impact_threshold, ])$subpopulation)
 
-# TODO: percentage of island county
+# % of Island County population subject to noise exposure levels associated with adverse health effects
+wa_counties_cb = counties(state = 'WA', cb = T)
+island_county = wa_counties_cb[wa_counties_cb$NAME=='Island',]
+island_county_exposure = st_intersection(island_county, exposure_Ldn[exposure_Ldn$Level>=lden_impact_threshold, ])
+island_county_pop_exposed = sum(island_county_exposure$subpopulation)
+island_county_pop = st_intersection(wa_counties_cb[wa_counties_cb$NAME=='Island',], population_bg)
+island_county_pop_total = sum(island_county_pop$value)
+percent_island_county_exposed = island_county_pop_exposed / island_county_pop_total

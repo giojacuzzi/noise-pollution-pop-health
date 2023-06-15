@@ -3,6 +3,7 @@
 source('global.R')
 source('metrics/metrics.R')
 source('analysis/population_exposure.R')
+source('analysis/health_wellbeing_impacts/noise_complaints.R')
 
 data_sites   = get_data_sites()
 data_metrics = get_data_metrics()
@@ -46,11 +47,13 @@ schools_unaffected$Ldn55 = FALSE
 schools = bind_rows(schools_affected, schools_unaffected)
 
 # Affected schools
+# Note that complaints around disrupted activities and loudness are clustered near schools
 schools_affected$NAME
 mapview(Ldn_gt55, zcol='Level', layer.name='DNL') + mapview(population_bg, col.regions=list('white')) +
   mapview(schools, zcol='Ldn55', col.regions=list('gray', 'red')) +
   mapview( sites_with_events, xcol='Longitude', ycol='Latitude', layer.name = 'Sites', crs=crs, grid=F) +
-  mapview(get_flighttracks())
+  mapview(get_flighttracks()) +
+  mapview(get_sf_reports(), zcol='Character')
 
 ## Cognitive development in children -------------------------------------------
 
