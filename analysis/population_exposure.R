@@ -99,3 +99,5 @@ units::set_units(contour_area, mi^2)
 
 # Estimated number of people subject to noise exposure levels associated with adverse health effects
 sum(st_drop_geometry(exposure_Ldn[exposure_Ldn$Level>=lden_impact_threshold, ])$subpopulation)
+
+# TODO: percentage of island county
