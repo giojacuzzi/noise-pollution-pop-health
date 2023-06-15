@@ -42,7 +42,7 @@
 # c) Multiple peaks splitting
 
 source('global.R')
-source('data/metrics/metrics.R')
+source('metrics/metrics.R')
 source('data/load/load_site_date.R')
 library(dplyr)
 library(patchwork)
@@ -364,7 +364,7 @@ plot_events = function(id, date, event_nums=0) {
 
 #-------------------------------------------------------------------------------
 
-# Calculate events for every site ID and date from an org database (or all, if none is specified), store in a data frame, and save as `data/events/output/events.csv`
+# Calculate events for every site ID and date from an org database (or all, if none is specified), store in a data frame, and save as `data/events/_output/events.csv`
 calculate_events_csv = function(orgarg = '') {
   
   options(warn = 1)
@@ -403,7 +403,7 @@ calculate_events_csv = function(orgarg = '') {
   }
   
   # Save all events data to csv
-  file_name = 'data/events/output/'
+  file_name = 'data/events/_output/'
   if (orgarg == '') {
     file_name = paste0(file_name, 'events.csv')
   } else {

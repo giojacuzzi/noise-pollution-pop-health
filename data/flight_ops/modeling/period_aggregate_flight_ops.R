@@ -71,7 +71,7 @@ for (period in periods) {
   bind_rows(data) %>% group_by(Profile) %>% summarise_at(vars(Num.Total), list(name = mean))
   
   # File name for aggregate results
-  filename = paste('data/flight_ops/output/Period', period, 'Aggregate Flight Operations.csv')
+  filename = paste('data/flight_ops/_output/Period', period, 'Aggregate Flight Operations.csv')
   
   # Order by profile
   data_all_ops = data_all_ops[order(data_all_ops$Profile),]
@@ -126,7 +126,7 @@ for (period in periods) {
 }
 
 # Save total overview file
-overview_filename = paste0('data/flight_ops/output/Overview.csv')
+overview_filename = paste0('data/flight_ops/_output/Overview.csv')
 write.csv(overview,
           file=overview_filename,
           row.names=F,

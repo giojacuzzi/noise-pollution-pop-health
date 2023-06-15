@@ -70,7 +70,7 @@ for (pdf in files) {
   }
   
   data_ault = rbind(data_ault, data_period)
-  # filename = paste0('data/flight_ops/output/ault/', basename(pdf), '.csv')
+  # filename = paste0('data/flight_ops/_output/ault/', basename(pdf), '.csv')
   # write.csv(data, filename, row.names=F)
   # message(paste('Created', filename))
 }
@@ -177,7 +177,7 @@ for (pdf in files) {
 }
 
 data_coup = na.omit(data_coup)
-# filename = paste0('data/flight_ops/output/coup/Coupeville Ops.csv')
+# filename = paste0('data/flight_ops/_output/coup/Coupeville Ops.csv')
 # write.csv(data, filename, row.names=F)
 # message(paste('Created', filename))
 
@@ -187,6 +187,6 @@ data_coup$Field = 'Coup'
 data = data.frame()
 data = rbind(data, data_ault)
 data = rbind(data, data_coup)
-path = 'data/flight_ops/output/ops.csv'
+path = 'data/flight_ops/_output/ops.csv'
 write.csv(data, path, row.names=F)
 message(paste('Created', path))

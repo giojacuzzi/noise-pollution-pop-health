@@ -1,21 +1,28 @@
 ## Hearing loss and OSHA / NIOSH standards
 
 source('global.R')
-source('data/metrics/metrics.R')
-library(mapview)
-library(leafem)
+source('metrics/metrics.R')
+source('analysis/population_exposure.R')
 
 data_sites   = get_data_sites()
 data_metrics = get_data_metrics()
 data_events = get_data_events()
 
+###################################################################################################
+# Leq24
+
+mapview(exposure_Leq24[exposure_Leq24$Level>=70, ], zcol='subpopulation', layer.name='Population 70+ dB Leq24')
+
+# Number of people estimated to be regularly exposed to >= 70 dB Leq24 (EPA hearing loss over time)
+sum(st_drop_geometry(exposure_Leq24[exposure_Leq24$Level>=70, ])$subpopulation)
+
 # OSHA/NIOSH violation ---------------------------------------------------------
-# TODO: calculate OSHA/NIOSH with data/metrics/calculate_osha_niosh.R
+# NOTE: calculate OSHA/NIOSH with data/metrics/calculate_osha_niosh.R
 
 # Hearing loss -----------------------------------------------------------------
 # Dependencies: any dataset
 
-occupational_standards = read.csv('data/metrics/output/osha_niosh.csv')
+occupational_standards = read.csv('analysis/health_wellbeing_impacts/preprocessing/_output/osha_niosh.csv')
 
 # OSHA action level
 # https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.95AppA#:~:text=(2)%20The%20eight%2Dhour,to%20the%20measured%20sound%20level
@@ -24,15 +31,16 @@ unique(occupational_standards[occupational_standards$OshaTWA>=85,'ID'])
 # NIOSH recommended exposure limit
 # https://www.cdc.gov/niosh/docs/98-126/pdfs/98-126.pdf?id=10.26616/NIOSHPUB98126
 niosh_sites = unique(occupational_standards[occupational_standards$NioshTWA>=85,'ID'])
+niosh_sites
 
-sites_with_metrics = data_sites[data_sites$ID %in% unique(niosh_sites),]
+niosh_exceeding_sites = data_sites[data_sites$ID %in% unique(niosh_sites),]
 mapviewOptions(legend.pos='bottomright')
 mapview(
-  sites_with_metrics,
+  niosh_exceeding_sites,
   xcol='Longitude', ycol='Latitude', zcol='Org',
   layer.name = 'Organization', crs=4269, grid=F, legend=T,
   col.regions=c('darkgoldenrod2', 'navy', 'green3', 'darkturquoise')
-) %>% addStaticLabels(label=sites_with_metrics$ID, direction='top')
+) %>% addStaticLabels(label=niosh_exceeding_sites$ID, direction='top')
 
 # FAA Hearing Conservation Program action level trigger
 # https://www.faa.gov/documentLibrary/media/Order/Order_3900.66A.pdf

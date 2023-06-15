@@ -7,7 +7,7 @@ source('global.R')
 
 # 1. Create tables mapping org files to sites and dates ------------------------
 # input: PHI database, 'data/sites.csv'
-# outputs: 'data/load/output/file_map_[ORG].csv'
+# outputs: 'data/load/_output/file_map_[ORG].csv'
 source('data/load/load_file_jgl.R')
 file_map_jgl = map_files_jgl_csv()
 source('data/load/load_file_navy.R')
@@ -29,7 +29,7 @@ create_site_date_csvs('NPS')
 
 # 3. Find noise events for each site date --------------------------------------
 # inputs: '[database_path]/converted/site_dates/[ORG]/[ID]_[DATE].csv'
-# outputs: 'data/events/output/events_[ORG].csv'
+# outputs: 'data/events/_output/events_[ORG].csv'
 source('data/events/evaluate_events.R')
 calculate_events_csv('JGL')
 calculate_events_csv('NAVY')
@@ -37,7 +37,7 @@ calculate_events_csv('SDA')
 calculate_events_csv('NPS')
 # 3.5. Get noise events reported by Navy
 # inputs: PHI database
-# outputs: 'data/events/output/navy_reported_events.csv'
+# outputs: 'data/events/_output/navy_reported_events.csv'
 source('data/events/load_events_navy.R')
 
 # 4. Calculate metrics for each site date --------------------------------------
@@ -48,3 +48,9 @@ source('data/events/load_events_navy.R')
 # 6. Calculate OSHA/NIOSH TWA for each site date -------------------------------
 
 
+#.....
+
+
+# Evaluate spatial distribution (noise contours)
+source('analysis/spatial_distribution.R')
+source('analysis/population_exposure.R')

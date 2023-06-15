@@ -4,7 +4,7 @@ source('global.R')
 library(ggplot2)
 library(patchwork)
 
-data = read.csv('data/flight_ops/output/ops.csv')
+data = read.csv('data/flight_ops/_output/ops.csv')
 data$Time       = as.POSIXct(data$Time)
 data$Hour       = strftime(data$Time, format='%H')
 data$DEN        = get_den_period_for_hours(data$Hour)

@@ -1,6 +1,6 @@
 #  Total flight operations data, aggregating the results of individual period flight operations aggregates from load_flight_operations.R into a single table representing the maximum extent of exposure across all periods combined.
 
-files = list.files(path='data/flight_ops/modeling/output/', pattern="*Flight Operations.csv", full.names=T)
+files = list.files(path='data/flight_ops/modeling/_output/', pattern="*Flight Operations.csv", full.names=T)
 period_ops = lapply(files, read.csv)
 
 # Create a dataframe aggregating all flight operations periods by taking the maximum operations quantity for each profile
@@ -35,7 +35,7 @@ total_ops$Num.Total = total_mean$Num.Total
 
 
 # File name for aggregate results
-filename = paste('data/flight_ops/modeling/output/Total Aggregate Flight Operations.csv')
+filename = paste('data/flight_ops/modeling/_output/Total Aggregate Flight Operations.csv')
 
 # Format columns for xml conversion and BaseOps compatibility
 names(total_ops) = c( 
@@ -75,7 +75,7 @@ message(paste('Created', filename))
 
 ## Nighttime ops only ----------------------------------------------------------
 # File name for nighttime aggregate results
-filename_night = paste('data/flight_ops/modeling/output/Total Aggregate Flight Operations - NIGHT.csv')
+filename_night = paste('data/flight_ops/modeling/_output/Total Aggregate Flight Operations - NIGHT.csv')
 
 night_ops = total_ops
 night_ops[,'Num Day']   = 0.0

@@ -1,8 +1,9 @@
 ## Health and well-being impact assessment - Sleep disturbance
 
 source('global.R')
-source('data/metrics/metrics.R')
-source('analysis/exposure_response_functions.R')
+source('metrics/metrics.R')
+source('metrics/exposure_response_functions.R')
+source('analysis/population_exposure.R')
 
 data_sites   = get_data_sites()
 data_metrics = get_data_metrics()
@@ -10,6 +11,28 @@ data_metrics = get_data_metrics()
 # Sleep disturbance for nights of average and maximum Lnight, all sites ---------------------------
 # Dependencies: any dataset
 # What is the risk of high sleep disturbance at these sites based on exposure-response relationships?
+
+###################################################################################################
+# Modeled spatial exposure
+
+# Multiply pop in each exposure intersection by %HSD to yield estimate of # highly sleep-disturbed persons
+exposure_Lnight$pop_HSD = round(sapply(as.numeric(exposure_Lnight$Level), exp_resp_HSD_combinedestimate_bounded) * 0.01 * exposure_Lnight$subpopulation)
+
+mapview(exposure_Lnight, zcol='subpopulation', layer.name='Population') +
+  mapview(exposure_Lnight, zcol='pop_HSD', at=seq(0, 350, 50), layer.name='Population HSD')
+
+# WHO - "For night noise exposure, the GDG strongly recommends reducing noise levels produced by aircraft during night time below 40 dB Lnight, as night-time aircraft noise above this level is associated with adverse effects on sleep."
+lnight_impact_threshold = 40
+mapview(exposure_Lnight[as.numeric(exposure_Lnight$Level)>=lnight_impact_threshold,], zcol='Level') + mapview(population_bg, col.regions=list('white'))
+
+# Estimated number of people subject to nighttime noise exposure levels associated with adverse sleep effects
+sum(st_drop_geometry(exposure_Lnight[exposure_Lnight$Level>=lnight_impact_threshold, ])$subpopulation)
+
+# Number of people estimated to be highly sleep disturbed according to WHO (Smith expanded) guidelines...
+sum(st_drop_geometry(exposure_Lnight)$pop_HSD)
+
+###################################################################################################
+# Measured site exposure
 
 # Median
 median_lnight = tapply(data_metrics$Lden_Lnight, data_metrics$ID, median)

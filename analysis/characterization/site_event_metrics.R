@@ -3,9 +3,7 @@
 # Requirements: PHI database
 
 source('global.R')
-source('data/metrics/metrics.R')
-library(mapview)
-library(leafem)
+source('metrics/metrics.R')
 
 data_sites  = get_data_sites()
 data_events = get_data_events()
@@ -40,8 +38,7 @@ events_lmax = events_lmax[events_lmax$TimeStart >= as.POSIXct('2015-01-01 00:00:
 events_lmax = events_lmax[events_lmax$ID!='33_SG',]
 events_lmax$ID = factor(events_lmax$ID)
 
-library(dplyr)
-source('data/events/evaluate_events.R')
+source('analysis/characterization/preprocessing/evaluate_events.R')
 events_lmax = events_lmax %>% group_by(ID) %>% slice(which.max(LAeq_Lmax))
 
 # Events manually visually verified as aircraft with `plot_events(id, date, num)`

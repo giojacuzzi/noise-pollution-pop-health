@@ -46,12 +46,12 @@ map_files_sda_csv = function() {
     stop('Error - Files span multiple dates, expecting more xls data entries!')
   }
   data_xls = cbind(Org='SDA', data_xls)
-  write.csv(data_xls, file='data/load/output/file_map_sda.csv', row.names=FALSE)
+  write.csv(data_xls, file='data/load/_output/file_map_sda.csv', row.names=FALSE)
   return(data_xls)
 }
 
 get_file_map_sda = function() {
-  return(read.csv('data/load/output/file_map_sda.csv'))
+  return(read.csv('data/load/_output/file_map_sda.csv'))
 }
 
 # Takes an absolute path to an SDA .XLS file

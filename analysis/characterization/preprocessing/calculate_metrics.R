@@ -120,7 +120,7 @@ calculate_site_date_metrics_csv = function(orgarg = '') {
   }
   
   # Save all metrics data to csv
-  file_name = 'data/metrics/output/'
+  file_name = 'data/metrics/_output/'
   if (orgarg == '') {
     file_name = paste0(file_name, 'metrics.csv')
   } else {

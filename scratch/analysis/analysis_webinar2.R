@@ -10,7 +10,7 @@ library(patchwork)
 library(ggpmisc)
 
 # Figure output file configuration
-ggsave_output_path = 'analysis/output/'
+ggsave_output_path = 'analysis/_output/'
 ggsave_width = 7
 ggsave_height = 6
 

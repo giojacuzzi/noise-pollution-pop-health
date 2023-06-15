@@ -1,8 +1,9 @@
 ## Health and well-being impact assessment - Annoyance
 
 source('global.R')
-source('data/metrics/metrics.R')
-source('analysis/exposure_response_functions.R')
+source('metrics/metrics.R')
+source('metrics/exposure_response_functions.R')
+source('analysis/population_exposure.R')
 
 data_sites   = get_data_sites()
 data_metrics = get_data_metrics()
@@ -11,9 +12,31 @@ data_metrics = get_data_metrics()
 # What is the risk of high annoyance at these sites based on exposure-response relationships?
 # Dependencies: any dataset
 
-# TODO: Annoyance on a longer, "proper" timescale? Energy averaged across the four monitoring periods?
-
 # See ISO 1996-1 2016 Annex E/F and Lct
+
+###################################################################################################
+# Modeled spatial exposure
+
+# Multiply subpopulation in each block group intersection by %HA to yield estimate of # highly annoyed persons
+exposure_Ldn$pop_HA_WHO = round(sapply(as.numeric(exposure_Ldn$Level), exp_resp_WHO_bounded) * 0.01 * exposure_Ldn$subpopulation)
+exposure_Ldn$pop_HA_ISO_Miedema = round(sapply(as.numeric(exposure_Ldn$Level), exp_resp_ISO_Miedema_bounded) * 0.01 * exposure_Ldn$subpopulation)
+exposure_Ldn$pop_HA_Yokoshima = round(sapply(as.numeric(exposure_Ldn$Level), exp_resp_Yokoshima_bounded) * 0.01 * exposure_Ldn$subpopulation)
+
+breaks = seq(0, 800, 100)
+mapview(exposure_Ldn, zcol='subpopulation', layer.name='Population') +
+  mapview(exposure_Ldn, zcol='pop_HA_ISO_Miedema', at=breaks, layer.name='Population HA (ISO)') +
+  mapview(exposure_Ldn, zcol='pop_HA_WHO', at=breaks, layer.name='Population HA (WHO)') +
+  mapview(exposure_Ldn, zcol='pop_HA_Yokoshima', at=breaks, layer.name='Population HA (Yokoshima)')
+
+# Number of people estimated to be highly annoyed according to WHO guidelines...
+# using 'block' ~ 19745, 'block group' ~ 20626, 'tract' ~ 20616
+# ...and ISO, Yokoshima
+sum(st_drop_geometry(exposure_Ldn)$pop_HA_ISO_Miedema)
+sum(st_drop_geometry(exposure_Ldn)$pop_HA_WHO)
+sum(st_drop_geometry(exposure_Ldn)$pop_HA_Yokoshima)
+
+###################################################################################################
+# Measured site exposure
 
 # Median
 median_lden = tapply(data_metrics$Lden, data_metrics$ID, median)
@@ -108,4 +131,3 @@ p_ha_table = ggplot() +
   annotate(geom='table', size=4, x=0, y=0, label=list(ha_table[,!names(ha_table) %in% c('Lden')]), table.theme=ttheme_gtlight) + theme_void()
 print(p_ha_table)
 ggsave(p_ha_table, file=paste0(ggsave_output_path, 'erf_ha_table.png'), width=ggsave_width, height=ggsave_height)
-

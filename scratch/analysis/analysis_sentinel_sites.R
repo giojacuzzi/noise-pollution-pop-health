@@ -7,7 +7,7 @@ library(viridis)
 sites = read.csv('data/sites/sites.csv')
 sites = sites[sites$Org=='NAVY' & (sites$Region=='Ault Field' | sites$Region=='OLF Coupeville'), ]
 
-events = read.csv('data/events/output/events.csv')
+events = read.csv('data/events/_output/events.csv')
 events$StartTime  = as.POSIXct(events$StartTime)
 events$Hour       = strftime(events$StartTime, format='%H')
 events$DEN        = get_den_period_for_hours(events$Hour)
@@ -15,7 +15,7 @@ events$Day        = factor(weekdays(events$StartTime, abbreviate=T), levels=days
 events$Period     = get_navy_monitoring_period_for_times(events$StartTime)
 
 #### TODO: incorporate ops
-ops = read.csv('data/flight_ops/output/ops.csv')
+ops = read.csv('data/flight_ops/_output/ops.csv')
 ops$Time       = as.POSIXct(ops$Time)
 ops$Hour       = as.factor(strftime(ops$Time, format='%H'))
 ops$DEN        = get_den_period_for_hours(ops$Hour)

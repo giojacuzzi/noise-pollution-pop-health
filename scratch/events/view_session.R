@@ -52,4 +52,4 @@ time_end = '2021-08-10 21:30:00'
       labs(title='', x='', y='Frequency (Hz)', fill='Leq (dBZ)')
     
     print(p_spectral / p_leq)
-    ggsave(p_spectral / p_leq, file=paste0('analysis/output/', 'session_example.png'), width=10, height=5)
+    ggsave(p_spectral / p_leq, file=paste0('analysis/_output/', 'session_example.png'), width=10, height=5)

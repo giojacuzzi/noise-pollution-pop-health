@@ -6,7 +6,7 @@ theme_set(theme_minimal())
 
 sites = read.csv('data/sites/sites.csv')
 sites = sites[sites$Org=='NAVY' & (sites$Region=='Ault Field' | sites$Region=='OLF Coupeville'), ]
-events = read.csv('data/events/output/events.csv')
+events = read.csv('data/events/_output/events.csv')
 
 plots_events_per_site = list()
 for (s in 1:nrow(sites)) {

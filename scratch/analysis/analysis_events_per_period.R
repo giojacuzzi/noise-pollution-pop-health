@@ -8,7 +8,7 @@ library(stringr)
 sites = read.csv('data/load/sites/sites.csv')
 sites = sites[sites$Org=='NAVY' & (sites$Region=='Ault Field' | sites$Region=='OLF Coupeville'), ]
 
-events = read.csv('data/events/output/events.csv')
+events = read.csv('data/events/_output/events.csv')
 events$StartTime  = as.POSIXct(events$StartTime)
 events$Hour       = strftime(events$StartTime, format='%H')
 events$DEN        = get_den_period_for_hours(events$Hour)

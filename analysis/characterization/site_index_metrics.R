@@ -2,18 +2,11 @@
 # Ldn, Lden
 
 source('global.R')
-source('data/metrics/metrics.R')
+source('metrics/metrics.R')
 
 data_sites   = get_data_sites()
 data_metrics = get_data_metrics()
 data_metrics$Field = unlist(lapply(data_metrics$ID, get_field_name_for_ID))
-
-library(mapview)
-library(dplyr)
-library(tidyr)
-library(scales)
-library(patchwork)
-library(ggpmisc)
 
 navy_metrics = na.omit(data_metrics)
 navy_metrics = navy_metrics[navy_metrics$Org=='NAVY',]

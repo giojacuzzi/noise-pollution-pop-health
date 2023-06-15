@@ -2,7 +2,7 @@
 # When does the noise occur?
 
 source('global.R')
-source('data/metrics/metrics.R')
+source('metrics/metrics.R')
 
 data_sites   = get_data_sites()
 data_metrics = get_data_metrics()

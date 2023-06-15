@@ -1,4 +1,4 @@
-events_data = read.csv('data/events/output/events.csv')
+events_data = read.csv('data/events/_output/events.csv')
 events_data$OnsetRateRaw = NA # Add onset rate column (calculated from raw LAeq_Lmax values)
 events_data$OnsetRateReported = NA # Add onset rate column (calculated from reported LAeq_Lmax values in pdfs)
 events_data$UniqueEventID = seq(1, nrow(events_data)) # Add a unique event ID

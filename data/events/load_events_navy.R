@@ -60,10 +60,10 @@ for (pdf in files) {
   period_data$Period = period
   data = rbind(data, period_data)
   
-  # path = paste0('data/events/output/events_', period, '.csv')
+  # path = paste0('data/events/_output/events_', period, '.csv')
   # write.csv(period_data, path, row.names=F)
   # message(paste('Created', path))
 }
-path = 'data/events/output/navy_reported_events.csv'
+path = 'data/events/_output/navy_reported_events.csv'
 write.csv(data, path, row.names=F)
 message(paste('Created', path))

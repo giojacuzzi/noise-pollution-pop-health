@@ -1,15 +1,25 @@
 ### Global variables, functions, settings
-library(stringr)
+
+# Plotting and figures
 library(ggplot2)
+library(ggpmisc)
 library(viridis)
-library(mapview)
-library(leafem)
-library(dplyr)
-library(tidyr)
 library(scales)
 library(patchwork)
-library(ggpmisc)
 theme_set(theme_minimal())
+
+# Data processing
+library(stringr)
+library(dplyr)
+library(tidyr)
+
+# Spatial mapping
+library(mapview)
+library(leafem)
+library(sf)
+library(ggrepel)
+sf_extSoftVersion()
+crs = 'NAD83'
 
 # Path to directory containing the PHI database
 database_path = {
@@ -18,10 +28,13 @@ database_path = {
 }
 
 # Figure output file configuration
-ggsave_output_path = 'analysis/output/'
+ggsave_output_path = 'analysis/_output/'
 ggsave_width = 7
 ggsave_height = 6
 
+# Spatial mapping configuration
+
+# Time and date formatting
 format_date = '%Y-%m-%d'
 format_time = '%H:%M:%S'
 time_24hr = 24 * 60 * 60 # total number of seconds in a day
@@ -29,18 +42,18 @@ hours = str_pad(0:23, 2, pad = '0')
 days  = c('Mon','Tue','Wed','Thu','Fri','Sat','Sun')
 months = c('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec')
 
+# Database file maps
 get_file_map = function() {
   if (!exists('file_map')) {
-    file_map = rbind(read.csv('data/load/output/file_map_navy.csv'),
-                     read.csv('data/load/output/file_map_jgl.csv'),
-                     read.csv('data/load/output/file_map_sda.csv'),
-                     read.csv('data/load/output/file_map_nps.csv'))
+    file_map = rbind(read.csv('data/load/_output/file_map_navy.csv'),
+                     read.csv('data/load/_output/file_map_jgl.csv'),
+                     read.csv('data/load/_output/file_map_sda.csv'),
+                     read.csv('data/load/_output/file_map_nps.csv'))
   }
   return(file_map)
 }
 
-# NOTE: unofficial data_sites IDs produced via:
-# `abbreviate(gsub(',','',data_sites[is.na(data_sites$ID),'Name']), named=F)`
+# NOTE: missing data_sites IDs produced via: `abbreviate(gsub(',','',data_sites[is.na(data_sites$ID),'Name']), named=F)`
 get_data_sites = function() {
   if (!exists('data_sites')) {
     data_sites = read.csv('data/load/sites/sites.csv')
@@ -49,12 +62,13 @@ get_data_sites = function() {
   return(data_sites)
 }
 
+path_metrics_output = 'analysis/characterization/preprocessing/_output/'
 get_data_metrics = function() {
   if (!exists('data_metrics')) {
-    data_metrics = rbind(read.csv('data/metrics/output/metrics_NAVY.csv'),
-                         read.csv('data/metrics/output/metrics_JGL.csv'),
-                         read.csv('data/metrics/output/metrics_NPS.csv'),
-                         read.csv('data/metrics/output/metrics_SDA.csv'))
+    data_metrics = rbind(read.csv(paste0(path_metrics_output, 'metrics_NAVY.csv')),
+                         read.csv(paste0(path_metrics_output, 'metrics_JGL.csv')),
+                         read.csv(paste0(path_metrics_output, 'metrics_NPS.csv')),
+                         read.csv(paste0(path_metrics_output, 'metrics_SDA.csv')))
     # NOTE: Some SDA measurements were recorded with overloaded gains (i.e. distortion) that result in erroneously high values during flybys. Here, we remove site dates with measurements exceeding 110 dB.
     data_metrics = data_metrics[-which(data_metrics$Org == 'SDA' & data_metrics$Lmax > 110.0),]
     data_metrics$Date   = as.POSIXct(data_metrics$Date, tz='UTC')
@@ -68,7 +82,7 @@ get_data_metrics = function() {
 
 get_data_ops = function() {
   if (!exists('data_ops')) {
-    data_ops = read.csv('data/flight_ops/output/ops.csv')
+    data_ops = read.csv('data/flight_ops/_output/ops.csv')
     data_ops$Time   = as.POSIXct(data_ops$Time, tz='UTC')
     data_ops$Hour   = as.factor(format(data_ops$Time, format='%H'))
     data_ops$DEN    = get_den_period_for_hours(data_ops$Hour)
@@ -79,15 +93,16 @@ get_data_ops = function() {
   return(data_ops)
 }
 
+path_events_output = 'analysis/characterization/preprocessing/_output/'
 get_data_events = function() {
   if (!exists('data_events')) {
-    events_jgl = read.csv('data/events/output/events_JGL.csv')
+    events_jgl = read.csv(paste0(path_events_output, 'events_JGL.csv'))
     events_jgl$Org = 'JGL'
-    events_navy = read.csv('data/events/output/events_NAVY.csv')
+    events_navy = read.csv(paste0(path_events_output, 'events_NAVY.csv'))
     events_navy$Org = 'NAVY'
-    events_nps = read.csv('data/events/output/events_NPS.csv')
+    events_nps = read.csv(paste0(path_events_output, 'events_NPS.csv'))
     events_nps$Org = 'NPS'
-    events_sda = read.csv('data/events/output/events_SDA.csv')
+    events_sda = read.csv(paste0(path_events_output, 'events_SDA.csv'))
     events_sda$Org = 'SDA'
     
     # Special case for SDA peaks >= 95 dB due to equipment error. Some SDA measurements were recorded with overloaded gains (i.e. distortion) that result in erroneously high values during flybys.
@@ -116,7 +131,7 @@ get_data_events = function() {
 
 get_data_navy_events_reported = function() {
   if (!exists('data_navy_events_reported')) {
-    data_navy_events_reported = read.csv('data/events/output/navy_reported_events.csv')
+    data_navy_events_reported = read.csv('data/events/_output/navy_reported_events.csv')
     data_navy_events_reported$StartTime  = as.POSIXct(data_navy_events_reported$StartTime, tz='UTC')
     data_navy_events_reported$LAeq_LmaxTime = as.POSIXct(data_navy_events_reported$LAeq_LmaxTime, tz='UTC')
     data_navy_events_reported$Hour       = format(data_navy_events_reported$StartTime, format='%H')
