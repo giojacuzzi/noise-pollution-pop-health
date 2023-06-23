@@ -21,14 +21,14 @@ population_bg = get_decennial(
 ###################################################################################################
 # Ldn / DNL
 
-# # Example with Coupeville block group
-# ex_bg = population_bg[population_bg$GEOID==530299710001,]
-# ex_intersection = st_intersection(ex_bg, contours_Ldn)
-# mapview(ex_intersection, zcol='Level')
-# areas = as.numeric(st_area(ex_intersection) / st_area(ex_bg)) # proportion
-# ex_intersection$subpopulation = ex_intersection$value * areas
-# mapview(ex_intersection, zcol='subpopulation')
-# level_areas = left_join(data.frame(Level=contours_Ldn$Level), data.frame(Level=ex_intersection$Level, Area=areas), by = join_by(Level)) %>% replace(is.na(.), 0)
+# Example with Coupeville block group
+ex_bg = population_bg[population_bg$GEOID==530299710001,]
+ex_intersection = st_intersection(ex_bg, contours_Ldn)
+mapview(ex_intersection, zcol='Level')
+areas = as.numeric(st_area(ex_intersection) / st_area(ex_bg)) # proportion
+ex_intersection$subpopulation = ex_intersection$value * areas
+mapview(ex_intersection, zcol='subpopulation')
+level_areas = left_join(data.frame(Level=contours_Ldn$Level), data.frame(Level=ex_intersection$Level, Area=areas), by = join_by(Level)) %>% replace(is.na(.), 0)
 
 # Total exposure, measured as intersection of population layer with contours
 if (!exists('exposure_Ldn')) {
@@ -81,7 +81,7 @@ if (!exists('exposure_Leq24')) {
   } 
 }
 
-########################################################################################################
+###############################################################################################
 # Insights
 # Note that these numbers may be conservative estimates due to the lack of evening-time penalty in DNL calculations, and depending on the exposure-response function used.
 
