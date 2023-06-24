@@ -65,3 +65,24 @@ if (!exists('contours_Ldn') | !exists('contours_Lnight') | !exists('contours_Leq
     mapview(contours_Lnight, zcol='Level') +
     mapview(contours_Leq24,  zcol='Level')
 }
+
+# Which counties are within the spatial distribution of noise health impacts?
+
+# TESTING COUNTY EXTENT
+# [1] "Jefferson County, Washington" "San Juan County, Washington"  "Snohomish County, Washington"
+# [4] "Island County, Washington"    "Skagit County, Washington"  
+contours = list(get_contours_Ldn(), get_contours_Lnight(), get_contours_Leq24())
+for (contour in contours) {
+  contour = contour[as.numeric(contour$Level)>=45,]
+  census_api_key('a9d9f05e0560c7fadaed6b4168bedc56d0e4686d')
+  
+  stid = 'WA'
+  pop = get_acs(geography = 'county', variables = 'B01003_001', 
+                year = 2021, state = 'WA', geometry = TRUE)  
+  mapview(contour) + mapview(pop)
+  
+  st_agr(pop) = "constant"
+  st_agr(contour) = "constant"
+  intersection = st_intersection(pop, contour)
+  print(unique(intersection$NAME))
+}
