@@ -3,37 +3,51 @@
 source('global.R')
 source('metrics/metrics.R')
 source('metrics/exposure_response_functions.R')
-source('analysis/population_exposure.R')
 
 data_sites   = get_data_sites()
 data_metrics = get_data_metrics()
 
+library(raster)
+library(glue)
+library(mapview)
+mapviewOptions(mapview.maxpixels = 50000000)
+input_path = paste0(here::here(), '/analysis/_output')
+pop_exposure_stack = stack(glue('{input_path}/pop_exposure_stack.grd'))
+
 ## Annoyance -------------------------------------------------------------------
 # What is the risk of high annoyance at these sites based on exposure-response relationships?
 # Dependencies: any dataset
-
 # See ISO 1996-1 2016 Annex E/F and Lct
 
 ###################################################################################################
 # Modeled spatial exposure
 
-# Multiply subpopulation in each block group intersection by %HA to yield estimate of # highly annoyed persons
-exposure_Ldn$pop_HA_WHO = round(sapply(as.numeric(exposure_Ldn$Level), exp_resp_WHO_bounded) * 0.01 * exposure_Ldn$subpopulation)
-exposure_Ldn$pop_HA_ISO_Miedema = round(sapply(as.numeric(exposure_Ldn$Level), exp_resp_ISO_Miedema_bounded) * 0.01 * exposure_Ldn$subpopulation)
-exposure_Ldn$pop_HA_Yokoshima = round(sapply(as.numeric(exposure_Ldn$Level), exp_resp_Yokoshima_bounded) * 0.01 * exposure_Ldn$subpopulation)
+r_Ldn = pop_exposure_stack[['Ldn']]
+r_pop = pop_exposure_stack[['Impacted.Population']]
+r_pop[r_pop == 0] = NA # set all 0 population cells to NA
+r_Ldn[is.na(r_Ldn)] = 0 # set all NA exposure cells to 0
 
-breaks = seq(0, 800, 100)
-mapview(exposure_Ldn, zcol='subpopulation', layer.name='Population') +
-  mapview(exposure_Ldn, zcol='pop_HA_ISO_Miedema', at=breaks, layer.name='Population HA (ISO)') +
-  mapview(exposure_Ldn, zcol='pop_HA_WHO', at=breaks, layer.name='Population HA (WHO)') +
-  mapview(exposure_Ldn, zcol='pop_HA_Yokoshima', at=breaks, layer.name='Population HA (Yokoshima)')
+# Multiply population in each cell by %HA to yield estimate of # highly annoyed persons in that cell
 
-# Number of people estimated to be highly annoyed according to WHO guidelines...
-# using 'block' ~ 19745, 'block group' ~ 20626, 'tract' ~ 20616
-# ...and ISO, Yokoshima
-sum(st_drop_geometry(exposure_Ldn)$pop_HA_ISO_Miedema)
-sum(st_drop_geometry(exposure_Ldn)$pop_HA_WHO)
-sum(st_drop_geometry(exposure_Ldn)$pop_HA_Yokoshima)
+percent_HA_WHO = calc(r_Ldn, fun=exp_resp_WHO_bounded)
+estimated_pop_HA_WHO = percent_HA_WHO * 0.01 * r_pop
+estimated_pop_HA_WHO[estimated_pop_HA_WHO == 0] = NA
+mapview(estimated_pop_HA_WHO)
+
+percent_HA_ISO = calc(r_Ldn, fun=exp_resp_ISO_Miedema_bounded)
+estimated_pop_HA_ISO = percent_HA_ISO * 0.01 * r_pop
+estimated_pop_HA_ISO[estimated_pop_HA_ISO == 0] = NA
+mapview(estimated_pop_HA_ISO)
+
+percent_HA_Yokoshima = calc(r_Ldn, fun=exp_resp_Yokoshima_bounded)
+estimated_pop_HA_Yokoshima = percent_HA_Yokoshima * 0.01 * r_pop
+estimated_pop_HA_Yokoshima[estimated_pop_HA_Yokoshima == 0] = NA
+mapview(estimated_pop_HA_Yokoshima)
+
+# Number of people estimated to be highly annoyed
+(npop_HA_WHO       = cellStats(estimated_pop_HA_WHO, 'sum')) # WHO
+(npop_HA_ISO       = cellStats(estimated_pop_HA_ISO, 'sum')) # ISO
+(npop_HA_Yokoshima = cellStats(estimated_pop_HA_Yokoshima, 'sum')) # Yokoshima
 
 ###################################################################################################
 # Measured site exposure

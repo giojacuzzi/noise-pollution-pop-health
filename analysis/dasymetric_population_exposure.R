@@ -71,7 +71,7 @@ dasy_pop_cropped = crop(dasy_pop, as(contours_Ldn, 'Spatial'))
 dasy_pop_cropped = mask(dasy_pop_cropped, as(contours_Ldn, 'Spatial'))
 dasy_pop_cropped[dasy_pop_cropped == 0] = NA # set all 0 population cells to NA
 pop_impacted = dasy_pop_cropped
-names(pop_impacted) = 'Impacted Population'
+names(pop_impacted) = 'Impacted.Population'
 mapview(pop_impacted)
 
 # Create an empty raster with the extent of the contours and the resolution of dasy_pop, and set the projection of the empty raster to match dasy_pop, then rasterize the contour layer using the empty raster
@@ -84,19 +84,22 @@ names(contours_Lnight_raster) = 'Lnight'
 contours_Leq24_raster  = rasterize(contours_Leq24, empty_raster, 'Level')
 names(contours_Leq24_raster) = 'Leq24'
 
-population_exposure_stack = stack(
+pop_exposure_stack = stack(
   contours_Ldn_raster,
   contours_Lnight_raster,
   contours_Leq24_raster,
   pop_impacted
 )
-mapview(population_exposure_stack)
+mapview(pop_exposure_stack)
+
+# Write layers to file
+filename = glue('{output_path}/pop_exposure_stack.grd')
+writeRaster(brick(pop_exposure_stack), filename = filename, overwrite = T)
+message('Created ', filename)
 
 ###############################################################################################
 # Insights
 # Note that these numbers may be conservative estimates due to the lack of evening-time penalty in DNL calculations, and depending on the exposure-response function used. These numbers also implicitly assume long-term (in some cases yearly average) exposure.
-
-total = cellStats(testy, 'sum')
 
 # Total area of noise exposure above an ~ARBITRARY~ "audibility" threshold
 audibility_threshold = 35

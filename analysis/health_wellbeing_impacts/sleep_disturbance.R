@@ -3,36 +3,41 @@
 source('global.R')
 source('metrics/metrics.R')
 source('metrics/exposure_response_functions.R')
-source('analysis/population_exposure.R')
 
 data_sites   = get_data_sites()
 data_metrics = get_data_metrics()
 
-# Sleep disturbance for nights of average and maximum Lnight, all sites ---------------------------
+library(raster)
+library(glue)
+library(mapview)
+mapviewOptions(mapview.maxpixels = 50000000)
+input_path = paste0(here::here(), '/analysis/_output')
+pop_exposure_stack = stack(glue('{input_path}/pop_exposure_stack.grd'))
+
+# Sleep disturbance ---------------------------
 # Dependencies: any dataset
-# What is the risk of high sleep disturbance at these sites based on exposure-response relationships?
+# What is the risk of high sleep disturbance based on exposure-response relationships?
 
 ###################################################################################################
 # Modeled spatial exposure
 
-# Multiply pop in each exposure intersection by %HSD to yield estimate of # highly sleep-disturbed persons
-exposure_Lnight$pop_HSD = round(sapply(as.numeric(exposure_Lnight$Level), exp_resp_HSD_combinedestimate_bounded) * 0.01 * exposure_Lnight$subpopulation)
+r_Lnight = pop_exposure_stack[['Lnight']]
+r_pop = pop_exposure_stack[['Impacted.Population']]
+r_pop[r_pop == 0] = NA # set all 0 population cells to NA
+r_Lnight[is.na(r_Lnight)] = 0 # set all NA exposure cells to 0
 
-mapview(exposure_Lnight, zcol='subpopulation', layer.name='Population') +
-  mapview(exposure_Lnight, zcol='pop_HSD', at=seq(0, 350, 50), layer.name='Population HSD')
+# Multiply population in each cell by %HSD to yield estimate of # sleep-disturbed persons in that cell
 
-# WHO - "For night noise exposure, the GDG strongly recommends reducing noise levels produced by aircraft during night time below 40 dB Lnight, as night-time aircraft noise above this level is associated with adverse effects on sleep."
-lnight_impact_threshold = 40
-mapview(exposure_Lnight[as.numeric(exposure_Lnight$Level)>=lnight_impact_threshold,], zcol='Level') + mapview(population_bg, col.regions=list('white'))
+percent_HSD = calc(r_Lnight, fun=exp_resp_HSD_combinedestimate_bounded)
+estimated_pop_HSD = percent_HSD * 0.01 * r_pop
+estimated_pop_HSD[estimated_pop_HSD == 0] = NA
+mapview(estimated_pop_HSD)
 
-# Estimated number of people subject to nighttime noise exposure levels associated with adverse sleep effects
-sum(st_drop_geometry(exposure_Lnight[exposure_Lnight$Level>=lnight_impact_threshold, ])$subpopulation)
-
-# Number of people estimated to be highly sleep disturbed according to WHO (Smith expanded) guidelines...
-sum(st_drop_geometry(exposure_Lnight)$pop_HSD)
+# Number of people estimated to be highly sleep-disturbed, ccording to WHO (Smith expanded) guidelines
+(npop_HSD = cellStats(estimated_pop_HSD, 'sum'))
 
 ###################################################################################################
-# Measured site exposure
+# Measured site exposure (nights of average and maximum Lnight, all sites)
 
 # Median
 median_lnight = tapply(data_metrics$Lden_Lnight, data_metrics$ID, median)
