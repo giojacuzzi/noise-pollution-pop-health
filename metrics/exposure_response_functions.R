@@ -18,13 +18,14 @@ exp_resp_WHO = function(Lden) {
   return(-50.9693 + 1.0168 * Lden + 0.0072 * Lden^2)
 }
 bounds_who = c(40,75)
+
 exp_resp_WHO_bounded = function(Lden) {
-  if (Lden < bounds_who[1]) {
-    return(exp_resp_WHO(bounds_who[1]))
-  } else if (Lden > bounds_who[2]) {
-    return(exp_resp_WHO(bounds_who[2]))
-  }
-  return(exp_resp_WHO(Lden))
+  res = Lden
+  res[Lden < bounds_who[1]] = 0
+  res[Lden > bounds_who[2]] = exp_resp_WHO(bounds_who[2])
+  idx_within_bounds = (Lden >= bounds_who[1] & Lden <= bounds_who[2])
+  res[idx_within_bounds] = exp_resp_WHO(Lden[idx_within_bounds])
+  return(res)
 }
 
 # Miedema and Oudshoorn 2001
@@ -51,12 +52,12 @@ ci_iso_miedema = data.frame(
 )
 bounds_iso_miedema = c(40,76)
 exp_resp_ISO_Miedema_bounded = function(Lden) {
-  if (Lden < bounds_iso_miedema[1]) {
-    return(exp_resp_ISO_Miedema(bounds_iso_miedema[1]))
-  } else if (Lden > bounds_iso_miedema[2]) {
-    return(exp_resp_ISO_Miedema(bounds_iso_miedema[2]))
-  }
-  return(exp_resp_ISO_Miedema(Lden))
+  res = Lden
+  res[Lden < bounds_iso_miedema[1]] = 0
+  res[Lden > bounds_iso_miedema[2]] = exp_resp_ISO_Miedema(bounds_iso_miedema[2])
+  idx_within_bounds = (Lden >= bounds_iso_miedema[1] & Lden <= bounds_iso_miedema[2])
+  res[idx_within_bounds] = exp_resp_ISO_Miedema(Lden[idx_within_bounds])
+  return(res)
 }
 
 # Yokoshima et al 2021
@@ -70,12 +71,12 @@ ci_Yokoshima = data=data.frame(
 )
 bounds_Yokoshima = c(40,65)
 exp_resp_Yokoshima_bounded = function(Lden) {
-  if (Lden < bounds_Yokoshima[1]) {
-    return(exp_resp_Yokoshima(bounds_Yokoshima[1]))
-  } else if (Lden > bounds_Yokoshima[2]) {
-    return(exp_resp_Yokoshima(bounds_Yokoshima[2]))
-  }
-  return(exp_resp_Yokoshima(Lden))
+  res = Lden
+  res[Lden < bounds_Yokoshima[1]] = 0
+  res[Lden > bounds_Yokoshima[2]] = exp_resp_Yokoshima(bounds_Yokoshima[2])
+  idx_within_bounds = (Lden >= bounds_Yokoshima[1] & Lden <= bounds_Yokoshima[2])
+  res[idx_within_bounds] = exp_resp_Yokoshima(Lden[idx_within_bounds])
+  return(res)
 }
 
 ## Annoyance ------------------------------------------------------------------------------
@@ -108,14 +109,13 @@ ci_HSD_combinedestimate = data.frame(
   Upper  = ci_upper_HSD_combinedestimate(seq(from=40, to=65, by=1))
 )
 bounds_HSD = c(40,65)
-
 exp_resp_HSD_combinedestimate_bounded = function(Lnight) {
-  if (Lnight < bounds_HSD[1]) {
-    return(exp_resp_HSD_combinedestimate(bounds_HSD[1]))
-  } else if (Lnight > bounds_HSD[2]) {
-    return(exp_resp_HSD_combinedestimate(bounds_HSD[2]))
-  }
-  return(exp_resp_HSD_combinedestimate(Lnight))
+  res = Lnight
+  res[Lnight < bounds_HSD[1]] = 0
+  res[Lnight > bounds_HSD[2]] = exp_resp_HSD_combinedestimate(bounds_HSD[2])
+  idx_within_bounds = (Lnight >= bounds_HSD[1] & Lnight <= bounds_HSD[2])
+  res[idx_within_bounds] = exp_resp_HSD_combinedestimate(Lnight[idx_within_bounds])
+  return(res)
 }
 
 # NOTE: Limitations - "The rapid onset time in particular means that a given aircraft is probably more likely to induce an awakening than one that is much more gradual, like a civil aircraft. But of course physiological disturbance such as this and self-reported long-term %HSD are not the same thing, and do not necessarily correlate all that well."

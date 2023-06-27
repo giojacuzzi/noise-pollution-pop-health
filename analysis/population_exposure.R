@@ -23,6 +23,7 @@ population_bg = get_decennial(
 
 # Example with Coupeville block group
 ex_bg = population_bg[population_bg$GEOID==530299710001,]
+contours_Ldn = st_transform(contours_Ldn, crs = st_crs(ex_bg))
 ex_intersection = st_intersection(ex_bg, contours_Ldn)
 mapview(ex_intersection, zcol='Level')
 areas = as.numeric(st_area(ex_intersection) / st_area(ex_bg)) # proportion
@@ -104,7 +105,7 @@ units::set_units(contour_area, mi^2)
 sum(st_drop_geometry(exposure_Ldn[exposure_Ldn$Level>=lden_impact_threshold, ])$subpopulation)
 
 # % of Island County population subject to noise exposure levels associated with adverse health effects
-wa_counties_cb = counties(state = 'WA', cb = T)
+wa_counties_cb = tigris::counties(state = 'WA', cb = T)
 island_county = wa_counties_cb[wa_counties_cb$NAME=='Island',]
 island_county_exposure = st_intersection(island_county, exposure_Ldn[exposure_Ldn$Level>=lden_impact_threshold, ])
 island_county_pop_exposed = sum(island_county_exposure$subpopulation)
