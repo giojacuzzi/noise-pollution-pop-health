@@ -100,6 +100,7 @@ message('Created ', filename)
 ###############################################################################################
 # Insights
 # Note that these numbers may be conservative estimates due to the lack of evening-time penalty in DNL calculations, and depending on the exposure-response function used. These numbers also implicitly assume long-term (in some cases yearly average) exposure.
+pop_exposure_stack = stack(glue('{output_path}/pop_exposure_stack.grd'))
 
 # Total area of noise exposure above an ~ARBITRARY~ "audibility" threshold
 audibility_threshold = 35
@@ -115,7 +116,7 @@ units::set_units(impact_area, km^2)
 units::set_units(impact_area, mi^2)
 
 # Estimated number of people subject to noise exposure levels associated with adverse health effects
-(npop_impacted = cellStats(pop_impacted, 'sum'))
+(npop_impacted = cellStats(pop_exposure_stack[['Impacted.Population']], 'sum'))
 
 # % of Island County population subject to noise exposure levels associated with adverse health effects
 island_county_pop_impacted = crop(county_rasters_p[[1]], as(contours_Ldn, 'Spatial'))

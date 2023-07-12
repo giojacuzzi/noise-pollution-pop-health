@@ -44,7 +44,7 @@ gdalbuildvrt(
 aea = '+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs'
 
 # Get 2021 ACS 5-year block group population estimates
-pop = get_acs(geography = 'block group', variables = 'B01003_001',year = 2021, state = 'WA', county = ctyid, geometry = T)  
+pop = get_acs(geography = 'block group', variables = 'B01003_001', year = 2021, state = 'WA', county = ctyid, geometry = T)  
 
 # Remove empty geometries and project to Albers equal-area
 pop = pop[!is.na(st_dimension(pop)), ]

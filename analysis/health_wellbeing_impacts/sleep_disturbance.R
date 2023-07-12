@@ -12,6 +12,7 @@ library(glue)
 library(mapview)
 mapviewOptions(mapview.maxpixels = 50000000)
 input_path = paste0(here::here(), '/analysis/_output')
+output_path = paste0(here::here(), '/analysis/_output')
 pop_exposure_stack = stack(glue('{input_path}/pop_exposure_stack.grd'))
 
 # Sleep disturbance ---------------------------
@@ -35,6 +36,15 @@ mapview(estimated_pop_HSD)
 
 # Number of people estimated to be highly sleep-disturbed, ccording to WHO (Smith expanded) guidelines
 (npop_HSD = cellStats(estimated_pop_HSD, 'sum'))
+
+# Write layers to file
+pop_HSD_stack = stack(
+  estimated_pop_HSD
+)
+names(pop_HSD_stack) = 'HSD'
+filename = glue('{output_path}/pop_HSD_stack.grd')
+writeRaster(brick(pop_HSD_stack), filename = filename, overwrite = T)
+message('Created ', filename)
 
 ###################################################################################################
 # Measured site exposure (nights of average and maximum Lnight, all sites)

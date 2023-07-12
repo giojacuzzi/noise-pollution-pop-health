@@ -12,6 +12,7 @@ library(glue)
 library(mapview)
 mapviewOptions(mapview.maxpixels = 50000000)
 input_path = paste0(here::here(), '/analysis/_output')
+output_path = paste0(here::here(), '/analysis/_output')
 pop_exposure_stack = stack(glue('{input_path}/pop_exposure_stack.grd'))
 
 ###################################################################################################
@@ -26,6 +27,15 @@ r_Leq24[r_Leq24 < 70] = 0 # set all < 70 dB exposure cells to 0
 estimated_pop_hearing_loss = mask(r_pop, r_Leq24)
 (npop_hearing_loss = cellStats(estimated_pop_hearing_loss, 'sum'))
 mapview(estimated_pop_hearing_loss)
+
+# Write layers to file
+pop_HL_stack = stack(
+  estimated_pop_hearing_loss
+)
+names(pop_HL_stack) = 'HL'
+filename = glue('{output_path}/pop_HL_stack.grd')
+writeRaster(brick(pop_HL_stack), filename = filename, overwrite = T)
+message('Created ', filename)
 
 # OSHA/NIOSH violation ---------------------------------------------------------
 # NOTE: calculate OSHA/NIOSH with data/metrics/calculate_osha_niosh.R

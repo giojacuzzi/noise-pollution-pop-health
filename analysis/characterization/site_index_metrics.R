@@ -29,6 +29,19 @@ ldn_comparison[ldn_comparison$ID=='25B_T', 'NavyDNL']  = 69.9
 ldn_comparison[ldn_comparison$ID=='26B_SG', 'NavyDNL'] = 74.2
 ldn_comparison[ldn_comparison$ID=='27A_SG', 'NavyDNL'] = 69.2
 ldn_comparison[ldn_comparison$ID=='33_SG', 'NavyDNL']  = 39.9
+# Compare with real-time modeled DNL from navy report
+ldn_comparison$NavyModeledDNL = NA
+ldn_comparison[ldn_comparison$ID=='2B_T', 'NavyModeledDNL']   = 67.9
+ldn_comparison[ldn_comparison$ID=='3A_T', 'NavyModeledDNL']   = 63.2
+ldn_comparison[ldn_comparison$ID=='5B_SG', 'NavyModeledDNL']  = 44.7
+ldn_comparison[ldn_comparison$ID=='8B_SG', 'NavyModeledDNL']  = 76.6
+ldn_comparison[ldn_comparison$ID=='9B_SG', 'NavyModeledDNL']  = 73.1
+ldn_comparison[ldn_comparison$ID=='20B_SG', 'NavyModeledDNL'] = 79.4
+ldn_comparison[ldn_comparison$ID=='24A_B', 'NavyModeledDNL']  = 85.1
+ldn_comparison[ldn_comparison$ID=='25B_T', 'NavyModeledDNL']  = 67.9
+ldn_comparison[ldn_comparison$ID=='26B_SG', 'NavyModeledDNL'] = 77.5
+ldn_comparison[ldn_comparison$ID=='27A_SG', 'NavyModeledDNL'] = 75.2
+ldn_comparison[ldn_comparison$ID=='33_SG', 'NavyModeledDNL']  = 40.8
 # Average flight operations in aggregate model across all 4 navy periods
 ldn_comparison$ModeledDNL = NA # taken from NOISEMAP aggregate .poi
 ldn_comparison[ldn_comparison$ID=='2B_T', 'ModeledDNL']   = 70.5
@@ -49,11 +62,13 @@ comparison = data.frame(
   Ldn_PhiMeasured    = ldn_comparison$Ldn,
   DNL_PhiModeled     = ldn_comparison$ModeledDNL,
   DNL_NavyMeasured   = ldn_comparison$NavyDNL,
+  DNL_NavyModeled    = ldn_comparison$NavyModeledDNL,
   D_LdnPhiMeasured_DNLNavyMeasured = (ldn_comparison$Ldn - ldn_comparison$NavyDNL),
   D_LdnPhiMeasured_DNLPhiModeled  = (ldn_comparison$Ldn - ldn_comparison$ModeledDNL),
-  D_DNLNavyMeasured_DNL_PhiModeled = (ldn_comparison$NavyDNL - ldn_comparison$ModeledDNL)
+  D_DNLNavyMeasured_DNL_PhiModeled = (ldn_comparison$NavyDNL - ldn_comparison$ModeledDNL),
+  D_DNLNavyModeled_DNL_PhiModeled = (ldn_comparison$NavyModeledDNL - ldn_comparison$ModeledDNL)
 )
-ggplot(gather(comparison, Source, Level, Ldn_PhiMeasured:DNL_NavyMeasured, factor_key=T), aes(x = ID, y = Level, color = Source)) +
+ggplot(gather(comparison, Source, Level, Ldn_PhiMeasured:DNL_NavyModeled, factor_key=T), aes(x = reorder(ID, Level, FUN=mean), y = Level, color = Source)) +
   geom_point(shape = 1)
 
 # Explanation for using continuous Lden for Navy sites

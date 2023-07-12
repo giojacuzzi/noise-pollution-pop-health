@@ -50,6 +50,10 @@ get_file_map = function() {
                      read.csv('data/load/_output/file_map_sda.csv'),
                      read.csv('data/load/_output/file_map_nps.csv'))
   }
+  file_map$Org = factor(file_map$Org)
+  file_map$Name = factor(file_map$Name)
+  file_map$ID = factor(file_map$ID)
+  file_map$Date = as.POSIXct(file_map$Date, tz='UTC')
   return(file_map)
 }
 
