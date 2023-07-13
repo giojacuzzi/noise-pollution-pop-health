@@ -29,7 +29,7 @@ ldn_comparison[ldn_comparison$ID=='25B_T', 'NavyDNL']  = 69.9
 ldn_comparison[ldn_comparison$ID=='26B_SG', 'NavyDNL'] = 74.2
 ldn_comparison[ldn_comparison$ID=='27A_SG', 'NavyDNL'] = 69.2
 ldn_comparison[ldn_comparison$ID=='33_SG', 'NavyDNL']  = 39.9
-# Compare with real-time modeled DNL from navy report
+# Compare with real-time modeled DNL from navy report, energy-averaged over each period's modeled DNL
 ldn_comparison$NavyModeledDNL = NA
 ldn_comparison[ldn_comparison$ID=='2B_T', 'NavyModeledDNL']   = 67.9
 ldn_comparison[ldn_comparison$ID=='3A_T', 'NavyModeledDNL']   = 63.2
@@ -70,6 +70,16 @@ comparison = data.frame(
 )
 ggplot(gather(comparison, Source, Level, Ldn_PhiMeasured:DNL_NavyModeled, factor_key=T), aes(x = reorder(ID, Level, FUN=mean), y = Level, color = Source)) +
   geom_point(shape = 1)
+
+# Navy model energy average vs Phi model
+ggplot(comparison, aes(x = DNL_NavyModeled, y = DNL_PhiModeled, color = ID)) + geom_point() + geom_abline(slope=1, intercept=0)
+cor(comparison$DNL_PhiModeled, comparison$DNL_NavyModeled, method='pearson')
+mean(comparison$DNL_PhiModeled - comparison$DNL_NavyModeled)
+
+# Navy measured vs Phi model
+ggplot(comparison, aes(x = DNL_NavyMeasured, y = DNL_PhiModeled, color = ID)) + geom_point() + geom_abline(slope=1, intercept=0)
+cor(comparison$DNL_PhiModeled, comparison$DNL_NavyMeasured, method='pearson')
+mean(comparison$DNL_PhiModeled - comparison$DNL_NavyMeasured)
 
 # Explanation for using continuous Lden for Navy sites
 # - We do not have the data or tools necessary to classify noise events of Navy sites. Other sites (JGL, NPS, and SDA) had in-person operators validating the presence of noise events due to aircraft operations
