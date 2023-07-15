@@ -8,6 +8,7 @@ source('metrics/metrics.R')
 data_sites  = get_data_sites()
 data_events = get_data_events()
 data_metrics = get_data_metrics()
+output_path = paste0(here::here(), '/analysis/_output')
 
 ## Monitoring site map  --------------------------------------------------------
 # Display all sites that have calculated events
@@ -39,29 +40,39 @@ events_lmax = events_lmax[events_lmax$ID!='33_SG',]
 events_lmax$ID = factor(events_lmax$ID)
 
 source('analysis/characterization/preprocessing/evaluate_events.R')
+# Get max event per site
 events_lmax = events_lmax %>% group_by(ID) %>% slice(which.max(LAeq_Lmax))
+events_lmax
+
+# Compare with navy report
+events_navy = get_data_navy_events_reported()
+events_navy = events_navy %>% group_by(SiteID) %>% slice(which.max(LAeq_Lmax))
 
 # Events manually visually verified as aircraft with `plot_events(id, date, num)`
 # max event recorded was 561, JGL, KysH (119.8 dBA max, 136.2 dBC peak) at 23:56:55
 events_lmax[which(events_lmax$LAeq_Lmax==max(events_lmax$LAeq_Lmax)),]
 plot_events(
-  events_lmax[events_lmax$X==561, 'ID'][[1]],
-  events_lmax[events_lmax$X==561, 'Date'][[1]],
+  as.character(events_lmax[events_lmax$X==561, 'ID'][[1]]),
+  as.POSIXct(events_lmax[events_lmax$X==561, 'Date'][[1]], tz='UTC'),
   events_lmax[events_lmax$X==561, 'X'][[1]]
 )
 # max navy event recorded was 9758, 24A_B, 2021-08-10  (115.1 dBA, 130.3 dBC peak)
 events_lmax_navy = events_lmax[events_lmax$Org=='NAVY',]
 events_lmax_navy[which(events_lmax_navy$LAeq_Lmax==max(events_lmax_navy$LAeq_Lmax)),]
 plot_events(
-  events_lmax[events_lmax$X==9758, 'ID'][[1]],
-  events_lmax[events_lmax$X==9758, 'Date'][[1]],
+  as.character(events_lmax[events_lmax$X==9758, 'ID'][[1]]),
+  as.POSIXct(events_lmax[events_lmax$X==9758, 'Date'][[1]], tz='UTC'),
   events_lmax[events_lmax$X==9758, 'X'][[1]]
 )
 
-# Median event metrics per site
-tapply(events_lmax$LAeq_Lmax, events_lmax$ID, median)
-tapply(events_lmax$LCpeak,    events_lmax$ID, median)
-tapply(events_lmax$SEL,       events_lmax$ID, median)
+# Max event metrics per site (take Navy site max events from Navy logs and others from event evaluations)
+max_events = data.frame(
+  ID = c(events_navy$SiteID, as.vector(pull(events_lmax[events_lmax$Org!='NAVY', 'ID']))),
+  SEL = c(events_navy$LAeq_SEL, as.vector(pull(events_lmax[events_lmax$Org!='NAVY', 'SEL']))),
+  Lmax = c(events_navy$LAeq_Lmax, as.vector(pull(events_lmax[events_lmax$Org!='NAVY', 'LAeq_Lmax'])))
+)
+# Write table to file
+write.csv(max_events, glue(output_path, '/max_events.csv'), row.names = F)
 
 # Subset of a 4-day period (2019-06-18 through 21) that included 10 FCLP sessions
 source('data/load/load_site_date.R')
@@ -90,7 +101,7 @@ date = '2020-12-15'
 for (id in ids) {
   events_sesh=data_events[
     data_events$ID==id &
-      data_events$Date=='2020-12-15' &
+      data_events$Date==as.POSIXct(date, tz='UTC') &
       (# Session 1
         (data_events$TimeStart>as.POSIXct('2020-12-15 12:36:00', tz='UTC') &
            data_events$TimeStart<as.POSIXct('2020-12-15 13:12:00', tz='UTC')) |

@@ -45,18 +45,34 @@ exp_resp_ISO_Miedema = function(Lden) {
   # Includes ISO recommended 7 dB adjustment, based on Miedema curve
   return(-9.199 * 10^-5 * (Lden - 40)^3 + 3.932 * 10^-2 * (Lden - 40)^2 + 0.294 * (Lden - 40))
 }
-ci_iso_miedema = data.frame(
-  Lden=  c(43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76),
+
+# No adjustment, base ISO / Miedema exprsp
+exp_resp_ISO_Miedema_Ldn = function(Ldn) {
+  return(-1.395 * 10^-4 * (Ldn - 42)^3 + 4.081 * 10^-2 * (Ldn - 42)^2 + 0.342 * (Ldn - 42))
+}
+
+# Prediction intervals
+pi_iso_miedema = data.frame(
+  dB5 =  seq(45,78),
+  dB7 =  seq(43,76),
   Lower= c(0.3,0.4,0.4,0.5,0.6,0.7,0.9,1.0,1.2,1.4,1.7,1.9,2.2,2.6,3.0,3.4,3.9,4.4,5.0,5.7,6.4,7.2,8.1,9.0,10.0,11.1,12.3,13.6,15.0,16.4,18.0,19.6,21.3,23.1),
   Upper= c(33.5,35.7,38.0,40.3,42.7,45.1,47.5,49.9,52.3,54.7,57.1,59.5,61.8,64.1,66.3,68.5,70.6,72.7,74.7,76.6,78.4,80.1,81.8,83.4,84.8,86.2,87.5,88.7,89.9,90.9,91.9,92.7,93.6,94.3)
 )
-bounds_iso_miedema = c(40,76)
+bounds_iso_miedema = c(45,75)
 exp_resp_ISO_Miedema_bounded = function(Lden) {
   res = Lden
   res[Lden < bounds_iso_miedema[1]] = 0
   res[Lden > bounds_iso_miedema[2]] = exp_resp_ISO_Miedema(bounds_iso_miedema[2])
   idx_within_bounds = (Lden >= bounds_iso_miedema[1] & Lden <= bounds_iso_miedema[2])
   res[idx_within_bounds] = exp_resp_ISO_Miedema(Lden[idx_within_bounds])
+  return(res)
+}
+exp_resp_ISO_Miedema_Ldn_bounded = function(Ldn) {
+  res = Ldn
+  res[Ldn < bounds_iso_miedema[1]] = 0
+  res[Ldn > bounds_iso_miedema[2]] = exp_resp_ISO_Miedema_Ldn(bounds_iso_miedema[2])
+  idx_within_bounds = (Ldn >= bounds_iso_miedema[1] & Ldn <= bounds_iso_miedema[2])
+  res[idx_within_bounds] = exp_resp_ISO_Miedema_Ldn(Ldn[idx_within_bounds])
   return(res)
 }
 

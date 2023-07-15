@@ -35,7 +35,7 @@ estimated_pop_HA_WHO = percent_HA_WHO * 0.01 * r_pop
 estimated_pop_HA_WHO[estimated_pop_HA_WHO == 0] = NA
 # mapview(estimated_pop_HA_WHO)
 
-percent_HA_ISO = calc(r_Ldn, fun=exp_resp_ISO_Miedema_bounded)
+percent_HA_ISO = calc(r_Ldn, fun=exp_resp_ISO_Miedema_Ldn_bounded)
 estimated_pop_HA_ISO = percent_HA_ISO * 0.01 * r_pop
 estimated_pop_HA_ISO[estimated_pop_HA_ISO == 0] = NA
 # mapview(estimated_pop_HA_ISO)

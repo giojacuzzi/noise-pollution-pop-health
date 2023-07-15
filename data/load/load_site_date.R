@@ -6,6 +6,7 @@ source('data/load/load_file_nps.R')
 
 # Load data for given site ID at given date from converted csv (fast)
 load_site_date = function(id, date) {
+  date = as.POSIXct(date, tz='UTC')
   org = get_org_for_site_date(id, date)
   file = paste0(database_path, '/converted/site_dates/', org, '/', id, '_', date, '.csv')
   if (!file.exists(file)) {

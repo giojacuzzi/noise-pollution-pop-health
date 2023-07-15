@@ -151,14 +151,18 @@ p_lden_site_active = ggplot() +
   scale_shape_manual('', values=c('Energy average'=21)) +
   scale_fill_manual(name='Flight activity', values=activity_colors) +
   labs(title='Lden per site by flight activity', subtitle='(Weekday vs weekend)', x ='Site', y ='Lden (dBA)') +
-  geom_hline(yintercept=l_hudfaa, linetype='dotted', size=0.7, colour='red') +
-  geom_hline(yintercept=l_epa, linetype='dotted', size=0.7, colour='red') +
+  # geom_hline(yintercept=l_hudfaa, linetype='dotted', size=0.7, colour='red') +
+  # geom_hline(yintercept=l_epa, linetype='dotted', size=0.7, colour='red') +
   coord_flip()
 print(p_lden_site_active)
 ggsave(p_lden_site_active, file=paste0(ggsave_output_path, 'lden_site_activity.png'), width=ggsave_width, height=ggsave_height)
 
 # Active vs inactive difference
-tapply(active_site_date_metrics$Lden, active_site_date_metrics$Name, energyavg) - tapply(inactive_site_date_metrics$Lden, inactive_site_date_metrics$Name, energyavg)
+active_inactive_diff = tapply(active_site_date_metrics$Lden, active_site_date_metrics$ID, energyavg) - tapply(inactive_site_date_metrics$Lden, inactive_site_date_metrics$ID, energyavg)
+data.frame(
+  ID=names(active_inactive_diff),
+  diff=active_inactive_diff
+)
 
 # Lnight per site --------------------------------------------------------------
 # Dependencies: any dataset for overview, only NAVY dataset for in/activity detail
@@ -216,4 +220,8 @@ print(p_lnight_site_active)
 ggsave(p_lnight_site_active, file=paste0(ggsave_output_path, 'lnight_site_activity.png'), width=ggsave_width, height=ggsave_height)
 
 # Active vs inactive difference
-tapply(active_night_site_date_metrics$Lden_Lnight, active_night_site_date_metrics$Name, energyavg) - tapply(inactive_night_site_date_metrics$Lden_Lnight, inactive_night_site_date_metrics$Name, energyavg)
+active_inactive_diff_Lnight = tapply(active_night_site_date_metrics$Lden_Lnight, active_night_site_date_metrics$Name, energyavg) - tapply(inactive_night_site_date_metrics$Lden_Lnight, inactive_night_site_date_metrics$Name, energyavg)
+data.frame(
+  ID=names(active_inactive_diff_Lnight),
+  diff=active_inactive_diff_Lnight
+)

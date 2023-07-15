@@ -127,7 +127,7 @@ get_data_events = function() {
     data_events$Hour       = format(data_events$TimeStart, format='%H')
     data_events$DEN        = get_den_period_for_hours(data_events$Hour)
     data_events$Day        = factor(weekdays(data_events$TimeStart, abbreviate=T), levels=days)
-    data_events$Date       = factor(format(data_events$TimeStart, format_date))
+    data_events$Date       = as.POSIXct(format(data_events$TimeStart, format_date), tz='UTC')
     data_events$Period     = get_navy_monitoring_period_for_times(data_events$TimeStart)
   }
   return(data_events)

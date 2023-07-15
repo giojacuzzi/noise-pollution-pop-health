@@ -10,6 +10,8 @@ mapviewOptions(mapview.maxpixels = 50000000)
 options(tigris_use_cache = T)
 census_api_key('a9d9f05e0560c7fadaed6b4168bedc56d0e4686d')
 
+source('analysis/spatial_distribution.R')
+
 input_path = paste0(here::here(), '/analysis/_output')
 output_path = paste0(here::here(), '/analysis/_output')
 pop_exposure_stack = stack(glue('{input_path}/pop_exposure_stack.grd'))
@@ -22,13 +24,13 @@ pop_stack = stack(pop_exposure_stack, pop_HA_stack, pop_HL_stack, pop_HSD_stack)
 mapview(get_flighttracks()) +
   mapview(pop_exposure_stack[['Ldn']], layer.name=c('Ldn (dB)')) +
   mapview(pop_exposure_stack[['Impacted.Population']], layer.name=c('Impacted Persons')) +
-  mapview(estimated_pop_HA_WHO, layer.name=c('Persons Highly Annoyed (WHO)')) + # at=seq(0,5,1)
-  mapview(estimated_pop_HA_Yokoshima, layer.name=c('Persons Highly Annoyed (Yokoshima)')) + # at=seq(0,5,1)
+  mapview(pop_HA_stack[['HA_WHO']], layer.name=c('Persons Highly Annoyed (WHO)')) + # at=seq(0,5,1)
+  mapview(pop_HA_stack[['HA_Yokoshima']], layer.name=c('Persons Highly Annoyed (Yokoshima)')) + # at=seq(0,5,1)
   mapview(pop_exposure_stack[['Lnight']], layer.name=c('Lnight (dB)')) +
-  mapview(estimated_pop_HSD, layer.name=c('Persons Highly Sleep Disturbed (WHO)')) +
+  mapview(pop_HSD_stack[['HSD']], layer.name=c('Persons Highly Sleep Disturbed (WHO)')) +
   mapview(pop_exposure_stack[['Leq24']], layer.name=c('Leq24 (dB)')) +
-  mapview(estimated_pop_hearing_loss, layer.name=c('Persons Hearing Loss (EPA)')) +
-  mapview(schools, zcol='Ldn55', col.regions=list('gray', 'red'), layer.name=c('Impacted Schools'))
+  mapview(pop_HL_stack[['HL']], layer.name=c('Persons Hearing Loss (EPA)'))
+  # mapview(schools, zcol='Ldn55', col.regions=list('gray', 'red'), layer.name=c('Impacted Schools'))
 
 # Get 2021 ACS 5-year block group population estimates
 acs_pop = get_acs(geography = 'county', variables = 'B01003_001', year = 2021, state = 'WA', geometry = T)
