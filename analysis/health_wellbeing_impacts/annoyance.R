@@ -21,48 +21,6 @@ pop_exposure_stack = stack(glue('{input_path}/pop_exposure_stack.grd'))
 # See ISO 1996-1 2016 Annex E/F and Lct
 
 ###################################################################################################
-# Modeled spatial exposure
-
-r_Ldn = pop_exposure_stack[['Ldn']]
-r_pop = pop_exposure_stack[['Impacted.Population']]
-r_pop[r_pop == 0] = NA # set all 0 population cells to NA
-r_Ldn[is.na(r_Ldn)] = 0 # set all NA exposure cells to 0
-
-# Multiply population in each cell by %HA to yield estimate of # highly annoyed persons in that cell
-
-percent_HA_WHO = calc(r_Ldn, fun=exp_resp_WHO_bounded)
-estimated_pop_HA_WHO = percent_HA_WHO * 0.01 * r_pop
-estimated_pop_HA_WHO[estimated_pop_HA_WHO == 0] = NA
-# mapview(estimated_pop_HA_WHO)
-
-percent_HA_ISO = calc(r_Ldn, fun=exp_resp_ISO_Miedema_Ldn_bounded)
-estimated_pop_HA_ISO = percent_HA_ISO * 0.01 * r_pop
-estimated_pop_HA_ISO[estimated_pop_HA_ISO == 0] = NA
-# mapview(estimated_pop_HA_ISO)
-
-percent_HA_Yokoshima = calc(r_Ldn, fun=exp_resp_Yokoshima_bounded)
-estimated_pop_HA_Yokoshima = percent_HA_Yokoshima * 0.01 * r_pop
-estimated_pop_HA_Yokoshima[estimated_pop_HA_Yokoshima == 0] = NA
-# mapview(estimated_pop_HA_Yokoshima)
-
-# Number of people estimated to be highly annoyed
-(npop_HA_WHO       = cellStats(estimated_pop_HA_WHO, 'sum')) # WHO
-(npop_HA_ISO       = cellStats(estimated_pop_HA_ISO, 'sum')) # ISO
-(npop_HA_Yokoshima = cellStats(estimated_pop_HA_Yokoshima, 'sum')) # Yokoshima
-
-# Write layers to file
-pop_HA_stack = stack(
-  estimated_pop_HA_ISO,
-  estimated_pop_HA_WHO,
-  estimated_pop_HA_Yokoshima
-)
-mapview(pop_HA_stack)
-names(pop_HA_stack) = c('HA_ISO', 'HA_WHO', 'HA_Yokoshima')
-filename = glue('{output_path}/pop_HA_stack.grd')
-writeRaster(brick(pop_HA_stack), filename = filename, overwrite = T)
-message('Created ', filename)
-
-###################################################################################################
 # Measured site exposure
 
 # Median

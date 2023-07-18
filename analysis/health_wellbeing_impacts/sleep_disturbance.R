@@ -20,33 +20,6 @@ pop_exposure_stack = stack(glue('{input_path}/pop_exposure_stack.grd'))
 # What is the risk of high sleep disturbance based on exposure-response relationships?
 
 ###################################################################################################
-# Modeled spatial exposure
-
-r_Lnight = pop_exposure_stack[['Lnight']]
-r_pop = pop_exposure_stack[['Impacted.Population']]
-r_pop[r_pop == 0] = NA # set all 0 population cells to NA
-r_Lnight[is.na(r_Lnight)] = 0 # set all NA exposure cells to 0
-
-# Multiply population in each cell by %HSD to yield estimate of # sleep-disturbed persons in that cell
-
-percent_HSD = calc(r_Lnight, fun=exp_resp_HSD_combinedestimate_bounded)
-estimated_pop_HSD = percent_HSD * 0.01 * r_pop
-estimated_pop_HSD[estimated_pop_HSD == 0] = NA
-mapview(estimated_pop_HSD)
-
-# Number of people estimated to be highly sleep-disturbed, ccording to WHO (Smith expanded) guidelines
-(npop_HSD = cellStats(estimated_pop_HSD, 'sum'))
-
-# Write layers to file
-pop_HSD_stack = stack(
-  estimated_pop_HSD
-)
-names(pop_HSD_stack) = 'HSD'
-filename = glue('{output_path}/pop_HSD_stack.grd')
-writeRaster(brick(pop_HSD_stack), filename = filename, overwrite = T)
-message('Created ', filename)
-
-###################################################################################################
 # Measured site exposure (nights of average and maximum Lnight, all sites)
 
 # Median

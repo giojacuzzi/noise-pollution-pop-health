@@ -4,5 +4,8 @@ lden_impact_threshold = 45
 # WHO - "For night noise exposure, the GDG strongly recommends reducing noise levels produced by aircraft during night time below 40 dB Lnight, as night-time aircraft noise above this level is associated with adverse effects on sleep."
 lnight_impact_threshold = 40
 
+# FAA - "As described in 14 CFR Part 150, Airport Noise Compatibility Planning, exterior noise levels at or above Day-Night Average Sound Level (DNL) 65 decibels (dB) are considered incompatible with residences and some other noise sensitive land uses"
+residential_impact_threshold = 65
+
 # EPA - "EPA has determined that for purposes of hearing conservation alone, a level which is protected of that segment of the population at or below the 96th percentile will protect virtually the entire population. This level has been calculated to be an Leq of 70 dB of a 24-hour day."
-leq24_impact_threshold = 70
+HL_leq24_impact_threshold = 70

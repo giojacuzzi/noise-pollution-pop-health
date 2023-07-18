@@ -10,6 +10,8 @@ data_events = get_data_events()
 
 sites_with_events = data_sites[data_sites$ID %in% unique(data_events$ID),]
 
+output_path = paste0(here::here(), '/analysis/_output')
+
 ########################################################################################################
 # Children's learning and comprehension
 
@@ -54,6 +56,24 @@ mapview(Ldn_gt55, zcol='Level', layer.name='DNL') +
   mapview(sites_with_events, xcol='Longitude', ycol='Latitude', layer.name = 'Sites', crs=crs, grid=F) +
   mapview(get_flighttracks())
 
+# Format results and write to csv
+schools_affected = st_drop_geometry(schools[schools$Ldn55==T, c('NAME', 'ZIP', 'TYPE', 'Level')])
+names(schools_affected) = c('School', 'Zip', 'Type', 'Ldn')
+schools_affected$Type = str_to_title(schools_affected$Type)
+schools_affected$School = str_to_title(schools_affected$School)
+schools_affected$School = gsub(' - Whidbey Island', '', schools_affected$School)
+schools_affected$Ldn = as.numeric(schools_affected$Ldn)
+schools_affected$Zip = substr(schools_affected$Zip, 1, 5)
+schools_affected = schools_affected[order(schools_affected$Ldn, decreasing=T), ]
+schools_affected = schools_affected[schools_affected$School != 'Oak Harbor Virtual Academy',] # remove web-based program
+schools_affected$Delay = gsub('1-1', '1', paste0(
+  as.character((schools_affected$Ldn - 55) / 5 * 1 + 1), '-', # 1 month delay at 55, 1-2 month delay per 5 dB increase
+  as.character((schools_affected$Ldn - 55) / 5 * 2 + 1)
+))
+schools_affected
+write.csv(schools_affected, glue(output_path, '/schools.csv'), row.names = F)
+
+# TODO:
 # st_write(schools, )
 
 ## Cognitive development in children -------------------------------------------
@@ -72,11 +92,26 @@ unique(data_metrics[data_metrics$Lden>=55, 'ID'])
 # SEL has been recommended by some as a better choice for estimating speech interference from aircraft overflights indoors. A maximum SEL of 64 dB is suggested. A 26 dB noise reduction is assumed when you move indoors from outdoors. So, a 64 dB SEL indoors is about equal to 90 dB SEL outdoors. Aircraft events with outdoor SEL values greater than 90 dB would disrupt indoor speech communication. The research indicates that speakers using a casual vocal effort can achieve 95% intelligibility when indoor SEL values did not exceed 60 dB. This translates to an approximately 50 dB Lmax.
 
 # Measured SEL near schools
+# Only consider school hours -> 8:00 am to 3:59 pm
 # Near Coupeville Elementary and Coupeville High
 # TODO: exact distance, and only consider school hours
-data_events[data_events$ID=='NwbH' & data_events$SEL >= 90, ]
-# Near Crescent Harbor Elementary and Olympic View Elementary
-# TODO: exact distance, and only consider school hours
-data_events[data_events$ID=='2B_T' & data_events$SEL >= 90, ]
+
+# At NbwH, the field monitoring site nearest Coupeville Elementary (347 m, 1,139 ft) and Coupeville High (~264 m, 867 ft),
+# aircraft noise events surpassed 103 dB SEL and 94 dB Lmax.
+events_NwbH = data_events[data_events$ID=='NwbH' &
+              (as.numeric(data_events$Hour) >=  8) &
+              (as.numeric(data_events$Hour) <=  15) &
+              !(data_events$Day %in% c('Sat', 'Sun')), ]
+head(events_NwbH[order(events_NwbH$SEL, decreasing=T), ])
+head(events_NwbH[order(events_NwbH$LAeq_Lmax, decreasing=T), ])
+
+# At 2B_T, the field monitoring site nearest Crescent Harbor Elementary (~1 km, 3,293 ft),
+# aircraft noise events surpassed 113 dB SEL and 103 dB Lmax.
+events_2B_T = data_events[data_events$ID=='2B_T' &
+                            (as.numeric(data_events$Hour) >=  8) &
+                            (as.numeric(data_events$Hour) <=  15) &
+                            !(data_events$Day %in% c('Sat', 'Sun')), ]
+head(events_2B_T[order(events_2B_T$SEL, decreasing=T), ])
+head(events_2B_T[order(events_2B_T$LAeq_Lmax, decreasing=T), ])
 
 # TODO: Modeled SEL for flight tracks near schools
