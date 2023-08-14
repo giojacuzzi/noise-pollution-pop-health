@@ -94,6 +94,9 @@ summary(comparison[!(comparison$ID %in% c('5B_SG', '33_SG')), 'D_LdnPhiMeasured_
 lden_metrics = data_metrics[!is.na(data_metrics$Lden),]
 round(tapply(lden_metrics$Lden, lden_metrics$ID, energyavg),1)
 
+# Olympic MOA monthly DNL during activity
+moa_dnl = c(41.2, 43.1, 36.3, 35.3, 38.8, 34.4, 46.9, 35.7, 38.6, 34.3, 34.6, 35.4, 36.6)
+
 # Lden per site ----------------------------------------------------------------
 # During days of activity/inactivity, what are overall levels throughout the region?
 # Dependencies: any dataset for overview, only NAVY dataset for in/activity detail
