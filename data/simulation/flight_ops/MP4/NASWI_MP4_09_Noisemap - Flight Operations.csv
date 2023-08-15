@@ -1,0 +1,508 @@
+Aircraft,Profile,Track,Track Type,Runway,A/C Category,Track Group,Num Day,Num Night,Num Total,% Day,% Night,% Total
+EA-18G,226A_EXP,07A2A,Arrival,07,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,226A_FLT,07A2A,Arrival,07,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,226A_FRS,07A2A,Arrival,07,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,226B_EXP,07A2B,Arrival,07,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,226B_FLT,07A2B,Arrival,07,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,226B_FRS,07A2B,Arrival,07,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,226C_EXP,07A2C,Arrival,07,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,226C_FLT,07A2C,Arrival,07,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,226C_FRS,07A2C,Arrival,07,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,227A_EXP,07A1A,Arrival,07,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,227A_FLT,07A1A,Arrival,07,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,227A_FRS,07A1A,Arrival,07,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,227B_EXP,07A3B,Arrival,07,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,227B_FLT,07A3B,Arrival,07,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,227B_FRS,07A3B,Arrival,07,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,227C_EXP,07A3C,Arrival,07,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,227C_FLT,07A3C,Arrival,07,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,227C_FRS,07A3C,Arrival,07,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,228A_EXP,14A1A,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,228A_FLT,14A1A,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,228A_FRS,14A1A,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,228B_EXP,14A1B,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,228B_FLT,14A1B,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,228B_FRS,14A1B,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,228C_EXP,14A1C,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,228C_FLT,14A1C,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,228C_FRS,14A1C,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,229A_EXP,14A2A,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,229A_FLT,14A2A,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,229A_FRS,14A2A,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,229B_EXP,14A2B,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,229B_FLT,14A2B,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,229B_FRS,14A2B,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,229C_EXP,14A2C,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,229C_FLT,14A2C,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,229C_FRS,14A2C,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,230A_EXP,25A1D,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0,0.142857143,0.142857143,0.00%,100.00%,1.02%
+EA-18G,230A_FLT,25A1D,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,230A_FRS,25A1D,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,231A_EXP,25A2A,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,231A_FLT,25A2A,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,231A_FRS,25A2A,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,231B_EXP,25A2B,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,231B_FLT,25A2B,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,231B_FRS,25A2B,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,231C_EXP,25A2C,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,231C_FLT,25A2C,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,231C_FRS,25A2C,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,232A_EXP,25A2NA,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,232A_FLT,25A2NA,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,232A_FRS,25A2NA,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,232B_EXP,25A2NB,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,232B_FLT,25A2NB,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,232B_FRS,25A2NB,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,232C_EXP,25A2NC,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,232C_FLT,25A2NC,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,232C_FRS,25A2NC,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,233A_EXP,32A1A,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,233A_FLT,32A1A,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,233A_FRS,32A1A,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,233B_EXP,32A1B,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,233B_FLT,32A1B,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,233B_FRS,32A1B,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,233C_EXP,32A1C,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,233C_FLT,32A1C,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,233C_FRS,32A1C,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,234A_EXP,32A2A,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,234A_FLT,32A2A,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,234A_FRS,32A2A,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,234B_EXP,32A2B,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,234B_FLT,32A2B,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,234B_FRS,32A2B,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,234C_EXP,32A2C,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,234C_FLT,32A2C,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,234C_FRS,32A2C,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+EA-18G,235A_EXP,07O1A_FRS,Arrival,07,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,235A_FLT,07O1A_FLT,Arrival,07,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,235A_FRS,07O1A_FRS,Arrival,07,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,235B_EXP,07O1B_FRS,Arrival,07,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,235B_FLT,07O1B_FLT,Arrival,07,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,235B_FRS,07O1B_FRS,Arrival,07,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,235C_EXP,07O1C_FRS,Arrival,07,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,235C_FLT,07O1C_FLT,Arrival,07,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,235C_FRS,07O1C_FRS,Arrival,07,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,236A_EXP,07O2A_FRS,Arrival,07,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,236A_FLT,07O2A_FLT,Arrival,07,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,236A_FRS,07O2A_FRS,Arrival,07,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,236B_EXP,07O2B_FRS,Arrival,07,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,236B_FLT,07O2B_FLT,Arrival,07,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,236B_FRS,07O2B_FRS,Arrival,07,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,236C_EXP,07O2C_FRS,Arrival,07,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,236C_FLT,07O2C_FLT,Arrival,07,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,236C_FRS,07O2C_FRS,Arrival,07,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,237A_EXP,14O1A_FRS,Arrival,14,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,237A_FLT,14O1A_FLT,Arrival,14,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,237A_FRS,14O1A_FRS,Arrival,14,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,237B_EXP,14O1B_FRS,Arrival,14,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,237B_FLT,14O1B_FLT,Arrival,14,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,237B_FRS,14O1B_FRS,Arrival,14,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,237C_EXP,14O1C_FRS,Arrival,14,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,237C_FLT,14O1C_FLT,Arrival,14,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,237C_FRS,14O1C_FRS,Arrival,14,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,238A_EXP,14O2A_FRS,Arrival,14,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,238A_FLT,14O2A_FLT,Arrival,14,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,238A_FRS,14O2A_FRS,Arrival,14,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,238B_EXP,14O2B_FRS,Arrival,14,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,238B_FLT,14O2B_FLT,Arrival,14,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,238B_FRS,14O2B_FRS,Arrival,14,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,238C_EXP,14O2C_FRS,Arrival,14,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,238C_FLT,14O2C_FLT,Arrival,14,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,238C_FRS,14O2C_FRS,Arrival,14,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,239B_EXP,25O1B_FRS,Arrival,25,Based,Overhead Break Arrival,1.285714286,0,1.285714286,100.00%,0.00%,9.18%
+EA-18G,239B_FLT,25O1B_FLT,Arrival,25,Based,Overhead Break Arrival,3.714285714,0,3.714285714,100.00%,0.00%,26.53%
+EA-18G,239B_FRS,25O1B_FRS,Arrival,25,Based,Overhead Break Arrival,1,0,1,100.00%,0.00%,7.14%
+EA-18G,239C_EXP,25O1C_FRS,Arrival,25,Based,Overhead Break Arrival,0.714285714,0,0.714285714,100.00%,0.00%,5.10%
+EA-18G,239C_FLT,25O1C_FLT,Arrival,25,Based,Overhead Break Arrival,1.142857143,0,1.142857143,100.00%,0.00%,8.16%
+EA-18G,239C_FRS,25O1C_FRS,Arrival,25,Based,Overhead Break Arrival,0.285714286,0,0.285714286,100.00%,0.00%,2.04%
+EA-18G,240B_EXP,25O2B_FRS,Arrival,25,Based,Overhead Break Arrival,0.428571429,0,0.428571429,100.00%,0.00%,3.06%
+EA-18G,240B_FLT,25O2B_FLT,Arrival,25,Based,Overhead Break Arrival,0.142857143,0,0.142857143,100.00%,0.00%,1.02%
+EA-18G,240B_FRS,25O2B_FRS,Arrival,25,Based,Overhead Break Arrival,2.142857143,0.714285714,2.857142857,75.00%,25.00%,20.41%
+EA-18G,240C_EXP,25O2C_FRS,Arrival,25,Based,Overhead Break Arrival,0.142857143,0,0.142857143,100.00%,0.00%,1.02%
+EA-18G,240C_FLT,25O2C_FLT,Arrival,25,Based,Overhead Break Arrival,0.571428571,0,0.571428571,100.00%,0.00%,4.08%
+EA-18G,240C_FRS,25O2C_FRS,Arrival,25,Based,Overhead Break Arrival,0.857142857,0,0.857142857,100.00%,0.00%,6.12%
+EA-18G,241B_EXP,32O1B_FRS,Arrival,32,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,241B_FLT,32O1B_FLT,Arrival,32,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,241B_FRS,32O1B_FRS,Arrival,32,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,241C_EXP,32O1C_FRS,Arrival,32,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,241C_FLT,32O1C_FLT,Arrival,32,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,241C_FRS,32O1C_FRS,Arrival,32,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,242B_EXP,32O2B_FRS,Arrival,32,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,242B_FLT,32O2B_FLT,Arrival,32,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,242B_FRS,32O2B_FRS,Arrival,32,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,242C_EXP,32O2C_FRS,Arrival,32,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,242C_FLT,32O2C_FLT,Arrival,32,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,242C_FRS,32O2C_FRS,Arrival,32,Based,Overhead Break Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,243_EXP,07AHT,Arrival,07,Based,HI TACAN Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,243_FLT,07AHT,Arrival,07,Based,HI TACAN Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,243_FRS,07AHT,Arrival,07,Based,HI TACAN Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,244_EXP,14AHT,Arrival,14,Based,HI TACAN Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,244_FLT,14AHT,Arrival,14,Based,HI TACAN Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,244_FRS,14AHT,Arrival,14,Based,HI TACAN Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,245_EXP,25AHT,Arrival,25,Based,HI TACAN Arrival,0.285714286,0,0.285714286,100.00%,0.00%,2.04%
+EA-18G,245_FLT,25AHT,Arrival,25,Based,HI TACAN Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,245_FRS,25AHT,Arrival,25,Based,HI TACAN Arrival,0.428571429,0,0.428571429,100.00%,0.00%,3.06%
+EA-18G,246_EXP,32AHT,Arrival,32,Based,HI TACAN Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,246_FLT,32AHT,Arrival,32,Based,HI TACAN Arrival,0,0,0,0.00%,0.00%,0.00%
+EA-18G,246_FRS,32AHT,Arrival,32,Based,HI TACAN Arrival,0,0,0,0.00%,0.00%,0.00%
+,,,,,,Subtotal,13.14285714,0.857142857,14,93.88%,6.12%,
+,,,,,,,,,,,,
+EA-18G,201A_EXP,07D1A,Departure,07,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,201A_FLT,07D1A,Departure,07,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,201A_FRS,07D1A,Departure,07,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,202A_EXP,07D1B,Departure,07,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,202A_FLT,07D1B,Departure,07,Based,Departure,0.285714286,0,0.285714286,100.00%,0.00%,1.28%
+EA-18G,202A_FRS,07D1B,Departure,07,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,203A_EXP,07D1C,Departure,07,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,203A_FLT,07D1C,Departure,07,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,203A_FRS,07D1C,Departure,07,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,204A_EXP,07D2A,Departure,07,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,204A_FLT,07D2A,Departure,07,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,204A_FRS,07D2A,Departure,07,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,205A_EXP,07D2B,Departure,07,Based,Departure,0.142857143,0,0.142857143,100.00%,0.00%,0.64%
+EA-18G,205A_FLT,07D2B,Departure,07,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,205A_FRS,07D2B,Departure,07,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,206A_EXP,07D2C,Departure,07,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,206A_FLT,07D2C,Departure,07,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,206A_FRS,07D2C,Departure,07,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,207A_EXP,14D1A,Departure,14,Based,Departure,0.142857143,0,0.142857143,100.00%,0.00%,0.64%
+EA-18G,207A_FLT,14D1A,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,207A_FRS,14D1A,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,208A_EXP,14D1B,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,208A_FLT,14D1B,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,208A_FRS,14D1B,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,209A_EXP,14D1C,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,209A_FLT,14D1C,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,209A_FRS,14D1C,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,210A_EXP,14D2A,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,210A_FLT,14D2A,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,210A_FRS,14D2A,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,211A_EXP,14D2B,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,211A_FLT,14D2B,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,211A_FRS,14D2B,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,212A_EXP,14D2C,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,212A_FLT,14D2C,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,212A_FRS,14D2C,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,213A_EXP,25D1A,Departure,25,Based,Departure,1,0,1,100.00%,0.00%,4.49%
+EA-18G,213A_FLT,25D1A,Departure,25,Based,Departure,1,0,1,100.00%,0.00%,4.49%
+EA-18G,213A_FRS,25D1A,Departure,25,Based,Departure,0.571428571,0,0.571428571,100.00%,0.00%,2.56%
+EA-18G,214A_EXP,25D1B,Departure,25,Based,Departure,1.857142857,0,1.857142857,100.00%,0.00%,8.33%
+EA-18G,214A_FLT,25D1B,Departure,25,Based,Departure,2.285714286,0,2.285714286,100.00%,0.00%,10.26%
+EA-18G,214A_FRS,25D1B,Departure,25,Based,Departure,1,0,1,100.00%,0.00%,4.49%
+EA-18G,215A_EXP,25D1C,Departure,25,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,215A_FLT,25D1C,Departure,25,Based,Departure,0.714285714,0,0.714285714,100.00%,0.00%,3.21%
+EA-18G,215A_FRS,25D1C,Departure,25,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,216A_EXP,25D2A,Departure,25,Based,Departure,1,0,1,100.00%,0.00%,4.49%
+EA-18G,216A_FLT,25D2A,Departure,25,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,216A_FRS,25D2A,Departure,25,Based,Departure,1.714285714,0,1.714285714,100.00%,0.00%,7.69%
+EA-18G,217A_EXP,25D2B,Departure,25,Based,Departure,0.428571429,0,0.428571429,100.00%,0.00%,1.92%
+EA-18G,217A_FLT,25D2B,Departure,25,Based,Departure,1.142857143,0,1.142857143,100.00%,0.00%,5.13%
+EA-18G,217A_FRS,25D2B,Departure,25,Based,Departure,5.285714286,0,5.285714286,100.00%,0.00%,23.72%
+EA-18G,218A_EXP,25D2C,Departure,25,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,218A_FLT,25D2C,Departure,25,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,218A_FRS,25D2C,Departure,25,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,219A_EXP,32D1A,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,219A_FLT,32D1A,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,219A_FRS,32D1A,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,220A_EXP,32D1B,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,220A_FLT,32D1B,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,220A_FRS,32D1B,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,221A_EXP,32D1C,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,221A_FLT,32D1C,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,221A_FRS,32D1C,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,222A_EXP,32D2A,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,222A_FLT,32D2A,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,222A_FRS,32D2A,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,223A_EXP,32D2B,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,223A_FLT,32D2B,Departure,32,Based,Departure,0.285714286,0,0.285714286,100.00%,0.00%,1.28%
+EA-18G,223A_FRS,32D2B,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,224A_EXP,32D2C,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,224A_FLT,32D2C,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,224A_FRS,32D2C,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+EA-18G,247P_FH,07WC14P,Departure,07,Based,Interfacility Ault Field to Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,247P_FL,07WC14P,Departure,07,Based,Interfacility Ault Field to Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,247P_FO,07WC14P,Departure,07,Based,Interfacility Ault Field to Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,248P_FH,07WC32P,Departure,07,Based,Interfacility Ault Field to Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,248P_FL,07WC32P,Departure,07,Based,Interfacility Ault Field to Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,248P_FO,07WC32P,Departure,07,Based,Interfacility Ault Field to Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,249P_FH,14WC14P,Departure,14,Based,Interfacility Ault Field to Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,249P_FL,14WC14P,Departure,14,Based,Interfacility Ault Field to Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,249P_FO,14WC14P,Departure,14,Based,Interfacility Ault Field to Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,250P_FH,14WC32P,Departure,14,Based,Interfacility Ault Field to Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,250P_FL,14WC32P,Departure,14,Based,Interfacility Ault Field to Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,250P_FO,14WC32P,Departure,14,Based,Interfacility Ault Field to Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,251P_FH,25WC14P,Departure,25,Based,Interfacility Ault Field to Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,251P_FL,25WC14P,Departure,25,Based,Interfacility Ault Field to Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,251P_FO,25WC14P,Departure,25,Based,Interfacility Ault Field to Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,252P_FH,25WC32P,Departure,25,Based,Interfacility Ault Field to Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,252P_FL,25WC32P,Departure,25,Based,Interfacility Ault Field to Coupeville,0.285714286,0,0.285714286,100.00%,0.00%,1.28%
+EA-18G,252P_FO,25WC32P,Departure,25,Based,Interfacility Ault Field to Coupeville,2.142857143,1,3.142857143,68.18%,31.82%,14.10%
+EA-18G,253P_FH,32WC14P,Departure,32,Based,Interfacility Ault Field to Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,253P_FL,32WC14P,Departure,32,Based,Interfacility Ault Field to Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,253P_FO,32WC14P,Departure,32,Based,Interfacility Ault Field to Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,254P_FH,32WC32P,Departure,32,Based,Interfacility Ault Field to Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,254P_FL,32WC32P,Departure,32,Based,Interfacility Ault Field to Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,254P_FO,32WC32P,Departure,32,Based,Interfacility Ault Field to Coupeville,0,0,0,0.00%,0.00%,0.00%
+,,,,,,Subtotal,21.28571429,1,22.28571429,95.51%,4.49%,
+,,,,,,,,,,,,
+EA-18G,263L,07PL,Closed Pattern,07,Based,Depart and Re-enter Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,263R,07PR,Closed Pattern,07,Based,Depart and Re-enter Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,264L,14PL,Closed Pattern,14,Based,Depart and Re-enter Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,264R,14PR,Closed Pattern,14,Based,Depart and Re-enter Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,265L,25PL,Closed Pattern,25,Based,Depart and Re-enter Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,265R,25PR,Closed Pattern,25,Based,Depart and Re-enter Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,266L,32PL,Closed Pattern,32,Based,Depart and Re-enter Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,266R,32PR,Closed Pattern,32,Based,Depart and Re-enter Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,267A,07F1B,Closed Pattern,07,Based,Touch and Go at Ault Field,0,0,0,0.00%,0.00%,0.00%
+EA-18G,267B,07F1C,Closed Pattern,07,Based,Touch and Go at Ault Field,0,0,0,0.00%,0.00%,0.00%
+EA-18G,268A,14F1B,Closed Pattern,14,Based,Touch and Go at Ault Field,0,0,0,0.00%,0.00%,0.00%
+EA-18G,268B,14F1C,Closed Pattern,14,Based,Touch and Go at Ault Field,0,0,0,0.00%,0.00%,0.00%
+EA-18G,269A,25F1B,Closed Pattern,25,Based,Touch and Go at Ault Field,4.857142857,0.571428571,5.428571429,89.47%,10.53%,30.89%
+EA-18G,269B,25F1C,Closed Pattern,25,Based,Touch and Go at Ault Field,4,0,4,100.00%,0.00%,22.76%
+EA-18G,270B,32F1C,Closed Pattern,32,Based,Touch and Go at Ault Field,0,0,0,0.00%,0.00%,0.00%
+EA-18G,273PDA,14FCP1,Closed Pattern,14_OLF,Based,FCLP at Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,273PDB,14FCP2,Closed Pattern,14_OLF,Based,FCLP at Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,273PDC,14FCP3,Closed Pattern,14_OLF,Based,FCLP at Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,273PDX,14FCPX,Closed Pattern,14_OLF,Based,FCLP at Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,276PDA,32FCP1,Closed Pattern,32_OLF,Based,FCLP at Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,276PDB,32FCP2,Closed Pattern,32_OLF,Based,FCLP at Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,276PDC,32FCP3,Closed Pattern,32_OLF,Based,FCLP at Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,276PDX,32FCPX,Closed Pattern,32_OLF,Based,FCLP at Coupeville,0,0,0,0.00%,0.00%,0.00%
+EA-18G,277A_EXP,07G1A,Closed Pattern,07,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,277A_FLT,07G1A,Closed Pattern,07,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,277A_FRS,07G1A,Closed Pattern,07,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,277B_EXP,07G1B,Closed Pattern,07,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,277B_FLT,07G1B,Closed Pattern,07,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,277B_FRS,07G1B,Closed Pattern,07,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,277C_EXP,07G1C,Closed Pattern,07,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,277C_FLT,07G1C,Closed Pattern,07,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,277C_FRS,07G1C,Closed Pattern,07,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,278A_EXP,14G1A,Closed Pattern,14,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,278A_FLT,14G1A,Closed Pattern,14,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,278A_FRS,14G1A,Closed Pattern,14,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,278B_EXP,14G1B,Closed Pattern,14,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,278B_FLT,14G1B,Closed Pattern,14,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,278B_FRS,14G1B,Closed Pattern,14,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,278C_EXP,14G1C,Closed Pattern,14,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,278C_FLT,14G1C,Closed Pattern,14,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,278C_FRS,14G1C,Closed Pattern,14,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,279A_EXP,25G1A,Closed Pattern,25,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,279A_FLT,25G1A,Closed Pattern,25,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,279A_FRS,25G1A,Closed Pattern,25,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,279B_EXP,25G1B,Closed Pattern,25,Based,GCA Pattern,0.428571429,0.142857143,0.571428571,75.00%,25.00%,3.25%
+EA-18G,279B_FLT,25G1B,Closed Pattern,25,Based,GCA Pattern,0.142857143,0,0.142857143,100.00%,0.00%,0.81%
+EA-18G,279B_FRS,25G1B,Closed Pattern,25,Based,GCA Pattern,0.285714286,0,0.285714286,100.00%,0.00%,1.63%
+EA-18G,279C_EXP,25G1C,Closed Pattern,25,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,279C_FLT,25G1C,Closed Pattern,25,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,279C_FRS,25G1C,Closed Pattern,25,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,280A_EXP,32G1A,Closed Pattern,32,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,280A_FLT,32G1A,Closed Pattern,32,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,280A_FRS,32G1A,Closed Pattern,32,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,280B_EXP,32G1B,Closed Pattern,32,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,280B_FLT,32G1B,Closed Pattern,32,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,280B_FRS,32G1B,Closed Pattern,32,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,280C_EXP,32G1C,Closed Pattern,32,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,280C_FLT,32G1C,Closed Pattern,32,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,280C_FRS,32G1C,Closed Pattern,32,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+EA-18G,281A_m,07F1B,Closed Pattern,07,Based,FCLP at Ault Field,0,0,0,0.00%,0.00%,0.00%
+EA-18G,281B_m,07F1C,Closed Pattern,07,Based,FCLP at Ault Field,0,0,0,0.00%,0.00%,0.00%
+EA-18G,282A_m,14F1B,Closed Pattern,14,Based,FCLP at Ault Field,0,0,0,0.00%,0.00%,0.00%
+EA-18G,282B_m,14F1C,Closed Pattern,14,Based,FCLP at Ault Field,0,0,0,0.00%,0.00%,0.00%
+EA-18G,283A_m,25F1B,Closed Pattern,25,Based,FCLP at Ault Field,1.285714286,0,1.285714286,100.00%,0.00%,7.32%
+EA-18G,283B_m,25F1C,Closed Pattern,25,Based,FCLP at Ault Field,5.857142857,0,5.857142857,100.00%,0.00%,33.33%
+EA-18G,284B_m,32F1C,Closed Pattern,32,Based,FCLP at Ault Field,0,0,0,0.00%,0.00%,0.00%
+,,,,,,Subtotal,16.85714286,0.714285714,17.57142857,95.93%,4.07%,
+,,,,,,,,,,,,
+EA-18G,255_FLT,14CW07_FLT,Interfacility,14_OLF,Based,Interfacility Coupeville to Ault Field,0,0,0,0.00%,0.00%,0.00%
+EA-18G,255_FRS,14CW07_FRS,Interfacility,14_OLF,Based,Interfacility Coupeville to Ault Field,0,0,0,0.00%,0.00%,0.00%
+EA-18G,256_FLT,14CW14_FLT,Interfacility,14_OLF,Based,Interfacility Coupeville to Ault Field,0,0,0,0.00%,0.00%,0.00%
+EA-18G,256_FRS,14CW14_FRS,Interfacility,14_OLF,Based,Interfacility Coupeville to Ault Field,0,0,0,0.00%,0.00%,0.00%
+EA-18G,257_FLT,14CW25_FLT,Interfacility,14_OLF,Based,Interfacility Coupeville to Ault Field,0,0,0,0.00%,0.00%,0.00%
+EA-18G,257_FRS,14CW25_FRS,Interfacility,14_OLF,Based,Interfacility Coupeville to Ault Field,0,0,0,0.00%,0.00%,0.00%
+EA-18G,258_FLT,14CW32_FLT,Interfacility,14_OLF,Based,Interfacility Coupeville to Ault Field,0,0,0,0.00%,0.00%,0.00%
+EA-18G,258_FRS,14CW32_FRS,Interfacility,14_OLF,Based,Interfacility Coupeville to Ault Field,0,0,0,0.00%,0.00%,0.00%
+EA-18G,259_FLT,32CW07_FLT,Interfacility,32_OLF,Based,Interfacility Coupeville to Ault Field,0,0,0,0.00%,0.00%,0.00%
+EA-18G,259_FRS,32CW07_FRS,Interfacility,32_OLF,Based,Interfacility Coupeville to Ault Field,0,0,0,0.00%,0.00%,0.00%
+EA-18G,260_FLT,32CW14_FLT,Interfacility,32_OLF,Based,Interfacility Coupeville to Ault Field,0,0,0,0.00%,0.00%,0.00%
+EA-18G,260_FRS,32CW14_FRS,Interfacility,32_OLF,Based,Interfacility Coupeville to Ault Field,0,0,0,0.00%,0.00%,0.00%
+EA-18G,261_FLT,32CW25_FLT,Interfacility,32_OLF,Based,Interfacility Coupeville to Ault Field,0.142857143,0,0.142857143,100.00%,0.00%,6.25%
+EA-18G,261_FRS,32CW25_FRS,Interfacility,32_OLF,Based,Interfacility Coupeville to Ault Field,1.428571429,0.714285714,2.142857143,66.67%,33.33%,93.75%
+EA-18G,262_FLT,32CW32_FLT,Interfacility,32_OLF,Based,Interfacility Coupeville to Ault Field,0,0,0,0.00%,0.00%,0.00%
+EA-18G,262_FRS,32CW32_FRS,Interfacility,32_OLF,Based,Interfacility Coupeville to Ault Field,0,0,0,0.00%,0.00%,0.00%
+,,,,,,Subtotal,1.571428571,0.714285714,2.285714286,68.75%,31.25%,
+Aircraft,Profile,Track,Track Type,Runway,A/C Category,Track Group,Num Day,Num Night,Num Total,% Day,% Night,% Total
+P-3C,321,07A1A,Arrival,07,Based,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-3C,322,07A4D,Arrival,07,Based,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-3C,323,07A3B,Arrival,07,Based,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-3C,324,25A3D,Arrival,25,Based,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-3C,325,25A4B,Arrival,25,Based,P3 P8 C9 VFR non breaks,0.714285714,0,0.714285714,100.00%,0.00%,62.50%
+P-3C,326,25A4C,Arrival,25,Based,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-3C,328,14A3D,Arrival,14,Based,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-3C,330,14A4D,Arrival,14,Based,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-3C,332,32A3D,Arrival,32,Based,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-3C,334,32A4D,Arrival,32,Based,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-3C,336B,07A2B,Arrival,07,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-3C,336C,07A2C,Arrival,07,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-3C,337B,14A1B,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-3C,337C,14A1C,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-3C,338B,14A2B,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-3C,338C,14A2C,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-3C,339D,25A1D,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0.142857143,0,0.142857143,100.00%,0.00%,12.50%
+P-3C,340B,25A2B,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0.142857143,0,0.142857143,100.00%,0.00%,12.50%
+P-3C,340C,25A2C,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0.142857143,0,0.142857143,100.00%,0.00%,12.50%
+P-3C,341C,32A1C,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-3C,342B,32A2B,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-3C,342C,32A2C,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-3C,343,07ALT,Arrival,07,Based,HI TACAN Arrival,0,0,0,0.00%,0.00%,0.00%
+P-3C,344,14ALT,Arrival,14,Based,HI TACAN Arrival,0,0,0,0.00%,0.00%,0.00%
+P-3C,345,25ALT,Arrival,25,Based,HI TACAN Arrival,0,0,0,0.00%,0.00%,0.00%
+P-3C,346,32ALT,Arrival,32,Based,HI TACAN Arrival,0,0,0,0.00%,0.00%,0.00%
+,,,,,,Subtotal,1.142857143,0,1.142857143,100.00%,0.00%,
+,,,,,,,,,,,,
+P-3C,301,07D1B,Departure,07,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+P-3C,302,07D1C,Departure,07,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+P-3C,303,07D2B,Departure,07,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+P-3C,304,07D2C,Departure,07,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+P-3C,305,14D1B,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+P-3C,306,14D1C,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+P-3C,307,14D2B,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+P-3C,308,14D2C,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+P-3C,309,25D1B,Departure,25,Based,Departure,0.571428571,0,0.571428571,100.00%,0.00%,50.00%
+P-3C,310,25D1C,Departure,25,Based,Departure,0.142857143,0,0.142857143,100.00%,0.00%,12.50%
+P-3C,311,25D2B,Departure,25,Based,Departure,0.285714286,0,0.285714286,100.00%,0.00%,25.00%
+P-3C,312,25D2C,Departure,25,Based,Departure,0.142857143,0,0.142857143,100.00%,0.00%,12.50%
+P-3C,313,32D1B,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+P-3C,314,32D1C,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+P-3C,315,32D2B,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+P-3C,316,32D2C,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+,,,,,,Subtotal,1.142857143,0,1.142857143,100.00%,0.00%,
+,,,,,,,,,,,,
+P-3C,347B,07G1B,Closed Pattern,07,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+P-3C,347C,07G1C,Closed Pattern,07,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+P-3C,348B,14G1B,Closed Pattern,14,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+P-3C,348C,14G1C,Closed Pattern,14,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+P-3C,349B,25G1B,Closed Pattern,25,Based,GCA Pattern,0.285714286,0,0.285714286,100.00%,0.00%,7.69%
+P-3C,349C,25G1C,Closed Pattern,25,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+P-3C,350B,32G1B,Closed Pattern,32,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+P-3C,350C,32G1C,Closed Pattern,32,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+P-3C,351B,07TU1C,Closed Pattern,07,Based,Touch and Go at Ault Field,0,0,0,0.00%,0.00%,0.00%
+P-3C,352B,14TU1C,Closed Pattern,14,Based,Touch and Go at Ault Field,0,0,0,0.00%,0.00%,0.00%
+P-3C,353B,25TU1C,Closed Pattern,25,Based,Touch and Go at Ault Field,3.428571429,0,3.428571429,100.00%,0.00%,92.31%
+P-3C,354B,32TU1C,Closed Pattern,32,Based,Touch and Go at Ault Field,0,0,0,0.00%,0.00%,0.00%
+,,,,,,Subtotal,3.714285714,0,3.714285714,100.00%,0.00%,
+Aircraft,Profile,Track,Track Type,Runway,A/C Category,Track Group,Num Day,Num Night,Num Total,% Day,% Night,% Total
+P-8,521,07A1A,Arrival,07,Based,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-8,522,07A3B,Arrival,07,Based,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-8,523,07A4D,Arrival,07,Based,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-8,525,14A3D,Arrival,14,Based,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-8,527,14A4D,Arrival,14,Based,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-8,528,25A3D,Arrival,25,Based,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-8,529,25A4B,Arrival,25,Based,P3 P8 C9 VFR non breaks,0.285714286,0,0.285714286,100.00%,0.00%,22.22%
+P-8,530,25A4C,Arrival,25,Based,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-8,532,32A3D,Arrival,32,Based,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-8,534,32A4D,Arrival,32,Based,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-8,536B_mod,07A2B,Arrival,07,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-8,536C_mod,07A2C,Arrival,07,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-8,537B_mod,14A1B,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-8,537C_mod,14A1C,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-8,538B_mod,14A2B,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-8,538C_mod,14A2C,Arrival,14,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-8,539D,25A1D,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0.714285714,0,0.714285714,100.00%,0.00%,0.00%
+P-8,540B_mod,25A2B,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0.142857143,0,0.142857143,100.00%,0.00%,11.11%
+P-8,540C_mod,25A2C,Arrival,25,Based,P3 P8 IFR and Growler VFR non breaks,0.142857143,0,0.142857143,100.00%,0.00%,11.11%
+P-8,541C_mod,32A1C,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-8,542B_mod,32A2B,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-8,542C_mod,32A2C,Arrival,32,Based,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+P-8,543,07ALT,Arrival,07,Based,HI TACAN Arrival,0,0,0,0.00%,0.00%,0.00%
+P-8,544,14ALT,Arrival,14,Based,HI TACAN Arrival,0,0,0,0.00%,0.00%,0.00%
+P-8,545,25ALT,Arrival,25,Based,HI TACAN Arrival,0,0,0,0.00%,0.00%,0.00%
+P-8,546,32ALT,Arrival,32,Based,HI TACAN Arrival,0,0,0,0.00%,0.00%,0.00%
+,,,,,,Subtotal,1.285714286,0,1.285714286,100.00%,0.00%,
+,,,,,,,,,,,,
+P-8,501_mod,07D1B,Departure,07,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+P-8,502_mod,07D1C,Departure,07,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+P-8,503_mod,07D2B,Departure,07,Based,Departure,0.142857143,0,0.142857143,100.00%,0.00%,8.33%
+P-8,504_mod,07D2C,Departure,07,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+P-8,505_mod,14D1B,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+P-8,506_mod,14D1C,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+P-8,507_mod,14D2B,Departure,14,Based,Departure,0,0.142857143,0.142857143,0.00%,100.00%,8.33%
+P-8,508_mod,14D2C,Departure,14,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+P-8,509_mod,25D1B,Departure,25,Based,Departure,0.428571429,0.142857143,0.571428571,75.00%,25.00%,33.33%
+P-8,510_mod,25D1C,Departure,25,Based,Departure,0.428571429,0,0.428571429,100.00%,0.00%,25.00%
+P-8,511_mod,25D2B,Departure,25,Based,Departure,0.285714286,0,0.285714286,100.00%,0.00%,16.67%
+P-8,512_mod,25D2C,Departure,25,Based,Departure,0.142857143,0,0.142857143,100.00%,0.00%,8.33%
+P-8,513_mod,32D1B,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+P-8,514_mod,32D1C,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+P-8,515_mod,32D2B,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+P-8,516_mod,32D2C,Departure,32,Based,Departure,0,0,0,0.00%,0.00%,0.00%
+,,,,,,Subtotal,1.428571429,0.285714286,1.714285714,83.33%,16.67%,
+,,,,,,,,,,,,
+P-8,547B_mod,07G1B,Closed Pattern,07,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+P-8,547C_mod,07G1C,Closed Pattern,07,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+P-8,548B_mod,14G1B,Closed Pattern,14,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+P-8,548C_mod,14G1C,Closed Pattern,14,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+P-8,549B_mod,25G1B,Closed Pattern,25,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+P-8,549C_mod,25G1C,Closed Pattern,25,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+P-8,550B_mod,32G1B,Closed Pattern,32,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+P-8,550C_mod,32G1C,Closed Pattern,32,Based,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+P-8,551B_mod,07TU2C,Closed Pattern,07,Based,Touch and Go at Ault Field,0,0,0,0.00%,0.00%,0.00%
+P-8,552B_mod,14TU2C,Closed Pattern,14,Based,Touch and Go at Ault Field,0,0,0,0.00%,0.00%,0.00%
+P-8,553B_mod,25TU2C,Closed Pattern,25,Based,Touch and Go at Ault Field,0,0,0,0.00%,0.00%,0.00%
+P-8,554B_mod,32TU2C,Closed Pattern,32,Based,Touch and Go at Ault Field,0,0,0,0.00%,0.00%,0.00%
+,,,,,,Subtotal,0,0,0,0.00%,0.00%,
+Aircraft,Profile,Track,Track Type,Runway,A/C Category,Track Group,Num Day,Num Night,Num Total,% Day,% Night,% Total
+Transient Jet,417,07A1A,Arrival,07,Transient,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,418,07A3B,Arrival,07,Transient,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,419,07A4D,Arrival,07,Transient,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,421,14A3D,Arrival,14,Transient,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,423,14A4D,Arrival,14,Transient,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,424,25A3D,Arrival,25,Transient,P3 P8 IFR and Growler VFR non breaks,0.142857143,0,0.142857143,100.00%,0.00%,100.00%
+Transient Jet,425,25A4B,Arrival,25,Transient,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,426,25A4C,Arrival,25,Transient,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,428,32A3D,Arrival,32,Transient,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,430,32A4D,Arrival,32,Transient,P3 P8 IFR and Growler VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,436B,07A2B,Arrival,07,Transient,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,436C,07A2C,Arrival,07,Transient,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,437B,14A1B,Arrival,14,Transient,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,437C,14A1C,Arrival,14,Transient,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,438B,14A2B,Arrival,14,Transient,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,438C,14A2C,Arrival,14,Transient,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,440B,25A2B,Arrival,25,Transient,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,440C,25A2C,Arrival,25,Transient,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,441C,32A1C,Arrival,32,Transient,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,442B,32A2B,Arrival,32,Transient,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,442C,32A2C,Arrival,32,Transient,P3 P8 C9 VFR non breaks,0,0,0,0.00%,0.00%,0.00%
+,,,,,,Subtotal,0.142857143,0,0.142857143,100.00%,0.00%,
+,,,,,,,,,,,,
+Transient Jet,401,07D1B,Departure,07,Transient,Departure,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,402,07D1C,Departure,07,Transient,Departure,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,403,07D2B,Departure,07,Transient,Departure,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,404,07D2C,Departure,07,Transient,Departure,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,405,14D1B,Departure,14,Transient,Departure,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,406,14D1C,Departure,14,Transient,Departure,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,407,14D2B,Departure,14,Transient,Departure,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,408,14D2C,Departure,14,Transient,Departure,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,409,25D1B,Departure,25,Transient,Departure,0.428571429,0,0.428571429,100.00%,0.00%,50.00%
+Transient Jet,410,25D1C,Departure,25,Transient,Departure,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,411,25D2B,Departure,25,Transient,Departure,0.285714286,0,0.285714286,100.00%,0.00%,33.33%
+Transient Jet,412,25D2C,Departure,25,Transient,Departure,0.142857143,0,0.142857143,100.00%,0.00%,16.67%
+Transient Jet,413,32D1B,Departure,32,Transient,Departure,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,414,32D1C,Departure,32,Transient,Departure,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,415,32D2B,Departure,32,Transient,Departure,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,416,32D2C,Departure,32,Transient,Departure,0,0,0,0.00%,0.00%,0.00%
+,,,,,,Subtotal,0.857142857,0,0.857142857,100.00%,0.00%,
+,,,,,,,,,,,,
+Transient Jet,447B,07G1B,Closed Pattern,07,Transient,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,447C,07G1C,Closed Pattern,07,Transient,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,448B,14G1B,Closed Pattern,14,Transient,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,448C,14G1C,Closed Pattern,14,Transient,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,449B,25G1B,Closed Pattern,25,Transient,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,449C,25G1C,Closed Pattern,25,Transient,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,450B,32G1B,Closed Pattern,32,Transient,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,450C,32G1C,Closed Pattern,32,Transient,GCA Pattern,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,451B,07TU2C,Closed Pattern,07,Transient,Touch and Go at Ault Field,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,452B,14TU2C,Closed Pattern,14,Transient,Touch and Go at Ault Field,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,453B,25TU2C,Closed Pattern,25,Transient,Touch and Go at Ault Field,0,0,0,0.00%,0.00%,0.00%
+Transient Jet,454B,32TU2C,Closed Pattern,32,Transient,Touch and Go at Ault Field,0,0,0,0.00%,0.00%,0.00%
+,,,,,,Subtotal,0,0,0,0.00%,0.00%,

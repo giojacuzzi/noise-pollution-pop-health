@@ -1,6 +1,7 @@
 #  Total flight operations data, aggregating the results of individual period flight operations aggregates from load_flight_operations.R into a single table representing the maximum extent of exposure across all periods combined.
 
-files = list.files(path='data/flight_ops/modeling/_output/', pattern="*Flight Operations.csv", full.names=T)
+# files = list.files(path='data/flight_ops/modeling/_output/', pattern="*Flight Operations.csv", full.names=T)
+files = list.files(path='data/flight_ops/modeling/_output/', pattern=".*\\Period.*\\Flight Operations.csv", full.names=T)
 period_ops = lapply(files, read.csv)
 
 # Create a dataframe aggregating all flight operations periods by taking the maximum operations quantity for each profile
@@ -11,14 +12,11 @@ total_ops = as.data.frame(
   bind_rows(period_ops) %>% group_by(Profile) %>% slice(which.max(Num.Total))
 )
 
-######
 # Calculate mean number of operations per flight profile
 numday = as.data.frame(bind_rows(period_ops) %>% group_by(Profile) %>% summarise_at(vars(Num.Day), list(Num.Day = mean)))
 numnight = as.data.frame(bind_rows(period_ops) %>% group_by(Profile) %>% summarise_at(vars(Num.Night), list(Num.Night = mean)))
 total_mean = merge(numday, numnight, by='Profile', all=T)
 total_mean$Num.Total = total_mean$Num.Day + total_mean$Num.Night
-total_mean = total_mean[order(total_mean$Profile),]
-######
 
 # Order by profile
 total_ops = total_ops[order(total_ops$Profile),]
@@ -75,7 +73,7 @@ message(paste('Created', filename))
 
 ## Nighttime ops only ----------------------------------------------------------
 # File name for nighttime aggregate results
-filename_night = paste('data/flight_ops/modeling/_output/Total Aggregate Flight Operations - NIGHT.csv')
+filename_night = paste('data/simulation/_output/Total Aggregate Flight Operations - NIGHT.csv')
 
 night_ops = total_ops
 night_ops[,'Num Day']   = 0.0

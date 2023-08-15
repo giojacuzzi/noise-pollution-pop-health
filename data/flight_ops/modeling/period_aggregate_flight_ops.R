@@ -1,4 +1,4 @@
-# Aggregated flight operations data per-period
+# Aggregate flight operations data per-period
 
 clean_flight_ops_data = function(data) {
   data[data==''] = NA                                # Replace empty values with NA
@@ -65,13 +65,9 @@ for (period in periods) {
   data_all_ops = as.data.frame(
     bind_rows(data) %>% group_by(Profile) %>% slice(which.max(Num.Total))
   )
-  
-  orgdata = bind_rows(data)
-  bind_rows(data) %>% group_by(Profile) %>% summarise_at(vars(Num.Total), list(name = max))
-  bind_rows(data) %>% group_by(Profile) %>% summarise_at(vars(Num.Total), list(name = mean))
-  
+
   # File name for aggregate results
-  filename = paste('data/flight_ops/_output/Period', period, 'Aggregate Flight Operations.csv')
+  filename = paste('data/flight_ops/modeling/_output/Period', period, 'Aggregate Flight Operations.csv')
   
   # Order by profile
   data_all_ops = data_all_ops[order(data_all_ops$Profile),]
