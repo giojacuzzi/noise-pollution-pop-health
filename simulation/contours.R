@@ -67,5 +67,7 @@ get_exposed_counties = function() {
     counties = append(counties, unique(intersection$NAME))
     c = c+1
   }
-  return(unlist(unique(counties)))
+  counties = unlist(unique(counties))
+  counties = unlist(lapply(counties, function(s) { unlist(str_split(s, ' County, Washington'))[1] }))
+  return(counties)
 }

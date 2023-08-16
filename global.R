@@ -19,7 +19,7 @@ library(leafem)
 library(sf)
 library(ggrepel)
 library(tidycensus)
-census_api_key('a9d9f05e0560c7fadaed6b4168bedc56d0e4686d')
+# census_api_key('a9d9f05e0560c7fadaed6b4168bedc56d0e4686d', install = T, overwrite = T)
 sf_extSoftVersion()
 crs = 'NAD83'
 

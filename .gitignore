@@ -16,6 +16,8 @@ simulation/baseops/*/*.dbf
 simulation/baseops/*/*.prj
 simulation/baseops/*/*.shp
 simulation/baseops/*/*.shx
+analysis/preprocessing/_output/*/*.vrt
+analysis/preprocessing/_output/*/*.gpkg
 
 # Binary image files
 *.jpg

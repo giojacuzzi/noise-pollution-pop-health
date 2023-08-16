@@ -120,3 +120,13 @@ source('data/events/load_events_navy.R')
 5.  Click `OK`
 
 ## Dasymetric population exposure
+
+Generate the dasymetric population density map for each county
+
+```{r}
+source('simulation/contours.R')
+source('analysis/preprocessing/dasymetric.R')
+
+ctyids = get_exposed_counties()
+for (ctyid in ctyids) generate_dasypop(ctyid)
+```
