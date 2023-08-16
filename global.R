@@ -18,6 +18,8 @@ library(mapview)
 library(leafem)
 library(sf)
 library(ggrepel)
+library(tidycensus)
+census_api_key('a9d9f05e0560c7fadaed6b4168bedc56d0e4686d')
 sf_extSoftVersion()
 crs = 'NAD83'
 

@@ -1,5 +1,7 @@
 This file documents the entire data processing methods pipeline.
 
+# Acoustic monitoring analysis
+
 ## Field monitoring analyses
 
 ```{r}
@@ -64,14 +66,16 @@ source('data/events/load_events_navy.R')
 #.....
 ```
 
-## Noise simulation modeling
+# Population exposure
+
+## Noise simulation modeling with Noisemap
 
 ### Prepare flight operations data for simulations
 
 1.  Download "V. Noise Modeling Data - PUBLIC_NOISEMAP" from NAVY database and unzip.
     1.  <https://www.navfac.navy.mil/Portals/68/Documents/Business-Lines/Asset-Management/Sound/Remaining-Adds/PUBLIC_NOISEMAP.zip?ver=KEbUPIKWwvnjZl0H4vUg9g%3d%3d>
     2.  <https://www.navfac.navy.mil/Portals/68/Documents/Business-Lines/Asset-Management/Sound/Read-Me-Files/PUBLIC_NOISEMAP_Files_README.txt?ver=AOs5DYQ2sccT1gAfoxO7Ow%3d%3d>
-2.  Format flight operaitons
+2.  Format flight operations
     1.  Input: NOISEMAP/NASWI/MP[N]/\*Flight Operations.xml, where 'N' is the monitoring period, 1-4
     2.  Output: .csv for each Flight Operations.xml file, located under 'data/simulation/flight_ops'
     3.  For each Flight Operations.xml file, open in Microsoft Excel. If prompted, do not update workbook links. Then, select File \> Save As \> Comma Separated Values (.csv), and save to the corresponding directory in 'data/simulation/flight_ops/MP[N]'
@@ -99,11 +103,20 @@ source('data/events/load_events_navy.R')
             3.  If you are also importing flight tracks, and a flight track in the spreadsheet is missing from the BaseOps case, then... Set the profile's flight track to "undefined"
         5.  Press OK... You should see the following message: `Importing flight profiles from spreadsheet file NASWI_MP1_Noisemap - Flight Operations.xml.  The following flight profiles appear in both the BaseOps case and the spreadsheet file.  The daily flight profile operation counts in the BaseOps case will be updated to match the values in the spreadsheet file.`
 
-### Run BaseOps simulations and generate noise contour maps
+### Run BaseOps simulations and generate NMPlot noise contour maps
 
-*See NoiseMap and AEDT Gap Analysis Technical Report for further details of NoiseMap and BaseOps software. NoiseMap BaseOps cases have been made for both DNL (cumulative, see 4.1.1.1) and Lnight (9hr, see 4.1.1.2).*
+*See NoiseMap and AEDT Gap Analysis Technical Report for further details of NoiseMap and BaseOps software. NoiseMap BaseOps cases have been made for DNL and Leq24 (cumulative, see 4.1.1.1) and Lnight (9hr, see 4.1.1.2).*
 
-1.  For a given .baseops file (DNL, LNIGHT, or LEQ24), open it with BaseOps, then select Case \> Run Case
-2.  After the case has finished running, select Case \> Plot. This will open the default contours in NMPlot.
-3.  Click the Edit Options button. From Option Categories \> Contours \> Levels, manually specify contour levels with lowest primary level 10 and highest 150, with spacing between primary levels of 5, and 0 secondary levels. Click Apply.
-4.  TODO
+1.  For a given .baseops file under 'simulation/baseops' (DNL, LEQ24, or LNIGHT), open it with BaseOps, then select `Case > Run Case`
+2.  After the case has finished running, select `Case > Plot`. This will open the default contours in NMPlot.
+3.  Click the `Edit Options` button. From `Option Categories > Contours > Levels`, manually specify contour levels with lowest primary level 10 and highest 150, with spacing between primary levels of 5, and 0 secondary levels. Click `Apply`.
+    1.  NOTE: To view the contours on a map, you can select Background \> Layers \> Add Layer (SlippyMap) \> Options Title Server - URL Prefix: tile.openstreetmap.org Attribution Text: OpenStreetMap
+4.  Select `File > Export to GIS`. Under format, select `ESRI ARC/INFO Shapefile (SHP)`, then click `Properties`
+    1.  Coordinate System \> Export in the following coordinate system... WGS 84
+    2.  Level of Detail \> Export with a level of detail appropriate for display at a scale of...
+        -   1:24000
+        -   1 inch = 2000 feet
+    3.  Create based upon the filename '....\\simulation\\\_output\\DNL\\DNL' , replacing 'DNL' with the corresponding metric.
+5.  Click `OK`
+
+## Dasymetric population exposure
