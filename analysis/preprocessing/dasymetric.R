@@ -3,6 +3,9 @@
 # NLCD rasters downloaded from:
 # https://www.mrlc.gov/data?f%5B0%5D=category%3AUrban%20Imperviousness
 
+# Input: NLCD rasters and NASWI infrastructure shapefile
+# Output: analysis/preprocessing/_output/{county}_dasypop.tif
+
 source('global.R')
 source('simulation/contours.R')
 

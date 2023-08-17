@@ -1,4 +1,3 @@
-library(tidycensus)
 library(raster)
 library(sf)
 library(glue)
@@ -8,23 +7,53 @@ library(fasterize)
 library(mapview)
 mapviewOptions(mapview.maxpixels = 50000000)
 options(tigris_use_cache = T)
-census_api_key('a9d9f05e0560c7fadaed6b4168bedc56d0e4686d')
 
-source('analysis/spatial_distribution.R')
+source('global.R')
+source('simulation/contours.R')
 
 source('metrics/metrics.R')
 source('metrics/health_metrics.R')
 source('metrics/exposure_response_functions.R')
 
-input_path = paste0(here::here(), '/analysis/_output')
+input_path = paste0(here::here(), '/analysis/preprocessing/_output')
 output_path = paste0(here::here(), '/analysis/_output')
 pop_exposure_stack = stack(glue('{input_path}/pop_exposure_stack.grd'))
 
-mapview(get_flighttracks()) +
+## Spatial distribution of noise ---------------------------------------------------------------------
+# Note that these numbers may be conservative estimates due to the lack of evening-time penalty in DNL calculations, and depending on the exposure-response function used. These numbers also implicitly assume long-term (in some cases yearly average) exposure.
+
+mapview(pop_exposure_stack[['Exposed.Population']], layer.name=c('Exposed Persons')) +
   mapview(pop_exposure_stack[['Ldn']], layer.name=c('Ldn (dB)')) +
-  mapview(pop_exposure_stack[['Impacted.Population']], layer.name=c('Impacted Persons')) +
   mapview(pop_exposure_stack[['Lnight']], layer.name=c('Lnight (dB)')) +
   mapview(pop_exposure_stack[['Leq24']], layer.name=c('Leq24 (dB)'))
+
+message('Total exposed population: ', round(cellStats(pop_exposure_stack[['Exposed.Population']], 'sum')))
+
+# Total area of noise exposure associated with adverse health effects (note this includes water)
+contours_Ldn = get_contours_Ldn()
+impact_area = st_area(st_make_valid(st_union(contours_Ldn[contours_Ldn$Level>=lden_impact_threshold,])))
+message('Total area of noise exposure associated with adverse health effects:')
+units::set_units(impact_area, km^2)
+units::set_units(impact_area, mi^2)
+
+## Number of people exposed to noise levels incompatible with residential land use (65 dB Ldn, FAA and HUD)
+residential_exposed = round(cellStats(mask(pop_exposure_stack[['Exposed.Population']], clamp(pop_exposure_stack[['Ldn']], lower=residential_impact_threshold, useValues=F)), 'sum'))
+message('Number of people exposed to noise levels incompatible with residential land use (65 dB Ldn, FAA and HUD): ', residential_exposed)
+
+## Health impacts ---------------------------------------------------------------------
+
+## Number of people exposed to levels beyond bounds of ERFs
+# Annoyance (75, ISO and WHO)
+message('Number of people exposed to levels beyond bounds of ERFs:')
+HA_exceed = round(cellStats(mask(pop_exposure_stack[['Exposed.Population']], clamp(pop_exposure_stack[['Ldn']], lower=bounds_who[2], useValues=F)), 'sum'))
+message(' HA ', HA_exceed)
+# Sleep disturbance (65, ISO/Smith)
+HSD_exceed = round(cellStats(mask(pop_exposure_stack[['Exposed.Population']], clamp(pop_exposure_stack[['Lnight']], lower=bounds_HSD[2], useValues=F)), 'sum'))
+message(' HSD ', HSD_exceed)
+
+## Number of people exposed to sleeping disturbance risk threshold
+HSD_exposed = round(cellStats(mask(pop_exposure_stack[['Exposed.Population']], clamp(pop_exposure_stack[['Lnight']], lower=lnight_impact_threshold, useValues=F)), 'sum'))
+message('Number of people exposed to sleeping disturbance risk threshold: ', HSD_exposed)
 
 # Precalculate rasters for HA, HSD, HL
 message('Precalculating raster for HA (ISO)...')
@@ -113,7 +142,7 @@ for (county in names(counties)) {
 }
 
 # Check values
-stopifnot(sum(health_impact_summary$Exposed) == cellStats(pop_exposure_stack[['Impacted.Population']], 'sum'))
+stopifnot(sum(health_impact_summary$Exposed) == cellStats(pop_exposure_stack[['Exposed.Population']], 'sum'))
 
 # Percent exposed per county
 data.frame(
@@ -147,17 +176,3 @@ health_impact_stack = stack(health_impact_layers)
 filename = glue('{output_path}/health_impact_stack.grd')
 writeRaster(brick(health_impact_stack), filename = filename, overwrite = T)
 message('Created ', filename)
-
-### Other insights
-
-## Number of people exposed to levels beyond bounds of ERFs
-# Annoyance (75, ISO and WHO)
-HA_exceed = round(cellStats(mask(pop_exposure_stack[['Impacted.Population']], clamp(pop_exposure_stack[['Ldn']], lower=bounds_who[2], useValues=F)), 'sum'))
-# Sleep disturbance (65, ISO/Smith)
-HSD_exceed = round(cellStats(mask(pop_exposure_stack[['Impacted.Population']], clamp(pop_exposure_stack[['Lnight']], lower=bounds_HSD[2], useValues=F)), 'sum'))
-
-## Number of people exposed to sleeping disturbance risk threshold
-HSD_exposed = round(cellStats(mask(pop_exposure_stack[['Impacted.Population']], clamp(pop_exposure_stack[['Lnight']], lower=lnight_impact_threshold, useValues=F)), 'sum'))
-
-## Number of people exposed to noise levels incompatible with residential land use (65 dB Ldn, FAA and HUD)
-residential_exposed = round(cellStats(mask(pop_exposure_stack[['Impacted.Population']], clamp(pop_exposure_stack[['Ldn']], lower=residential_impact_threshold, useValues=F)), 'sum'))

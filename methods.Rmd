@@ -121,7 +121,7 @@ source('data/events/load_events_navy.R')
 
 ## Dasymetric population exposure
 
-Generate the dasymetric population density map for each county
+Generate a dasymetric population density map for each county.
 
 ```{r}
 source('simulation/contours.R')
@@ -129,4 +129,18 @@ source('analysis/preprocessing/dasymetric.R')
 
 ctyids = get_exposed_counties()
 for (ctyid in ctyids) generate_dasypop(ctyid)
+```
+
+Combine the dasymetric population density maps with the noise contour maps to yield noise exposure across the population.
+
+```{r}
+source('analysis/preprocessing/pop_exposure.R')
+
+generate_pop_exposure_stack(get_contours_Ldn(), get_contours_Lnight(), get_contours_Leq24())
+```
+
+Next, conduct health assessment for chosen metrics across the population.
+
+```{r}
+source('analysis/health_assessment_summary.R')
 ```
