@@ -41,9 +41,18 @@ get_contours = function(metric) {
   return(st_transform(contours_polygon, crs))
 }
 
-get_contours_Ldn = function() { return(get_contours('DNL')) }
-get_contours_Leq24 = function() { return(get_contours('LEQ24')) }
-get_contours_Lnight = function() { return(get_contours('LNIGHT')) }
+get_contours_Ldn = function(threshold = 0) {
+  contours = get_contours('DNL')
+  return(contours[as.numeric(contours$Level)>=threshold, ])
+}
+get_contours_Leq24 = function(threshold = 0) {
+  contours = get_contours('LEQ24')
+  return(contours[as.numeric(contours$Level)>=threshold, ])
+}
+get_contours_Lnight = function(threshold = 0) {
+  contours = get_contours('LNIGHT')
+  return(contours[as.numeric(contours$Level)>=threshold, ])
+}
 
 # Determine which counties are within the spatial distribution of noise health impacts
 get_exposed_counties = function() {

@@ -12,6 +12,7 @@ theme_set(theme_minimal())
 library(stringr)
 library(dplyr)
 library(tidyr)
+library(glue)
 
 # Spatial mapping
 library(mapview)
@@ -19,6 +20,9 @@ library(leafem)
 library(sf)
 library(ggrepel)
 library(tidycensus)
+library(raster)
+mapviewOptions(mapview.maxpixels = 50000000)
+options(tigris_use_cache = T)
 # census_api_key('a9d9f05e0560c7fadaed6b4168bedc56d0e4686d', install = T, overwrite = T)
 sf_extSoftVersion()
 crs = 'NAD83'

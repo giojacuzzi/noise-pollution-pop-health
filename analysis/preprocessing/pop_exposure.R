@@ -17,12 +17,12 @@ generate_pop_exposure_stack = function(contours_Ldn, contours_Lnight, contours_L
   county_dasypops = list.files(input_path, pattern = paste0('.*dasypop.tif'), full.names = T)
   
   # Read noise contour shapefile layers, including only contours >= health impact thresholds
-  contours_Ldn = get_contours_Ldn()
-  contours_Ldn = contours_Ldn[as.numeric(contours_Ldn$Level)>=lden_impact_threshold,]
-  contours_Lnight = get_contours_Lnight()
-  contours_Lnight = contours_Lnight[as.numeric(contours_Lnight$Level)>=lnight_impact_threshold,]
-  contours_Leq24 = get_contours_Leq24()
-  contours_Leq24 = contours_Leq24[as.numeric(contours_Leq24$Level)>=HL_leq24_impact_threshold,]
+  contours_Ldn = get_contours_Ldn(threshold = lden_impact_threshold)
+  # contours_Ldn = contours_Ldn[as.numeric(contours_Ldn$Level)>=lden_impact_threshold,]
+  contours_Lnight = get_contours_Lnight(threshold = lnight_impact_threshold)
+  # contours_Lnight = contours_Lnight[as.numeric(contours_Lnight$Level)>=lnight_impact_threshold,]
+  contours_Leq24 = get_contours_Leq24(threshold = HL_leq24_impact_threshold)
+  # contours_Leq24 = contours_Leq24[as.numeric(contours_Leq24$Level)>=HL_leq24_impact_threshold,]
   mapview(contours_Ldn, zcol='Level') + mapview(contours_Lnight, zcol='Level') + mapview(contours_Leq24, zcol='Level')
   
   # Read individual county dasymetric population rasters
