@@ -22,19 +22,19 @@ pop_exposure_stack = stack(glue('{input_path}/pop_exposure_stack.grd'))
 ## Spatial distribution of noise ---------------------------------------------------------------------
 # Note that these numbers may be conservative estimates due to the lack of evening-time penalty in DNL calculations, and depending on the exposure-response function used. These numbers also implicitly assume long-term (in some cases yearly average) exposure.
 
-mapview(pop_exposure_stack[['Exposed.Population']], layer.name=c('Exposed Persons')) +
-  mapview(pop_exposure_stack[['Ldn']], layer.name=c('Ldn (dB)')) +
-  mapview(pop_exposure_stack[['Lnight']], layer.name=c('Lnight (dB)')) +
-  mapview(pop_exposure_stack[['Leq24']], layer.name=c('Leq24 (dB)'))
+message('Starting health assessment summary...')
+
+# mapview(pop_exposure_stack[['Exposed.Population']], layer.name=c('Exposed Persons')) +
+#   mapview(pop_exposure_stack[['Ldn']], layer.name=c('Ldn (dB)')) +
+#   mapview(pop_exposure_stack[['Lnight']], layer.name=c('Lnight (dB)')) +
+#   mapview(pop_exposure_stack[['Leq24']], layer.name=c('Leq24 (dB)'))
 
 message('Total exposed population: ', round(cellStats(pop_exposure_stack[['Exposed.Population']], 'sum')))
 
 # Total area of noise exposure associated with adverse health effects (note this includes water)
 contours_Ldn = get_contours_Ldn()
 impact_area = st_area(st_make_valid(st_union(contours_Ldn[contours_Ldn$Level>=lden_impact_threshold,])))
-message('Total area of noise exposure associated with adverse health effects:')
-units::set_units(impact_area, km^2)
-units::set_units(impact_area, mi^2)
+message('Total area of noise exposure associated with adverse health effects: ', units::set_units(impact_area, km^2), ' km2 ', units::set_units(impact_area, mi^2), ' mi2')
 
 ## Number of people exposed to noise levels incompatible with residential land use (65 dB Ldn, FAA and HUD)
 residential_exposed = round(cellStats(mask(pop_exposure_stack[['Exposed.Population']], clamp(pop_exposure_stack[['Ldn']], lower=residential_impact_threshold, useValues=F)), 'sum'))
@@ -164,7 +164,7 @@ health_impact_summary = rbind(health_impact_summary, c(
   sum(health_impact_summary$HSD),
   sum(health_impact_summary$HL)
 ))
-health_impact_summary
+print(health_impact_summary)
 
 # Write table to file
 filename = glue(output_path, '/health_impact_summary.csv')
