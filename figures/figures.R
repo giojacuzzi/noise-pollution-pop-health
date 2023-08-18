@@ -1,4 +1,5 @@
 # Various figures
+library(OpenStreetMap)
 library(tigris)
 options(tigris_use_cache = T)
 
@@ -35,7 +36,7 @@ p_pop_exposed_per_5dB = ggplot(exposure_levels_Ldn, aes(x=Level, y=Population, f
   ggtitle('Estimated population exposed per 5dB Ldn') + xlab('Ldn (dB)') +
   ylab('Estimated population') +
   geom_text(aes(label=round(Population)), position=position_dodge(width=0.9), vjust=-0.25); p_pop_exposed_per_5dB
-ggsave(glue('{output_path}/pop_exposed_per_5dB.png'), p_pop_exposed_per_5dB)
+ggsave(p_pop_exposed_per_5dB + theme(text=element_text(size=22), plot.margin = margin(1,1,1,1, 'cm')), file=glue('{output_path}/pop_exposed_per_5dB.png'), width=10, height=9)
 
 # Plot maps
 
@@ -110,6 +111,26 @@ plot_contours = function(contours, title) {
 plot_contours(contours[[1]], title = 'Ldn')
 plot_contours(contours[[2]], title = 'Lnight')
 plot_contours(contours[[3]], title = 'Leq24')
+# ggsave(p_pop_exposed_per_5dB + theme(text=element_text(size=22), plot.margin = margin(1,1,1,1, 'cm')), file=glue('{output_path}/pop_exposed_per_5dB.png'), width=10, height=9)
+
+map = openmap(c(lat=bounds_y[1], lon=bounds_x[1]), c(lat=bounds_y[2], lon=bounds_x[2]), minNumTiles=9,type='osm') # 'osm', 'osm-transport
+map.latlon = openproj(map, projection = projection(contours[[1]]))
+
+map_contours = function(contours, title) {
+  autoplot.OpenStreetMap(map.latlon) +
+    geom_sf(data = st_cast(contours, 'MULTILINESTRING'), mapping=aes(color=Level), inherit.aes = F) +
+    scale_color_viridis_d(option='plasma', alpha=1, drop = F, name = 'dB(A)') +
+    geom_sf(data = contours, mapping=aes(fill=Level), lwd=0, inherit.aes=F) +
+    scale_fill_viridis_d(option='plasma', alpha=0.25, drop = F, name = 'dB(A)') +
+    labs(title = title, x='', y='') +
+    theme_minimal()
+}
+p_map_ldn = map_contours(contours[[1]], title = 'Day-night average level, Ldn'); p_map_ldn
+ggsave(p_map_ldn + theme(text=element_text(size=20), axis.text=element_text(size=12), plot.margin = margin(1,1,1,1, 'cm')), file=glue('{output_path}/map_ldn.png'), width=10, height=9)
+p_map_lnight = map_contours(contours[[2]], title = 'Nighttime average level, Lnight'); p_map_lnight
+ggsave(p_map_lnight + theme(text=element_text(size=20), axis.text=element_text(size=12), plot.margin = margin(1,1,1,1, 'cm')), file=glue('{output_path}/map_lnight.png'), width=10, height=9)
+p_map_leq24 = map_contours(contours[[3]], title = '24-hour average level, Leq24'); p_map_leq24
+ggsave(p_map_leq24 + theme(text=element_text(size=20), axis.text=element_text(size=12), plot.margin = margin(1,1,1,1, 'cm')), file=glue('{output_path}/map_leq24.png'), width=10, height=9)
 
 ### Exposed population
 
@@ -147,6 +168,21 @@ ggplot() +
   coord_sf(xlim = bounds_x, ylim = bounds_y) +
   labs(x='', y='') +
   theme_bw()
+
+p_pop_exposure = ggplot() +
+  geom_sf(data = wa_counties_cb, fill='#150421') + # '#150421', '#222222', '#2c1d37'
+  
+  geom_tile(data=pop_exposure_SpatialPixelsDataFrame, aes(x=x, y=y, fill=Exposed.Population), alpha=1) +
+  scale_fill_viridis_c(option='viridis', alpha=1, limits = c(0, 12), name=bquote('Population per 30m'^2)) +
+  
+  geom_sf(data =  st_cast(contours[[1]], 'MULTILINESTRING'), aes(color=Level), lwd=0.25) +
+  scale_color_viridis_d(option='plasma', alpha=0.6, drop = F, name='Ldn dB(A)') +
+  
+  coord_sf(xlim = bounds_x, ylim = bounds_y) +
+  labs(title='Population exposure', x='', y='') +
+  theme_bw() +
+  theme(panel.background = element_rect(fill = 'black'), panel.grid.major = element_line(color = '#FFFFFF11', linetype = 'dotted')); p_pop_exposure
+ggsave(p_pop_exposure + theme(text=element_text(size=20), axis.text=element_text(size=12), plot.margin = margin(1,1,1,1, 'cm')), file=glue('{output_path}/pop_exposure.png'), width=10, height=9)
 
 ggplot() +
   geom_sf(data = wa_counties_cb, fill='#222222') +
