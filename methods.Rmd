@@ -119,6 +119,12 @@ source('data/events/load_events_navy.R')
     3.  Create based upon the filename '....\\simulation\\\_output\\DNL\\DNL' , replacing 'DNL' with the corresponding metric.
 5.  Click `OK`
 
+### Validate simulation against measurements from the field
+
+```{r}
+source('simulation/validation.R')
+```
+
 ## Dasymetric population exposure
 
 Generate a dasymetric population density map for each county.
@@ -148,5 +154,5 @@ source('analysis/health_assessment_summary.R')
 Conduct childhood learning school impact evaluation.
 
 ```{r}
-source('anaylsis/childhood_learning.R')
+source('analysis/health_wellbeing_impacts/childhood_learning.R')
 ```
