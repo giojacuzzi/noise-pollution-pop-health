@@ -2,7 +2,7 @@
 
 source('global.R')
 source('metrics/metrics.R')
-source('analysis/spatial_distribution.R')
+source('simulation/contours.R')
 
 data_sites   = get_data_sites()
 data_metrics = get_data_metrics()
@@ -50,28 +50,38 @@ schools = bind_rows(schools_affected, schools_unaffected)
 
 # Affected schools
 # Note that complaints around disrupted activities and loudness are clustered near schools
-schools_affected$NAME
-mapview(Ldn_gt55, zcol='Level', layer.name='DNL') +
-  mapview(schools, zcol='Ldn55', col.regions=list('gray', 'red')) +
-  mapview(sites_with_events, xcol='Longitude', ycol='Latitude', layer.name = 'Sites', crs=crs, grid=F) +
-  mapview(get_flighttracks())
+
+# remove web-based, homeschooling, unincorporated, and duplicate programs
+schools_to_remove = c('Oak Harbor Virtual Academy', 'Igrad Academy', 'Homeconnection', 'Open Den', 'Island Juvenile Detention Education Program')
 
 # Format results and write to csv
-schools_affected = st_drop_geometry(schools[schools$Ldn55==T, c('NAME', 'ZIP', 'TYPE', 'Level')])
-names(schools_affected) = c('School', 'Zip', 'Type', 'Ldn')
-schools_affected$Type = str_to_title(schools_affected$Type)
-schools_affected$School = str_to_title(schools_affected$School)
-schools_affected$School = gsub(' - Whidbey Island', '', schools_affected$School)
-schools_affected$Ldn = as.numeric(schools_affected$Ldn)
-schools_affected$Zip = substr(schools_affected$Zip, 1, 5)
-schools_affected = schools_affected[order(schools_affected$Ldn, decreasing=T), ]
-schools_affected = schools_affected[schools_affected$School != 'Oak Harbor Virtual Academy',] # remove web-based program
-schools_affected$Delay = gsub('1-1', '1', paste0(
-  as.character((schools_affected$Ldn - 55) / 5 * 1 + 1), '-', # 1 month delay at 55, 1-2 month delay per 5 dB increase
-  as.character((schools_affected$Ldn - 55) / 5 * 2 + 1)
+s = st_drop_geometry(schools[, c('NAME', 'ZIP', 'TYPE', 'Level', 'LAT', 'LON')])
+s$TYPE = str_to_title(s$TYPE)
+s$NAME = str_to_title(s$NAME)
+s$NAME = gsub(' - Whidbey Island', '', s$NAME)
+s$Level = as.numeric(s$Level)
+s$ZIP = substr(s$ZIP, 1, 5)
+s = s[order(s$Level, decreasing=T), ]
+s = s[!(s$NAME %in% schools_to_remove), ]
+s$Delay = gsub('1-1', '1', paste0(
+  as.character((s$Level - 55) / 5 * 1 + 1), '-', # 1 month delay at 55, 1-2 month delay per 5 dB increase
+  as.character((s$Level - 55) / 5 * 2 + 1)
 ))
-schools_affected
-write.csv(schools_affected, glue(output_path, '/schools.csv'), row.names = F)
+
+schools = schools[order(schools$Level, decreasing=T), ]
+schools = schools[!(schools$NAME %in% schools_to_remove), ]
+# c = get_contours_Ldn()
+# mapview(c[as.numeric(c$Level)>=40,], zcol='Level', layer.name='DNL', col.regions=viridis_pal(option='C')(length(seq(45,90,5)))) +
+#   mapview(schools, zcol='Ldn55', col.regions=list('gray', 'red'))
+
+# write.csv(s, glue(output_path, '/schools.csv'), row.names = F)
+
+schools_affected = na.omit(s)
+schools_affected = schools_affected[, c('NAME', 'Level', 'Delay')]
+names(schools_affected) = c('School', 'Ldn', 'Delay')
+write.csv(schools_affected, glue(output_path, '/schools_affected.csv'), row.names = F)
+
+print(schools_affected)
 
 # TODO:
 # st_write(schools, )

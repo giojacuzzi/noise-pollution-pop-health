@@ -18,7 +18,7 @@ output_path = paste0(here::here(), '/figures/_output')
 pop_exposure_stack = stack(glue('{input_path}/pop_exposure_stack.grd'))
 
 # Level scale to unify colors across plots
-# l = seq(40,90,5)
+l = seq(40,90,5)
 
 # Population exposure per 5 dB
 exposure_levels_Ldn = data.frame()
@@ -127,7 +127,6 @@ contours = list(
 # contours[[2]]$Level = factor(contours[[2]]$Level, levels=l)
 # contours[[3]]$Level = factor(contours[[3]]$Level, levels=l)
 
-l = seq(40,90,5)
 cols = data.frame( # shared color scale among all level metrics
   level=l,
   color=viridis_pal(option='C')(length(l))
@@ -204,6 +203,40 @@ p_map_lnight = map_contours(contours[[2]], title = 'Nighttime average level, Lni
 ggsave(p_map_lnight + theme(text=element_text(size=20), axis.text=element_text(size=12), plot.margin = margin(1,1,1,1, 'cm')), file=glue('{output_path}/map_lnight.png'), width=10, height=9)
 p_map_leq24 = map_contours(contours[[3]], title = '24-hour average level, Leq24'); p_map_leq24
 ggsave(p_map_leq24 + theme(text=element_text(size=20), axis.text=element_text(size=12), plot.margin = margin(1,1,1,1, 'cm')), file=glue('{output_path}/map_leq24.png'), width=10, height=9)
+
+### Schools
+
+schools = read.csv('analysis/_output/schools.csv')
+mapview(schools, xcol='LON', ycol='LAT', crs=crs)
+
+schools_sf = st_as_sf(schools, coords = c('LON', 'LAT'), crs = crs, agr = 'constant')
+
+ggplot() +
+  geom_sf(data = wa_land) +
+  geom_sf(data = schools_sf, size = 2, aes(color = Level>=55)) +
+  geom_text_repel(data = na.omit(schools),
+                  aes(x = LON, y = LAT, label = NAME),
+                  size = 2.5, col = 'black', fontface = 'bold', max.overlaps = 30,
+                  nudge_x = c(),
+                  nudge_y = c()) +
+  coord_sf(xlim = c(-122.7, -122.66), ylim = c(48.2, 48.23), expand = F) +
+  labs(x='', y='') +
+  theme_bw()
+
+ggplot() +
+  geom_sf(data = wa_land) +
+  # geom_sf(data = wa_roads$geometry, color='lightgray', lwd=0.3) +
+  # geom_sf(data = wa_land, fill=NA) +
+
+  geom_sf(data = schools_sf, size = 2, aes(color = Level>=55)) +
+  geom_text_repel(data = na.omit(schools),
+                  aes(x = LON, y = LAT, label = NAME),
+                  size = 2.5, col = 'black', fontface = 'bold', max.overlaps = 30,
+                  nudge_x = c(),
+                  nudge_y = c()) +
+  coord_sf(xlim = c(-122.7, -122.55), ylim = c(48.2, 48.35), expand = F) +
+  labs(x='', y='') +
+  theme_bw()
 
 ### Exposed population
 
