@@ -82,7 +82,7 @@ source('data/events/load_events_navy.R')
 3.  Run 'data/simulation/flight_ops/aggregate_flight_ops.R' to generate the per-period aggregates and the total combined average .csv outputs, respectively.
     1.  Input: 'data/simulation/flight_ops/\*.csv'
 
-    2.  Outputs: 'data/simulation/flight_ops/\_output/NASWI_MP[N]\_Noisemap - Flight Operations Aggregated.csv', 'data/simulation/flight_ops/\_output/NASWI_Noisemap - Flight Operations Combined Average.csv', 'data/simulation/flight_ops/\_output/NASWI_Noisemap - Flight Operations Combined Average - Night Only.csv'
+    2.  Outputs: 'data/simulation/flight_ops/\_output/NASWI_MP[N]\_Noisemap - Flight Operations Aggregated.csv', 'data/simulation/flight_ops/\_output/NASWI_Noisemap - Flight Operations Combined Average.csv', 'data/simulation/flight_ops/\_output/NASWI_Noisemap - Flight Operations Combined Average - Night Only.csv'; and also simulated adjustments (0.5 and 1.5)
 
         ```{r}
         source('data/simulation/aggregate_flight_ops.R')

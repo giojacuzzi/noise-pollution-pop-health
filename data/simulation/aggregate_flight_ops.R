@@ -162,4 +162,39 @@ write.csv(night_ops,
           na='')
 message(paste('Created', filename_night))
 
+## Simulated increases/reductions in activity
+total_ops_0.5 = total_ops
+total_ops_0.5$`Num Day`   = 0.5 * total_ops_0.5$`Num Day`
+total_ops_0.5$`Num Night` = 0.5 * total_ops_0.5$`Num Night`
+total_ops_0.5$`Num Total` = (total_ops_0.5$`Num Day` + total_ops_0.5$`Num Night`)
+
+filename = 'data/simulation/_output/csv/sim_0.5/sim_0.5.csv'
+write.csv(total_ops_0.5, file=filename, row.names=F, quote=F, na='')
+message(paste('Created', filename))
+
+night_ops_0.5 = total_ops_0.5
+night_ops_0.5[,'Num Day']   = 0.0
+night_ops_0.5[,'Num Total'] = total_ops_0.5[,'Num Night']
+
+filename = 'data/simulation/_output/csv/sim_0.5/sim_0.5 - Night Only.csv'
+write.csv(night_ops_0.5, file=filename, row.names=F, quote=F, na='')
+message(paste('Created', filename))
+
+total_ops_1.5 = total_ops
+total_ops_1.5$`Num Day`   = 1.5 * total_ops_1.5$`Num Day`
+total_ops_1.5$`Num Night` = 1.5 * total_ops_1.5$`Num Night`
+total_ops_1.5$`Num Total` = (total_ops_1.5$`Num Day` + total_ops_1.5$`Num Night`)
+
+filename = 'data/simulation/_output/csv/sim_1.5/sim_1.5.csv'
+write.csv(total_ops_1.5, file=filename, row.names=F, quote=F, na='')
+message(paste('Created', filename))
+
+night_ops_1.5 = total_ops_1.5
+night_ops_1.5[,'Num Day']   = 0.0
+night_ops_1.5[,'Num Total'] = total_ops_1.5[,'Num Night']
+
+filename = 'data/simulation/_output/csv/sim_1.5/sim_1.5 - Night Only.csv'
+write.csv(night_ops_1.5, file=filename, row.names=F, quote=F, na='')
+message(paste('Created', filename))
+
 # Next, see README.md for instructions on how to convert csv to xml and import into BaseOps
