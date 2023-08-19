@@ -18,6 +18,7 @@ source('metrics/exposure_response_functions.R')
 input_path = paste0(here::here(), '/analysis/preprocessing/_output')
 output_path = paste0(here::here(), '/analysis/_output')
 pop_exposure_stack = stack(glue('{input_path}/pop_exposure_stack.grd'))
+pop_county_stack = stack(glue('{input_path}/pop_county_stack.grd'))
 
 ## Spatial distribution of noise ---------------------------------------------------------------------
 # Note that these numbers may be conservative estimates due to the lack of evening-time penalty in DNL calculations, and depending on the exposure-response function used. These numbers also implicitly assume long-term (in some cases yearly average) exposure.
@@ -70,7 +71,7 @@ area_Leq24_HL = clamp(pop_exposure_stack[['Leq24']], lower=HL_leq24_impact_thres
 # Calculate health metrics for each county
 health_impact_summary = data.frame()
 health_impact_layers = list()
-counties = subset(pop_exposure_stack, c('County.Island', 'County.Jefferson', 'County.San.Juan', 'County.Skagit', 'County.Snohomish'))
+counties = subset(pop_county_stack, c('County.Island', 'County.Jefferson', 'County.San.Juan', 'County.Skagit', 'County.Snohomish'))
 for (county in names(counties)) {
   county_name = gsub('\\.', ' ', gsub('County.', '', county))
   message(county_name)
@@ -90,25 +91,25 @@ for (county in names(counties)) {
   
   ## Annoyance
   # Multiply population in each cell by %HA to yield estimate of # highly annoyed persons in that cell
-  estimated_pop_HA_ISO = percent_HA_ISO * 0.01 * county_pop
+  estimated_pop_HA_ISO = percent_HA_ISO * 0.01 * estimated_pop_exposed
   npop_HA_ISO = cellStats(estimated_pop_HA_ISO, 'sum')
   message('  HA ISO       ', npop_HA_ISO)
-  estimated_pop_HA_WHO = percent_HA_WHO * 0.01 * county_pop
+  estimated_pop_HA_WHO = percent_HA_WHO * 0.01 * estimated_pop_exposed
   npop_HA_WHO = cellStats(estimated_pop_HA_WHO, 'sum')
   message('  HA WHO       ', npop_HA_WHO)
-  estimated_pop_HA_Yokoshima = percent_HA_Yokoshima * 0.01 * county_pop
+  estimated_pop_HA_Yokoshima = percent_HA_Yokoshima * 0.01 * estimated_pop_exposed
   npop_HA_Yokoshima = cellStats(estimated_pop_HA_Yokoshima, 'sum')
   message('  HA Yokoshima ', npop_HA_Yokoshima)
   
   ## Sleep disturbance
   # Multiply population in each cell by %HSD to yield estimate of # sleep-disturbed persons in that cell
-  estimated_pop_HSD = percent_HSD * 0.01 * county_pop
+  estimated_pop_HSD = percent_HSD * 0.01 * estimated_pop_exposed
   npop_HSD = cellStats(estimated_pop_HSD, 'sum')
   message('  HSD          ', npop_HSD)
   
   ## Hearing impairment
   # Sum population cells exposed to levels causing hearing impairment over time
-  estimated_pop_HL = mask(county_pop, area_Leq24_HL)
+  estimated_pop_HL = mask(estimated_pop_exposed, area_Leq24_HL)
   npop_HL = cellStats(estimated_pop_HL, 'sum')
   message('  HL           ', npop_HL)
   
@@ -153,7 +154,7 @@ data.frame(
 # Format table and calculate totals for the entire study region
 health_impact_summary = health_impact_summary %>% mutate_at(c(2:ncol(health_impact_summary)), round)
 health_impact_summary = health_impact_summary[order(health_impact_summary$Exposed, decreasing=T), ]
-health_impact_summary = health_impact_summary[!(health_impact_summary$County %in% c('Snohomish')), ] # remove Snohomish (no exposure)
+health_impact_summary = health_impact_summary[health_impact_summary$Exposed != 0, ] # remove counties with no exposure
 health_impact_summary = rbind(health_impact_summary, c(
   'Total',
   sum(health_impact_summary$Population),

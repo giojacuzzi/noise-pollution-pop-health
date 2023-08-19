@@ -18,12 +18,9 @@ generate_pop_exposure_stack = function(contours_Ldn, contours_Lnight, contours_L
   
   # Read noise contour shapefile layers, including only contours >= health impact thresholds
   contours_Ldn = get_contours_Ldn(threshold = lden_impact_threshold)
-  # contours_Ldn = contours_Ldn[as.numeric(contours_Ldn$Level)>=lden_impact_threshold,]
   contours_Lnight = get_contours_Lnight(threshold = lnight_impact_threshold)
-  # contours_Lnight = contours_Lnight[as.numeric(contours_Lnight$Level)>=lnight_impact_threshold,]
   contours_Leq24 = get_contours_Leq24(threshold = HL_leq24_impact_threshold)
-  # contours_Leq24 = contours_Leq24[as.numeric(contours_Leq24$Level)>=HL_leq24_impact_threshold,]
-  mapview(contours_Ldn, zcol='Level') + mapview(contours_Lnight, zcol='Level') + mapview(contours_Leq24, zcol='Level')
+  # mapview(contours_Ldn, zcol='Level') + mapview(contours_Lnight, zcol='Level') + mapview(contours_Leq24, zcol='Level')
   
   # Read individual county dasymetric population rasters
   county_rasters = list()
@@ -39,7 +36,7 @@ generate_pop_exposure_stack = function(contours_Ldn, contours_Lnight, contours_L
       ymin = e[3], ymax = e[4]
     ))
   }
-  mapview(county_rasters[[3]])
+  # mapview(county_rasters[[3]])
   
   # Combine into a single regional population raster
   e = extent(c(
@@ -76,33 +73,33 @@ generate_pop_exposure_stack = function(contours_Ldn, contours_Lnight, contours_L
   dasy_pop_cropped = crop(dasy_pop, as(contours_Ldn, 'Spatial'))
   dasy_pop_cropped = mask(dasy_pop_cropped, as(contours_Ldn, 'Spatial'))
   dasy_pop_cropped[dasy_pop_cropped == 0] = NA # set all 0 population cells to NA
+  template = raster(extent(dasy_pop_cropped), res = res, crs = crs)
   pop_exposed = projectRaster(dasy_pop_cropped, template, method = 'ngb')
   names(pop_exposed) = 'Exposed.Population'
-  mapview(pop_exposed)
+  # mapview(pop_exposed)
   
-  # Create an empty raster with the extent of the contours and the resolution of dasy_pop, and set the projection of the empty raster to match dasy_pop, then rasterize the contour layer using the empty raster
-  empty_raster = raster(e, res = res)
-  projection(empty_raster) = projection(template)
-  contours_Ldn_raster    = rasterize(x = contours_Ldn, y = empty_raster, field = 'Level')
+  # Rasterize the contour layers
+  contours_Ldn_raster    = rasterize(x = contours_Ldn, y = template, field = 'Level')
   names(contours_Ldn_raster) = 'Ldn'
-  contours_Lnight_raster = rasterize(contours_Lnight, empty_raster, 'Level')
+  contours_Lnight_raster = rasterize(contours_Lnight, template, 'Level')
   names(contours_Lnight_raster) = 'Lnight'
-  contours_Leq24_raster  = rasterize(contours_Leq24, empty_raster, 'Level')
+  contours_Leq24_raster  = rasterize(contours_Leq24, template, 'Level')
   names(contours_Leq24_raster) = 'Leq24'
   
-  pop_exposure_stack = stack(append(
-    county_rasters_p,
-    list(
+  pop_exposure_stack = stack(list(
       pop_exposed,
       contours_Ldn_raster,
       contours_Lnight_raster,
       contours_Leq24_raster
-    )
   ))
-  mapview(pop_exposure_stack)
+  # mapview(pop_exposure_stack)
   
   # Write layers to file
   filename = glue('{output_path}/pop_exposure_stack.grd')
   writeRaster(brick(pop_exposure_stack), filename = filename, overwrite = T)
+  message('Created ', filename)
+  
+  filename = glue('{output_path}/pop_county_stack.grd')
+  writeRaster(brick(stack(county_rasters_p)), filename = filename, overwrite = T)
   message('Created ', filename)
 }

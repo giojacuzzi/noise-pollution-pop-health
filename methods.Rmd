@@ -109,7 +109,7 @@ source('data/events/load_events_navy.R')
 
 1.  For a given .baseops file under 'simulation/baseops' (DNL, LEQ24, or LNIGHT), open it with BaseOps, then select `Case > Run Case`
 2.  After the case has finished running, select `Case > Plot`. This will open the default contours in NMPlot.
-3.  Click the `Edit Options` button. From `Option Categories > Contours > Levels`, manually specify contour levels with lowest primary level 10 and highest 150, with spacing between primary levels of 5, and 0 secondary levels. Click `Apply`.
+3.  Click the `Edit Options` button. From `Option Categories > Contours > Levels`, manually specify contour levels with a lowest primary level (such as 35) and highest 150, with spacing between primary levels of 5, and 0 secondary levels. Click `Apply`.
     1.  NOTE: To view the contours on a map, you can select Background \> Layers \> Add Layer (SlippyMap) \> Options Title Server - URL Prefix: tile.openstreetmap.org Attribution Text: OpenStreetMap
 4.  Select `File > Export to GIS`. Under format, select `ESRI ARC/INFO Shapefile (SHP)`, then click `Properties`
     1.  Coordinate System \> Export in the following coordinate system... WGS 84
@@ -131,9 +131,10 @@ Generate a dasymetric population density map for each county.
 
 ```{r}
 source('simulation/contours.R')
-source('analysis/preprocessing/dasymetric.R')
 
 ctyids = get_exposed_counties()
+
+source('analysis/preprocessing/dasymetric.R')
 for (ctyid in ctyids) generate_dasypop(ctyid)
 ```
 

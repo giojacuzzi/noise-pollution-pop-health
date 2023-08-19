@@ -13,7 +13,7 @@ get_contours = function(metric) {
   
   # Default overlapping contours (i.e. 65 dB contour encapsulates contours of all levels >= 65)
   contours_polygon_overlap = st_cast(shp_contours, 'MULTIPOLYGON')
-  contours_polygon_overlap$Level = seq(from=10, by=5, length.out=nrow(contours_polygon_overlap))
+  contours_polygon_overlap$Level = as.numeric(contours_polygon_overlap$Level)
   contours_polygon_overlap = contours_polygon_overlap %>% group_by(Level)
   
   contours_polygon_overlap = st_make_valid(contours_polygon_overlap)
