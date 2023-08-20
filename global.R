@@ -33,6 +33,15 @@ database_path = {
   '~/../../Volumes/SAFS Work/PHI'
 }
 
+# Console logging and output helper
+msg = function(s, ...) {
+  if (typeof(s) == 'list') {
+    print(s)
+  } else {
+    cat(s, ..., '\n')
+  }
+}
+
 # Figure output file configuration
 ggsave_output_path = 'analysis/_output/'
 ggsave_width = 7
