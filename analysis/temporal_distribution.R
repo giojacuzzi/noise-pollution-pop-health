@@ -10,6 +10,23 @@ data_metrics$Field = unlist(lapply(data_metrics$ID, get_field_name_for_ID))
 data_events  = get_data_events()
 data_ops     = get_data_ops()
 
+# Time
+data_ops$Hour = hour(data_ops$Time)
+data_ops = data_ops[order(data_ops$Hour),]
+perc_day = nrow(data_ops[data_ops$Hour >= 7 & data_ops$Hour < 19, ]) / nrow(data_ops)
+perc_evening = nrow(data_ops[data_ops$Hour >= 19 & data_ops$Hour < 22, ]) / nrow(data_ops)
+message('Percent ops daytime: ', round(perc_day,2))
+message('Percent ops evening: ', round(perc_evening,2))
+message('Percent ops night: ', round(1 - perc_day - perc_evening,2))
+message('Ops by hour of day: ')
+print(summary(factor(data_ops$Hour)))
+
+data_ops$Day = factor(weekdays(data_ops$Time), levels = c('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'))
+message('Percent ops by day:')
+print(round(summary(data_ops$Day) / nrow(data_ops), 2))
+
+data_events = data_events[order(data_events$Hour),]
+
 ## Monitoring site map  --------------------------------------------------------
 # Display all sites that have calculated metrics
 
@@ -74,13 +91,6 @@ p_mean_lden_field_day = ggplot() +
 print(p_mean_ops_field_day / p_mean_lden_field_day)
 ggsave(p_mean_ops_field_day / p_mean_lden_field_day, file=paste0(ggsave_output_path, 'lden_ops_daily.png'), width=ggsave_width, height=ggsave_height)
 
-# Average operations per week --------------------------------------------------
-# For the navy monitoring periods
-print('Average operations per week')
-print(paste('Ault Field:', sum(mean_ops_day_ault)))
-print(paste('OLF Coupeville:', sum(mean_ops_day_coup)))
-print(paste('Total:', sum(mean_ops_day_ault) + sum(mean_ops_day_coup)))
-
 # Average active day Leq and ops per hour --------------------------------------
 # Dependencies: NAVY dataset
 # TODO: show distribution as well, some days are much worse and late at night
@@ -130,18 +140,12 @@ p_mean_leq_field_hour = ggplot() +
 print(p_mean_ops_field_hour / p_mean_leq_field_hour)
 ggsave(p_mean_ops_field_hour / p_mean_leq_field_hour, file=paste0(ggsave_output_path, 'lden_ops_hourly.png'), width=ggsave_width, height=ggsave_height)
 
-# Average operations per hour  -------------------------------------------------
-# For the navy monitoring periods
-print('Average operations per hour')
-print(paste('Ault Field:', round(sum(mean_ops_hour_ault))))
-print(paste('OLF Coupeville:', round(sum(mean_ops_hour_coup))))
-print(paste('Total:', round(sum(mean_ops_hour_ault) + sum(mean_ops_hour_coup))))
-
 # Yearly FCLP operations reports -----------------------------------------------
 # Copied from "Consolidated Responsive Records" pdf
 # Acoustic night is 22:00 onward
 ault_fclps_2021 = data.frame(
   Day=c(
+    #Jan F  M  A.   M.   J.   J. A.   S. O.  N.   D
     730, 0, 0, 352, 670, 208, 0, 488, 0, 30, 166, 114
   ),
   Evening=c(
@@ -154,7 +158,11 @@ ault_fclps_2021 = data.frame(
   Month=months,
   Year=rep(2021, 12)
 )
-sum(ault_fclps_2021$Day) + sum(ault_fclps_2021$Evening) + sum(ault_fclps_2021$Night)
+message('Total FCLP operations at Ault Field, 2021 (counting FCLP as two ops):')
+total_fclp_ault_2021 = (sum(ault_fclps_2021$Day) + sum(ault_fclps_2021$Evening) + sum(ault_fclps_2021$Night)) * 2
+print(total_fclp_ault_2021)
+message('Weekly average:')
+print(total_fclp_ault_2021/12/4)
 
 coup_fclps_2021 = data.frame(
   Day=c(
@@ -170,7 +178,14 @@ coup_fclps_2021 = data.frame(
   Month=months,
   Year=rep(2021, 12)
 )
-sum(coup_fclps_2021$Day) + sum(coup_fclps_2021$Evening) + sum(coup_fclps_2021$Night)
+message('Total FCLP operations at OLF Coupeville, 2021 (counting FCLP as two ops): ')
+total_fclp_coup_2021 = (sum(coup_fclps_2021$Day) + sum(coup_fclps_2021$Evening) + sum(coup_fclps_2021$Night)) * 2
+print(total_fclp_coup_2021)
+message('Weekly average:')
+print(total_fclp_coup_2021/12/4)
+
+message('Total FCLP operations at both, 2021 (counting FCLP as two ops):')
+print(total_fclp_ault_2021 + total_fclp_coup_2021)
 
 ault_fclps_2022 = data.frame(
   Day=c(
@@ -206,13 +221,14 @@ sum(coup_fclps_2022$Day) + sum(coup_fclps_2022$Evening) + sum(coup_fclps_2022$Ni
 
 fclp_ops = rbind(ault_fclps_2021, coup_fclps_2021, ault_fclps_2022, coup_fclps_2022)
 fclp_ops$Field = factor(fclp_ops$Field)
-fclp_ops$Month = factor(fclp_ops$Month)
+fclp_ops$Month = factor(fclp_ops$Month, levels = months)
 fclp_ops$Year = factor(fclp_ops$Year)
 print(fclp_ops)
 
 ggplot(gather(fclp_ops[fclp_ops$Year==2021,], Period, Operations, Day:Night, factor_key=T), aes(fill=Period, y=Operations, x=Month)) +
   geom_bar(position='stack', stat='identity') +
-  labs(title='Total FCLP operations, both fields, 2021')
+  labs(title='Total FCLP operations, both fields, 2021') +
+  scale_fill_viridis_d(direction = -1)
 
 ggplot(gather(fclp_ops[fclp_ops$Year==2022,], Period, Operations, Day:Night, factor_key=T), aes(fill=Period, y=Operations, x=Month)) +
   geom_bar(position='stack', stat='identity') +

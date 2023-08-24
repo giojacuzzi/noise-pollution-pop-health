@@ -78,7 +78,7 @@ wa_map = ggplot() +
   geom_sf(data = wa_counties_cb) +
   geom_polygon(data = bounds, aes(x, y, group = 1), fill=NA, color = 'red') +
   labs(x='', y='') +
-  theme_bw(); print(wa_map)
+  theme_minimal(); print(wa_map)
 
 wa_military = st_crop(military(year = 2021), xmin = bounds_x[1], ymin = bounds_y[1], xmax = bounds_x[2], ymax = bounds_y[2])
 wa_military = wa_military[wa_military$FULLNAME %in% c('Naval Air Station Whidbey Island', 'Naval Outlying Field Coupeville'), ]
@@ -106,7 +106,7 @@ ggplot() +
   # geom_sf(data = wa_water, fill='blue') +
   geom_sf(data = wa_military$geometry, fill='#FF000044') +
   geom_sf(data = runways, lwd=1, color='darkgray') +
-  geom_sf(data = sites, size = 2, aes(shape = Org), color = 'black') +
+  geom_sf(data = sites, size = 2, aes(shape = Org, col = Org)) +
   geom_text_repel(data = sites,
                   aes(x = Longitude, y = Latitude, label = ID),
                   size = 2.5, col = 'black', fontface = 'bold', max.overlaps = 30,

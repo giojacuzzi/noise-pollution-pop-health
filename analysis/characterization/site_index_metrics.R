@@ -47,19 +47,6 @@ combined_data_metrics$Activity = factor(combined_data_metrics$Activity)
 combined_data_metrics$Field = factor(combined_data_metrics$Field)
 combined_data_metrics = combined_data_metrics[with(combined_data_metrics, order(Activity)), ]
 
-# Overview
-# NOTE: to organize by field, add `color=Field` to geom_boxplot and stat_summary
-p_lden_site_all = ggplot() +
-  geom_boxplot(data=lden_metrics, mapping=aes(x=reorder(Name, Lden, FUN=energyavg), y=Lden), outlier.size=0.9) +
-  stat_summary(data=lden_metrics, mapping=aes(x=reorder(Name, Lden, FUN=energyavg), y=Lden, shape='Energy average'), fun='energyavg', geom='point', size=3, fill='white') +
-  scale_shape_manual('', values=c('Energy average'=21)) +
-  labs(title='Lden per site', x ='Site', y ='Lden (dBA)') +
-  geom_hline(yintercept=l_hudfaa, linetype='dotted', size=0.7, colour='red') +
-  geom_hline(yintercept=l_epa, linetype='dotted', size=0.7, colour='red') +
-  coord_flip()
-print(p_lden_site_all)
-ggsave(p_lden_site_all, file=paste0(ggsave_output_path, 'lden_site.png'), width=ggsave_width, height=ggsave_height)
-
 # Active vs inactive view
 activity_colors = c('salmon','gray')
 p_lden_site_active = ggplot() +
@@ -76,10 +63,12 @@ ggsave(p_lden_site_active, file=paste0(ggsave_output_path, 'lden_site_activity.p
 
 # Active vs inactive difference
 active_inactive_diff = tapply(active_site_date_metrics$Lden, active_site_date_metrics$ID, energyavg) - tapply(inactive_site_date_metrics$Lden, inactive_site_date_metrics$ID, energyavg)
-data.frame(
+print(data.frame(
   ID=names(active_inactive_diff),
-  diff=active_inactive_diff
-)
+  diff=active_inactive_diff,
+  active = tapply(active_site_date_metrics$Lden, active_site_date_metrics$ID, energyavg),
+  inactive = tapply(inactive_site_date_metrics$Lden, inactive_site_date_metrics$ID, energyavg)
+))
 
 # Lnight per site --------------------------------------------------------------
 # Dependencies: any dataset for overview, only NAVY dataset for in/activity detail
