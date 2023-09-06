@@ -102,7 +102,7 @@ inset = ggplot() +
   geom_sf(data = wa_military$geometry, fill='#FF000044') +
   geom_sf(data = runways, lwd=1, color='darkgray') +
   geom_sf(data = naswi_sites, size = 2, aes(shape = Org, col = Org)) +
-  geom_text_repel(data = sites,
+  geom_text_repel(data = naswi_sites,
                   aes(x = Longitude, y = Latitude, label = ID),
                   size = 2.5, col = 'black', fontface = 'bold', max.overlaps = 30,
                   nudge_x = c(),

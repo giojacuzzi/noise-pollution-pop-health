@@ -41,6 +41,81 @@ p_pop_exposed_per_5dB = ggplot(exposure_levels_Ldn, aes(x=Level, y=Population, f
   geom_text(aes(label=round(Population)), position=position_dodge(width=0.9), vjust=-0.25); p_pop_exposed_per_5dB
 ggsave(p_pop_exposed_per_5dB + theme(text=element_text(size=22), plot.margin = margin(1,1,1,1, 'cm')), file=glue('{output_path}/pop_exposed_per_5dB.png'), width=10, height=9)
 
+# Plot maps
+
+bounds_x = c(-123.0, -122.32) # [min, max]
+bounds_y = c(48.05, 48.55)
+bounds = data.frame(
+  x = c(bounds_x[1], bounds_x[1], bounds_x[2], bounds_x[2]),
+  y = c(bounds_y[1], bounds_y[2], bounds_y[2], bounds_y[1])
+)
+
+wa_counties_cb = counties(state = 'WA', cb = T)
+
+wa_roads = c()
+for (c in c('Island', 'Jefferson', 'San Juan', 'Skagit', 'Snohomish', 'Clallam')) {
+  wa_roads = rbind(wa_roads, roads(state = 'WA', county = c))
+}
+
+wa_water = c()
+for (c in c('Island', 'Jefferson', 'San Juan', 'Skagit', 'Snohomish', 'Clallam')) {
+  wa_water = rbind(wa_water, area_water(state = 'WA', county = c))
+}
+wa_water = st_union(wa_water)
+
+wa_land = st_union(wa_counties_cb)
+wa_land = st_difference(wa_land, wa_water)
+
+# study_area = st_crop(wa_counties_cb, xmin = bounds_x[1], ymin = bounds_y[1], xmax = bounds_x[2], ymax = bounds_y[2])
+
+locations = data.frame(
+  Name      = c('Oak Harbor', 'Coupeville', 'Port Townsend', 'Anacortes', 'Lopez Island', 'Camano Island', 'Mt Vernon', 'La Conner'),
+  Lat  = c(48.297324, 48.213824, 48.121762, 48.502063, 48.478226, 48.215588, 48.422988, 48.388814),
+  Lon = c(-122.659911, -122.682396, -122.777917, -122.620023, -122.8991, -122.489305, -122.354446, -122.497759)
+)
+
+wa_map = ggplot() +
+  geom_sf(data = wa_counties_cb) +
+  geom_polygon(data = bounds, aes(x, y, group = 1), fill=NA, color = 'red') +
+  labs(x='', y='') +
+  theme_minimal(); print(wa_map)
+
+wa_military = st_crop(military(year = 2021), xmin = bounds_x[1], ymin = bounds_y[1], xmax = bounds_x[2], ymax = bounds_y[2])
+wa_military = wa_military[wa_military$FULLNAME %in% c('Naval Air Station Whidbey Island', 'Naval Outlying Field Coupeville'), ]
+
+runways = st_read('data/gis/NASWI/NASWI_Runways_Lines.shp', quiet = T)
+runways = st_set_crs(runways, crs)
+
+sites = st_as_sf(get_data_sites(), coords = c('Longitude', 'Latitude'), crs = crs, agr = 'constant')
+sites = na.omit(sites)
+sites = sites[sites$ID %in% unique(get_data_metrics()[,'ID']), ]
+sites$Longitude = st_coordinates(sites$geometry)[,'X']
+sites$Latitude  = st_coordinates(sites$geometry)[,'Y']
+
+wa_landmarks = landmarks(state = 'WA', type = 'area')
+wa_landmarks = wa_landmarks %>% drop_na(FULLNAME)
+
+wa_parks = wa_landmarks[(str_detect(wa_landmarks$FULLNAME, 'Park') | str_detect(wa_landmarks$FULLNAME, 'Pk')),]
+
+ggplot() +
+  geom_sf(data = wa_land) +
+  # geom_sf(data = wa_parks, fill='green') +
+  geom_sf(data = wa_roads$geometry, color='lightgray', lwd=0.3) +
+  geom_sf(data = wa_land, fill=NA) +
+  # geom_sf(data = wa_counties_cb, fill=NA) +
+  # geom_sf(data = wa_water, fill='blue') +
+  geom_sf(data = wa_military$geometry, fill='#FF000044') +
+  geom_sf(data = runways, lwd=1, color='darkgray') +
+  geom_sf(data = sites, size = 2, aes(shape = Org, col = Org)) +
+  geom_text_repel(data = sites,
+                  aes(x = Longitude, y = Latitude, label = ID),
+                  size = 2.5, col = 'black', fontface = 'bold', max.overlaps = 30,
+                  nudge_x = c(),
+                  nudge_y = c()) +
+  coord_sf(xlim = bounds_x, ylim = bounds_y, expand = F) +
+  labs(x='', y='') +
+  theme_bw()
+
 ### Noise spatial extent
 
 contours = list(
@@ -206,13 +281,14 @@ p_pop_exposure = ggplot() +
   geom_tile(data=pop_exposure_SpatialPixelsDataFrame, aes(x=x, y=y, fill=Exposed.Population), alpha=1) +
   scale_fill_viridis_c(option='viridis', alpha=1, limits = c(0, 12), name=bquote('Population per 30m'^2)) +
   
-  geom_sf(data =  st_cast(contours[[1]], 'MULTILINESTRING'), aes(color=Level), lwd=0.25) +
+  geom_sf(data =  st_cast(contours[[1]], 'MULTILINESTRING'), aes(color=factor(Level)), lwd=0.25,  linetype = 'dashed') +
   scale_color_viridis_d(option='plasma', alpha=0.6, drop = F, name='Ldn dB(A)') +
   
   coord_sf(xlim = bounds_x, ylim = bounds_y) +
   labs(title='Population exposure', x='', y='') +
   theme_bw() +
-  theme(panel.background = element_rect(fill = 'black'), panel.grid.major = element_line(color = '#FFFFFF11', linetype = 'dotted')); p_pop_exposure
+  theme(legend.direction="horizontal") +
+  theme(panel.background = element_rect(fill = 'white'), panel.grid.major = element_line(color = '#FFFFFF11', linetype = 'dotted')); p_pop_exposure
 ggsave(p_pop_exposure + theme(text=element_text(size=20), axis.text=element_text(size=12), plot.margin = margin(1,1,1,1, 'cm')), file=glue('{output_path}/pop_exposure.png'), width=10, height=9)
 
 ggplot() +
