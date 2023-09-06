@@ -18,7 +18,7 @@ output_path = paste0(here::here(), '/figures/_output')
 pop_exposure_stack = stack(glue('{input_path}/pop_exposure_stack.grd'))
 
 # Level scale to unify colors across plots
-l = seq(40,90,5)
+level_scale = seq(40,90,5)
 
 # Population exposure per 5 dB
 exposure_levels_Ldn = data.frame()
@@ -31,7 +31,12 @@ for (dB in unique(na.omit(as.vector(pop_exposure_stack[['Ldn']])))) {
     Population=cellStats(exp_masked, 'sum')
   ))
 }
-exposure_levels_Ldn$Level = factor(exposure_levels_Ldn$Level, levels=l)
+exposure_levels_Ldn = exposure_levels_Ldn %>%
+  mutate(Level = (Level) %/% 5 * 5) %>%
+  group_by(Level) %>%
+  summarise(Population = sum(Population))
+
+exposure_levels_Ldn$Level = factor(exposure_levels_Ldn$Level, levels=level_scale)
 exposure_levels_Ldn = exposure_levels_Ldn[exposure_levels_Ldn$Population != 0, ]
 p_pop_exposed_per_5dB = ggplot(exposure_levels_Ldn, aes(x=Level, y=Population, fill=Level)) +
   geom_bar(position='dodge', stat='identity') +
@@ -123,39 +128,54 @@ contours = list(
   get_contours_Lnight(), #(threshold = lnight_impact_threshold),
   get_contours_Leq24())#(threshold = HL_leq24_impact_threshold))
 
-# contours[[1]]$Level = factor(contours[[1]]$Level, levels=l)
-# contours[[2]]$Level = factor(contours[[2]]$Level, levels=l)
-# contours[[3]]$Level = factor(contours[[3]]$Level, levels=l)
+# contours[[1]]$Level = factor(contours[[1]]$Level, levels=level_scale)
+# contours[[2]]$Level = factor(contours[[2]]$Level, levels=level_scale)
+# contours[[3]]$Level = factor(contours[[3]]$Level, levels=level_scale)
+
+# Combine contours in 5 dB increments
+contours_5dB = contours
+for (i in 1:3) {
+  c = st_make_valid(contours[[i]])
+  c_5dB = NULL
+  for (l in seq(from=min(c$Level), to=max(c$Level), by=5)) {
+    message(l)
+    u = st_union(c[c$Level >= l & c$Level < l + 5, ])
+    u = st_make_valid(st_as_sf(u))
+    u$Level = l
+    if (is.null(c_5dB)) {
+      c_5dB = u
+    }
+    c_5dB = c_5dB %>% bind_rows(u)
+  }
+  contours_5dB[[i]] = c_5dB
+}
 
 cols = data.frame( # shared color scale among all level metrics
-  level=l,
-  color=viridis_pal(option='C')(length(l))
+  level=level_scale,
+  color=viridis_pal(option='C')(length(level_scale))
 )
 
 plot_contours = function(contours, threshold, lims, title, units, primary = F) {
-  
   below = contours[as.numeric(contours$Level)<(threshold) & as.numeric(contours$Level)>=(threshold-10),]
   contours = contours[as.numeric(contours$Level)>=threshold,]
-  contours$Level = factor(contours$Level, levels=l)
+  contours$Level = factor(contours$Level, levels=level_scale)
   
   p = ggplot() +
     geom_sf(data = wa_land) +
     geom_sf(data = wa_roads$geometry, color='lightgray', lwd=0.3) +
     geom_sf(data = wa_land, fill=NA) +
     geom_sf(data = runways, lwd=1, color='darkgray') +
-    
+
     geom_sf(data = st_cast(below[1,], 'MULTILINESTRING'), color='black', lwd=0.3, alpha=0.5, linetype='dashed') +
-    
+
     geom_sf(data = contours, aes(fill=Level, color=Level), lwd=0.3) +
-    # scale_fill_viridis_d(option='plasma', alpha=0.5, drop = F, name = 'db(A)') +
     scale_fill_manual(values=alpha(cols[cols$level %in% lims, 'color'], 0.5), name = units, guide = guide_legend(reverse = T)) +
 
-    # geom_sf(data = st_cast(contours, 'MULTILINESTRING'), aes(color=Level)) +
     scale_color_manual(values=alpha(cols[cols$level %in% lims, 'color'], 0.7), name = units, guide = guide_legend(reverse = T)) +
-    # scale_color_viridis_d(option='plasma', alpha=1, drop = F, name = 'db(A)') +
-    
+
     coord_sf(xlim = bounds_x, ylim = bounds_y, expand = F) +
     labs(title = title, x='', y='') +
+    geom_text(data = locations, aes(x = Lon, y = Lat, label = Name), size = 3, col = '#222222', fontface = 'bold') +
     theme(axis.line=element_blank(),
           axis.text.x=element_blank(),
           axis.text.y=element_blank(),
@@ -169,24 +189,24 @@ plot_contours = function(contours, threshold, lims, title, units, primary = F) {
           panel.grid.minor=element_blank(),
           plot.background=element_blank(),
           plot.margin = margin(0, 0, 0, 0, 'pt'))
-  
-  if (primary) {
-    p = p + north(contours, symbol = 3, scale = 0.075) +
-      scalebar(contours, dist = 4, dist_unit = 'km', transform = T, model = 'WGS84', st.bottom = F, st.size=4, height = 0.01) +
-      geom_text(data = locations, aes(x = Lon, y = Lat, label = Name), size = 3, col = '#222222', fontface = 'bold')
-  }
+
+  # if (primary) {
+  #   p = p + #north(contours, symbol = 3, scale = 0.075) +
+  #     #scalebar(contours, dist = 4, dist_unit = 'km', transform = T, model = 'WGS84', st.bottom = F, st.size=4, height = 0.01) +
+  #     geom_text(data = locations, aes(x = Lon, y = Lat, label = Name), size = 3, col = '#222222', fontface = 'bold')
+  # }
   return(p)
 }
-pLdn = plot_contours(contours[[1]], threshold = lden_impact_threshold, lims = seq(45,90,5), title = 'Day-night average sound level', units = 'Ldn dB(A)', primary = T); pLdn
-pLnight = plot_contours(contours[[2]], threshold = lnight_impact_threshold, lims = seq(40,90,5), title = 'Night average sound level', units = 'Lnight dB(A)')
-pLeq24 = plot_contours(contours[[3]], threshold = HL_leq24_impact_threshold, lims = seq(70,90,5), title = '24 hour equivalent continuous sound level', units = 'Leq24 dB(A)')
+pLdn = plot_contours(contours_5dB[[1]], threshold = lden_impact_threshold, lims = seq(45,90,5), title = 'Day-night average sound level', units = expression(L[dn]~'dB('*A*')'), primary = T); pLdn
+pLnight = plot_contours(contours_5dB[[2]], threshold = lnight_impact_threshold, lims = seq(40,90,5), title = 'Night average sound level', units = expression(L[night]~'dB('*A*')'))
+pLeq24 = plot_contours(contours_5dB[[3]], threshold = HL_leq24_impact_threshold, lims = seq(70,90,5), title = '24 hour equivalent continuous sound level', units = expression(L[eq24]~'dB('*A*')'))
 ggsave(pLdn + theme(text=element_text(size=22), plot.margin = margin(5,5,5,5, 'pt')), file=glue('{output_path}/contours_Ldn.png'), width=12, height=10)
 ggsave(pLnight + theme(text=element_text(size=22), plot.margin = margin(5,5,5,5, 'pt')), file=glue('{output_path}/contours_Lnight.png'), width=12, height=10)
 ggsave(pLeq24 + theme(text=element_text(size=22), plot.margin = margin(5,5,5,5, 'pt')), file=glue('{output_path}/contours_Leq24.png'), width=12, height=10)
 # ggsave((pLdn + (pLnight / pLeq24)) + theme(text=element_text(size=22)), file=glue('{output_path}/contours.jpg'), width=20, height=20)
 
 map = openmap(c(lat=bounds_y[1], lon=bounds_x[1]), c(lat=bounds_y[2], lon=bounds_x[2]), minNumTiles=9,type='osm') # 'osm', 'osm-transport
-map.latlon = openproj(map, projection = projection(contours[[1]]))
+map.latlon = openproj(map, projection = projection(contours_5dB[[1]]))
 
 map_contours = function(contours, title) {
   autoplot.OpenStreetMap(map.latlon) +
@@ -197,11 +217,11 @@ map_contours = function(contours, title) {
     labs(title = title, x='', y='') +
     theme_minimal()
 }
-p_map_ldn = map_contours(contours[[1]], title = 'Day-night average level, Ldn'); p_map_ldn
+p_map_ldn = map_contours(contours_5dB[[1]], title = 'Day-night average level, Ldn'); p_map_ldn
 ggsave(p_map_ldn + theme(text=element_text(size=20), axis.text=element_text(size=12), plot.margin = margin(1,1,1,1, 'cm')), file=glue('{output_path}/map_ldn.png'), width=10, height=9)
-p_map_lnight = map_contours(contours[[2]], title = 'Nighttime average level, Lnight'); p_map_lnight
+p_map_lnight = map_contours(contours_5dB[[2]], title = 'Nighttime average level, Lnight'); p_map_lnight
 ggsave(p_map_lnight + theme(text=element_text(size=20), axis.text=element_text(size=12), plot.margin = margin(1,1,1,1, 'cm')), file=glue('{output_path}/map_lnight.png'), width=10, height=9)
-p_map_leq24 = map_contours(contours[[3]], title = '24-hour average level, Leq24'); p_map_leq24
+p_map_leq24 = map_contours(contours_5dB[[3]], title = '24-hour average level, Leq24'); p_map_leq24
 ggsave(p_map_leq24 + theme(text=element_text(size=20), axis.text=element_text(size=12), plot.margin = margin(1,1,1,1, 'cm')), file=glue('{output_path}/map_leq24.png'), width=10, height=9)
 
 ### Schools

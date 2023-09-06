@@ -59,7 +59,7 @@ s = st_drop_geometry(schools[, c('NAME', 'ZIP', 'TYPE', 'Level', 'LAT', 'LON')])
 s$TYPE = str_to_title(s$TYPE)
 s$NAME = str_to_title(s$NAME)
 s$NAME = gsub(' - Whidbey Island', '', s$NAME)
-s$Level = as.numeric(s$Level)
+s$Level = floor(as.numeric(s$Level) / 5) * 5 # in increments of 5 dB
 s$ZIP = substr(s$ZIP, 1, 5)
 s = s[order(s$Level, decreasing=T), ]
 s = s[!(s$NAME %in% schools_to_remove), ]

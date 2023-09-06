@@ -1,16 +1,21 @@
-This file documents the entire data processing methods pipeline.
+# Methods
 
-# Acoustic monitoring analysis
+This file documents the entire data processing pipeline.
 
-## Field monitoring analyses
+## Prerequisites
+
+First, set the `database_path` global variable to your local database path.
 
 ```{r}
-# Requirements are the PHI database and 'data/sites.csv'
-
-# NOTE: Configure 'database_path' global variable
-# to your local path to the PHI database
 source('global.R')
+database_path = '~/../../Volumes/SAFS Work/PHI'
 
+stopifnot(dir.exists(database_path))
+```
+
+## Acoustic field monitoring analyses
+
+```{r}
 # 0. Retrieve site location information ----------------
 sites = st_as_sf(get_data_sites(),
                  coords = c('Longitude', 'Latitude'), 
@@ -66,27 +71,24 @@ source('data/events/load_events_navy.R')
 #.....
 ```
 
-# Population exposure
+## Population Exposure
 
-## Noise simulation modeling with Noisemap
+### Noise simulation modeling with Noisemap
 
-### Prepare flight operations data for simulations
-
-1.  Download "V. Noise Modeling Data - PUBLIC_NOISEMAP" from NAVY database and unzip.
-    1.  <https://www.navfac.navy.mil/Portals/68/Documents/Business-Lines/Asset-Management/Sound/Remaining-Adds/PUBLIC_NOISEMAP.zip?ver=KEbUPIKWwvnjZl0H4vUg9g%3d%3d>
-    2.  <https://www.navfac.navy.mil/Portals/68/Documents/Business-Lines/Asset-Management/Sound/Read-Me-Files/PUBLIC_NOISEMAP_Files_README.txt?ver=AOs5DYQ2sccT1gAfoxO7Ow%3d%3d>
+1.  Download "[V. Noise Modeling Data - PUBLIC_NOISEMAP](https://www.navfac.navy.mil/Portals/68/Documents/Business-Lines/Asset-Management/Sound/Remaining-Adds/PUBLIC_NOISEMAP.zip?ver=KEbUPIKWwvnjZl0H4vUg9g%3d%3d)" from NAVY database and unzip.
 2.  Format flight operations
     1.  Input: NOISEMAP/NASWI/MP[N]/\*Flight Operations.xml, where 'N' is the monitoring period, 1-4
     2.  Output: .csv for each Flight Operations.xml file, located under 'data/simulation/flight_ops'
     3.  For each Flight Operations.xml file, open in Microsoft Excel. If prompted, do not update workbook links. Then, select File \> Save As \> Comma Separated Values (.csv), and save to the corresponding directory in 'data/simulation/flight_ops/MP[N]'
-3.  Run 'data/simulation/flight_ops/aggregate_flight_ops.R' to generate the per-period aggregates and the total combined average .csv outputs, respectively.
+3.  Run `data/simulation/flight_ops/aggregate_flight_ops.R` to generate the per-period aggregates and the total combined average .csv outputs, respectively.
     1.  Input: 'data/simulation/flight_ops/\*.csv'
 
     2.  Outputs: 'data/simulation/flight_ops/\_output/NASWI_MP[N]\_Noisemap - Flight Operations Aggregated.csv', 'data/simulation/flight_ops/\_output/NASWI_Noisemap - Flight Operations Combined Average.csv', 'data/simulation/flight_ops/\_output/NASWI_Noisemap - Flight Operations Combined Average - Night Only.csv'; and also simulated adjustments (0.5 and 1.5)
 
-        ```{r}
-        source('data/simulation/aggregate_flight_ops.R')
-        ```
+```{r}
+source('data/simulation/aggregate_flight_ops.R')
+```
+
 4.  Next, open the 'data/simulation/\_output/csv/\* Combined Average \*.csv' files with Microsoft Excel and re-save as .xml files in data/simulation/\_output/xml.
 5.  Open 'simulation/DNL/NASWI_Combined_Average_DNL.baseops' with BaseOps. To import new flight operations into BaseOps:
     1.  File \> Import Flight Operations from Spreadsheet
@@ -109,7 +111,7 @@ source('data/events/load_events_navy.R')
 
 1.  For a given .baseops file under 'simulation/baseops' (DNL, LEQ24, or LNIGHT), open it with BaseOps, then select `Case > Run Case`
 2.  After the case has finished running, select `Case > Plot`. This will open the default contours in NMPlot.
-3.  Click the `Edit Options` button. From `Option Categories > Contours > Levels`, manually specify contour levels with a lowest primary level (such as 35) and highest 150, with spacing between primary levels of 5, and 0 secondary levels. Click `Apply`.
+3.  Click the `Edit Options` button. From `Option Categories > Contours > Levels`, manually specify contour levels with a lowest primary level (such as 35) and highest 150, with spacing between primary levels of 1, and 0 secondary levels. Click `Apply`.
     1.  NOTE: To view the contours on a map, you can select Background \> Layers \> Add Layer (SlippyMap) \> Options Title Server - URL Prefix: tile.openstreetmap.org Attribution Text: OpenStreetMap
 4.  Select `File > Export to GIS`. Under format, select `ESRI ARC/INFO Shapefile (SHP)`, then click `Properties`
     1.  Coordinate System \> Export in the following coordinate system... WGS 84
@@ -125,7 +127,7 @@ source('data/events/load_events_navy.R')
 source('simulation/validation.R')
 ```
 
-## Dasymetric population exposure
+### Dasymetric population exposure
 
 Generate a dasymetric population density map for each county.
 
