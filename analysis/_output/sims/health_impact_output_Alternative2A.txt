@@ -1,0 +1,53 @@
+Total exposed population: 75191 
+Total area of noise exposure associated with adverse health effects: 1292.53 km2 499.05 mi2 
+Number of people exposed to noise levels incompatible with residential land use (65 dB Ldn, FAA and HUD): 12748 
+Number of people exposed to levels beyond bounds of ERFs: 
+ HA  5730 
+ HSD  5227 
+Number of people exposed to sleeping disturbance risk threshold: 55536 
+Precalculating raster for HA (ISO)... 
+Precalculating raster for HA (WHO)... 
+Precalculating raster for HA (Yokoshima)... 
+Precalculating raster for HSD... 
+Precalculating raster for HL... 
+Island 
+  Total         85938 
+  Exposed       56840.24 
+  HA ISO        9969.996 
+  HA WHO        18333.75 
+  HA Yokoshima  30885.21 
+  HL            8407.924 
+Jefferson 
+  Total         32590 
+  Exposed       74.03404 
+  HA ISO        1.933793 
+  HA WHO        9.123826 
+  HA Yokoshima  22.93728 
+  HL            0 
+San Juan 
+  Total         17631 
+  Exposed       71.43726 
+  HA ISO        1.685365 
+  HA WHO        8.3912 
+  HA Yokoshima  21.54763 
+  HL            0 
+Skagit 
+  Total         128228 
+  Exposed       18205.69 
+  HA ISO        843.8317 
+  HA WHO        2909.983 
+  HA Yokoshima  6576.128 
+  HL            0 
+Snohomish 
+  Total         820024 
+  Exposed       0 
+  HA ISO        0 
+  HA WHO        0 
+  HA Yokoshima  0 
+  HL            0 
+     County Population Exposed HA_ISO HA_WHO HA_Yokoshima   HSD   HL
+1    Island      85938   56840   9970  18334        30885 14992 8408
+4    Skagit     128228   18206    844   2910         6576   661    0
+2 Jefferson      32590      74      2      9           23     4    0
+3  San Juan      17631      71      2      8           22     0    0
+5     Total     264387   75191  10818  21261        37506 15657 8408
