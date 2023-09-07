@@ -6,6 +6,7 @@
 # 'data/simulation/flight_ops/_output/NASWI_Noisemap - Flight Operations Combined Average - Night Only.csv'
 
 library(dplyr)
+source('global.R')
 
 ## Aggregate flight operations data per-period -------------------------------------------------------------------
 
@@ -163,38 +164,68 @@ write.csv(night_ops,
 message(paste('Created', filename_night))
 
 ## Simulated increases/reductions in activity
-total_ops_0.5 = total_ops
-total_ops_0.5$`Num Day`   = 0.5 * total_ops_0.5$`Num Day`
-total_ops_0.5$`Num Night` = 0.5 * total_ops_0.5$`Num Night`
-total_ops_0.5$`Num Total` = (total_ops_0.5$`Num Day` + total_ops_0.5$`Num Night`)
 
-filename = 'data/simulation/_output/csv/sim_0.5/sim_0.5.csv'
-write.csv(total_ops_0.5, file=filename, row.names=F, quote=F, na='')
-message(paste('Created', filename))
+# From BaseOps user manual:
+# The operation counts specify the average number of times per calendar day that the flight profile is flown.
+# ...
+# Annual Ops - the average number of times per year that an airspace profile is flown. The number of monthly operations is calculated by dividing the annual operations by 12. The number of daily operations is calculated by dividing the monthly operations by the average flying days per month.
+#
+# From Navy EIS: Pattern Operation. An aircraft arrival followed by a departure. Each pattern is considered two operations: the landing or approach is counted as one operation, and the takeoff is counted as another. Pattern operations include the following types:
+# - Touch-and-go
+# - Field Carrier Landing Practice
+# - Ground Controlled Approach / Carrier Controlled Approach
 
-night_ops_0.5 = total_ops_0.5
-night_ops_0.5[,'Num Day']   = 0.0
-night_ops_0.5[,'Num Total'] = total_ops_0.5[,'Num Night']
+# Pre-2019 expansion:
+# "No Action"
+# FINAL EIS:
+# Total: 84,700
+# Ault Field: 78,200
+# OLF Coupeville: 6,500
+#
+# "Action Alternative 2: Scenario A"
+# FINAL EIS:
+# Total: 112,100
+# Ault Field: 88,000
+# OLF Coupeville: 24,100
 
-filename = 'data/simulation/_output/csv/sim_0.5/sim_0.5 - Night Only.csv'
-write.csv(night_ops_0.5, file=filename, row.names=F, quote=F, na='')
-message(paste('Created', filename))
+# NOTE: we multiply closed pattern operations by 2, as they are counted as two operations in EIS for comparison
+get_tot_n_reported_daily_ops = function(ops) {
+  n_closedpattern = sum(ops[ops$`Track Type`=='Closed Pattern', 'Num Total'])
+  n_not_closedpattern = sum(ops[ops$`Track Type`!='Closed Pattern', 'Num Total'])
+  return(n_closedpattern * 2 + n_not_closedpattern)
+}
 
-total_ops_1.5 = total_ops
-total_ops_1.5$`Num Day`   = 1.5 * total_ops_1.5$`Num Day`
-total_ops_1.5$`Num Night` = 1.5 * total_ops_1.5$`Num Night`
-total_ops_1.5$`Num Total` = (total_ops_1.5$`Num Day` + total_ops_1.5$`Num Night`)
+nops_Alternative2A = 112100 # FINAL EIS 2018: "Action Alternative 2: Scenario A"
+nops_PreExpansion = 84700   # FINAL EIS 2018: "No Action"
 
-filename = 'data/simulation/_output/csv/sim_1.5/sim_1.5.csv'
-write.csv(total_ops_1.5, file=filename, row.names=F, quote=F, na='')
-message(paste('Created', filename))
+current_total_annual_ops = get_tot_n_reported_daily_ops(total_ops) * 365
+msg('Current simulation total annual operations count:', current_total_annual_ops)
 
-night_ops_1.5 = total_ops_1.5
-night_ops_1.5[,'Num Day']   = 0.0
-night_ops_1.5[,'Num Total'] = total_ops_1.5[,'Num Night']
+msg(current_total_annual_ops/nops_Alternative2A * 100, 'percent of Alternative 2A')
 
-filename = 'data/simulation/_output/csv/sim_1.5/sim_1.5 - Night Only.csv'
-write.csv(night_ops_1.5, file=filename, row.names=F, quote=F, na='')
-message(paste('Created', filename))
+multiplier_Alternative2A = nops_Alternative2A/current_total_annual_ops
+multiplier_PreExpansion = nops_PreExpansion/current_total_annual_ops
+
+generate_ops_with_multiplier = function(ops, multiplier, label) {
+  tot_ops_m = ops
+  tot_ops_m$`Num Day`   = multiplier * tot_ops_m$`Num Day`
+  tot_ops_m$`Num Night` = multiplier * tot_ops_m$`Num Night`
+  tot_ops_m$`Num Total` = (tot_ops_m$`Num Day` + tot_ops_m$`Num Night`)
+  
+  filename = glue('data/simulation/_output/csv/sim_{label}/sim_{label}.csv')
+  write.csv(tot_ops_m, file=filename, row.names=F, quote=F, na='')
+  message(paste('Created', filename))
+  
+  night_ops_m = tot_ops_m
+  night_ops_m[,'Num Day']   = 0.0
+  night_ops_m[,'Num Total'] = night_ops_m[,'Num Night']
+  
+  filename = glue('data/simulation/_output/csv/sim_{label}/sim_{label} - Night Only.csv')
+  write.csv(night_ops_m, file=filename, row.names=F, quote=F, na='')
+  message(paste('Created', filename))
+}
+
+generate_ops_with_multiplier(total_ops, multiplier_Alternative2A, 'Alternative2A')
+generate_ops_with_multiplier(total_ops, multiplier_PreExpansion, 'PreExpansion')
 
 # Next, see README.md for instructions on how to convert csv to xml and import into BaseOps

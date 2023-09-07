@@ -18,6 +18,9 @@ simulation/baseops/*/*.shp
 simulation/baseops/*/*.shx
 analysis/preprocessing/_output/*/*.vrt
 analysis/preprocessing/_output/*/*.gpkg
+analysis/_output/health_impact_stack.gri
+analysis/preprocessing/_output/pop_county_stack.gri
+analysis/preprocessing/_output/pop_exposure_stack.gri
 
 # Binary image files
 *.jpg

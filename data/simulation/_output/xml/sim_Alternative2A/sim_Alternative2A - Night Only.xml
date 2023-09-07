@@ -8,7 +8,7 @@
  <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
   <Author>Giordano Jacuzzi</Author>
   <LastAuthor>Giordano Jacuzzi</LastAuthor>
-  <Created>2023-08-19T00:27:20Z</Created>
+  <Created>2023-09-07T16:55:14Z</Created>
   <Version>16.00</Version>
  </DocumentProperties>
  <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
@@ -32,7 +32,7 @@
    <Protection/>
   </Style>
  </Styles>
- <Worksheet ss:Name="sim_0.5">
+ <Worksheet ss:Name="sim_Alternative2A - Night Only">
   <Table ss:ExpandedColumnCount="10" ss:ExpandedRowCount="486" x:FullColumns="1"
    x:FullRows="1" ss:DefaultColumnWidth="65" ss:DefaultRowHeight="16">
    <Row>
@@ -91,9 +91,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.125</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -103,9 +103,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.28571428575000002</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.28571428575000002</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -115,9 +115,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -127,9 +127,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -139,9 +139,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571375E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571375E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -163,9 +163,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -199,9 +199,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -211,9 +211,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714375000005E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714375000005E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -223,9 +223,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714375000005E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714375000005E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -247,9 +247,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -259,9 +259,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -271,9 +271,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.23214285712499999</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.23214285712499999</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -283,9 +283,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.25</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.25</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -295,9 +295,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571375E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571375E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -307,9 +307,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.46428571424999998</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.46428571424999998</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -319,9 +319,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.76785714299999996</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.76785714299999996</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -331,9 +331,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.37500000012500001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.37500000012500001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -343,9 +343,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.125</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -355,9 +355,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714249999995E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714249999995E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -367,9 +367,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -379,9 +379,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -391,9 +391,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -403,9 +403,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.28571428575000002</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.28571428575000002</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -415,9 +415,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.19642857150000001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.19642857150000001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -427,9 +427,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.21428571425000001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.21428571425000001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -439,9 +439,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.46428571437499999</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.46428571437499999</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -451,9 +451,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -463,9 +463,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -475,9 +475,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -487,9 +487,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.25000000012500001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.25000000012500001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -499,9 +499,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.35714285725</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.35714285725</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -511,9 +511,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.14285714287500001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.14285714287500001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -523,9 +523,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">1.3928571428750001</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
-    <Cell><Data ss:Type="Number">1.4464285715</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0.12864693511827599</Data></Cell>
+    <Cell><Data ss:Type="Number">0.12864693511827599</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -535,9 +535,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">1.375</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.375</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -547,9 +547,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.64285714287499995</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.64285714287499995</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -559,9 +559,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.21428571425000001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.21428571425000001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -571,9 +571,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.39285714275</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.39285714275</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -583,9 +583,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -595,9 +595,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.25</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.25</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -607,9 +607,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -619,9 +619,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.41071428575000002</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.41071428575000002</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -631,9 +631,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.73214285712500005</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
-    <Cell><Data ss:Type="Number">0.76785714287499995</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">8.5764623412184299E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">8.5764623412184299E-2</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -643,9 +643,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.69642857150000004</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.69642857150000004</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -655,9 +655,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">1.6428571428750001</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
-    <Cell><Data ss:Type="Number">1.6607142857499999</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">4.2882311706092101E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">4.2882311706092101E-2</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -667,9 +667,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -679,9 +679,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -691,9 +691,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.21428571437499999</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.21428571437499999</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -727,9 +727,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -739,9 +739,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571375E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571375E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -763,9 +763,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -775,9 +775,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -799,9 +799,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -859,9 +859,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -871,9 +871,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -943,9 +943,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1039,9 +1039,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1051,9 +1051,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1063,9 +1063,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714375000005E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714375000005E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1075,9 +1075,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1087,9 +1087,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1135,9 +1135,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1147,9 +1147,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714249999995E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714249999995E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1159,9 +1159,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714249999995E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714249999995E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1171,9 +1171,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.21428571425000001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.21428571425000001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1183,9 +1183,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.21428571425000001</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
-    <Cell><Data ss:Type="Number">0.25</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">8.5764623412184299E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">8.5764623412184299E-2</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1195,9 +1195,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.21428571425000001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.21428571425000001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1207,9 +1207,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.196428571375</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.196428571375</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1219,9 +1219,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.21428571425000001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.21428571425000001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1231,9 +1231,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.26785714287500001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.26785714287500001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1255,9 +1255,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1267,9 +1267,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1279,9 +1279,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.125</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1291,9 +1291,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1303,9 +1303,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.178571428625</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.178571428625</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1327,9 +1327,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571375E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571375E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1339,9 +1339,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1351,9 +1351,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.14285714287500001</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
-    <Cell><Data ss:Type="Number">0.178571428625</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">8.5764623412184299E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">8.5764623412184299E-2</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1363,9 +1363,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1375,9 +1375,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1399,9 +1399,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1411,9 +1411,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1423,9 +1423,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1435,9 +1435,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1447,9 +1447,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.25000000012500001</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
-    <Cell><Data ss:Type="Number">0.30357142874999998</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0.12864693511827599</Data></Cell>
+    <Cell><Data ss:Type="Number">0.12864693511827599</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1531,9 +1531,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1543,9 +1543,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1591,9 +1591,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1699,9 +1699,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1819,9 +1819,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1831,9 +1831,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">0.125</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1855,9 +1855,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1867,9 +1867,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1879,9 +1879,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1903,9 +1903,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1951,9 +1951,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1975,9 +1975,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -1987,9 +1987,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2011,9 +2011,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2035,9 +2035,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2047,9 +2047,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571499999996E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571499999996E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2059,9 +2059,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">0.10714285725</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.10714285725</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2071,9 +2071,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">0.23214285712499999</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.23214285712499999</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2083,9 +2083,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">0.30357142850000002</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.30357142850000002</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2095,9 +2095,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571499999996E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571499999996E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2107,9 +2107,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2143,9 +2143,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">0.125</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2155,9 +2155,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">0.16071428574999999</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.16071428574999999</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2167,9 +2167,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2191,9 +2191,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2203,9 +2203,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">0.19642857150000001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.19642857150000001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2239,9 +2239,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2251,9 +2251,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">1.0714285715</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.0714285715</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2263,9 +2263,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">1.8392857142500001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.8392857142500001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2275,9 +2275,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">0.69642857150000004</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.69642857150000004</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2287,9 +2287,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">0.46428571424999998</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.46428571424999998</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2299,9 +2299,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">0.37500000012500001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.37500000012500001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2311,9 +2311,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">0.14285714287500001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.14285714287500001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2323,9 +2323,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">0.51785714287499995</Data></Cell>
-    <Cell><Data ss:Type="Number">0.23214285712499999</Data></Cell>
-    <Cell><Data ss:Type="Number">0.75</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0.55747005157884599</Data></Cell>
+    <Cell><Data ss:Type="Number">0.55747005157884599</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2335,9 +2335,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">0.33928571424999998</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.33928571424999998</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2347,9 +2347,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">0.83928571424999998</Data></Cell>
-    <Cell><Data ss:Type="Number">0.16071428574999999</Data></Cell>
-    <Cell><Data ss:Type="Number">1</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0.385940805054653</Data></Cell>
+    <Cell><Data ss:Type="Number">0.385940805054653</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2359,9 +2359,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">0.19642857150000001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.19642857150000001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2371,9 +2371,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">0.16071428562500001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.16071428562500001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2383,9 +2383,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">0.33928571424999998</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.33928571424999998</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2395,9 +2395,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571375E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571375E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2407,9 +2407,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2419,9 +2419,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2431,9 +2431,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2443,9 +2443,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2455,9 +2455,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2479,9 +2479,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2491,9 +2491,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2527,9 +2527,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2575,9 +2575,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">HI TACAN Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2587,9 +2587,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">HI TACAN Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2611,9 +2611,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">HI TACAN Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">0.28571428575000002</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.28571428575000002</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2623,9 +2623,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">HI TACAN Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">0.16071428574999999</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.16071428574999999</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2635,9 +2635,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">HI TACAN Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">0.39285714287500001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.39285714287500001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2707,9 +2707,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Interfacility Ault Field to Coupeville</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2743,9 +2743,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Interfacility Ault Field to Coupeville</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2767,9 +2767,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Interfacility Ault Field to Coupeville</Data></Cell>
-    <Cell><Data ss:Type="Number">0.196428571375</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.196428571375</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2779,9 +2779,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Interfacility Ault Field to Coupeville</Data></Cell>
-    <Cell><Data ss:Type="Number">0.35714285712499999</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.35714285712499999</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2875,9 +2875,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Interfacility Ault Field to Coupeville</Data></Cell>
-    <Cell><Data ss:Type="Number">0.16071428574999999</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.16071428574999999</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2887,9 +2887,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Interfacility Ault Field to Coupeville</Data></Cell>
-    <Cell><Data ss:Type="Number">1.1071428571249999</Data></Cell>
-    <Cell><Data ss:Type="Number">0.41071428575000002</Data></Cell>
-    <Cell><Data ss:Type="Number">1.5178571428750001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0.98629316833959102</Data></Cell>
+    <Cell><Data ss:Type="Number">0.98629316833959102</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -2995,9 +2995,9 @@
     <Cell><Data ss:Type="String">14_OLF</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Interfacility Coupeville to Ault Field</Data></Cell>
-    <Cell><Data ss:Type="Number">0.196428571375</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.196428571375</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3007,9 +3007,9 @@
     <Cell><Data ss:Type="String">14_OLF</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Interfacility Coupeville to Ault Field</Data></Cell>
-    <Cell><Data ss:Type="Number">0.39285714287500001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.39285714287500001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3079,9 +3079,9 @@
     <Cell><Data ss:Type="String">32_OLF</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Interfacility Coupeville to Ault Field</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3115,9 +3115,9 @@
     <Cell><Data ss:Type="String">32_OLF</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Interfacility Coupeville to Ault Field</Data></Cell>
-    <Cell><Data ss:Type="Number">0.14285714287500001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.14285714287500001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3127,9 +3127,9 @@
     <Cell><Data ss:Type="String">32_OLF</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Interfacility Coupeville to Ault Field</Data></Cell>
-    <Cell><Data ss:Type="Number">0.98214285724999995</Data></Cell>
-    <Cell><Data ss:Type="Number">0.58928571424999998</Data></Cell>
-    <Cell><Data ss:Type="Number">1.5714285715</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">1.4151162848001599</Data></Cell>
+    <Cell><Data ss:Type="Number">1.4151162848001599</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3187,9 +3187,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Depart and Re-enter Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571375E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571375E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3259,9 +3259,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Touch and Go at Ault Field</Data></Cell>
-    <Cell><Data ss:Type="Number">0.33928571424999998</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.33928571424999998</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3271,9 +3271,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Touch and Go at Ault Field</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3283,9 +3283,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Touch and Go at Ault Field</Data></Cell>
-    <Cell><Data ss:Type="Number">0.30357142862499997</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.30357142862499997</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3307,9 +3307,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Touch and Go at Ault Field</Data></Cell>
-    <Cell><Data ss:Type="Number">2.982142857375</Data></Cell>
-    <Cell><Data ss:Type="Number">0.5</Data></Cell>
-    <Cell><Data ss:Type="Number">3.482142857375</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">1.20070472656988</Data></Cell>
+    <Cell><Data ss:Type="Number">1.20070472656988</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3319,9 +3319,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Touch and Go at Ault Field</Data></Cell>
-    <Cell><Data ss:Type="Number">2.4642857138749998</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">2.4642857138749998</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3331,9 +3331,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Touch and Go at Ault Field</Data></Cell>
-    <Cell><Data ss:Type="Number">0.178571428625</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.178571428625</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3343,9 +3343,9 @@
     <Cell><Data ss:Type="String">14_OLF</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">FCLP at Coupeville</Data></Cell>
-    <Cell><Data ss:Type="Number">1.9821249999999999</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.9821249999999999</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3355,9 +3355,9 @@
     <Cell><Data ss:Type="String">14_OLF</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">FCLP at Coupeville</Data></Cell>
-    <Cell><Data ss:Type="Number">0.85712500000000003</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.85712500000000003</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3367,9 +3367,9 @@
     <Cell><Data ss:Type="String">14_OLF</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">FCLP at Coupeville</Data></Cell>
-    <Cell><Data ss:Type="Number">0.80362500000000003</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.80362500000000003</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3379,9 +3379,9 @@
     <Cell><Data ss:Type="String">14_OLF</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">FCLP at Coupeville</Data></Cell>
-    <Cell><Data ss:Type="Number">2.2321249999999999</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">2.2321249999999999</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3403,9 +3403,9 @@
     <Cell><Data ss:Type="String">32_OLF</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">FCLP at Coupeville</Data></Cell>
-    <Cell><Data ss:Type="Number">9.9038749999999993</Data></Cell>
-    <Cell><Data ss:Type="Number">3.1746249999999998</Data></Cell>
-    <Cell><Data ss:Type="Number">13.0785</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">7.6235744851737799</Data></Cell>
+    <Cell><Data ss:Type="Number">7.6235744851737799</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3415,9 +3415,9 @@
     <Cell><Data ss:Type="String">32_OLF</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">FCLP at Coupeville</Data></Cell>
-    <Cell><Data ss:Type="Number">1.8162499999999999</Data></Cell>
-    <Cell><Data ss:Type="Number">0.56812499999999999</Data></Cell>
-    <Cell><Data ss:Type="Number">2.3843749999999999</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">1.36430074556502</Data></Cell>
+    <Cell><Data ss:Type="Number">1.36430074556502</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3427,9 +3427,9 @@
     <Cell><Data ss:Type="String">32_OLF</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">FCLP at Coupeville</Data></Cell>
-    <Cell><Data ss:Type="Number">0.40775</Data></Cell>
-    <Cell><Data ss:Type="Number">0.31737500000000002</Data></Cell>
-    <Cell><Data ss:Type="Number">0.72512500000000002</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0.76214732519022799</Data></Cell>
+    <Cell><Data ss:Type="Number">0.76214732519022799</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3439,9 +3439,9 @@
     <Cell><Data ss:Type="String">32_OLF</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">FCLP at Coupeville</Data></Cell>
-    <Cell><Data ss:Type="Number">0.48212500000000003</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.48212500000000003</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3451,9 +3451,9 @@
     <Cell><Data ss:Type="String">32_OLF</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">FCLP at Coupeville</Data></Cell>
-    <Cell><Data ss:Type="Number">1.22925</Data></Cell>
-    <Cell><Data ss:Type="Number">0.38637500000000002</Data></Cell>
-    <Cell><Data ss:Type="Number">1.6156250000000001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0.92784457745687099</Data></Cell>
+    <Cell><Data ss:Type="Number">0.92784457745687099</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3619,9 +3619,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3631,9 +3631,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3667,9 +3667,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3691,9 +3691,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3703,9 +3703,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714249999995E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714249999995E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3715,9 +3715,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571499999996E-2</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
-    <Cell><Data ss:Type="Number">0.10714285725</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">8.5764623412184299E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">8.5764623412184299E-2</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3727,9 +3727,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3739,9 +3739,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">0.30357142862499997</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
-    <Cell><Data ss:Type="Number">0.32142857149999998</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">4.2882311706092101E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">4.2882311706092101E-2</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3763,9 +3763,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3787,9 +3787,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3811,9 +3811,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3847,9 +3847,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714249999995E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714249999995E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3919,9 +3919,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">FCLP at Ault Field</Data></Cell>
-    <Cell><Data ss:Type="Number">2.2142857137499998</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">2.2142857137499998</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3931,9 +3931,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">FCLP at Ault Field</Data></Cell>
-    <Cell><Data ss:Type="Number">0.73214285712500005</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.73214285712500005</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3943,9 +3943,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">FCLP at Ault Field</Data></Cell>
-    <Cell><Data ss:Type="Number">1.2678571428750001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.2678571428750001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3955,9 +3955,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">FCLP at Ault Field</Data></Cell>
-    <Cell><Data ss:Type="Number">1.1964285715</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.1964285715</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">EA-18G</Data></Cell>
@@ -3979,9 +3979,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571499999996E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571499999996E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4003,9 +4003,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4027,9 +4027,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.125</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4051,9 +4051,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571375E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571375E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4075,9 +4075,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.375</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.375</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4087,9 +4087,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714249999995E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714249999995E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4099,9 +4099,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.48214285712499999</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.48214285712499999</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4111,9 +4111,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714375000005E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714375000005E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4123,9 +4123,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4207,9 +4207,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4219,9 +4219,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.28571428575000002</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.28571428575000002</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4231,9 +4231,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4243,9 +4243,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4255,9 +4255,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4279,9 +4279,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4292,8 +4292,8 @@
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">4.2882311706092101E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">4.2882311706092101E-2</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4315,9 +4315,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4363,9 +4363,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.21428571437499999</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.21428571437499999</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4375,9 +4375,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.19642857150000001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.19642857150000001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4387,9 +4387,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571499999996E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571499999996E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4411,9 +4411,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4459,9 +4459,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">HI TACAN Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4507,9 +4507,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4519,9 +4519,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571375E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571375E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4531,9 +4531,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">0.178571428625</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
-    <Cell><Data ss:Type="Number">0.19642857150000001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">4.2882311706092101E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">4.2882311706092101E-2</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4543,9 +4543,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">0.125</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4591,9 +4591,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Touch and Go at Ault Field</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571375E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571375E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4603,9 +4603,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Touch and Go at Ault Field</Data></Cell>
-    <Cell><Data ss:Type="Number">4.392857142625</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">4.392857142625</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-3C</Data></Cell>
@@ -4627,9 +4627,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571499999996E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571499999996E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Transient Jet</Data></Cell>
@@ -4687,9 +4687,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571499999996E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571499999996E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Transient Jet</Data></Cell>
@@ -4699,9 +4699,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714249999995E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714249999995E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Transient Jet</Data></Cell>
@@ -4711,9 +4711,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Transient Jet</Data></Cell>
@@ -4723,9 +4723,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.28571428562500001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.28571428562500001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Transient Jet</Data></Cell>
@@ -4747,9 +4747,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.14285714287500001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.14285714287500001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Transient Jet</Data></Cell>
@@ -4759,9 +4759,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Transient Jet</Data></Cell>
@@ -4771,9 +4771,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Transient Jet</Data></Cell>
@@ -4855,9 +4855,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Transient Jet</Data></Cell>
@@ -4867,9 +4867,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Transient Jet</Data></Cell>
@@ -4879,9 +4879,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Transient Jet</Data></Cell>
@@ -4891,9 +4891,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571499999996E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571499999996E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Transient Jet</Data></Cell>
@@ -4903,9 +4903,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Transient Jet</Data></Cell>
@@ -4915,9 +4915,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Transient Jet</Data></Cell>
@@ -4963,9 +4963,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Transient Jet</Data></Cell>
@@ -4975,9 +4975,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Transient Jet</Data></Cell>
@@ -4987,9 +4987,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Transient Jet</Data></Cell>
@@ -5011,9 +5011,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.125</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Transient Jet</Data></Cell>
@@ -5107,9 +5107,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">0.125</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Transient Jet</Data></Cell>
@@ -5131,9 +5131,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714375000005E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714375000005E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Transient Jet</Data></Cell>
@@ -5203,9 +5203,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">Touch and Go at Ault Field</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">Transient Jet</Data></Cell>
@@ -5215,9 +5215,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">Touch and Go at Ault Field</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5227,9 +5227,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.23214285725</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.23214285725</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5239,9 +5239,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5251,9 +5251,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.12500000012500001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.12500000012500001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5275,9 +5275,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714249999995E-2</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">4.2882311706092101E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">4.2882311706092101E-2</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5287,9 +5287,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714375000005E-2</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
-    <Cell><Data ss:Type="Number">0.12500000012500001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">8.5764623412184299E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">8.5764623412184299E-2</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5299,9 +5299,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.19642857150000001</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
-    <Cell><Data ss:Type="Number">0.21428571437499999</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">4.2882311706092101E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">4.2882311706092101E-2</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5311,9 +5311,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.14285714287500001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.14285714287500001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5323,9 +5323,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.57142857150000004</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
-    <Cell><Data ss:Type="Number">0.60714285724999995</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">8.5764623412184299E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">8.5764623412184299E-2</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5335,9 +5335,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.14285714275</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.14285714275</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5347,9 +5347,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.39285714275</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
-    <Cell><Data ss:Type="Number">0.44642857137500003</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0.12864693511827599</Data></Cell>
+    <Cell><Data ss:Type="Number">0.12864693511827599</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5359,9 +5359,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5371,9 +5371,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5395,9 +5395,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5455,9 +5455,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.14285714287500001</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
-    <Cell><Data ss:Type="Number">0.16071428574999999</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">4.2882311706092101E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">4.2882311706092101E-2</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5467,9 +5467,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.14285714287500001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.14285714287500001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5479,9 +5479,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5491,9 +5491,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.21428571437499999</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.21428571437499999</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5503,9 +5503,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5515,9 +5515,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5539,9 +5539,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5563,9 +5563,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5575,9 +5575,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5587,9 +5587,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571375E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">7.1428571375E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5599,9 +5599,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5611,9 +5611,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.64285714287499995</Data></Cell>
-    <Cell><Data ss:Type="Number">5.3571428625E-2</Data></Cell>
-    <Cell><Data ss:Type="Number">0.69642857150000004</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0.12864693511827599</Data></Cell>
+    <Cell><Data ss:Type="Number">0.12864693511827599</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5623,9 +5623,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">0.19642857150000001</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.19642857150000001</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5635,9 +5635,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5659,9 +5659,9 @@
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5707,9 +5707,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">HI TACAN Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5731,9 +5731,9 @@
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">1.7857142874999999E-2</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714249999995E-2</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0.21441155823028499</Data></Cell>
+    <Cell><Data ss:Type="Number">0.21441155823028499</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5755,9 +5755,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5779,9 +5779,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">0.125</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5791,9 +5791,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714249999995E-2</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">8.9285714249999995E-2</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5839,9 +5839,9 @@
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Touch and Go at Ault Field</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.107142857125</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
@@ -5851,9 +5851,9 @@
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Touch and Go at Ault Field</Data></Cell>
-    <Cell><Data ss:Type="Number">0.89285714287499995</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
-    <Cell><Data ss:Type="Number">0.89285714287499995</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">P-8</Data></Cell>
