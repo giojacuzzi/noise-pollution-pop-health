@@ -1,0 +1,66 @@
+Total exposed population: 72258 
+Total area of noise exposure associated with adverse health effects: 1222.75 km2 472.1 mi2 
+Number of people exposed to noise levels incompatible with residential land use (65 dB Ldn, FAA and HUD): 12133 
+Number of people exposed to levels beyond bounds of common ERFs: 
+ HA  5136 
+ HSD  4844 
+Number of people exposed to sleeping disturbance risk threshold: 38022 
+Precalculating raster for HA (FICON)... 
+Precalculating raster for HA (ISO)... 
+Precalculating raster for HA (WHO)... 
+Precalculating raster for HA (FAA NES)... 
+Precalculating raster for HA (Yokoshima)... 
+Precalculating raster for HSD... 
+Precalculating raster for HL/CE... 
+Island 
+  Total         85938 
+  Exposed       56061.99 
+  HA FICON  5440.804 
+  HA ISO        9394.091 
+  HA WHO        17504.65 
+  HA FAANES  20593.12 
+  HA Yokoshima  29785.5 
+  HLCE           8001.848 
+Jefferson 
+  Total         32590 
+  Exposed       58.68007 
+  HA FICON  0.6010177 
+  HA ISO        1.377112 
+  HA WHO        6.87546 
+  HA FAANES  0 
+  HA Yokoshima  17.67518 
+  HLCE           0 
+San Juan 
+  Total         17631 
+  Exposed       50.84394 
+  HA FICON  0.5040727 
+  HA ISO        1.116486 
+  HA WHO        5.802766 
+  HA FAANES  0 
+  HA Yokoshima  15.09675 
+  HLCE           0 
+Skagit 
+  Total         128228 
+  Exposed       16086.46 
+  HA FICON  244.328 
+  HA ISO        703.6044 
+  HA WHO        2498.06 
+  HA FAANES  1429.52 
+  HA Yokoshima  5708.075 
+  HLCE           0 
+Snohomish 
+  Total         820024 
+  Exposed       0 
+  HA FICON  0 
+  HA ISO        0 
+  HA WHO        0 
+  HA FAANES  0 
+  HA Yokoshima  0 
+  HLCE           0 
+Percent exposed per county: 
+     County Population Exposed HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima  HSD HLCE
+1    Island      85938   56062     5441   9394  17505     20593        29786 8666 8002
+4    Skagit     128228   16086      244    704   2498      1430         5708  528    0
+2 Jefferson      32590      59        1      1      7         0           18    3    0
+3  San Juan      17631      51        1      1      6         0           15    0    0
+5     Total     264387   72258     5687  10100  20016     22023        35527 9197 8002

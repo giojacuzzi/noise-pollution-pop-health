@@ -46,9 +46,9 @@ msg('Number of people exposed to noise levels incompatible with residential land
 
 ## Health impacts ---------------------------------------------------------------------
 
-## Number of people exposed to levels beyond bounds of ERFs
-# Annoyance (75, ISO and WHO)
-msg('Number of people exposed to levels beyond bounds of ERFs:')
+## Number of people exposed to levels beyond bounds of common ERFs
+# Annoyance (75, ISO, WHO, FAA NES)
+msg('Number of people exposed to levels beyond bounds of common ERFs:')
 HA_exceed = round(cellStats(mask(pop_exposure_stack[['Exposed.Population']], clamp(pop_exposure_stack[['Ldn']], lower=bounds_who[2], useValues=F)), 'sum'))
 msg(' HA ', HA_exceed)
 # Sleep disturbance (65, ISO/Smith)
@@ -59,17 +59,27 @@ msg(' HSD ', HSD_exceed)
 HSD_exposed = round(cellStats(mask(pop_exposure_stack[['Exposed.Population']], clamp(pop_exposure_stack[['Lnight']], lower=lnight_impact_threshold, useValues=F)), 'sum'))
 msg('Number of people exposed to sleeping disturbance risk threshold:', HSD_exposed)
 
-# Precalculate rasters for HA, HSD, HL
+# Precalculate rasters for HA, HSD, HL/CE
+msg('Precalculating raster for HA (FICON)...')
+percent_HA_FICON = calc(pop_exposure_stack[['Ldn']],
+                        fun=function(L) { exp_resp_bounded(exp_resp_FICON, L, bounds_FICON) })
 msg('Precalculating raster for HA (ISO)...')
-percent_HA_ISO = calc(pop_exposure_stack[['Ldn']], fun=exp_resp_ISO_Miedema_Ldn_bounded)
+percent_HA_ISO = calc(pop_exposure_stack[['Ldn']],
+                      fun=function(L) { exp_resp_bounded(exp_resp_ISO_Miedema_Ldn, L, bounds_iso_miedema) })
 msg('Precalculating raster for HA (WHO)...')
-percent_HA_WHO = calc(pop_exposure_stack[['Ldn']], fun=exp_resp_WHO_bounded)
+percent_HA_WHO = calc(pop_exposure_stack[['Ldn']],
+                      fun=function(L) { exp_resp_bounded(exp_resp_WHO, L, bounds_who) })
+msg('Precalculating raster for HA (FAA NES)...')
+percent_HA_FAANES = calc(pop_exposure_stack[['Ldn']],
+                         fun=function(L) { exp_resp_bounded(exp_resp_FAANES, L, bounds_FAANES) })
 msg('Precalculating raster for HA (Yokoshima)...')
-percent_HA_Yokoshima = calc(pop_exposure_stack[['Ldn']], fun=exp_resp_Yokoshima_bounded)
+percent_HA_Yokoshima = calc(pop_exposure_stack[['Ldn']],
+                            fun=function(L) { exp_resp_bounded(exp_resp_Yokoshima, L, bounds_Yokoshima) })
 msg('Precalculating raster for HSD...')
-percent_HSD = calc(pop_exposure_stack[['Lnight']], fun=exp_resp_HSD_combinedestimate_bounded)
-msg('Precalculating raster for HL...')
-area_Leq24_HL = clamp(pop_exposure_stack[['Leq24']], lower=HL_leq24_impact_threshold, useValues=F) # 70 dB Leq24 and up
+percent_HSD = calc(pop_exposure_stack[['Lnight']],
+                   fun=function(L) { exp_resp_bounded(exp_resp_HSD_combinedestimate, L, bounds_HSD) })
+msg('Precalculating raster for HL/CE...')
+area_Leq24_HLCE = clamp(pop_exposure_stack[['Leq24']], lower=HL_leq24_impact_threshold, useValues=F) # 70 dB Leq24 and up
 
 # Calculate health metrics for each county
 health_impact_summary = data.frame()
@@ -94,12 +104,22 @@ for (county in names(counties)) {
   
   ## Annoyance
   # Multiply population in each cell by %HA to yield estimate of # highly annoyed persons in that cell
+  estimated_pop_HA_FICON = percent_HA_FICON * 0.01 * estimated_pop_exposed
+  npop_HA_FICON = cellStats(estimated_pop_HA_FICON, 'sum')
+  msg('  HA FICON ', npop_HA_FICON)
+  
   estimated_pop_HA_ISO = percent_HA_ISO * 0.01 * estimated_pop_exposed
   npop_HA_ISO = cellStats(estimated_pop_HA_ISO, 'sum')
   msg('  HA ISO       ', npop_HA_ISO)
+
   estimated_pop_HA_WHO = percent_HA_WHO * 0.01 * estimated_pop_exposed
   npop_HA_WHO = cellStats(estimated_pop_HA_WHO, 'sum')
   msg('  HA WHO       ', npop_HA_WHO)
+  
+  estimated_pop_HA_FAANES = percent_HA_FAANES * 0.01 * estimated_pop_exposed
+  npop_HA_FAANES = cellStats(estimated_pop_HA_FAANES, 'sum')
+  msg('  HA FAANES ', npop_HA_FAANES)
+  
   estimated_pop_HA_Yokoshima = percent_HA_Yokoshima * 0.01 * estimated_pop_exposed
   npop_HA_Yokoshima = cellStats(estimated_pop_HA_Yokoshima, 'sum')
   msg('  HA Yokoshima ', npop_HA_Yokoshima)
@@ -110,45 +130,48 @@ for (county in names(counties)) {
   npop_HSD = cellStats(estimated_pop_HSD, 'sum')
   message('  HSD          ', npop_HSD)
   
-  ## Hearing impairment
-  # Sum population cells exposed to levels causing hearing impairment over time
-  estimated_pop_HL = mask(estimated_pop_exposed, area_Leq24_HL)
-  npop_HL = cellStats(estimated_pop_HL, 'sum')
-  msg('  HL           ', npop_HL)
+  ## Hearing impairment and cardiovascular effects
+  # Sum population cells exposed to levels causing hearing impairment and cardiovascular effects over time
+  estimated_pop_HLCE = mask(estimated_pop_exposed, area_Leq24_HLCE)
+  npop_HLCE = cellStats(estimated_pop_HLCE, 'sum')
+  msg('  HLCE          ', npop_HLCE)
   
   # Add county results to table
   health_impact_summary = rbind(health_impact_summary, data.frame(
     County       = county_name,
     Population   = npop_county,
     Exposed      = npop_exposed,
+    HA_FICON     = npop_HA_FICON,
     HA_ISO       = npop_HA_ISO,
     HA_WHO       = npop_HA_WHO,
+    HA_FAANES    = npop_HA_FAANES,
     HA_Yokoshima = npop_HA_Yokoshima,
     HSD          = npop_HSD,
-    HL           = npop_HL
+    HLCE         = npop_HLCE
   ))
   
-  # Add county health impact layers to stack
-  names(estimated_pop_exposed) = glue('{county_name}.Exposed')
-  names(estimated_pop_HA_ISO) = glue('{county_name}.HA.ISO')
-  names(estimated_pop_HA_WHO) = glue('{county_name}.HA.WHO')
-  names(estimated_pop_HA_Yokoshima) = glue('{county_name}.HA.Yokoshima')
-  names(estimated_pop_HSD) = glue('{county_name}.HSD')
-  names(estimated_pop_HL) = glue('{county_name}.HL')
-  health_impact_layers = append(health_impact_layers, list(
-    estimated_pop_exposed,
-    estimated_pop_HA_ISO,
-    estimated_pop_HA_WHO,
-    estimated_pop_HA_Yokoshima,
-    estimated_pop_HSD,
-    estimated_pop_HL
-  ))
+  # # Add county health impact layers to stack
+  # names(estimated_pop_exposed) = glue('{county_name}.Exposed')
+  # names(estimated_pop_HA_ISO) = glue('{county_name}.HA.ISO')
+  # names(estimated_pop_HA_WHO) = glue('{county_name}.HA.WHO')
+  # names(estimated_pop_HA_Yokoshima) = glue('{county_name}.HA.Yokoshima')
+  # names(estimated_pop_HSD) = glue('{county_name}.HSD')
+  # names(estimated_pop_HL) = glue('{county_name}.HL')
+  # health_impact_layers = append(health_impact_layers, list(
+  #   estimated_pop_exposed,
+  #   estimated_pop_HA_ISO,
+  #   estimated_pop_HA_WHO,
+  #   estimated_pop_HA_Yokoshima,
+  #   estimated_pop_HSD,
+  #   estimated_pop_HL
+  # ))
 }
 
 # Check values
 stopifnot(sum(health_impact_summary$Exposed) == cellStats(pop_exposure_stack[['Exposed.Population']], 'sum'))
 
 # Percent exposed per county
+msg('Percent exposed per county:')
 data.frame(
   health_impact_summary$County,
   PercentExposed = health_impact_summary$Exposed / health_impact_summary$Population
@@ -162,11 +185,13 @@ health_impact_summary = rbind(health_impact_summary, c(
   'Total',
   sum(health_impact_summary$Population),
   sum(health_impact_summary$Exposed),
+  sum(health_impact_summary$HA_FICON),
   sum(health_impact_summary$HA_ISO),
   sum(health_impact_summary$HA_WHO),
+  sum(health_impact_summary$HA_FAANES),
   sum(health_impact_summary$HA_Yokoshima),
   sum(health_impact_summary$HSD),
-  sum(health_impact_summary$HL)
+  sum(health_impact_summary$HLCE)
 ))
 msg(health_impact_summary)
 
@@ -177,8 +202,8 @@ filename = glue(output_path, '/health_impact_summary.csv')
 write.csv(health_impact_summary, filename, row.names = F)
 msg('Created', filename)
 
-# Write health impact layers to file
-health_impact_stack = stack(health_impact_layers)
-filename = glue('{output_path}/health_impact_stack.grd')
-writeRaster(brick(health_impact_stack), filename = filename, overwrite = T)
-msg('Created', filename)
+# # Write health impact layers to file
+# health_impact_stack = stack(health_impact_layers)
+# filename = glue('{output_path}/health_impact_stack.grd')
+# writeRaster(brick(health_impact_stack), filename = filename, overwrite = T)
+# msg('Created', filename)

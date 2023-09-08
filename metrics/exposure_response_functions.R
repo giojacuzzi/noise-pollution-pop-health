@@ -3,6 +3,15 @@
 ## Annoyance ------------------------------------------------------------------------------
 # See ISO 1996-1 2016 Annex E/F and Lct
 
+exp_resp_bounded = function(exp_resp, L, bounds) {
+  res = L
+  res[L < bounds[1]] = 0
+  res[L > bounds[2]] = exp_resp(bounds[2])
+  idx_within_bounds = (L >= bounds[1] & L <= bounds[2])
+  res[idx_within_bounds] = exp_resp(L[idx_within_bounds])
+  return(res)
+}
+
 # ISO 1996
 # (3.2.2): Long-term time interval - Specified time interval over which the sound of series of reference time intervals is averaged or assessed; The long-term time interval is determined for the purpose of describing environmental noise as it is generally designated by responsible authorities; For long-term assessments and land-use planning long-term time intervals that represent some significant fraction of year should be used (e.g 3 months, 6 months, and 1 year)
 # 
@@ -19,14 +28,24 @@ exp_resp_WHO = function(Lden) {
 }
 bounds_who = c(40,75)
 
-exp_resp_WHO_bounded = function(Lden) {
-  res = Lden
-  res[Lden < bounds_who[1]] = 0
-  res[Lden > bounds_who[2]] = exp_resp_WHO(bounds_who[2])
-  idx_within_bounds = (Lden >= bounds_who[1] & Lden <= bounds_who[2])
-  res[idx_within_bounds] = exp_resp_WHO(Lden[idx_within_bounds])
-  return(res)
+# FAA Neighborhood Environmental Survey
+# https://www.airporttech.tc.faa.gov/Products/Airport-Safety-Papers-Publications/Airport-Safety-Detail/ArtMID/3682/ArticleID/2845/Analysis-of-NES
+exp_resp_FAANES = function(Ldn) {
+  return((100*exp(-8.4304 + 0.1397 * Ldn))/(1+exp(-8.4304 + 0.1397 * Ldn)))
 }
+bounds_FAANES = c(50, 75)
+ci_FAANES = data=data.frame(
+  Ldn  = seq(50, 70),
+  Lower= c(15.4,17.5,19.8,22.2,24.9,27.8,30.8,33.9,37.2,40.5,43.8,47.1,50.5,53.7,57.0,60.1,63.1,66.0,68.7,71.3,73.8),
+  Upper= c(23.4,25.7,28.2,30.9,33.8,36.8,40.0,43.3,46.7,50.2,53.7,57.3,60.8,64.3,67.7,70.9,73.9,76.7,79.4,81.8,84.0)
+)
+
+# FICON 1992
+# https://fican1.files.wordpress.com/2015/08/about_ficon_findings_1992.pdf
+exp_resp_FICON = function(Ldn) {
+  return((100 * exp(-11.13 + 0.141 * Ldn))/(1 + exp(-11.13 + 0.141 * Ldn)))
+}
+bounds_FICON = c(40, 90)
 
 # Miedema and Oudshoorn 2001
 exp_resp_MO = function(Lden) {
@@ -59,22 +78,6 @@ pi_iso_miedema = data.frame(
   Upper= c(33.5,35.7,38.0,40.3,42.7,45.1,47.5,49.9,52.3,54.7,57.1,59.5,61.8,64.1,66.3,68.5,70.6,72.7,74.7,76.6,78.4,80.1,81.8,83.4,84.8,86.2,87.5,88.7,89.9,90.9,91.9,92.7,93.6,94.3)
 )
 bounds_iso_miedema = c(45,75)
-exp_resp_ISO_Miedema_bounded = function(Lden) {
-  res = Lden
-  res[Lden < bounds_iso_miedema[1]] = 0
-  res[Lden > bounds_iso_miedema[2]] = exp_resp_ISO_Miedema(bounds_iso_miedema[2])
-  idx_within_bounds = (Lden >= bounds_iso_miedema[1] & Lden <= bounds_iso_miedema[2])
-  res[idx_within_bounds] = exp_resp_ISO_Miedema(Lden[idx_within_bounds])
-  return(res)
-}
-exp_resp_ISO_Miedema_Ldn_bounded = function(Ldn) {
-  res = Ldn
-  res[Ldn < bounds_iso_miedema[1]] = 0
-  res[Ldn > bounds_iso_miedema[2]] = exp_resp_ISO_Miedema_Ldn(bounds_iso_miedema[2])
-  idx_within_bounds = (Ldn >= bounds_iso_miedema[1] & Ldn <= bounds_iso_miedema[2])
-  res[idx_within_bounds] = exp_resp_ISO_Miedema_Ldn(Ldn[idx_within_bounds])
-  return(res)
-}
 
 # Yokoshima et al 2021
 exp_resp_Yokoshima = function(Lden) {
@@ -86,16 +89,8 @@ ci_Yokoshima = data=data.frame(
   Upper= c(21.0, 30.1, 42.4, 54.6, 66.7, 82.0)
 )
 bounds_Yokoshima = c(40,65)
-exp_resp_Yokoshima_bounded = function(Lden) {
-  res = Lden
-  res[Lden < bounds_Yokoshima[1]] = 0
-  res[Lden > bounds_Yokoshima[2]] = exp_resp_Yokoshima(bounds_Yokoshima[2])
-  idx_within_bounds = (Lden >= bounds_Yokoshima[1] & Lden <= bounds_Yokoshima[2])
-  res[idx_within_bounds] = exp_resp_Yokoshima(Lden[idx_within_bounds])
-  return(res)
-}
 
-## Annoyance ------------------------------------------------------------------------------
+## HSD ------------------------------------------------------------------------------
 # TODO: Military-specific / low-frequency / onset / aircraft dB penalty adjustment?
 
 # Smith et al 2022 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9272916/
@@ -125,14 +120,6 @@ ci_HSD_combinedestimate = data.frame(
   Upper  = ci_upper_HSD_combinedestimate(seq(from=40, to=65, by=1))
 )
 bounds_HSD = c(40,65)
-exp_resp_HSD_combinedestimate_bounded = function(Lnight) {
-  res = Lnight
-  res[Lnight < bounds_HSD[1]] = 0
-  res[Lnight > bounds_HSD[2]] = exp_resp_HSD_combinedestimate(bounds_HSD[2])
-  idx_within_bounds = (Lnight >= bounds_HSD[1] & Lnight <= bounds_HSD[2])
-  res[idx_within_bounds] = exp_resp_HSD_combinedestimate(Lnight[idx_within_bounds])
-  return(res)
-}
 
 # NOTE: Limitations - "The rapid onset time in particular means that a given aircraft is probably more likely to induce an awakening than one that is much more gradual, like a civil aircraft. But of course physiological disturbance such as this and self-reported long-term %HSD are not the same thing, and do not necessarily correlate all that well."
 
