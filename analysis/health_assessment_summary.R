@@ -18,7 +18,7 @@ source('metrics/exposure_response_functions.R')
 input_path = paste0(here::here(), '/analysis/preprocessing/_output')
 output_path = paste0(here::here(), '/analysis/_output')
 pop_exposure_stack = stack(glue('{input_path}/pop_exposure_stack.grd'))
-pop_county_stack = stack(glue('{input_path}/pop_county_stack.grd'))
+pop_zones_stack = stack(glue('{input_path}/pop_zones_stack.grd'))
 
 ## Spatial distribution of noise ---------------------------------------------------------------------
 # Note that these numbers may be conservative estimates due to the lack of evening-time penalty in DNL calculations, and depending on the exposure-response function used. These numbers also implicitly assume long-term (in some cases yearly average) exposure.
@@ -26,7 +26,6 @@ pop_county_stack = stack(glue('{input_path}/pop_county_stack.grd'))
 msg('Starting health assessment summary...')
 filename_output = glue(output_path, '/health_impact_output.txt')
 sink(filename_output, split=T)
-# sink(stdout(), type = 'message')
 
 # mapview(pop_exposure_stack[['Exposed.Population']], layer.name=c('Exposed Persons')) +
 #   mapview(pop_exposure_stack[['Ldn']], layer.name=c('Ldn (dB)')) +
@@ -51,7 +50,7 @@ msg('Number of people exposed to noise levels incompatible with residential land
 msg('Number of people exposed to levels beyond bounds of common ERFs:')
 HA_exceed = round(cellStats(mask(pop_exposure_stack[['Exposed.Population']], clamp(pop_exposure_stack[['Ldn']], lower=bounds_who[2], useValues=F)), 'sum'))
 msg(' HA ', HA_exceed)
-# Sleep disturbance (65, ISO/Smith)
+# Sleep disturbance (65, WHO/Smith)
 HSD_exceed = round(cellStats(mask(pop_exposure_stack[['Exposed.Population']], clamp(pop_exposure_stack[['Lnight']], lower=bounds_HSD[2], useValues=F)), 'sum'))
 msg(' HSD ', HSD_exceed)
 
@@ -75,27 +74,30 @@ percent_HA_FAANES = calc(pop_exposure_stack[['Ldn']],
 msg('Precalculating raster for HA (Yokoshima)...')
 percent_HA_Yokoshima = calc(pop_exposure_stack[['Ldn']],
                             fun=function(L) { exp_resp_bounded(exp_resp_Yokoshima, L, bounds_Yokoshima) })
-msg('Precalculating raster for HSD...')
-percent_HSD = calc(pop_exposure_stack[['Lnight']],
-                   fun=function(L) { exp_resp_bounded(exp_resp_HSD_combinedestimate, L, bounds_HSD) })
+msg('Precalculating raster for HSD (WHO)...')
+percent_HSD_WHO = calc(pop_exposure_stack[['Lnight']],
+                       fun=function(L) { exp_resp_bounded(exp_resp_HSD_WHO, L, bounds_HSD) })
+msg('Precalculating raster for HSD (Smith)...')
+percent_HSD_Smith = calc(pop_exposure_stack[['Lnight']],
+                         fun=function(L) { exp_resp_bounded(exp_resp_HSD_Smith, L, bounds_HSD) })
 msg('Precalculating raster for HL/CE...')
 area_Leq24_HLCE = clamp(pop_exposure_stack[['Leq24']], lower=HL_leq24_impact_threshold, useValues=F) # 70 dB Leq24 and up
 
-# Calculate health metrics for each county
+# Calculate health metrics for each zone
 health_impact_summary = data.frame()
 health_impact_layers = list()
-counties = subset(pop_county_stack, c('County.Island', 'County.Jefferson', 'County.San.Juan', 'County.Skagit', 'County.Snohomish'))
-for (county in names(counties)) {
-  county_name = gsub('\\.', ' ', gsub('County.', '', county))
-  msg(county_name)
+for (zone in names(pop_zones_stack)) {
+  zone_name = unlist(str_split(zone, '_'))[1]
+  type = unlist(str_split(zone, '_'))[2]
+  msg(zone_name, ' (', type, ')', sep='')
   
-  # Total county population
-  county_pop = counties[[county]]
-  npop_county = cellStats(county_pop, 'sum')
-  msg('  Total        ', npop_county)
+  # Total zone population
+  zone_pop = pop_zones_stack[[zone]]
+  npop_zone = cellStats(zone_pop, 'sum')
+  msg('  Total        ', npop_zone)
   
   # Adverse health exposure
-  dasy_pop_cropped = crop(county_pop, pop_exposure_stack[['Ldn']])
+  dasy_pop_cropped = crop(zone_pop, pop_exposure_stack[['Ldn']])
   dasy_pop_masked = mask(dasy_pop_cropped, pop_exposure_stack[['Ldn']])
   dasy_pop_masked[dasy_pop_masked == 0] = NA # set all 0 population cells to NA
   estimated_pop_exposed = dasy_pop_masked
@@ -126,9 +128,13 @@ for (county in names(counties)) {
   
   ## Sleep disturbance
   # Multiply population in each cell by %HSD to yield estimate of # sleep-disturbed persons in that cell
-  estimated_pop_HSD = percent_HSD * 0.01 * estimated_pop_exposed
-  npop_HSD = cellStats(estimated_pop_HSD, 'sum')
-  message('  HSD          ', npop_HSD)
+  estimated_pop_HSD_WHO = percent_HSD_WHO * 0.01 * estimated_pop_exposed
+  npop_HSD_WHO = cellStats(estimated_pop_HSD_WHO, 'sum')
+  msg('  HSD WHO        ', npop_HSD_WHO)
+  
+  estimated_pop_HSD_Smith = percent_HSD_Smith * 0.01 * estimated_pop_exposed
+  npop_HSD_Smith = cellStats(estimated_pop_HSD_Smith, 'sum')
+  msg('  HSD Smith      ', npop_HSD_Smith)
   
   ## Hearing impairment and cardiovascular effects
   # Sum population cells exposed to levels causing hearing impairment and cardiovascular effects over time
@@ -136,63 +142,60 @@ for (county in names(counties)) {
   npop_HLCE = cellStats(estimated_pop_HLCE, 'sum')
   msg('  HLCE          ', npop_HLCE)
   
-  # Add county results to table
+  # Add results to table
   health_impact_summary = rbind(health_impact_summary, data.frame(
-    County       = county_name,
-    Population   = npop_county,
+    Type         = type,
+    Name         = zone_name,
+    Population   = npop_zone,
     Exposed      = npop_exposed,
     HA_FICON     = npop_HA_FICON,
     HA_ISO       = npop_HA_ISO,
     HA_WHO       = npop_HA_WHO,
     HA_FAANES    = npop_HA_FAANES,
     HA_Yokoshima = npop_HA_Yokoshima,
-    HSD          = npop_HSD,
+    HSD_WHO      = npop_HSD_WHO,
+    HSD_Smith    = npop_HSD_Smith,
     HLCE         = npop_HLCE
   ))
-  
-  # # Add county health impact layers to stack
-  # names(estimated_pop_exposed) = glue('{county_name}.Exposed')
-  # names(estimated_pop_HA_ISO) = glue('{county_name}.HA.ISO')
-  # names(estimated_pop_HA_WHO) = glue('{county_name}.HA.WHO')
-  # names(estimated_pop_HA_Yokoshima) = glue('{county_name}.HA.Yokoshima')
-  # names(estimated_pop_HSD) = glue('{county_name}.HSD')
-  # names(estimated_pop_HL) = glue('{county_name}.HL')
-  # health_impact_layers = append(health_impact_layers, list(
-  #   estimated_pop_exposed,
-  #   estimated_pop_HA_ISO,
-  #   estimated_pop_HA_WHO,
-  #   estimated_pop_HA_Yokoshima,
-  #   estimated_pop_HSD,
-  #   estimated_pop_HL
-  # ))
 }
 
-# Check values
-stopifnot(sum(health_impact_summary$Exposed) == cellStats(pop_exposure_stack[['Exposed.Population']], 'sum'))
+# Subset only the counties and check values
+health_impact_summary_counties = health_impact_summary[health_impact_summary$Type == 'county', ]
+stopifnot(sum(health_impact_summary_counties$Exposed) == cellStats(pop_exposure_stack[['Exposed.Population']], 'sum'))
 
-# Percent exposed per county
-msg('Percent exposed per county:')
+# Percent exposed per zone
+msg('Percent exposed per zone:')
 data.frame(
-  health_impact_summary$County,
+  health_impact_summary$Name,
   PercentExposed = health_impact_summary$Exposed / health_impact_summary$Population
 )
 
 # Format table and calculate totals for the entire study region
-health_impact_summary = health_impact_summary %>% mutate_at(c(2:ncol(health_impact_summary)), round)
-health_impact_summary = health_impact_summary[order(health_impact_summary$Exposed, decreasing=T), ]
+health_impact_summary = health_impact_summary %>% mutate_at(c(3:ncol(health_impact_summary)), round)
 health_impact_summary = health_impact_summary[health_impact_summary$Exposed != 0, ] # remove counties with no exposure
-health_impact_summary = rbind(health_impact_summary, c(
-  'Total',
-  sum(health_impact_summary$Population),
-  sum(health_impact_summary$Exposed),
-  sum(health_impact_summary$HA_FICON),
-  sum(health_impact_summary$HA_ISO),
-  sum(health_impact_summary$HA_WHO),
-  sum(health_impact_summary$HA_FAANES),
-  sum(health_impact_summary$HA_Yokoshima),
-  sum(health_impact_summary$HSD),
-  sum(health_impact_summary$HLCE)
-))
+health_impact_summary = health_impact_summary[order(health_impact_summary$Exposed, decreasing=T), ]
+
+totals = health_impact_summary[health_impact_summary$Type == 'county', ] %>% summarise(.,
+                                              across(where(is.numeric), sum),
+                                              across(where(is.character), ~"Total"))
+
+# Append percentages
+health_impact_summary$Exposed = paste0(health_impact_summary$Exposed, ' (', round(health_impact_summary$Exposed / health_impact_summary$Population, 3) * 100, '%)')
+
+health_impact_summary = rbind(health_impact_summary, totals)
+
+# Manually enter zone names
+health_impact_summary = health_impact_summary[,2:ncol(health_impact_summary)]
+health_impact_summary$Name = c(
+  'Island County',
+  'Skagit County',
+  'Samish TDSA',
+  'Swinomish Reservation',
+  'Jefferson County',
+  'San Juan County',
+  'Total*'
+)
+
 msg(health_impact_summary)
 
 # Write table and results to files
@@ -201,9 +204,3 @@ msg('Created', filename_output)
 filename = glue(output_path, '/health_impact_summary.csv')
 write.csv(health_impact_summary, filename, row.names = F)
 msg('Created', filename)
-
-# # Write health impact layers to file
-# health_impact_stack = stack(health_impact_layers)
-# filename = glue('{output_path}/health_impact_stack.grd')
-# writeRaster(brick(health_impact_stack), filename = filename, overwrite = T)
-# msg('Created', filename)

@@ -19,8 +19,32 @@ library(mapview)
 mapviewOptions(mapview.maxpixels = 50000000)
 options(tigris_use_cache = T)
 
-generate_dasypop = function(ctyid) {
-  message('Processing county ', ctyid) # 'Jefferson', 'San Juan', 'Snohomish', 'Island', 'Skagit'
+generate_dasypop_county = function(id) {
+  msg('Processing county ', id) # 'Jefferson', 'San Juan', 'Snohomish', 'Island', 'Skagit'
+  msg('Retrieving block group population estimates...')
+  
+  # Get 2021 ACS 5-year block group population estimates
+  pop = get_acs(geography = 'block group', variables = 'B01003_001', year = 2021, state = 'WA', county = id, geometry = T)
+  file_suffix = paste0(id, '_county')
+  zero.pop = get_decennial(geography = 'block', variables = 'P1_001N', year = 2020, state = 'WA', county = id, geometry = T)
+  generate_dasypop(id, pop, file_suffix, zero.pop)
+}
+
+generate_dasypop_native_land = function(id) {
+  msg('Processing native land ', id) # 'Samish', 'Swinomish'
+  msg('Retrieving population estimates...')
+  
+  # Get 2021 ACS 5-year population estimates
+  pop = get_acs(geography = 'american indian area/alaska native area/hawaiian home land', variables = 'B01003_001', year = 2021, geometry = T)
+  pop = pop[pop$NAME == id, ]
+  file_suffix = paste0(unlist(str_split(pop$NAME[1], ' '))[1], '_native')
+  zero.pop = get_decennial(geography = 'block', variables = 'P1_001N', year = 2020, state = 'WA', county = c('Island', 'Skagit', 'San Juan'), geometry = T)
+  # zero.pop = get_decennial(geography = 'american indian area/alaska native area/hawaiian home land', variables = 'P1_001N', year = 2020, geometry = T)
+  # zero.pop = zero.pop[zero.pop$NAME==id, ]
+  generate_dasypop(id, pop, file_suffix, zero.pop)
+}
+
+generate_dasypop = function(id, pop, file_suffix, zero.pop) {
 
   # Initial setup: file tree structure
   input_path = '/Volumes/gioj/PHI/GIS/NLCD' #'/Users/giojacuzzi/Desktop/PHI Project Data/gis/NLCD'
@@ -30,14 +54,14 @@ generate_dasypop = function(ctyid) {
   
   # Create virtual raster VRTs pointing to IMGs without any modification
   imp_raster_imgfile = glue('{input_path}/nlcd_2019_impervious_l48_20210604.img')
-  imp_raster_file = glue('{output_path}/{ctyid}/{ctyid}_impervious.vrt')
+  imp_raster_file = glue('{output_path}/{file_suffix}/impervious_{file_suffix}.vrt')
   gdalbuildvrt(
     gdalfile = imp_raster_imgfile,
     output.vrt = imp_raster_file
   )
   
   imp_desc_raster_imgfile = glue('{input_path}/nlcd_2019_impervious_descriptor_l48_20210604.img')
-  imp_desc_raster_file = glue('{output_path}/{ctyid}/{ctyid}_impervious_descriptor.vrt')
+  imp_desc_raster_file = glue('{output_path}/{file_suffix}/impervious_descriptor_{file_suffix}.vrt')
   gdalbuildvrt(
     gdalfile = imp_desc_raster_imgfile,
     output.vrt = imp_desc_raster_file
@@ -45,11 +69,6 @@ generate_dasypop = function(ctyid) {
   
   # Albers equal-area projection
   aea = '+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=23 +lon_0=-96 +x_0=0 +y_0=0 +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs'
-  
-  message('Retrieving block group population estimates...')
-  
-  # Get 2021 ACS 5-year block group population estimates
-  pop = get_acs(geography = 'block group', variables = 'B01003_001', year = 2021, state = 'WA', county = ctyid, geometry = T)  
   
   # Remove empty geometries and project to Albers equal-area
   pop = pop[!is.na(st_dimension(pop)), ]
@@ -59,8 +78,8 @@ generate_dasypop = function(ctyid) {
   message('Fitting county area to impervious raster...')
   
   # Use gdalwarp to extract the county area from the NLCD impervious percentage raster (already in Albers projection)
-  polygon_file = glue('{output_path}/{ctyid}/{ctyid}_area.gpkg')
-  raster_file = glue('{output_path}/{ctyid}/{ctyid}_impervious.tif')
+  polygon_file = glue('{output_path}/{file_suffix}/area_{file_suffix}.gpkg')
+  raster_file = glue('{output_path}/{file_suffix}/impervious_{file_suffix}.tif')
   st_write(st_union(pop.projected), dsn = polygon_file, driver = 'GPKG', append = F)
   gdalwarp(
     srcfile = imp_raster_file, dstfile = raster_file,
@@ -75,11 +94,12 @@ generate_dasypop = function(ctyid) {
   
   # Get 2020 decennial block-level population counts
   # Filter for only the blocks with 0 population, and project to Albers equal-area
-  zero.pop = get_decennial(geography = 'block', variables = 'P1_001N', year = 2020, state = 'WA', county = ctyid, geometry = T)
   # mapview(zero.pop, zcol='value')
   zero.pop = zero.pop[zero.pop$value==0,]
   zero.pop = st_transform(zero.pop, crs = aea)
   # mapview(zero.pop)
+  
+  message('Masking impervious raster...')
   
   # Mask impervious raster to county boundaries
   lu = mask(lu, as(pop.projected, 'Spatial'))
@@ -120,7 +140,7 @@ generate_dasypop = function(ctyid) {
   })
   
   # Set all Navy infrastructure pixels to 0
-  if (ctyid == 'Island') {
+  if (id == 'Island') {
     infrastructure = st_read('data/gis/NASWI/NASWI_infrastructure.shp', quiet = T)
     infrastructure = st_transform(infrastructure, crs = aea)
     template = raster(extent(RISA), res = res(RISA), crs = aea)
@@ -144,7 +164,7 @@ generate_dasypop = function(ctyid) {
   dasy.pop = (bg.sum.pop/bg.sum.RISA) * RISA
   stopifnot(cellStats(dasy.pop, 'sum') == sum(pop$estimate)) # total population
   # mapview(reclassify(dasy.pop, cbind(-Inf, 1e-06, NA), right=F))
-  filename = glue('{output_path}/{ctyid}_dasypop.tif')
+  filename = glue('{output_path}/dasypop_{file_suffix}.tif')
   writeRaster(dasy.pop, filename, overwrite = T, NAflag = -9999)
   message('Created ', filename)
 }

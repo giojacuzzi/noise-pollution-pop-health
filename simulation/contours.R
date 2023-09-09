@@ -54,9 +54,17 @@ get_contours_Lnight = function(threshold = 0) {
   return(contours[as.numeric(contours$Level)>=threshold, ])
 }
 
-# Determine which counties are within the spatial distribution of noise health impacts
-get_exposed_counties = function() {
+# Determine which counties and native lands are within the spatial distribution of noise health impacts
+get_exposed_counties_and_native_lands = function() {
+  
+  pop_cty = get_acs(geography = 'county', variables = 'B01003_001', year = 2021, state = 'WA', geometry = T)
+  pop_nl = get_acs(geography = 'american indian area/alaska native area/hawaiian home land', variables = 'B01003_001', year = 2021, geometry = T)
+  pop_nl = pop_nl[grep(', WA', pop_nl$NAME), ]
+  st_agr(pop_cty) = 'constant'
+  st_agr(pop_nl) = 'constant'
+  
   counties = list()
+  native_lands = list()
   contours = list(get_contours_Ldn(), get_contours_Leq24(), get_contours_Lnight())
   c = 1
   for (contour in contours) {
@@ -65,18 +73,19 @@ get_exposed_counties = function() {
     if (c == 3) l = lnight_impact_threshold
     
     contour = contour[as.numeric(contour$Level)>=l,]
-    
-    stid = 'WA'
-    pop = get_acs(geography = 'county', variables = 'B01003_001', year = 2021, state = 'WA', geometry = TRUE)
-    # mapview(contour) + mapview(pop)
-    
-    st_agr(pop) = 'constant'
     st_agr(contour) = 'constant'
-    intersection = st_intersection(pop, contour)
-    counties = append(counties, unique(intersection$NAME))
+    
+    intersection_cty = st_intersection(pop_cty, contour)
+    counties = append(counties, unique(intersection_cty$NAME))
+    intersection_nl = st_intersection(pop_nl, contour)
+    native_lands = append(native_lands, unique(intersection_nl$NAME))
     c = c+1
   }
   counties = unlist(unique(counties))
   counties = unlist(lapply(counties, function(s) { unlist(str_split(s, ' County, Washington'))[1] }))
-  return(counties)
+  native_lands = unlist(unique(native_lands))
+  return(list(
+    counties=counties,
+    native_lands=native_lands
+  ))
 }

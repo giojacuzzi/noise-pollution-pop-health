@@ -28,18 +28,19 @@ print(p_ha)
 ggsave(p_ha, file=paste0(ggsave_output_path, 'erf_ha.png'), width=ggsave_width, height=ggsave_height)
 
 # Sleep disturbance
-erf_names = c('Updated ISO Guideline (Smith 2022)')
-erf_colors = c('darkorchid2')
+erf_names = c('WHO', 'Updated WHO Guideline (Smith 2022)')
+erf_colors = c('black', 'orange')
 names(erf_colors) = erf_names
 pt_size = 2.7
 pt_alpha = 0.7
 
 p_HSD = ggplot() +
   # Confidence intervals
-  geom_ribbon(ci_HSD_combinedestimate, mapping=aes(x=Lnight,ymin=Lower,ymax=Upper), fill='purple', alpha=0.1) +
+# geom_ribbon(ci_HSD_combinedestimate, mapping=aes(x=Lnight,ymin=Lower,ymax=Upper), fill='purple', alpha=0.1) +
   # Exposure-response function(s)
   # stat_function(fun=exp_resp_HSD_combinedestimate, xlim=c(bounds_HSD[2],80), linetype='dashed', color=erf_colors['Smith 2022']) +
-  stat_function(fun=exp_resp_HSD_combinedestimate, xlim=bounds_HSD, linewidth=.7, aes(color=erf_names)) +
+  stat_function(fun=exp_resp_HSD_WHO, xlim=bounds_HSD, linewidth=.7, aes(color='WHO')) +
+  stat_function(fun=exp_resp_HSD_Smith, xlim=bounds_HSD, linewidth=.7, aes(color='Updated WHO Guideline (Smith 2022)')) +
   scale_color_manual(name='Exposure-response', values=erf_colors, breaks=erf_names) +
   # Plot configuration
   scale_x_continuous(name=expression(L[night]~'dB('*A*')'), limits=c(40,65), oob=rescale_none) +

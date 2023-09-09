@@ -11,49 +11,53 @@ library(mapview)
 mapviewOptions(mapview.maxpixels = 50000000)
 options(tigris_use_cache = T)
 
-generate_pop_exposure_stack = function(contours_Ldn, contours_Lnight, contours_Leq24) {
+generate_pop_exposure_stack = function() {
   input_path = paste0(here::here(), '/analysis/preprocessing/_output')
   output_path = paste0(here::here(), '/analysis/preprocessing/_output')
-  county_dasypops = list.files(input_path, pattern = paste0('.*dasypop.tif'), full.names = T)
+  dasypops = list.files(input_path, pattern = paste0('dasypop.*.tif'), full.names = T)
   
   # Read noise contour shapefile layers, including only contours >= health impact thresholds
+  msg('Reading noise contours...')
   contours_Ldn = get_contours_Ldn(threshold = lden_impact_threshold)
   contours_Lnight = get_contours_Lnight(threshold = lnight_impact_threshold)
   contours_Leq24 = get_contours_Leq24(threshold = HL_leq24_impact_threshold)
   # mapview(contours_Ldn, zcol='Level') + mapview(contours_Lnight, zcol='Level') + mapview(contours_Leq24, zcol='Level')
   
-  # Read individual county dasymetric population rasters
-  county_rasters = list()
+  # Read individual county / native land dasymetric population rasters
+  msg('Reading zone dasymetric population rasters...')
+  rasters = list()
   extents = data.frame()
-  for (c in 1:length(county_dasypops)) {
-    county_file = county_dasypops[c]
-    message('Reading ', county_file)
-    r = raster(county_file)
-    county_rasters = append(county_rasters, r)
+  for (c in 1:length(dasypops)) {
+    file = dasypops[c]
+    message('Reading ', file)
+    r = raster(file)
+    rasters = append(rasters, r)
     e = extent(r)
     extents = rbind(extents, data.frame(
       xmin = e[1], xmax = e[2],
       ymin = e[3], ymax = e[4]
     ))
   }
-  # mapview(county_rasters[[3]])
+  # mapview(rasters[[3]])
   
   # Combine into a single regional population raster
   e = extent(c(
     min(extents$xmin), max(extents$xmax),
     min(extents$ymin), max(extents$ymax)
   ))
-  res = res(county_rasters[[1]])
-  crs = crs(county_rasters[[1]])
-  county_rasters_p = county_rasters
+  res = res(rasters[[1]])
+  crs = crs(rasters[[1]])
+  rasters_p = rasters
   template = raster(extent(e), res = res, crs = crs)
-  for (c in 1:length(county_dasypops)) {
-    names(county_rasters_p[[c]]) = paste0('County.', gsub('_dasypop', '', names(county_rasters_p[[c]])))
-    message('Reprojecting ', names(county_rasters_p[[c]]))
-    county_rasters_p[[c]] = projectRaster(county_rasters_p[[c]], template, method = 'ngb')
+  for (c in 1:length(dasypops)) {
+    names(rasters_p[[c]]) = paste0('', gsub('dasypop_', '', names(rasters_p[[c]])))
+    message('Reprojecting ', names(rasters_p[[c]]))
+    rasters_p[[c]] = projectRaster(rasters_p[[c]], template, method = 'ngb')
   }
   
-  for (c in 1:length(county_dasypops)) {
+  # Only take counties (which include native land population) for combined population exposure
+  county_rasters_p = rasters_p[grep('_county', sapply(rasters_p, function(x) names(x)), ignore.case = T)]
+  for (c in 1:length(county_rasters_p)) {
     message('Merging ', names(county_rasters_p[[c]]))
     if (c == 1) {
       dasy_pop = county_rasters_p[[1]]
@@ -67,6 +71,7 @@ generate_pop_exposure_stack = function(contours_Ldn, contours_Lnight, contours_L
   # st_area(st_union(st_make_valid(contours_Leq24)))
   
   # Create cropped population layer
+  msg('Creating Exposed.Population layer...')
   contours_Ldn    = st_transform(contours_Ldn, crs = crs)
   contours_Lnight = st_transform(contours_Lnight, crs = crs)
   contours_Leq24  = st_transform(contours_Leq24, crs = crs)
@@ -79,6 +84,7 @@ generate_pop_exposure_stack = function(contours_Ldn, contours_Lnight, contours_L
   # mapview(pop_exposed)
   
   # Rasterize the contour layers
+  msg('Rasterizing contour layers...')
   contours_Ldn_raster    = rasterize(x = contours_Ldn, y = template, field = 'Level')
   names(contours_Ldn_raster) = 'Ldn'
   contours_Lnight_raster = rasterize(contours_Lnight, template, 'Level')
@@ -99,7 +105,7 @@ generate_pop_exposure_stack = function(contours_Ldn, contours_Lnight, contours_L
   writeRaster(brick(pop_exposure_stack), filename = filename, overwrite = T)
   message('Created ', filename)
   
-  filename = glue('{output_path}/pop_county_stack.grd')
-  writeRaster(brick(stack(county_rasters_p)), filename = filename, overwrite = T)
+  filename = glue('{output_path}/pop_zones_stack.grd')
+  writeRaster(brick(stack(rasters_p)), filename = filename, overwrite = T)
   message('Created ', filename)
 }

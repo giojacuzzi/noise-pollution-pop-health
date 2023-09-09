@@ -93,31 +93,32 @@ bounds_Yokoshima = c(40,65)
 ## HSD ------------------------------------------------------------------------------
 # TODO: Military-specific / low-frequency / onset / aircraft dB penalty adjustment?
 
-# Smith et al 2022 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9272916/
+# Combined estimate, Basner and McGuire 2018
+exp_resp_HSD_WHO = function(Lnight) {
+  return(16.7885 - 0.9293 * Lnight + 0.0198 * Lnight^2)
+}
+ci_HSD_WHO = data.frame(
+  Lnight = seq(from=40, to=65, by=5),
+  Lower  = c(4.72,6.95,9.87,13.57,18.15,23.65),
+  Upper  = c(17.81,23.08,29.60,37.41,46.36,56.05)
+)
+
+# Combined estimate, Smith et al 2022 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9272916/
 # Restricted only to survey questions where noise was explicitly mentioned
-exp_resp_HSD_awakenings = function(Lnight) {
-  return(0.03132*(Lnight)^2 - 1.80203*(Lnight) + 31.28079)
-}
-exp_resp_HSD_fallingasleep = function(Lnight) {
-  return(0.02204*(Lnight)^2 - 0.86230*(Lnight) + 12.42449)
-}
-exp_resp_HSD_sleepdisturbance = function(Lnight) {
-  return(0.02664*(Lnight)^2 - 1.17389*(Lnight) + 16.46165)
-}
-exp_resp_HSD_combinedestimate = function(Lnight) {
+exp_resp_HSD_Smith = function(Lnight) {
   return(0.025015*(Lnight)^2 - 1.12624*(Lnight) + 17.074213)
 }
 
-ci_upper_HSD_combinedestimate = function(Lnight) {
+ci_upper_HSD_Smith = function(Lnight) {
   return(0.0221483*Lnight^2 - 0.5720120*Lnight + 3.5979810)
 }
-ci_lower_HSD_combinedestimate = function(Lnight) {
+ci_lower_HSD_Smith = function(Lnight) {
   return(0.027883*Lnight^2 - 1.680477*Lnight + 30.550446) 
 }
 ci_HSD_combinedestimate = data.frame(
   Lnight = seq(from=40, to=65, by=1),
-  Lower  = ci_lower_HSD_combinedestimate(seq(from=40, to=65, by=1)),
-  Upper  = ci_upper_HSD_combinedestimate(seq(from=40, to=65, by=1))
+  Lower  = ci_lower_HSD_Smith(seq(from=40, to=65, by=1)),
+  Upper  = ci_upper_HSD_Smith(seq(from=40, to=65, by=1))
 )
 bounds_HSD = c(40,65)
 
