@@ -2,11 +2,13 @@ source('global.R')
 source('metrics/exposure_response_functions.R')
 
 # Annoyance
-erf_names = c('Military (Yokoshima 2021)','Guideline (WHO 2018)', 'Standard (ISO 2016)', 'Navy (FICON 1992)*', 'National (FAA NES 2021)*')
+erf_names = c('Military (Yokoshima 2021)','Guideline (WHO 2018)', 'Standard (ISO 2016)', 'Navy (FICON 1992)', 'National (FAA NES 2021)')
 erf_colors = c('red', 'black', 'darkorchid2', 'royalblue', 'forestgreen')
 names(erf_colors) = erf_names
 pt_size = 2.7
 pt_alpha = 0.7
+
+ggsave_output_path = 'figures/_output/'
 
 p_ha = ggplot() +
   # Confidence intervals
@@ -17,8 +19,8 @@ p_ha = ggplot() +
   stat_function(fun=exp_resp_WHO, xlim=bounds_who, linewidth=.7, aes(color='Guideline (WHO 2018)')) +
   stat_function(fun=exp_resp_ISO_Miedema, xlim=bounds_iso_miedema, linewidth=.7, aes(color='Standard (ISO 2016)')) +
   stat_function(fun=exp_resp_Yokoshima, xlim=bounds_Yokoshima, linewidth=.7, aes(color='Military (Yokoshima 2021)')) +
-  stat_function(fun=exp_resp_FICON, xlim=bounds_FICON, linewidth=.7, aes(color='Navy (FICON 1992)*')) +
-  stat_function(fun=exp_resp_FAANES, xlim=bounds_FAANES, linewidth=.7, aes(color='National (FAA NES 2021)*')) +
+  stat_function(fun=exp_resp_FICON, xlim=bounds_FICON, linewidth=.7, aes(color='Navy (FICON 1992)')) +
+  stat_function(fun=exp_resp_FAANES, xlim=bounds_FAANES, linewidth=.7, aes(color='National (FAA NES 2021)')) +
   scale_color_manual(name='Exposure-response', values=erf_colors, breaks=erf_names) +
   # Plot configuration
   labs(title='Probability of high annoyance in response to aircraft noise') +
@@ -28,7 +30,7 @@ print(p_ha)
 ggsave(p_ha, file=paste0(ggsave_output_path, 'erf_ha.png'), width=ggsave_width, height=ggsave_height)
 
 # Sleep disturbance
-erf_names = c('WHO', 'Updated WHO Guideline (Smith 2022)')
+erf_names = c('Guideline (WHO 2018)', 'Updated WHO Guideline (Smith 2022)')
 erf_colors = c('black', 'orange')
 names(erf_colors) = erf_names
 pt_size = 2.7
@@ -36,10 +38,11 @@ pt_alpha = 0.7
 
 p_HSD = ggplot() +
   # Confidence intervals
-# geom_ribbon(ci_HSD_combinedestimate, mapping=aes(x=Lnight,ymin=Lower,ymax=Upper), fill='purple', alpha=0.1) +
+  geom_ribbon(ci_HSD_combinedestimate, mapping=aes(x=Lnight,ymin=Lower,ymax=Upper), fill='orange', alpha=0.1) +
+  geom_ribbon(ci_HSD_WHO, mapping=aes(x=Lnight,ymin=Lower,ymax=Upper), fill='black', alpha=0.1) +
   # Exposure-response function(s)
   # stat_function(fun=exp_resp_HSD_combinedestimate, xlim=c(bounds_HSD[2],80), linetype='dashed', color=erf_colors['Smith 2022']) +
-  stat_function(fun=exp_resp_HSD_WHO, xlim=bounds_HSD, linewidth=.7, aes(color='WHO')) +
+  stat_function(fun=exp_resp_HSD_WHO, xlim=bounds_HSD, linewidth=.7, aes(color='Guideline (WHO 2018)')) +
   stat_function(fun=exp_resp_HSD_Smith, xlim=bounds_HSD, linewidth=.7, aes(color='Updated WHO Guideline (Smith 2022)')) +
   scale_color_manual(name='Exposure-response', values=erf_colors, breaks=erf_names) +
   # Plot configuration
@@ -47,4 +50,8 @@ p_HSD = ggplot() +
   scale_y_continuous(name='%HSD', n.breaks=9, limits=c(0,60), oob=rescale_none) +
   labs(title='Probability of high sleep disturbance in response to aircraft noise')
 print(p_HSD)
-ggsave(p_HSD, file=paste0(ggsave_output_path, 'erf_HSD.png'), width=ggsave_width, height=ggsave_height)
+  ggsave(p_HSD, file=paste0(ggsave_output_path, 'erf_HSD.png'), width=ggsave_width, height=ggsave_height)
+
+library(patchwork)
+p_ha + p_HSD  
+ggsave((p_ha + p_HSD), file=paste0(ggsave_output_path, 'erfs.png'), width=ggsave_width * 2, height=ggsave_height)
