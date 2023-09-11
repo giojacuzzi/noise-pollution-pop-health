@@ -1,53 +1,101 @@
 Total exposed population: 75191 
 Total area of noise exposure associated with adverse health effects: 1292.53 km2 499.05 mi2 
 Number of people exposed to noise levels incompatible with residential land use (65 dB Ldn, FAA and HUD): 12748 
-Number of people exposed to levels beyond bounds of ERFs: 
+Number of people exposed to levels beyond bounds of common ERFs: 
  HA  5730 
  HSD  5227 
 Number of people exposed to sleeping disturbance risk threshold: 55536 
+Precalculating raster for HA (FICON)... 
 Precalculating raster for HA (ISO)... 
 Precalculating raster for HA (WHO)... 
+Precalculating raster for HA (FAA NES)... 
 Precalculating raster for HA (Yokoshima)... 
-Precalculating raster for HSD... 
-Precalculating raster for HL... 
-Island 
+Precalculating raster for HSD (WHO)... 
+Precalculating raster for HSD (Smith)... 
+Precalculating raster for HL/CE... 
+Island (county)
   Total         85938 
   Exposed       56840.24 
+  HA FICON  5868.688 
   HA ISO        9969.996 
   HA WHO        18333.75 
+  HA FAANES  22128.17 
   HA Yokoshima  30885.21 
-  HL            8407.924 
-Jefferson 
+  HSD WHO         12497.68 
+  HSD Smith       14992.28 
+  HLCE           8407.924 
+Jefferson (county)
   Total         32590 
   Exposed       74.03404 
+  HA FICON  0.7994578 
   HA ISO        1.933793 
   HA WHO        9.123826 
+  HA FAANES  0.3572728 
   HA Yokoshima  22.93728 
-  HL            0 
-San Juan 
+  HSD WHO         3.505474 
+  HSD Smith       3.782901 
+  HLCE           0 
+Samish (native)
+  Total         40853 
+  Exposed       8629.344 
+  HA FICON  137.017 
+  HA ISO        400.4432 
+  HA WHO        1380.45 
+  HA FAANES  808.2939 
+  HA Yokoshima  3118.659 
+  HSD WHO         278.0224 
+  HSD Smith       307.7443 
+  HLCE           0 
+San.Juan (county)
   Total         17631 
   Exposed       71.43726 
+  HA FICON  0.733306 
   HA ISO        1.685365 
   HA WHO        8.3912 
+  HA FAANES  0 
   HA Yokoshima  21.54763 
-  HL            0 
-Skagit 
+  HSD WHO         0 
+  HSD Smith       0 
+  HLCE           0 
+Skagit (county)
   Total         128228 
   Exposed       18205.69 
+  HA FICON  289.6143 
   HA ISO        843.8317 
   HA WHO        2909.983 
+  HA FAANES  1699.466 
   HA Yokoshima  6576.128 
-  HL            0 
-Snohomish 
+  HSD WHO         599.2038 
+  HSD Smith       660.8506 
+  HLCE           0 
+Snohomish (county)
   Total         820024 
   Exposed       0 
+  HA FICON  0 
   HA ISO        0 
   HA WHO        0 
+  HA FAANES  0 
   HA Yokoshima  0 
-  HL            0 
-     County Population Exposed HA_ISO HA_WHO HA_Yokoshima   HSD   HL
-1    Island      85938   56840   9970  18334        30885 14992 8408
-4    Skagit     128228   18206    844   2910         6576   661    0
-2 Jefferson      32590      74      2      9           23     4    0
-3  San Juan      17631      71      2      8           22     0    0
-5     Total     264387   75191  10818  21261        37506 15657 8408
+  HSD WHO         0 
+  HSD Smith       0 
+  HLCE           0 
+Swinomish (native)
+  Total         3207 
+  Exposed       2769.655 
+  HA FICON  49.15788 
+  HA ISO        146.0833 
+  HA WHO        470.5272 
+  HA FAANES  333.4192 
+  HA Yokoshima  1039.22 
+  HSD WHO         127.1666 
+  HSD Smith       140.2002 
+  HLCE           0 
+Percent exposed per zone: 
+                    Name Population       Exposed HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith HLCE
+1          Island County      85938 56840 (66.1%)     5869   9970  18334     22128        30885   12498     14992 8408
+5          Skagit County     128228 18206 (14.2%)      290    844   2910      1699         6576     599       661    0
+3            Samish TDSA      40853  8629 (21.1%)      137    400   1380       808         3119     278       308    0
+7  Swinomish Reservation       3207  2770 (86.4%)       49    146    471       333         1039     127       140    0
+2       Jefferson County      32590     74 (0.2%)        1      2      9         0           23       4         4    0
+4        San Juan County      17631     71 (0.4%)        1      2      8         0           22       0         0    0
+11                Total*     264387         75191     6161  10818  21261     23827        37506   13101     15657 8408
