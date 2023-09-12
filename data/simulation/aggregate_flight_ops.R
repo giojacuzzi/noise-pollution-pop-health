@@ -195,24 +195,25 @@ get_tot_n_reported_daily_ops = function(ops) {
   return(n_closedpattern * 2 + n_not_closedpattern)
 }
 
-nops_Alternative2A = 112100 # FINAL EIS 2018: "Action Alternative 2: Scenario A"
-nops_PreExpansion = 84700   # FINAL EIS 2018: "No Action"
-
 current_total_annual_ops = get_tot_n_reported_daily_ops(total_ops) * 365
 msg('Current simulation total annual operations count:', current_total_annual_ops)
 
-msg(current_total_annual_ops/nops_Alternative2A * 100, 'percent of Alternative 2A')
+alternative_nops = c( # Alternative number of operations to evaluate
+  current_total_annual_ops * 1.5, # 150 % increase
+  112100, # FINAL EIS 2018: "Action Alternative 2: Scenario A"
+  84700,   # FINAL EIS 2018: "No Action"
+  current_total_annual_ops * 0.5 # 50 % decrease
+)
 
-multiplier_Alternative2A = nops_Alternative2A/current_total_annual_ops
-multiplier_PreExpansion = nops_PreExpansion/current_total_annual_ops
+multipliers = sapply(alternative_nops, function(o) { o / current_total_annual_ops})
 
-generate_ops_with_multiplier = function(ops, multiplier, label) {
+generate_ops_with_multiplier = function(ops, multiplier, nops) {
   tot_ops_m = ops
   tot_ops_m$`Num Day`   = multiplier * tot_ops_m$`Num Day`
   tot_ops_m$`Num Night` = multiplier * tot_ops_m$`Num Night`
   tot_ops_m$`Num Total` = (tot_ops_m$`Num Day` + tot_ops_m$`Num Night`)
   
-  filename = glue('data/simulation/_output/csv/sim_{label}/sim_{label}.csv')
+  filename = glue('data/simulation/_output/csv/alternatives/{multiplier}x ({nops}) - Flight Operations Combined Average.csv')
   write.csv(tot_ops_m, file=filename, row.names=F, quote=F, na='')
   message(paste('Created', filename))
   
@@ -220,12 +221,15 @@ generate_ops_with_multiplier = function(ops, multiplier, label) {
   night_ops_m[,'Num Day']   = 0.0
   night_ops_m[,'Num Total'] = night_ops_m[,'Num Night']
   
-  filename = glue('data/simulation/_output/csv/sim_{label}/sim_{label} - Night Only.csv')
+  filename = glue('data/simulation/_output/csv/alternatives/{multiplier}x ({nops}) - Flight Operations Combined Average - Night Only.csv')
   write.csv(night_ops_m, file=filename, row.names=F, quote=F, na='')
   message(paste('Created', filename))
 }
 
-generate_ops_with_multiplier(total_ops, multiplier_Alternative2A, 'Alternative2A')
-generate_ops_with_multiplier(total_ops, multiplier_PreExpansion, 'PreExpansion')
+msg('Generating alternative operations scenarios...')
+for (m in 1:length(multipliers)) {
+  msg(alternative_nops[m], ' (', multipliers[m], 'x)', sep = '')
+  generate_ops_with_multiplier(total_ops, multipliers[m], alternative_nops[m])
+}
 
 # Next, see README.md for instructions on how to convert csv to xml and import into BaseOps
