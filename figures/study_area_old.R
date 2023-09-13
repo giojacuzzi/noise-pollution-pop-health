@@ -94,31 +94,19 @@ naswi_land = st_difference(naswi_land, naswi_water)
 
 naswi_sites = na.omit(sites)
 naswi_sites = sites[sites$ID %in% unique(get_data_metrics()[,'ID']), ]
-naswi_sites = naswi_sites[naswi_sites$Org != 'SDA', ]
-naswi_sites$Test = seq(1, nrow(naswi_sites))
 
-flight_tracks_union = st_union(flight_tracks)
-
-
-bounds_x = c(-122.88, -122.41) # [min, max]
-bounds_y = c(48.09, 48.47)
 inset = ggplot() +
-  geom_sf(data = naswi_land, fill = 'white') +
-  geom_sf(data = wa_roads$geometry, color='#DDDDDD', lwd=0.3) +
+  geom_sf(data = naswi_land) +
+  geom_sf(data = wa_roads$geometry, color='lightgray', lwd=0.3) +
   geom_sf(data = naswi_land, fill=NA) +
-  geom_sf(data = wa_military$geometry, fill='#FF000044', lwd=0.4) +
-  geom_sf(data = runways, lwd=1.5, color='#222222') +
-  geom_sf(data = flight_tracks_union, lwd=0.3, color=alpha('blue', 0.1),) + # linetype='dashed'
-  geom_sf(data = naswi_sites, size = 5, aes(col = Org)) + # aes(shape = Org, col = Org)
-  geom_sf_text(data = naswi_sites, aes(label=Test), size=3, color='white') +
-  # geom_text_repel(data = naswi_sites,
-  #                 aes(x = Longitude, y = Latitude, label = ID),
-  #                 size = 4, col = 'black', max.overlaps = 30, # fontface = '',
-  #                 force = 10,
-  #                 nudge_x = c(
-  #                 ),
-  #                 nudge_y = c(
-  #                 )) +
+  geom_sf(data = wa_military$geometry, fill='#FF000044') +
+  geom_sf(data = runways, lwd=1, color='darkgray') +
+  geom_sf(data = naswi_sites, size = 2, aes(shape = Org, col = Org)) +
+  geom_text_repel(data = naswi_sites,
+                  aes(x = Longitude, y = Latitude, label = ID),
+                  size = 2.5, col = 'black', fontface = 'bold', max.overlaps = 30,
+                  nudge_x = c(),
+                  nudge_y = c()) +
   coord_sf(xlim = bounds_x, ylim = bounds_y, expand = F) +
   labs(x='', y='') +
   theme(axis.line=element_blank(),
@@ -127,31 +115,14 @@ inset = ggplot() +
         axis.ticks=element_blank(),
         axis.title.x=element_blank(),
         axis.title.y=element_blank(),
-        # legend.position="none",
-        panel.background=element_rect(fill = '#EAF7FE', color = NA),
+        legend.position="none",
+        panel.background=element_rect(fill = 'white', color = NA),
         panel.border=element_rect(colour = '#111111', fill=NA, linewidth=1),
         panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),
         # plot.background=element_blank(),
-        plot.margin = margin(0, 0, 0, 0, 'pt')); inset
+        plot.margin = margin(0, 0, 0, 0, 'pt'))
 
-#                   # 2B_T
-#                   # 3A_T
-#                   # 5B_SG
-#                   # 8B_SG
-#                   # 9B_SG
-#                   # 20B_SG
-#                   # 24A_B
-#                   # 25B_T
-#                   # 26B_SG
-#                   # 27A_SG
-#                   # 33_SG
-#                   # EBLA001
-#                   # EBLA002
-#                   # LckS
-#                   # RshF
-#                   # KysH
-#                   # TrnC
-#                   # LnPM
-#                   # AdmB
-#                   # CrcF
+print(inset, vp = viewport(0.59, 0.49, width = 0.5, height = 0.5))
+
+      
