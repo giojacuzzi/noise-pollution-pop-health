@@ -16,6 +16,8 @@ simulation/baseops/*/*.dbf
 simulation/baseops/*/*.prj
 simulation/baseops/*/*.shp
 simulation/baseops/*/*.shx
+simulation/baseops/*/*.ins
+simulation/baseops/*/*.inx
 analysis/preprocessing/_output/*/*.vrt
 analysis/preprocessing/_output/*/*.gpkg
 analysis/_output/health_impact_stack.gri
