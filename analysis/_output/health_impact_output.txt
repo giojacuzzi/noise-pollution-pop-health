@@ -91,11 +91,19 @@ Swinomish (native)
   HSD Smith       113.0733 
   HLCE           0 
 Percent exposed per zone: 
-                    Name Population       Exposed HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith HLCE
-1          Island County      85938 56062 (65.2%)     5441   9394  17505     20593        29786    7332      8666 8002
-5          Skagit County     128228 16086 (12.5%)      244    704   2498      1430         5708     480       528    0
-3            Samish TDSA      40853  7709 (18.9%)      116    334   1191       688         2728     238       262    0
-7  Swinomish Reservation       3207  2319 (72.3%)       41    122    396       282          874     103       113    0
-2       Jefferson County      32590     59 (0.2%)        1      1      7         0           18       2         3    0
-4        San Juan County      17631     51 (0.3%)        1      1      6         0           15       0         0    0
-11                Total*     264387         72258     5687  10100  20016     22023        35527    7814      9197 8002
+                    Name Population       Exposed HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO
+1          Island County      85938 56062 (65.2%)     5441   9394  17505     20593        29786    7332
+5          Skagit County     128228 16086 (12.5%)      244    704   2498      1430         5708     480
+3            Samish TDSA      40853  7709 (18.9%)      116    334   1191       688         2728     238
+7  Swinomish Reservation       3207  2319 (72.3%)       41    122    396       282          874     103
+2       Jefferson County      32590     59 (0.2%)        1      1      7         0           18       2
+4        San Juan County      17631     51 (0.3%)        1      1      6         0           15       0
+11                Total*     264387         72258     5687  10100  20016     22023        35527    7814
+   HSD_Smith HLCE
+1       8666 8002
+5        528    0
+3        262    0
+7        113    0
+2          3    0
+4          0    0
+11      9197 8002

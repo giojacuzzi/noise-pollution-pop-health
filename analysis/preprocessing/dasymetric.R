@@ -47,7 +47,8 @@ generate_dasypop_native_land = function(id) {
 generate_dasypop = function(id, pop, file_suffix, zero.pop) {
 
   # Initial setup: file tree structure
-  input_path = '/Volumes/gioj/PHI/GIS/NLCD' #'/Users/giojacuzzi/Desktop/PHI Project Data/gis/NLCD'
+  path = glue(dirname(database_path), '/PHI')
+  input_path = glue('{path}/GIS/NLCD')
   output_path = paste0(here::here(), '/analysis/preprocessing/_output')
   
   message('Loading impervious surface rasters...')

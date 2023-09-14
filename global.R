@@ -30,7 +30,8 @@ crs = 'NAD83'
 # Path to directory containing the PHI database
 database_path = {
   # '~/../../Volumes/SAFS Backup/PHI'
-  '~/../../Volumes/SAFS Work/PHI'
+  # '~/../../Volumes/SAFS Work/PHI',
+  '~/../../Volumes/gioj/PHI'
 }
 
 # Console logging and output helper
