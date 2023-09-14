@@ -2,21 +2,27 @@
 
 This file documents the entire data processing pipeline.
 
-## Prerequisites
+> Disclaimer: Note that the following code is developed for this specific study purpose, but is not generally plug and play. It can be repurposed for future studies, and should be used a reference.
 
-First, set the `database_path` global variable to your local database path.
+## Data availability
+
+TODO: reference Data Availability Statement in manuscript
+
+## Acoustic monitoring analyses
+
+Statement about how data are formatted (i.e. site-date, 1-second SPL measurements, with frequency spectrum when available). These routines are written
+
+### Database configuration and data access
+
+First, set the `database_path` global variable in `global.R` to your local database path. This database should include...
 
 ```{r}
+# Configure database
 source('global.R')
-database_path = '~/../../Volumes/SAFS Work/PHI'
 
 stopifnot(dir.exists(database_path))
-```
 
-## Acoustic field monitoring analyses
-
-```{r}
-# 0. Retrieve site location information ----------------
+# Retrieve site location information
 sites = st_as_sf(get_data_sites(),
                  coords = c('Longitude', 'Latitude'), 
                  crs = crs, agr = 'constant')
@@ -26,7 +32,7 @@ sites$Longitude = st_coordinates(sites$geometry)[,'X']
 sites$Latitude  = st_coordinates(sites$geometry)[,'Y']
 mapview(sites)
 
-# 1. Create tables mapping org files to sites and dates ------------------------
+# Create tables mapping org files to sites and date
 # input: PHI database, 'data/sites.csv'
 # outputs: 'data/load/_output/file_map_[ORG].csv'
 source('data/load/load_file_jgl.R')
@@ -39,7 +45,7 @@ source('data/load/load_file_nps.R')
 file_map_nps = map_files_nps_csv()
 file_map = get_file_map() # requires all file_map .csv files
 
-# 2. Load SPL data for each site date ------------------------------------------
+# Load SPL data for each site date
 # inputs: PHI database, 'file_map_[ORG].csv'
 # outputs: '[database_path]/converted/site_dates/[ORG]/[ID]_[DATE].csv'
 source('data/load/load_site_date.R')
@@ -47,31 +53,41 @@ create_site_date_csvs('JGL')
 create_site_date_csvs('NAVY')
 create_site_date_csvs('SDA')
 create_site_date_csvs('NPS')
+```
 
-# 3. Find noise events for each site date --------------------------------------
+### Cumulative acoustic metrics
+
+```{r}
+# Calculate metrics for each site date
+source('analysis/characterization/preprocessing/calculate_metrics.R')
+# Produce 'data/metrics/metrics.csv'
+calculate_site_date_metrics_csv()
+
+# Evaluate site index metrics
+source('analysis/characterization/site_index_metrics.R')
+```
+
+### Single-event acoustic metrics
+
+```{r}
+# Find noise events for each site date
 # inputs: '[database_path]/converted/site_dates/[ORG]/[ID]_[DATE].csv'
 # outputs: 'data/events/_output/events_[ORG].csv'
-source('data/analysis/characterization/preprocessing/evaluate_events.R')
+source('analysis/characterization/preprocessing/evaluate_events.R')
 calculate_events_csv('JGL')
 calculate_events_csv('NAVY')
 calculate_events_csv('SDA')
 calculate_events_csv('NPS')
-# 3.5. Get noise events reported by Navy
+# Get noise events reported by Navy
 # inputs: PHI database
 # outputs: 'data/events/_output/navy_reported_events.csv'
 source('data/events/load_events_navy.R')
 
-# 4. Calculate metrics for each site date --------------------------------------
-# source('analysis/calculate_metrics.R')
-# Produce 'data/metrics/metrics.csv'
-# calculate_site_date_metrics_csv()
-
-# 6. Calculate OSHA/NIOSH TWA for each site date -------------------------------
-
-#.....
+# Evaluate site event metrics
+source('analysis/characterization/site_event_metrics.R')
 ```
 
-## Population Exposure
+## Population noise exposure
 
 ### Noise simulation modeling with Noisemap
 
@@ -105,7 +121,7 @@ source('data/simulation/aggregate_flight_ops.R')
             3.  If you are also importing flight tracks, and a flight track in the spreadsheet is missing from the BaseOps case, then... Set the profile's flight track to "undefined"
         5.  Press OK... You should see the following message: `Importing flight profiles from spreadsheet file NASWI_MP1_Noisemap - Flight Operations.xml.  The following flight profiles appear in both the BaseOps case and the spreadsheet file.  The daily flight profile operation counts in the BaseOps case will be updated to match the values in the spreadsheet file.`
 
-### Run BaseOps simulations and generate NMPlot noise contour maps
+#### Run BaseOps simulations and generate NMPlot noise contour maps
 
 *See NoiseMap and AEDT Gap Analysis Technical Report for further details of NoiseMap and BaseOps software. NoiseMap BaseOps cases have been made for DNL and Leq24 (cumulative, see 4.1.1.1) and Lnight (9hr, see 4.1.1.2).*
 
@@ -121,7 +137,7 @@ source('data/simulation/aggregate_flight_ops.R')
     3.  Create based upon the filename '....\\simulation\\\_output\\DNL\\DNL' , replacing 'DNL' with the corresponding metric.
 5.  Click `OK`
 
-### Validate simulation against measurements from the field
+#### Validate simulation against measurements from the field
 
 ```{r}
 source('simulation/validation.R')
@@ -149,6 +165,8 @@ source('analysis/preprocessing/pop_exposure.R')
 generate_pop_exposure_stack()
 ```
 
+## Population health outcomes
+
 Next, conduct health assessment for chosen metrics across the population.
 
 ```{r}
@@ -159,4 +177,11 @@ Conduct childhood learning school impact evaluation.
 
 ```{r}
 source('analysis/health_wellbeing_impacts/childhood_learning.R')
+```
+
+Conduct OSHA and NIOSH hearing loss impact evaluation. Reminder: uses SPL data
+
+```{r}
+# Evaluate OSHA/NIOSH TWA for each site date
+source('analysis/health_wellbeing_impacts/preprocessing/calculate_osha_niosh.R')
 ```

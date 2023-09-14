@@ -100,7 +100,7 @@ message(paste0(d,'%'))
 
 
 source('data/load/load_site_date.R')
-source('data/metrics/metrics.R')
+source('metrics/metrics.R')
 
 data_metrics = get_data_metrics()
 results = data.frame()
