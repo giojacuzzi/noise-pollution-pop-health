@@ -42,7 +42,6 @@ get_file_map_jgl = function() {
 file = get_file_map_jgl()[1,'File']
 
 # Takes an absolute path to a JGL .csv file, returns a list containing a data frame
-# Takes an absolute path to an SDA .XLS file
 # Returns a list of data frames, one per date present in file
 load_file_jgl = function(file) {
   # Read data from .csv file

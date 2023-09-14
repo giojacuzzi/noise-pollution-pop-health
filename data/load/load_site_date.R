@@ -1,14 +1,13 @@
 source('global.R')
 source('data/load/load_file_navy.R')
 source('data/load/load_file_jgl.R')
-source('data/load/load_file_sda.R')
 source('data/load/load_file_nps.R')
 
 # Load data for given site ID at given date from converted csv (fast)
 load_site_date = function(id, date) {
   date = as.POSIXct(date, tz='UTC')
   org = get_org_for_site_date(id, date)
-  file = paste0(database_path, '/converted/site_dates/', org, '/', id, '_', date, '.csv')
+  file = paste0(here::here(), '/data/load/_output/site_dates/', org, '/', id, '_', date, '.csv')
   if (!file.exists(file)) {
     warning(paste('File does not exist:', file))
     return(NULL)
@@ -64,8 +63,6 @@ load_site_date_raw = function(id, date) {
       data_file = load_file_navy(file)
     } else if (org == 'JGL') {
       data_file = load_file_jgl(file)
-    } else if (org == 'SDA') {
-      data_file = load_file_sda(file)
     } else if (org == 'NPS') {
       data_file = load_file_nps(file)
     } else {
@@ -120,12 +117,15 @@ create_site_date_csvs = function(orgarg) {
   num_processed = 0
   for (id in unique(file_map$ID)) { # for every site ID
     
+    id = as.character(id)
     num_processed = num_processed + 1
     name = get_site_name_for_ID(id)
     message(paste0('Processing site ', id, ' \"', name , '\" - ', num_processed, ' of ', length(unique(file_map$ID))))
     
-    for (date in unique(file_map[file_map$ID==id, 'Date'])) { # for every date at that site
+    dates = unique(file_map[file_map$ID==id, 'Date'])
+    for (d in 1:length(dates)) { # for every date at that site
       
+      date = dates[d]
       site_date_data = load_site_date_raw(id, date)
       org = unique(file_map[file_map$ID==id & file_map$Date==date,]$Org)
       site_date_levels = site_date_data$LAeq
@@ -135,7 +135,7 @@ create_site_date_csvs = function(orgarg) {
       }
       
       # Save all site_dates data to csv
-      path =paste0(database_path,'/converted/site_dates/')
+      path = paste0(here::here(), '/data/load/_output/site_dates/')
       path = paste0(path, org, '/', id, '_', date, '.csv')
       write.csv(site_date_data[!is.na(site_date_data$LAeq),], file=path, row.names=F)
       message(paste('Wrote', path))

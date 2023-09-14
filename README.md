@@ -17,7 +17,7 @@ Analyses of acoustic index metrics and spatiotemporal distribution of noise.
     -   Spectrum (for Navy and some JGL events only)
         -   Average 1/3 octave band spectrum for FCLP events for sites near Coupeville for an example session
     -   Timing (duration, onset rate, timestamp)
--   Acoustic index metrics for Navy, SDA, and NPS sites (not including Lopez and PT) - `level_index_averages.R`
+-   Acoustic index metrics for Navy, and NPS sites (not including Lopez and PT) - `level_index_averages.R`
     -   Ldn, Lden, Leq, etc.
     -   Comparison between measured Ldn, Navy-reported DNL, and modeled DNL
 

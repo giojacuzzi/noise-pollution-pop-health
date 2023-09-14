@@ -6,7 +6,13 @@ This file documents the entire data processing pipeline.
 
 ## Data availability
 
-TODO: reference Data Availability Statement in manuscript
+TODO: reference Data Availability Statement in manuscript.
+
+Raw data should be 1-sec with X metrics.
+
+-   Navy data from ... exported from Larson Davis binary in xlsx format in the same directories as the original binary files.
+-   NPS data from ... in txt format with ...
+-   JGL data from ... in csv format with file name convention `ID_YYYY-MM-DD`, where ID is the site ID corresponding to a site listed in `data/load/sites/sites.csv`.
 
 ## Acoustic monitoring analyses
 
@@ -22,69 +28,55 @@ source('global.R')
 
 stopifnot(dir.exists(database_path))
 
-# Retrieve site location information
-sites = st_as_sf(get_data_sites(),
-                 coords = c('Longitude', 'Latitude'), 
-                 crs = crs, agr = 'constant')
-sites = na.omit(sites)
-sites = sites[sites$ID %in% unique(get_data_metrics()[,'ID']), ]
-sites$Longitude = st_coordinates(sites$geometry)[,'X']
-sites$Latitude  = st_coordinates(sites$geometry)[,'Y']
-mapview(sites)
+# Retrieve monitoring location information and display
+data_sites = get_data_sites()
+mapview(
+  data_sites,
+  xcol='Longitude', ycol='Latitude', zcol='Org',
+  layer.name = 'Organization', crs=4269, grid=F, legend=T,
+  col.regions=c('darkgoldenrod2', 'navy', 'green3')
+) %>% addStaticLabels(label=data_sites$ID, direction='top')
 
-# Create tables mapping org files to sites and date
-# input: PHI database, 'data/sites.csv'
-# outputs: 'data/load/_output/file_map_[ORG].csv'
+# Create tables mapping raw data files to sites and date
 source('data/load/load_file_jgl.R')
 file_map_jgl = map_files_jgl_csv()
 source('data/load/load_file_navy.R')
 file_map_navy = map_files_navy_csv()
-source('data/load/load_file_sda.R')
-file_map_sda = map_files_sda_csv()
 source('data/load/load_file_nps.R')
 file_map_nps = map_files_nps_csv()
-file_map = get_file_map() # requires all file_map .csv files
 
-# Load SPL data for each site date
-# inputs: PHI database, 'file_map_[ORG].csv'
-# outputs: '[database_path]/converted/site_dates/[ORG]/[ID]_[DATE].csv'
+# Load raw data for each site date and save as standardized csv
 source('data/load/load_site_date.R')
 create_site_date_csvs('JGL')
 create_site_date_csvs('NAVY')
-create_site_date_csvs('SDA')
 create_site_date_csvs('NPS')
 ```
 
 ### Cumulative acoustic metrics
 
 ```{r}
-# Calculate metrics for each site date
-source('analysis/characterization/preprocessing/calculate_metrics.R')
-# Produce 'data/metrics/metrics.csv'
+# Calculate cumulative metrics for each site date
+source('analysis/characterization/preprocessing/calculate_cumulative_metrics.R')
 calculate_site_date_metrics_csv()
 
-# Evaluate site index metrics
-source('analysis/characterization/site_index_metrics.R')
+# Evaluate cumulative metrics
+source('analysis/characterization/evaluate_cumulative_metrics.R')
 ```
 
 ### Single-event acoustic metrics
 
 ```{r}
-# Find noise events for each site date
-# inputs: '[database_path]/converted/site_dates/[ORG]/[ID]_[DATE].csv'
-# outputs: 'data/events/_output/events_[ORG].csv'
-source('analysis/characterization/preprocessing/evaluate_events.R')
+# Calculate single-event metrics for each site date
+source('analysis/characterization/preprocessing/calculate_single_event_metrics.R')
 calculate_events_csv('JGL')
 calculate_events_csv('NAVY')
-calculate_events_csv('SDA')
 calculate_events_csv('NPS')
-# Get noise events reported by Navy
-# inputs: PHI database
-# outputs: 'data/events/_output/navy_reported_events.csv'
+
+# Retrieve noise events reported by Navy
 source('data/events/load_events_navy.R')
 
-# Evaluate site event metrics
-source('analysis/characterization/site_event_metrics.R')
+# Evaluate single-event metrics
+source('analysis/characterization/evaluate_single_event_metrics.R')
 ```
 
 ## Population noise exposure

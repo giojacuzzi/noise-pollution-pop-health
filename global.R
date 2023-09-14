@@ -60,12 +60,9 @@ months = c('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','De
 
 # Database file maps
 get_file_map = function() {
-  if (!exists('file_map')) {
-    file_map = rbind(read.csv('data/load/_output/file_map_navy.csv'),
-                     read.csv('data/load/_output/file_map_jgl.csv'),
-                     read.csv('data/load/_output/file_map_sda.csv'),
-                     read.csv('data/load/_output/file_map_nps.csv'))
-  }
+  file_map = rbind(read.csv('data/load/_output/file_map_navy.csv'),
+                   read.csv('data/load/_output/file_map_jgl.csv'),
+                   read.csv('data/load/_output/file_map_nps.csv'))
   file_map$Org = factor(file_map$Org)
   file_map$Name = factor(file_map$Name)
   file_map$ID = factor(file_map$ID)
@@ -75,136 +72,67 @@ get_file_map = function() {
 
 # NOTE: missing data_sites IDs produced via: `abbreviate(gsub(',','',data_sites[is.na(data_sites$ID),'Name']), named=F)`
 get_data_sites = function() {
-  if (!exists('data_sites')) {
-    data_sites = read.csv('data/load/sites/sites.csv')
-    data_sites[data_sites==''] = NA
-  }
+  data_sites = read.csv('data/load/sites/sites.csv')
+  data_sites[data_sites==''] = NA
   return(data_sites)
 }
 
 path_metrics_output = 'analysis/characterization/preprocessing/_output/'
 get_data_metrics = function() {
-  if (!exists('data_metrics')) {
-    data_metrics = rbind(read.csv(paste0(path_metrics_output, 'metrics_NAVY.csv')),
-                         read.csv(paste0(path_metrics_output, 'metrics_JGL.csv')),
-                         read.csv(paste0(path_metrics_output, 'metrics_NPS.csv')),
-                         read.csv(paste0(path_metrics_output, 'metrics_SDA.csv')))
-    # NOTE: Some SDA measurements were recorded with overloaded gains (i.e. distortion) that result in erroneously high values during flybys. Here, we remove site dates with measurements exceeding 110 dB.
-    data_metrics = data_metrics[-which(data_metrics$Org == 'SDA' & data_metrics$Lmax > 110.0),]
-    data_metrics$Date   = as.POSIXct(data_metrics$Date, tz='UTC')
-    data_metrics$Day    = factor(weekdays(data_metrics$Date, abbreviate=T), levels=days)
-    # data_metrics$Field  = get_field_name_for_ID(data_metrics$ID) # TODO?
-    data_metrics$Period = NA
-    data_metrics[data_metrics$Org=='NAVY',]$Period = sapply(data_metrics[data_metrics$Org=='NAVY',]$Date, get_navy_monitoring_period_for_times)
-  }
+  data_metrics = rbind(read.csv(paste0(path_metrics_output, 'metrics_NAVY.csv')),
+                       read.csv(paste0(path_metrics_output, 'metrics_JGL.csv')),
+                       read.csv(paste0(path_metrics_output, 'metrics_NPS.csv')))
+  data_metrics$Date   = as.POSIXct(data_metrics$Date, tz='UTC')
+  data_metrics$Day    = factor(weekdays(data_metrics$Date, abbreviate=T), levels=days)
+  data_metrics$Period = NA
+  data_metrics[data_metrics$Org=='NAVY',]$Period = sapply(data_metrics[data_metrics$Org=='NAVY',]$Date, get_navy_monitoring_period_for_times)
   return(data_metrics)
 }
 
 get_data_ops = function() {
-  if (!exists('data_ops')) {
-    data_ops = read.csv('data/flight_ops/_output/ops.csv')
-    data_ops$Time   = as.POSIXct(data_ops$Time, tz='UTC')
-    data_ops$Hour   = as.factor(format(data_ops$Time, format='%H'))
-    data_ops$DEN    = get_den_period_for_hours(data_ops$Hour)
-    data_ops$Day    = factor(weekdays(data_ops$Time, abbreviate=T), levels=days)
-    data_ops$Date   = factor(format(data_ops$Time, format_date))
-    data_ops$Period = get_navy_monitoring_period_for_times(data_ops$Time)
-  }
+  data_ops = read.csv('data/flight_ops/_output/ops.csv')
+  data_ops$Time   = as.POSIXct(data_ops$Time, tz='UTC')
+  data_ops$Hour   = as.factor(format(data_ops$Time, format='%H'))
+  data_ops$DEN    = get_den_period_for_hours(data_ops$Hour)
+  data_ops$Day    = factor(weekdays(data_ops$Time, abbreviate=T), levels=days)
+  data_ops$Date   = factor(format(data_ops$Time, format_date))
+  data_ops$Period = get_navy_monitoring_period_for_times(data_ops$Time)
   return(data_ops)
 }
 
 path_events_output = 'analysis/characterization/preprocessing/_output/'
 get_data_events = function() {
-  if (!exists('data_events')) {
-    events_jgl = read.csv(paste0(path_events_output, 'events_JGL.csv'))
-    events_jgl$Org = 'JGL'
-    events_navy = read.csv(paste0(path_events_output, 'events_NAVY.csv'))
-    events_navy$Org = 'NAVY'
-    events_nps = read.csv(paste0(path_events_output, 'events_NPS.csv'))
-    events_nps$Org = 'NPS'
-    events_sda = read.csv(paste0(path_events_output, 'events_SDA.csv'))
-    events_sda$Org = 'SDA'
-    
-    # Special case for SDA peaks >= 95 dB due to equipment error. Some SDA measurements were recorded with overloaded gains (i.e. distortion) that result in erroneously high values during flybys.
-    events_sda[events_sda$LAeq_Lmax >= 95, 'LAeq']      = NA
-    events_sda[events_sda$LAeq_Lmax >= 95, 'SEL']       = NA
-    events_sda[events_sda$LAeq_Lmax >= 95, 'LAFmax']    = NA
-    events_sda[events_sda$LAeq_Lmax >= 95, 'LCpeak']    = NA
-    events_sda[events_sda$LAeq_Lmax >= 95, 'Onset']     = NA
-    events_sda[events_sda$LAeq_Lmax >= 95, 'LAeq_Lmax'] = NA
-    
-    data_events = rbind(events_jgl,
-                        events_navy,
-                        events_nps,
-                        events_sda)
-    
-    data_events$TimeStart  = as.POSIXct(data_events$TimeStart, tz='UTC')
-    data_events$TimeEnd    = as.POSIXct(data_events$TimeEnd, tz='UTC')
-    data_events$Hour       = format(data_events$TimeStart, format='%H')
-    data_events$DEN        = get_den_period_for_hours(data_events$Hour)
-    data_events$Day        = factor(weekdays(data_events$TimeStart, abbreviate=T), levels=days)
-    data_events$Date       = as.POSIXct(format(data_events$TimeStart, format_date), tz='UTC')
-    data_events$Period     = get_navy_monitoring_period_for_times(data_events$TimeStart)
-  }
+  events_jgl = read.csv(paste0(path_events_output, 'events_JGL.csv'))
+  events_jgl$Org = 'JGL'
+  events_navy = read.csv(paste0(path_events_output, 'events_NAVY.csv'))
+  events_navy$Org = 'NAVY'
+  events_nps = read.csv(paste0(path_events_output, 'events_NPS.csv'))
+  events_nps$Org = 'NPS'
+  
+  data_events = rbind(events_jgl,
+                      events_navy,
+                      events_nps)
+  
+  data_events$TimeStart  = as.POSIXct(data_events$TimeStart, tz='UTC')
+  data_events$TimeEnd    = as.POSIXct(data_events$TimeEnd, tz='UTC')
+  data_events$Hour       = format(data_events$TimeStart, format='%H')
+  data_events$DEN        = get_den_period_for_hours(data_events$Hour)
+  data_events$Day        = factor(weekdays(data_events$TimeStart, abbreviate=T), levels=days)
+  data_events$Date       = as.POSIXct(format(data_events$TimeStart, format_date), tz='UTC')
+  data_events$Period     = get_navy_monitoring_period_for_times(data_events$TimeStart)
   return(data_events)
 }
 
 get_data_navy_events_reported = function() {
-  if (!exists('data_navy_events_reported')) {
-    data_navy_events_reported = read.csv('data/events/_output/navy_reported_events.csv')
-    data_navy_events_reported$StartTime  = as.POSIXct(data_navy_events_reported$StartTime, tz='UTC')
-    data_navy_events_reported$LAeq_LmaxTime = as.POSIXct(data_navy_events_reported$LAeq_LmaxTime, tz='UTC')
-    data_navy_events_reported$Hour       = format(data_navy_events_reported$StartTime, format='%H')
-    data_navy_events_reported$DEN        = get_den_period_for_hours(data_navy_events_reported$Hour)
-    data_navy_events_reported$Day        = factor(weekdays(data_navy_events_reported$StartTime, abbreviate=T), levels=days)
-    data_navy_events_reported$Date       = factor(format(data_navy_events_reported$StartTime, format_date))
-    data_navy_events_reported$Period     = get_navy_monitoring_period_for_times(data_navy_events_reported$StartTime)
-  }
+  data_navy_events_reported = read.csv('data/events/_output/navy_reported_events.csv')
+  data_navy_events_reported$StartTime  = as.POSIXct(data_navy_events_reported$StartTime, tz='UTC')
+  data_navy_events_reported$LAeq_LmaxTime = as.POSIXct(data_navy_events_reported$LAeq_LmaxTime, tz='UTC')
+  data_navy_events_reported$Hour       = format(data_navy_events_reported$StartTime, format='%H')
+  data_navy_events_reported$DEN        = get_den_period_for_hours(data_navy_events_reported$Hour)
+  data_navy_events_reported$Day        = factor(weekdays(data_navy_events_reported$StartTime, abbreviate=T), levels=days)
+  data_navy_events_reported$Date       = factor(format(data_navy_events_reported$StartTime, format_date))
+  data_navy_events_reported$Period     = get_navy_monitoring_period_for_times(data_navy_events_reported$StartTime)
   return(data_navy_events_reported)
-}
-
-get_data_complaint_reports = function(y = c(), m = c(), d = c()) {
-  data_reports = read.csv(paste0(database_path, '/Quiet Skies/NoiseComplaintReports_2020-2021.csv'))
-  
-  # Clean data
-  data_reports[data_reports == ''] = NA
-  data_reports = data_reports[!is.na(data_reports$ID),]
-  colnames(data_reports)[1] = 'Longitude'
-  colnames(data_reports)[2] = 'Latitude'
-  colnames(data_reports)[6] = 'Character'
-  colnames(data_reports)[8] = 'Month'
-  colnames(data_reports)[9] = 'Day'
-  colnames(data_reports)[10] = 'Year'
-  colnames(data_reports)[11] = 'Time'
-  data_reports$Longitude = as.numeric(data_reports$Longitude)
-  data_reports$Latitude = as.numeric(data_reports$Latitude)
-  data_reports[abs(data_reports$Latitude)>90,'Latitude'] = NA
-  
-  # NA default shaw island coordinates
-  default_lat = 48.55987906
-  default_long = -122.9289694
-  default_idxs = which(data_reports$Latitude==default_lat & data_reports$Longitude==default_long)
-  data_reports[default_idxs,'Latitude'] = NA
-  data_reports[default_idxs,'Longitude'] = NA
-  
-  # Standardize and factor columns
-  data_reports$Character = tolower(data_reports$Character)
-  data_reports$Character = gsub(' ', data_reports$Character, replacement='_')
-  data_reports[is.na(data_reports$Character),'Character'] = 'not_reported'
-  data_reports$Character = factor(data_reports$Character)
-  data_reports$Aircraft = factor(data_reports$Aircraft)
-  data_reports$Year = factor(data_reports$Year)
-  data_reports$Month = factor(data_reports$Month)
-  if (length(y) > 0) {
-    data_reports = data_reports[data_reports$Year %in% y,]
-  }
-  if (length(m) > 0) {
-    data_reports = data_reports[data_reports$Month %in% m,]
-  }
-  if (length(d) > 0) {
-    data_reports = data_reports[data_reports$Day %in% d,]
-  }
-  return(data_reports)
 }
 
 get_field_name_for_ID = function(id) {

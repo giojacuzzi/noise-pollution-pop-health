@@ -98,7 +98,7 @@ print(p_validation)
 ggsave(p_validation, file=glue('simulation/_output/validation.png'), width=16, height=8)
 
 # Explanation for using continuous Lden for Navy sites
-# - We do not have the data or tools necessary to classify noise events of Navy sites. Other sites (JGL, NPS, and SDA) had in-person operators validating the presence of noise events due to aircraft operations
+# - We do not have the data or tools necessary to classify noise events of Navy sites. Other sites (JGL, NPS) had in-person operators validating the presence of noise events due to aircraft operations
 # - Aircraft operations produce the dominant noise events in the area, and their influence on overall level values far outweighs that of any transient noise*
 # - Ldn values are within +/- 3 dB of Navy reported measured values for Navy sites (excluding Lopez and PT)
 summary(comparison[!(comparison$ID %in% c('5B_SG', '33_SG')), 'D_LdnPhiMeasured_DNLNavyMeasured'])

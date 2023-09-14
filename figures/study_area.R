@@ -94,7 +94,6 @@ naswi_land = st_difference(naswi_land, naswi_water)
 
 naswi_sites = na.omit(sites)
 naswi_sites = sites[sites$ID %in% unique(get_data_metrics()[,'ID']), ]
-naswi_sites = naswi_sites[naswi_sites$Org != 'SDA', ]
 naswi_sites$Test = seq(1, nrow(naswi_sites))
 
 flight_tracks_union = st_union(flight_tracks)

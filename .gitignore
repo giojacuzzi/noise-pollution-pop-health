@@ -24,6 +24,9 @@ analysis/_output/health_impact_stack.gri
 analysis/preprocessing/_output/pop_county_stack.gri
 analysis/preprocessing/_output/pop_exposure_stack.gri
 
+# Intermediate output files
+data/load/_output
+
 # Binary image files
 *.jpg
 *.jpeg

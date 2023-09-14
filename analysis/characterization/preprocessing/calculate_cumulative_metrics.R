@@ -1,4 +1,4 @@
-source('data/metrics/metrics.R')
+source('metrics/metrics.R')
 source('data/load/load_site_date.R')
 
 get_levels_for_org = function(data, org) {
@@ -6,7 +6,6 @@ get_levels_for_org = function(data, org) {
   return(switch(org,
                 'NAVY'=data$LAeq,
                 'JGL'=data$LAeq,
-                'SDA'=data$LAeq,
                 'NPS'=data$LAeq,
                 NULL))
 }

@@ -80,7 +80,7 @@ selected_columns_nps = c(
   'H20000'
 )
 
-# Takes an absolute path to an SDA .XLS file
+# Takes an absolute path to an NPS .txt file
 # Returns a list of data frames, one per date present in file
 load_file_nps = function(file) {
   # Read data from .txt file

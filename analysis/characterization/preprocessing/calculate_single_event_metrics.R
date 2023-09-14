@@ -257,17 +257,6 @@ find_events_for_site_date = function(id, date) {
           Threshold=threshold
         )
         
-        # # Special case for SDA peaks >= 95 dB due to equipment error
-        # if (org == 'SDA' & sum(levels >= 95) > 0) {
-        #   message('SDA equipment error')
-        #   event$LAeq=NA
-        #   event$SEL=NA
-        #   event$LAeq_Lmax=NA
-        #   event$LAFmax=NA
-        #   event$LCpeak=NA
-        #   event$Onset=onset
-        # }
-        
         site_date_events = rbind(site_date_events, event)
         
         if (debug_plot) {

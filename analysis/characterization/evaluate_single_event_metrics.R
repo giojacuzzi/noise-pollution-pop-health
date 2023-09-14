@@ -19,20 +19,18 @@ mapview(
   sites_with_events,
   xcol='Longitude', ycol='Latitude', zcol='Org',
   layer.name = 'Organization', crs=4269, grid=F, legend=T,
-  col.regions=c('darkgoldenrod2', 'navy', 'green3', 'darkturquoise')
+  col.regions=c('darkgoldenrod2', 'navy', 'green3')
 ) %>% addStaticLabels(label=sites_with_events$ID, direction='top')
 
 ## Box plot event LAeq_Lmax per site > a threshold value
 threshold=80
-ggplot(data_events[data_events$LAeq_Lmax>=threshold & data_events$Org!='SDA',], aes(x=ID, y=LAeq_Lmax)) +
+ggplot(data_events[data_events$LAeq_Lmax>=threshold,], aes(x=ID, y=LAeq_Lmax)) +
   geom_boxplot(fill="slateblue", alpha=0.0) +
   geom_jitter(color="black", size=0.4, alpha=0.5) +
   coord_flip()
 
 ## Max events per site ---------------------------------------------------------
 events_lmax = data_events[!is.na(data_events$LAeq_Lmax),]
-# discard SDA data in lmax calculations due to instrumentation error
-events_lmax = events_lmax[events_lmax$Org!='SDA',]
 # discard dates before 2015, when primary Growler activity began
 events_lmax = events_lmax[events_lmax$TimeStart >= as.POSIXct('2015-01-01 00:00:00', tz='UTC'), ]
 # discard events from site 33_SG (no discernable aircraft events recorded)
