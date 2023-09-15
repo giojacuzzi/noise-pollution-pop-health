@@ -1,0 +1,134 @@
+Number of people exposed to levels beyond bounds of common ERFs: 
+ HA  5136 
+ HSD  4844 
+Island (county)
+  HA FICON  5440.804 
+  HA ISO        9394.091 
+  HA WHO        17504.65 
+  HA FAANES  20593.12 
+  HA Yokoshima  29785.5 
+  HSD WHO         7332.047 
+  HSD Smith       8666.458 
+Jefferson (county)
+  HA FICON  0.6010177 
+  HA ISO        1.377112 
+  HA WHO        6.87546 
+  HA FAANES  0 
+  HA Yokoshima  17.67518 
+  HSD WHO         2.380482 
+  HSD Smith       2.552469 
+Samish (native)
+  HA FICON  116.0774 
+  HA ISO        334.299 
+  HA WHO        1191.46 
+  HA FAANES  687.7411 
+  HA Yokoshima  2727.523 
+  HSD WHO         237.8195 
+  HSD Smith       262.0717 
+San.Juan (county)
+  HA FICON  0.5040727 
+  HA ISO        1.116486 
+  HA WHO        5.802766 
+  HA FAANES  0 
+  HA Yokoshima  15.09675 
+  HSD WHO         0 
+  HSD Smith       0 
+Skagit (county)
+  HA FICON  244.328 
+  HA ISO        703.6044 
+  HA WHO        2498.06 
+  HA FAANES  1429.52 
+  HA Yokoshima  5708.075 
+  HSD WHO         480.3692 
+  HSD Smith       528.489 
+Snohomish (county)
+  HA FICON  0 
+  HA ISO        0 
+  HA WHO        0 
+  HA FAANES  0 
+  HA Yokoshima  0 
+  HSD WHO         0 
+  HSD Smith       0 
+Swinomish (native)
+  HA FICON  40.78004 
+  HA ISO        122.389 
+  HA WHO        396.491 
+  HA FAANES  281.7202 
+  HA Yokoshima  873.8276 
+  HSD WHO         102.8505 
+  HSD Smith       113.0733 
+    Type      Name HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith
+1 county    Island     5441   9394  17505     20593        29786    7332      8666
+2 county Jefferson        1      1      7         0           18       2         3
+3 native    Samish      116    334   1191       688         2728     238       262
+4 county  San.Juan        1      1      6         0           15       0         0
+5 county    Skagit      244    704   2498      1430         5708     480       528
+6 county Snohomish        0      0      0         0            0       0         0
+7 native Swinomish       41    122    396       282          874     103       113
+    Type      Name HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith
+1 county    Island     5441   9394  17505     20593        29786    7332      8666
+2 county Jefferson        1      1      7         0           18       2         3
+3 native    Samish      116    334   1191       688         2728     238       262
+4 county  San.Juan        1      1      6         0           15       0         0
+5 county    Skagit      244    704   2498      1430         5708     480       528
+7 native Swinomish       41    122    396       282          874     103       113
+    Type      Name HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith
+1 county    Island     5441   9394  17505     20593        29786    7332      8666
+5 county    Skagit      244    704   2498      1430         5708     480       528
+3 native    Samish      116    334   1191       688         2728     238       262
+7 native Swinomish       41    122    396       282          874     103       113
+2 county Jefferson        1      1      7         0           18       2         3
+4 county  San.Juan        1      1      6         0           15       0         0
+  HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith  Type  Name
+1     5687  10100  20016     22023        35527    7814      9197 Total Total
+        Name HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith
+1     Island     5441   9394  17505     20593        29786    7332      8666
+5     Skagit      244    704   2498      1430         5708     480       528
+3     Samish      116    334   1191       688         2728     238       262
+7  Swinomish       41    122    396       282          874     103       113
+2  Jefferson        1      1      7         0           18       2         3
+4   San.Juan        1      1      6         0           15       0         0
+11     Total     5687  10100  20016     22023        35527    7814      9197
+                    Name HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith
+1          Island County     5441   9394  17505     20593        29786    7332      8666
+5          Skagit County      244    704   2498      1430         5708     480       528
+3            Samish TDSA      116    334   1191       688         2728     238       262
+7  Swinomish Reservation       41    122    396       282          874     103       113
+2       Jefferson County        1      1      7         0           18       2         3
+4        San Juan County        1      1      6         0           15       0         0
+11                 Total     5687  10100  20016     22023        35527    7814      9197
+5 county    Skagit      244    704   2498      1430         5708     480       528
+7 native Swinomish       41    122    396       282          874     103       113
+    Type      Name HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith
+1 county    Island     5441   9394  17505     20593        29786    7332      8666
+5 county    Skagit      244    704   2498      1430         5708     480       528
+3 native    Samish      116    334   1191       688         2728     238       262
+7 native Swinomish       41    122    396       282          874     103       113
+2 county Jefferson        1      1      7         0           18       2         3
+4 county  San.Juan        1      1      6         0           15       0         0
+  HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith  Type  Name
+1     5687  10100  20016     22023        35527    7814      9197 Total Total
+        Name HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith
+1     Island     5441   9394  17505     20593        29786    7332      8666
+5     Skagit      244    704   2498      1430         5708     480       528
+3     Samish      116    334   1191       688         2728     238       262
+7  Swinomish       41    122    396       282          874     103       113
+2  Jefferson        1      1      7         0           18       2         3
+4   San.Juan        1      1      6         0           15       0         0
+11     Total     5687  10100  20016     22023        35527    7814      9197
+                    Name HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith
+1          Island County     5441   9394  17505     20593        29786    7332      8666
+5          Skagit County      244    704   2498      1430         5708     480       528
+3            Samish TDSA      116    334   1191       688         2728     238       262
+7  Swinomish Reservation       41    122    396       282          874     103       113
+2       Jefferson County        1      1      7         0           18       2         3
+4        San Juan County        1      1      6         0           15       0         0
+11                 Total     5687  10100  20016     22023        35527    7814      9197
+Created /Users/giojacuzzi/repos/PHI-Noise-Pollution/analysis/population_health_impacts/_output/health_impact_output.txt 
+Created /Users/giojacuzzi/repos/PHI-Noise-Pollution/analysis/population_health_impacts/_output/health_impact_summary.csv 
+ut/health_impact_output.txt 
+Created /Users/giojacuzzi/repos/PHI-Noise-Pollution/analysis/population_health_impacts/_output/health_impact_summary.csv 
+ut/health_impact_output.txt 
+Created /Users/giojacuzzi/repos/PHI-Noise-Pollution/analysis/population_health_impacts/_output/health_impact_summary.csv 
+txt 
+Created /Users/giojacuzzi/repos/PHI-Noise-Pollution/analysis/population_health_impacts/_output/health_impact_summary.csv 

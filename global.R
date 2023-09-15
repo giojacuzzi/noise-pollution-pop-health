@@ -77,7 +77,7 @@ get_data_sites = function() {
   return(data_sites)
 }
 
-path_metrics_output = 'analysis/characterization/preprocessing/_output/'
+path_metrics_output = 'analysis/noise_regime/preprocessing/_output/'
 get_data_metrics = function() {
   data_metrics = rbind(read.csv(paste0(path_metrics_output, 'metrics_NAVY.csv')),
                        read.csv(paste0(path_metrics_output, 'metrics_JGL.csv')),

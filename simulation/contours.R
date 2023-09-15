@@ -1,5 +1,5 @@
 source('global.R')
-source('metrics/health_metrics.R')
+source('metrics/thresholds.R')
 library(glue)
 
 # Read and process noise contours from shapefile at path
@@ -55,7 +55,9 @@ get_contours_Lnight = function(threshold = 0) {
 }
 
 # Determine which counties and native lands are within the spatial distribution of noise health impacts
-get_exposed_counties_and_native_lands = function() {
+get_exposed_areas = function() {
+  
+  msg('Determining exposed areas...')
   
   pop_cty = get_acs(geography = 'county', variables = 'B01003_001', year = 2021, state = 'WA', geometry = T)
   pop_nl = get_acs(geography = 'american indian area/alaska native area/hawaiian home land', variables = 'B01003_001', year = 2021, geometry = T)
@@ -68,9 +70,9 @@ get_exposed_counties_and_native_lands = function() {
   contours = list(get_contours_Ldn(), get_contours_Leq24(), get_contours_Lnight())
   c = 1
   for (contour in contours) {
-    if (c == 1) l = lden_impact_threshold
-    if (c == 2) l = HL_leq24_impact_threshold
-    if (c == 3) l = lnight_impact_threshold
+    if (c == 1) l = threshold_adverse_health_effects_Lden
+    if (c == 2) l = threshold_hearing_impairment_Leq24
+    if (c == 3) l = threshold_sleep_disturbance_Lnight
     
     contour = contour[as.numeric(contour$Level)>=l,]
     st_agr(contour) = 'constant'
@@ -84,6 +86,10 @@ get_exposed_counties_and_native_lands = function() {
   counties = unlist(unique(counties))
   counties = unlist(lapply(counties, function(s) { unlist(str_split(s, ' County, Washington'))[1] }))
   native_lands = unlist(unique(native_lands))
+  
+  msg('Exposed counties:', counties)
+  msg('Exposed native lands:', native_lands)
+  
   return(list(
     counties=counties,
     native_lands=native_lands

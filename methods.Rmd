@@ -137,43 +137,44 @@ source('simulation/validation.R')
 
 ### Dasymetric population exposure
 
-Generate a dasymetric population density map for all exposed areas.
+Generate dasymetric population density maps for all exposed areas.
 
 ```{r}
 source('simulation/contours.R')
+exposed_areas = get_exposed_areas()
 
-exposed_areas = get_exposed_counties_and_native_lands()
-
-source('analysis/preprocessing/dasymetric.R')
+source('analysis/population_noise_exposure/dasymetric_population_density.R')
 for (id in exposed_areas$counties) generate_dasypop_county(id)
 for (id in exposed_areas$native_lands) generate_dasypop_native_land(id)
 ```
 
-Combine the dasymetric population density maps with the noise contour maps to yield noise exposure across the population.
+Combine dasymetric population density maps with noise contour maps to yield noise exposure across the population.
 
 ```{r}
-source('analysis/preprocessing/pop_exposure.R')
+source('analysis/population_noise_exposure/calculate_population_noise_exposure.R')
 
-generate_pop_exposure_stack()
+source('analysis/population_noise_exposure/assess_population_noise_exposure.R')
 ```
 
-## Population health outcomes
+## Population health impacts
 
 Next, conduct health assessment for chosen metrics across the population.
 
 ```{r}
-source('analysis/health_assessment_summary.R')
+source('analysis/population_health_impacts/calculate_population_health_impacts.R')
+
+source('analysis/population_health_impacts/assess_population_health_impacts.R')
 ```
 
 Conduct childhood learning school impact evaluation.
 
 ```{r}
-source('analysis/health_wellbeing_impacts/childhood_learning.R')
+source('analysis/population_health_impacts/childhood_learning.R')
 ```
 
 Conduct OSHA and NIOSH hearing loss impact evaluation. Reminder: uses SPL data
 
 ```{r}
 # Evaluate OSHA/NIOSH TWA for each site date
-source('analysis/health_wellbeing_impacts/preprocessing/calculate_osha_niosh.R')
+source('analysis/population_health_impacts/preprocessing/calculate_osha_niosh.R')
 ```
