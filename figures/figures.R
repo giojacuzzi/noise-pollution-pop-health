@@ -10,10 +10,10 @@ source('global.R')
 source('simulation/contours.R')
 
 source('metrics/metrics.R')
-source('metrics/health_metrics.R')
+source('metrics/thresholds.R')
 source('metrics/exposure_response_functions.R')
 
-input_path = paste0(here::here(), '/analysis/preprocessing/_output')
+input_path = paste0(here::here(), '/analysis/population_noise_exposure/_output/noise_exposure')
 output_path = paste0(here::here(), '/figures/_output')
 pop_exposure_stack = stack(glue('{input_path}/pop_exposure_stack.grd'))
 
@@ -40,10 +40,10 @@ exposure_levels_Ldn$Level = factor(exposure_levels_Ldn$Level, levels=level_scale
 exposure_levels_Ldn = exposure_levels_Ldn[exposure_levels_Ldn$Population != 0, ]
 p_pop_exposed_per_5dB = ggplot(exposure_levels_Ldn, aes(x=Level, y=Population, fill=Level)) +
   geom_bar(position='dodge', stat='identity') +
-  scale_fill_viridis_d(option='plasma', drop = F) +
-  ggtitle('Estimated population exposed per 5dB Ldn') + xlab('Ldn (dB)') +
-  ylab('Estimated population') +
-  geom_text(aes(label=round(Population)), position=position_dodge(width=0.9), vjust=-0.25); p_pop_exposed_per_5dB
+  scale_fill_viridis_d(option='plasma', drop = F, name=expression(L[dn]~'dB('*A*')')) +
+  ggtitle(expression('Estimated population exposed per 5 dB'~L[dn])) + xlab(expression(L[dn])) +
+  ylab('Population') +
+  geom_text(aes(label=round(Population)), position=position_dodge(width=0.9), vjust=-0.25, size=7); p_pop_exposed_per_5dB
 ggsave(p_pop_exposed_per_5dB + theme(text=element_text(size=22), plot.margin = margin(1,1,1,1, 'cm')), file=glue('{output_path}/pop_exposed_per_5dB.png'), width=10, height=9)
 
 # Plot maps
