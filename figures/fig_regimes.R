@@ -63,17 +63,18 @@ names(results) = c('Name', 'Population', 'Exposed Population', 'Highly Annoyed (
 results = results[, c('Operations', 'Highly Annoyed (WHO)', 'Highly Sleep Disturbed (WHO)', 'Exposed Population')]
 
 results_long = round(results / 1000.0, 2) %>% pivot_longer(cols=names(results)[2:ncol(results)], names_to='Outcome', values_to='Estimate')
+lab_size = 6
 
 p_simulations = results_long %>% ggplot(aes(x=Operations, y=Estimate, group=Outcome, color=Outcome)) +
-  geom_vline(aes(xintercept=nops_4MP / 1000.0), linetype = 'dashed', color = 'gray') +
-  geom_vline(aes(xintercept=nops_A2A / 1000.0), linetype = 'dashed', color = 'gray') +
-  annotate('text', x=(nops_4MP - 3000) / 1000.0, y=50, label='This study', angle=90, color = 'gray') +
-  annotate('text', x=(nops_A2A - 3000) / 1000.0, y=50, label='Projected 2021 total', angle=90, color = 'gray') +
-  geom_line() +
-  geom_point() +
-  annotate('text', x=65, y=66.5, label='Exposed population', angle=17, color = '#444444', size = 20) +
-  annotate('text', x=65, y=20, label='Highly annoyed (WHO)', angle=6, color = '#F8766D', size = 20) +
-  annotate('text', x=67, y=9, label='Highly sleep disturbed (WHO)', angle=2, color = '#619CFF', size = 20) +
+  geom_vline(aes(xintercept=nops_4MP / 1000.0), linetype = 'dashed', color = 'gray', lwd=1.5) +
+  geom_vline(aes(xintercept=nops_A2A / 1000.0), linetype = 'dashed', color = 'gray', lwd=1.5) +
+  annotate('text', x=(nops_4MP - 3000) / 1000.0, y=50, label='This study', angle=90, color = 'gray', size = lab_size) +
+  annotate('text', x=(nops_A2A - 3000) / 1000.0, y=50, label='Projected 2021 total', angle=90, color = 'gray', size = lab_size) +
+  geom_line(lwd=1.5) +
+  geom_point(size=2) +
+  annotate('text', x=65, y=66.5, label='Exposed population', angle=17, color = '#444444', size = lab_size) +
+  annotate('text', x=65, y=20, label='Highly annoyed (WHO)', angle=6, color = '#F8766D', size = lab_size) +
+  annotate('text', x=67, y=9, label='Highly sleep disturbed (WHO)', angle=2, color = '#619CFF', size = lab_size) +
   scale_color_manual(labels=c('Exposed population','Highly annoyed (WHO)','Highly sleep disturbed (WHO)'), values=c('#444444','#F8766D', '#619CFF')) +
   scale_x_continuous(sec.axis = ggplot2::sec_axis(~. / nops_4MP * 1000.0, name = 'Scaling factor', labels = scales::label_percent())) +
   # scale_color_manual(name='Health Outcome', values=erf_colors, breaks=names(comp)[3:nstats]) +
