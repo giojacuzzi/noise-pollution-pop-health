@@ -1,20 +1,21 @@
 source('global.R')
 source('metrics/exposure_response_functions.R')
+library(patchwork)
 
 # Annoyance
 erf_names = c('Military (Yokoshima 2021)','Guideline (WHO 2018)', 'Standard (ISO 2016)', 'Navy (FICON 1992)', 'National (FAA NES 2021)')
-erf_colors = c('red', 'black', 'darkorchid2', 'royalblue', 'forestgreen')
+erf_colors = c('#e066ff', '#222222', '#F8766D', '#619CFF', '#00BA38')
 names(erf_colors) = erf_names
 pt_size = 2.7
 pt_alpha = 0.7
 
 ggsave_output_path = 'figures/_output/'
 
-p_ha = ggplot() +
+p_HA = ggplot() +
   # Confidence intervals
-  geom_ribbon(pi_iso_miedema, mapping=aes(x=dB5,ymin=Lower,ymax=Upper), fill='purple', alpha=0.1) +
-  geom_ribbon(ci_Yokoshima, mapping=aes(x=Lden,ymin=Lower,ymax=Upper), fill='red', alpha=0.1) +
-  geom_ribbon(ci_FAANES, mapping=aes(x=Ldn,ymin=Lower,ymax=Upper), fill='forestgreen', alpha=0.1) +
+  geom_ribbon(pi_iso_miedema, mapping=aes(x=dB5,ymin=Lower,ymax=Upper), fill='#F8766D', alpha=0.1) +
+  geom_ribbon(ci_Yokoshima, mapping=aes(x=Lden,ymin=Lower,ymax=Upper), fill='#e066ff', alpha=0.1) +
+  geom_ribbon(ci_FAANES, mapping=aes(x=Ldn,ymin=Lower,ymax=Upper), fill='#00BA38', alpha=0.1) +
   # Exposure-response functions
   stat_function(fun=exp_resp_WHO, xlim=bounds_who, linewidth=.7, aes(color='Guideline (WHO 2018)')) +
   stat_function(fun=exp_resp_ISO_Miedema, xlim=bounds_iso_miedema, linewidth=.7, aes(color='Standard (ISO 2016)')) +
@@ -23,35 +24,54 @@ p_ha = ggplot() +
   stat_function(fun=exp_resp_FAANES, xlim=bounds_FAANES, linewidth=.7, aes(color='National (FAA NES 2021)')) +
   scale_color_manual(name='Exposure-response', values=erf_colors, breaks=erf_names) +
   # Plot configuration
-  labs(title='Probability of high annoyance in response to aircraft noise') +
-  scale_x_continuous(name=expression(L[den]~'dB('*A*')'), limits=c(40,90), oob=rescale_none) +
+  labs(title='Probability of high annoyance') +
+  scale_x_continuous(name=expression(L[dn]~'dB('*A*')'), limits=c(40,90), oob=rescale_none) +
   scale_y_continuous(name='%HA', n.breaks=9, limits=c(0,90), oob=rescale_none)
-print(p_ha)
-ggsave(p_ha, file=paste0(ggsave_output_path, 'erf_ha.png'), width=ggsave_width, height=ggsave_height)
+print(p_HA)
+ggsave(p_HA, file=paste0(ggsave_output_path, 'erf_HA.png'), width=ggsave_width, height=ggsave_height)
 
 # Sleep disturbance
 erf_names = c('Guideline (WHO 2018)', 'Updated WHO Guideline (Smith 2022)')
-erf_colors = c('black', 'orange')
+erf_colors = c('black', '#20dfdf')
 names(erf_colors) = erf_names
 pt_size = 2.7
 pt_alpha = 0.7
 
 p_HSD = ggplot() +
   # Confidence intervals
-  geom_ribbon(ci_HSD_combinedestimate, mapping=aes(x=Lnight,ymin=Lower,ymax=Upper), fill='orange', alpha=0.1) +
-  geom_ribbon(ci_HSD_WHO, mapping=aes(x=Lnight,ymin=Lower,ymax=Upper), fill='black', alpha=0.1) +
+  geom_ribbon(ci_HSD_combinedestimate, mapping=aes(x=Lnight,ymin=Lower,ymax=Upper), fill='#20dfdf', alpha=0.1) +
+  geom_ribbon(ci_HSD_WHO, mapping=aes(x=Lnight,ymin=Lower,ymax=Upper), fill='gray', alpha=0.15) +
   # Exposure-response function(s)
   # stat_function(fun=exp_resp_HSD_combinedestimate, xlim=c(bounds_HSD[2],80), linetype='dashed', color=erf_colors['Smith 2022']) +
   stat_function(fun=exp_resp_HSD_WHO, xlim=bounds_HSD, linewidth=.7, aes(color='Guideline (WHO 2018)')) +
   stat_function(fun=exp_resp_HSD_Smith, xlim=bounds_HSD, linewidth=.7, aes(color='Updated WHO Guideline (Smith 2022)')) +
   scale_color_manual(name='Exposure-response', values=erf_colors, breaks=erf_names) +
   # Plot configuration
+  labs(title='Probability of high sleep disturbance') +
   scale_x_continuous(name=expression(L[night]~'dB('*A*')'), limits=c(40,65), oob=rescale_none) +
-  scale_y_continuous(name='%HSD', n.breaks=9, limits=c(0,60), oob=rescale_none) +
-  labs(title='Probability of high sleep disturbance in response to aircraft noise')
+  scale_y_continuous(name='%HSD', n.breaks=9, limits=c(0,60), oob=rescale_none)
 print(p_HSD)
   ggsave(p_HSD, file=paste0(ggsave_output_path, 'erf_HSD.png'), width=ggsave_width, height=ggsave_height)
 
-library(patchwork)
-p_ha + p_HSD  
-ggsave((p_ha + p_HSD), file=paste0(ggsave_output_path, 'erfs.png'), width=ggsave_width * 2, height=ggsave_height)
+p_theme = theme(
+  plot.title=element_text(size=18),
+  text=element_text(size=20),
+  panel.grid.minor.x = element_blank(),
+  panel.grid.minor.y = element_blank(),
+  legend.position='none'
+)  
+
+p_combined = 
+  p_HA + p_theme +
+  p_HSD + p_theme +
+  plot_annotation(tag_levels = 'A'); p_combined
+
+ggsave(p_combined, file=paste0(ggsave_output_path, 'erfs.png'), width=10, height=5.4)
+ggsave(
+  plot = cowplot::get_legend(p_HA),
+  filename = glue('{ggsave_output_path}/legend_HA.png')
+)
+ggsave(
+  plot = cowplot::get_legend(p_HSD),
+  filename = glue('{ggsave_output_path}/legend_HSD.png')
+)

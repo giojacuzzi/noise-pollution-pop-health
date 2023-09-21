@@ -1,12 +1,5 @@
-library(ggsn)
-library(tigris)
-options(tigris_use_cache = T)
-
-source('global.R')
-
-output_path = paste0(here::here(), '/figures/_output')
-
-# Plot maps
+library(raster)
+source('figures/fig_global.R')
 
 bounds_x = c(-122.86, -122.33) # [min, max]
 bounds_y = c(48.09, 48.47)
@@ -15,35 +8,6 @@ bounds = data.frame(
   y = c(bounds_y[1], bounds_y[2], bounds_y[2], bounds_y[1])
 )
 
-labels_large = data.frame(
-  Name      = c('Oak Harbor', 'Coupeville', 'Port Townsend', 'Anacortes', 'Camano Island', 'La Conner'),
-  Lat  = c(48.297324,   48.213824,   48.125762,   48.502063, 48.2415588,   48.389814),
-  Lon = c(-122.659911, -122.675396, -122.799917, -122.620023, -122.490305, -122.470759)
-)
-
-labels_medium = data.frame(
-  Name = c('Swinomish\nReservation', 'Samish TDSA'),
-  Lat  = c(48.424, 48.452),
-  Lon  = c(-122.529, -122.593)
-)
-
-labels_small = data.frame(
-  Name = c('Lopez Island'),
-  Lat  = c(48.438),
-  Lon  = c(-122.835)
-)
-
-
-# wa_state = states(cb=T) %>% filter(NAME=='Washington')
-
-wa_counties_cb = counties(state = 'WA', cb = T)
-wa_counties_cb = st_transform(wa_counties_cb, 'WGS84')
-
-# wa_water = c()
-# for (c in wa_counties_cb$NAME) {
-#   wa_water = rbind(wa_water, area_water(state = 'WA', county = c))
-# }
-# wa_water = st_union(wa_water)
 flight_tracks = st_read('data/gis/NASWI/FlightTracks_Lines.shp', quiet = T)
 flight_tracks = st_set_crs(flight_tracks, 'WGS84')
 
@@ -52,34 +16,14 @@ moa_tracks = st_set_crs(moa_tracks, 'WGS84')
 
 moa_bounds = read.csv('data/gis/NASWI/moa_bounds.csv')
 moa_bounds$Long = -moa_bounds$Long
-# names(moa_bounds) = c('x','y')
 
 sites = st_as_sf(get_data_sites(), coords = c('Longitude', 'Latitude'), crs = 'WGS84', agr = 'constant')
 sites$Org = factor(sites$Org, levels=c('NAVY','JGL','NPS'))
-# sites = na.omit(sites)
-# sites = sites[sites$ID %in% unique(get_data_metrics()[,'ID']), ]
 sites$Longitude = st_coordinates(sites$geometry)[,'X']
 sites$Latitude  = st_coordinates(sites$geometry)[,'Y']
 
-wa_roads = c()
-for (c in c('Island', 'Jefferson', 'San Juan', 'Skagit', 'Snohomish', 'Clallam')) {
-  wa_roads = rbind(wa_roads, roads(state = 'WA', county = c))
-}
-
-wa_military = st_crop(military(year = 2021), xmin = bounds_x[1], ymin = bounds_y[1], xmax = bounds_x[2], ymax = bounds_y[2])
-wa_military = wa_military[wa_military$FULLNAME %in% c('Naval Air Station Whidbey Island', 'Naval Outlying Field Coupeville'), ]
-
 runways = st_read('data/gis/NASWI/NASWI_Runways_Lines.shp', quiet = T)
 runways = st_set_crs(runways, 'WGS84')
-
-naswi_water = c()
-for (c in c('Island', 'Jefferson', 'San Juan', 'Skagit', 'Snohomish', 'Clallam')) {
-  naswi_water = rbind(naswi_water, st_transform(area_water(state = 'WA', county = c), 'WGS84'))
-}
-naswi_water = st_union(naswi_water)
-
-naswi_land = st_union(wa_counties_cb)
-naswi_land = st_difference(naswi_land, naswi_water)
 
 naswi_sites = na.omit(sites)
 naswi_sites = sites[sites$ID %in% unique(get_data_metrics()[,'ID']), ]
@@ -100,16 +44,12 @@ waterbodies = data.frame(
   Lon = c(-122.80557167382709)
 )
 
-native_areas = get_acs(geography = 'american indian area/alaska native area/hawaiian home land', variables = 'B01003_001', year = 2021, geometry = T)
-native_areas = native_areas[native_areas$GEOID %in% c(8750,4075),] # Samish, Swinomish
-native_areas = st_intersection(st_transform(native_areas, st_crs(naswi_land)), st_make_valid(naswi_land))
-
 naswi_map = ggplot() +
   geom_sf(data = naswi_land, fill = 'white') +
-  geom_sf(data = native_areas$geometry, fill=c('#11FF0044','#FFFF0044'), color='#FFFFFF00') + # #11FFFF44
+  geom_sf(data = native_areas$geometry, fill=colors_native, color='#FFFFFF00') +
   geom_sf(data = wa_roads$geometry, color='#DDDDDD', lwd=0.25) +
   geom_sf(data = native_areas$geometry, fill='#FFFFFF00', linetype='dotted') +
-  geom_sf(data = wa_military$geometry, fill='#FF000044', color='#444444', lwd=0.4) +
+  geom_sf(data = wa_military$geometry, fill=color_military, color='#444444', lwd=0.4) +
   geom_sf(data = naswi_land, fill=NA) +
   geom_sf(data = runways, lwd=1, color='#555555') +
   geom_text(data = waterbodies, aes(x = Lon, y = Lat, label = Name), size = 5.5, col = '#b6e3fc', fontface = 'bold', angle=67) +
@@ -152,11 +92,6 @@ naswi_map = ggplot() +
         ); #naswi_map
 # ggsave(naswi_map + theme(text=element_text(size=20), axis.text=element_text(size=12), plot.margin = margin(1,1,1,1, 'cm')), file=glue('{output_path}/monitoring_sites.png'))
 
-# library(geodata)
-# states = st_as_sf(geodata::gadm("United States", level = 1, path = "."))
-# provinces = st_as_sf(geodata::gadm("Canada", level = 1, path = "."))
-
-library(raster)
 us = getData("GADM",country="USA",level=1)
 canada = getData("GADM",country="CAN",level=1)
 us.states = us[us$NAME_1 %in% c('Washington', 'Oregon', 'Idaho'),]
@@ -189,7 +124,7 @@ wa_map = ggplot() +
   geom_polygon(data = bounds, aes(x, y, group = 1), fill=NA, color = 'red') +
   geom_polygon(data = moa_bounds, aes(x=Long, y=Lat, group = 1), fill=NA, color = 'red', linetype='dashed') +
   # geom_sf(data = native_areas$geometry, fill=c('#11FF0044','#11FFFF44'), color='#FFFFFF00') +
-  geom_sf(data = wa_military$geometry, fill='#FF000044', color='#444444', lwd=0.2) +
+  geom_sf(data = wa_military$geometry, fill=color_military, color='#444444', lwd=0.2) +
   # geom_sf(data = flight_tracks, lwd=0.5, color=alpha('blue', 0.1),) +
   # geom_sf(data = moa_tracks, lwd=0.1, color=alpha('blue', 0.5)) +
   geom_sf(data = sites[sites$ID %in% c('99_HOH'), ], size = 5, aes(shape = Org), color='#619CFF') +
