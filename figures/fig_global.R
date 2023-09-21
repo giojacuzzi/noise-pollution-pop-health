@@ -68,3 +68,6 @@ if (!exists('native_areas')) {
   native_areas = native_areas[native_areas$GEOID %in% c(8750,4075),] # Samish, Swinomish
   native_areas = st_intersection(st_transform(native_areas, st_crs(naswi_land)), st_make_valid(naswi_land)) 
 }
+
+runways = st_read('data/gis/NASWI/NASWI_Runways_Lines.shp', quiet = T)
+runways = st_set_crs(runways, 'WGS84')

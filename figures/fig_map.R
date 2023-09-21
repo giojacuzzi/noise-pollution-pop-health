@@ -22,9 +22,6 @@ sites$Org = factor(sites$Org, levels=c('NAVY','JGL','NPS'))
 sites$Longitude = st_coordinates(sites$geometry)[,'X']
 sites$Latitude  = st_coordinates(sites$geometry)[,'Y']
 
-runways = st_read('data/gis/NASWI/NASWI_Runways_Lines.shp', quiet = T)
-runways = st_set_crs(runways, 'WGS84')
-
 naswi_sites = na.omit(sites)
 naswi_sites = sites[sites$ID %in% unique(get_data_metrics()[,'ID']), ]
 naswi_sites$LocationOffset = naswi_sites$Location
