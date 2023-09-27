@@ -20,7 +20,7 @@ output_path = paste0(here::here(), '/analysis/_output')
 # Hearing loss -----------------------------------------------------------------
 # Dependencies: any dataset
 
-occupational_standards = read.csv('analysis/health_wellbeing_impacts/preprocessing/_output/osha_niosh.csv')
+occupational_standards = read.csv('analysis/population_health_impacts/preprocessing/_output/osha_niosh.csv')
 
 # OSHA action level
 # https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.95AppA#:~:text=(2)%20The%20eight%2Dhour,to%20the%20measured%20sound%20level

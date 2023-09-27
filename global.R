@@ -77,11 +77,11 @@ get_data_sites = function() {
   return(data_sites)
 }
 
-path_metrics_output = 'analysis/noise_regime/preprocessing/_output/'
+path_metrics_output = 'analysis/noise_regime/_output/cumulative/'
 get_data_metrics = function() {
-  data_metrics = rbind(read.csv(paste0(path_metrics_output, 'metrics_NAVY.csv')),
-                       read.csv(paste0(path_metrics_output, 'metrics_JGL.csv')),
-                       read.csv(paste0(path_metrics_output, 'metrics_NPS.csv')))
+  data_metrics = rbind(read.csv(paste0(path_metrics_output, 'cumulative_NAVY.csv')),
+                       read.csv(paste0(path_metrics_output, 'cumulative_JGL.csv')),
+                       read.csv(paste0(path_metrics_output, 'cumulative_NPS.csv')))
   data_metrics$Date   = as.POSIXct(data_metrics$Date, tz='UTC')
   data_metrics$Day    = factor(weekdays(data_metrics$Date, abbreviate=T), levels=days)
   data_metrics$Period = NA
@@ -100,13 +100,13 @@ get_data_ops = function() {
   return(data_ops)
 }
 
-path_events_output = 'analysis/characterization/preprocessing/_output/'
+path_events_output = 'analysis/noise_regime/_output/single_event/'
 get_data_events = function() {
-  events_jgl = read.csv(paste0(path_events_output, 'events_JGL.csv'))
+  events_jgl = read.csv(paste0(path_events_output, 'single_event_JGL.csv'))
   events_jgl$Org = 'JGL'
-  events_navy = read.csv(paste0(path_events_output, 'events_NAVY.csv'))
+  events_navy = read.csv(paste0(path_events_output, 'single_event_NAVY.csv'))
   events_navy$Org = 'NAVY'
-  events_nps = read.csv(paste0(path_events_output, 'events_NPS.csv'))
+  events_nps = read.csv(paste0(path_events_output, 'single_event_NPS.csv'))
   events_nps$Org = 'NPS'
   
   data_events = rbind(events_jgl,
@@ -196,7 +196,7 @@ get_24hr_time_window = function(date_start) {
 
 # Fit data frame to standardized time series (by second) for a full 24 hour period
 fit_24hr_time_window = function(data) {
-  date_start = format(data$Time[1], format=format_date)
+  date_start = format(na.omit(data$Time)[1], format=format_date)
   
   window = get_24hr_time_window(date_start)
   

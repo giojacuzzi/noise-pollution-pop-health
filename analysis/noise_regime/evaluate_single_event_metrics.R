@@ -22,22 +22,13 @@ mapview(
   col.regions=c('darkgoldenrod2', 'navy', 'green3')
 ) %>% addStaticLabels(label=sites_with_events$ID, direction='top')
 
-## Box plot event LAeq_Lmax per site > a threshold value
-threshold=80
-ggplot(data_events[data_events$LAeq_Lmax>=threshold,], aes(x=ID, y=LAeq_Lmax)) +
-  geom_boxplot(fill="slateblue", alpha=0.0) +
-  geom_jitter(color="black", size=0.4, alpha=0.5) +
-  coord_flip()
-
 ## Max events per site ---------------------------------------------------------
 events_lmax = data_events[!is.na(data_events$LAeq_Lmax),]
 # discard dates before 2015, when primary Growler activity began
 events_lmax = events_lmax[events_lmax$TimeStart >= as.POSIXct('2015-01-01 00:00:00', tz='UTC'), ]
-# discard events from site 33_SG (no discernable aircraft events recorded)
-events_lmax = events_lmax[events_lmax$ID!='33_SG',]
 events_lmax$ID = factor(events_lmax$ID)
 
-source('analysis/characterization/preprocessing/evaluate_events.R')
+source('analysis/noise_regime/preprocessing/calculate_single_event_metrics.R')
 # Get max event per site
 events_lmax = events_lmax %>% group_by(ID) %>% slice(which.max(LAeq_Lmax))
 events_lmax
@@ -64,11 +55,17 @@ plot_events(
 )
 
 # Max event metrics per site (take Navy site max events from Navy logs and others from event evaluations)
-max_events = data.frame(
-  ID = c(events_navy$SiteID, as.vector(pull(events_lmax[events_lmax$Org!='NAVY', 'ID']))),
-  SEL = c(events_navy$LAeq_SEL, as.vector(pull(events_lmax[events_lmax$Org!='NAVY', 'SEL']))),
-  Lmax = c(events_navy$LAeq_Lmax, as.vector(pull(events_lmax[events_lmax$Org!='NAVY', 'LAeq_Lmax'])))
-)
+max_events = as.data.frame(events_lmax[, c('ID', 'SEL', 'LAeq_Lmax', 'LAFmax', 'LCpeak')])
+names(max_events) = c('ID', 'LE', 'Lmax1s', 'LAFmax', 'LCpeak')
+max_events = merge(data_sites[, c('ID', 'Location')], max_events)
+max_events = max_events[
+  order(max_events[,'LE'], decreasing = T),
+]
+max_events = max_events[max_events$ID!='EBLA001', ]
+
+# Remove duplicate locations from different monitoring sources
+# TODO: Hoh sites
+
 # Write table to file
 write.csv(max_events, glue(output_path, '/max_events.csv'), row.names = F)
 

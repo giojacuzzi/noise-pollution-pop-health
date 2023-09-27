@@ -15,6 +15,11 @@ pop_exposure_stack = stack(glue('{input_path}/pop_exposure_stack.grd'))
 # Level scale to unify colors across plots
 level_scale = seq(40,90,5)
 
+cols = data.frame( # shared color scale among all level metrics
+  level=level_scale,
+  color=viridis_pal(option='C')(length(level_scale))
+)
+
 # Population exposure per 5 dB
 exposure_levels_Ldn = data.frame()
 for (dB in unique(na.omit(as.vector(pop_exposure_stack[['Ldn']])))) {
@@ -36,11 +41,10 @@ exposure_levels_Ldn = exposure_levels_Ldn[exposure_levels_Ldn$Population != 0, ]
 exposure_levels_Ldn$PopulationThousands = round(exposure_levels_Ldn$Population/1000.0,2)
 p_pop_exposed_per_5dB = ggplot(exposure_levels_Ldn, aes(x=Level, y=PopulationThousands, fill=Level)) +
   geom_bar(position='dodge', stat='identity') +
-  scale_fill_viridis_d(option='plasma', drop = F, name=expression(L[dn]~'dB('*A*')')) +
+  scale_fill_manual(values=cols[cols$level %in% seq(45,85,5), 'color'], name = expression(L[dn]~'dB('*A*')')) +
   scale_y_continuous(limits = c(0,25), expand = c(0, 0.5)) +
-  ggtitle(expression('Estimated population exposed per 5 dB'~L[dn])) +
   xlab(expression(L[dn]~'dB('*A*')')) +
-  ylab('Population (thousands)') +
+  ylab('Population size (thousands)') +
   geom_text(aes(label=PopulationThousands), position=position_dodge(width=0.9), vjust=-0.25, size=7, color='#555555') +
   theme_minimal() + theme(
     legend.position = 'none',
@@ -54,7 +58,7 @@ p_pop_exposed_per_5dB = ggplot(exposure_levels_Ldn, aes(x=Level, y=PopulationTho
     axis.title.y = element_text(margin = unit(c(0, 3, 0, 0), 'mm')),
     axis.ticks = element_blank()
   ); p_pop_exposed_per_5dB
-ggsave(p_pop_exposed_per_5dB + theme(text=element_text(size=23), plot.margin = margin(1,1,1,1, 'cm')), file=glue('{output_path}/pop_exposed_per_5dB.png'), width=10, height=9)
+ggsave(p_pop_exposed_per_5dB + theme(text=element_text(size=23)), file=glue('{output_path}/pop_exposed_per_5dB.png'), width=10, height=9)
 
 # Plot maps
 
@@ -91,11 +95,6 @@ for (i in 1:3) {
   }
   contours_5dB[[i]] = c_5dB
 }
-
-cols = data.frame( # shared color scale among all level metrics
-  level=level_scale,
-  color=viridis_pal(option='C')(length(level_scale))
-)
 
 plot_contours = function(contours, threshold, lims, title, units, lwd) {
   below = contours[as.numeric(contours$Level)<(threshold) & as.numeric(contours$Level)>=(threshold-10),]
@@ -140,18 +139,18 @@ plot_contours = function(contours, threshold, lims, title, units, lwd) {
 }
 p_Ldn = plot_contours(contours_5dB[[1]],
                      threshold = threshold_adverse_health_effects_Lden, lims = seq(45,90,5),
-                     title = expression(L[dn]~'(45+ dB)'),
+                     title = expression('Adverse heath effects, 45+ dB'~L[dn]),
                      units = expression('dB('*A*')'), lwd=0.3) +
         geom_text(data = labels_large, aes(x = Lon, y = Lat, label = Name), size = 3.0, col = '#444444') +
         geom_text(data = labels_medium, aes(x = Lon, y = Lat, label = Name), size = 2.5, col = '#444444') +
         geom_text(data = labels_small, aes(x = Lon, y = Lat, label = Name), size = 2.25, col = '#444444'); p_Ldn
 p_Lnight = plot_contours(contours_5dB[[2]],
                          threshold = threshold_sleep_disturbance_Lnight, lims = seq(40,90,5),
-                         title = expression(L[night]~'(40+ dB)'),
+                         title = expression('Sleep disturbance, 40+ dB'~L[night]),
                          units = expression('dB('*A*')'), lwd=0.2); p_Lnight
 p_Leq24 = plot_contours(contours_5dB[[3]],
                         threshold = threshold_hearing_impairment_Leq24, lims = seq(70,90,5),
-                        title = expression(L[eq24]~'(70+ dB)'),
+                        title = expression('Hearing impairment, 70+ dB'~L[eq24]),
                         units = expression('dB('*A*')'), lwd=0.2); p_Leq24
 ggsave(p_Ldn + theme(text=element_text(size=22), plot.margin = margin(5,5,5,5, 'pt')), file=glue('{output_path}/contours_Ldn.png'), width=12, height=10)
 ggsave(p_Lnight + theme(text=element_text(size=22), plot.margin = margin(5,5,5,5, 'pt')), file=glue('{output_path}/contours_Lnight.png'), width=12, height=10)
@@ -190,3 +189,4 @@ ggsave(
   plot = cowplot::get_legend(p_Lnight),
   filename = glue('{output_path}/legend_Lnight.png')
 )
+

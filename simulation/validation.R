@@ -68,13 +68,16 @@ comparison = data.frame(
 ggplot(gather(comparison, Source, Level, Ldn_PhiMeasured:DNL_NavyModeled, factor_key=T), aes(x = reorder(ID, Level, FUN=mean), y = Level, color = Source)) +
   geom_point(shape = 1)
 
+comparison = merge(comparison, data_sites)
+comparison$Location = factor(comparison$Location)
+
 # Navy model energy average vs Phi model
 message('Navy modeled energy average vs simulation...')
 p_modeled = ggplot(comparison, aes(x = DNL_NavyModeled, y = DNL_PhiModeled)) +
   geom_abline(slope=1, intercept=0, linetype='dashed') +
   geom_smooth(method='lm', color='black') +
-  geom_point(comparison, mapping=aes(color=ID), size=3, pch=16) +
-  labs(title='', x='Navy Modeled DNL (Energy Average)', y='Simulated DNL (Average Operations)', color = 'Site ID') +
+  geom_point(comparison, mapping=aes(color=Location), size=3, pch=16) +
+  labs(title='', x='Navy modeled DNL (energy average)', y=expression('Simulated'~L[dn]~'(average operations)'), color = 'Location') +
   theme_bw()
 message('Pearson correlation: ', cor(comparison$DNL_PhiModeled, comparison$DNL_NavyModeled, method='pearson'))
 message('Difference statistics:')
@@ -85,8 +88,8 @@ message('Navy measured energy average vs simulation...')
 p_measured = ggplot(comparison, aes(x = DNL_NavyMeasured, y = DNL_PhiModeled)) +
   geom_abline(slope=1, intercept=0, linetype='dashed') +
   geom_smooth(method='lm', color='black') +
-  geom_point(comparison, mapping=aes(color=ID), size=3, pch=16) +
-  labs(title='', x='Navy Measured DNL (Energy Average)', y='Simulated DNL (Average Operations)', color = 'Site ID') +
+  geom_point(comparison, mapping=aes(color=Location), size=3, pch=16) +
+  labs(title='', x='Navy measured DNL (energy average)', y=expression('Simulated'~L[dn]~'(average operations)'), color = 'Location') +
   theme_bw()
 message('Pearson correlation: ', cor(comparison$DNL_PhiModeled, comparison$DNL_NavyMeasured, method='pearson'))
 message('Difference statistics:')
@@ -95,7 +98,14 @@ print(summary(abs(comparison$DNL_PhiModeled - comparison$DNL_NavyMeasured)))
 p_validation = (p_modeled + p_measured + plot_layout(guides = 'collect'))
 print(p_validation)
 
-ggsave(p_validation, file=glue('simulation/_output/validation.png'), width=16, height=8)
+p_theme = theme(
+  plot.title=element_text(size=18),
+  text=element_text(size=20),
+  panel.grid.minor.x = element_blank(),
+  panel.grid.minor.y = element_blank()
+)
+
+ggsave(p_validation, file=glue('simulation/_output/validation.png'), width=8, height=4)
 
 # Explanation for using continuous Lden for Navy sites
 # - We do not have the data or tools necessary to classify noise events of Navy sites. Other sites (JGL, NPS) had in-person operators validating the presence of noise events due to aircraft operations

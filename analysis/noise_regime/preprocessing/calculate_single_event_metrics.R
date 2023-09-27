@@ -392,11 +392,11 @@ calculate_events_csv = function(orgarg = '') {
   }
   
   # Save all events data to csv
-  file_name = 'data/events/_output/'
+  file_name = 'analysis/noise_regime/_output/single_event/'
   if (orgarg == '') {
-    file_name = paste0(file_name, 'events.csv')
+    file_name = paste0(file_name, 'single_event.csv')
   } else {
-    file_name = paste0(file_name, 'events_', orgarg, '.csv')
+    file_name = paste0(file_name, 'single_event_', orgarg, '.csv')
   }
   write.csv(events, file=file_name, row.names=T)
   return(events)

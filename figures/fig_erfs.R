@@ -13,7 +13,7 @@ ggsave_output_path = 'figures/_output/'
 
 p_HA = ggplot() +
   # Confidence intervals
-  geom_ribbon(pi_iso_miedema, mapping=aes(x=dB5,ymin=Lower,ymax=Upper), fill='#F8766D', alpha=0.1) +
+  # geom_ribbon(pi_iso_miedema, mapping=aes(x=dB5,ymin=Lower,ymax=Upper), fill='#F8766D', alpha=0.1) +
   geom_ribbon(ci_Yokoshima, mapping=aes(x=Lden,ymin=Lower,ymax=Upper), fill='#e066ff', alpha=0.1) +
   geom_ribbon(ci_FAANES, mapping=aes(x=Ldn,ymin=Lower,ymax=Upper), fill='#00BA38', alpha=0.1) +
   # Exposure-response functions
@@ -24,7 +24,7 @@ p_HA = ggplot() +
   stat_function(fun=exp_resp_FAANES, xlim=bounds_FAANES, linewidth=.7, aes(color='National (FAA NES 2021)')) +
   scale_color_manual(name='Exposure-response', values=erf_colors, breaks=erf_names) +
   # Plot configuration
-  labs(title='Probability of high annoyance') +
+  labs(title='High annoyance') +
   scale_x_continuous(name=expression(L[dn]~'dB('*A*')'), limits=c(40,90), oob=rescale_none) +
   scale_y_continuous(name='%HA', n.breaks=9, limits=c(0,90), oob=rescale_none)
 print(p_HA)
@@ -47,7 +47,7 @@ p_HSD = ggplot() +
   stat_function(fun=exp_resp_HSD_Smith, xlim=bounds_HSD, linewidth=.7, aes(color='Updated WHO Guideline (Smith 2022)')) +
   scale_color_manual(name='Exposure-response', values=erf_colors, breaks=erf_names) +
   # Plot configuration
-  labs(title='Probability of high sleep disturbance') +
+  labs(title='High sleep disturbance') +
   scale_x_continuous(name=expression(L[night]~'dB('*A*')'), limits=c(40,65), oob=rescale_none) +
   scale_y_continuous(name='%HSD', n.breaks=9, limits=c(0,60), oob=rescale_none)
 print(p_HSD)

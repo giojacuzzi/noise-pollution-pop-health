@@ -119,11 +119,11 @@ calculate_site_date_metrics_csv = function(orgarg = '') {
   }
   
   # Save all metrics data to csv
-  file_name = 'data/metrics/_output/'
+  file_name = 'analysis/noise_regime/_output/cumulative/'
   if (orgarg == '') {
-    file_name = paste0(file_name, 'metrics.csv')
+    file_name = paste0(file_name, 'cumulative.csv')
   } else {
-    file_name = paste0(file_name, 'metrics_', orgarg, '.csv')
+    file_name = paste0(file_name, 'cumulative_', orgarg, '.csv')
   }
   write.csv(metrics, file=file_name, row.names=F)
   return(metrics)
