@@ -12,3 +12,6 @@ threshold_hearing_impairment_Leq24 = 70
 
 # FAA - "As described in 14 CFR Part 150, Airport Noise Compatibility Planning, exterior noise levels at or above Day-Night Average Sound Level (DNL) 65 decibels (dB) are considered incompatible with residences and some other noise sensitive land uses"
 threshold_land_use_Ldn = 65
+
+# WHO - "Impaired reading and oral comprehension"
+threshold_reading_comprehension_Lden = 55

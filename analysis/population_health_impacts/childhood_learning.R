@@ -2,6 +2,7 @@
 
 source('global.R')
 source('metrics/metrics.R')
+source('metrics/thresholds.R')
 source('simulation/contours.R')
 
 data_sites   = get_data_sites()
@@ -12,13 +13,22 @@ sites_with_events = data_sites[data_sites$ID %in% unique(data_events$ID),]
 
 output_path = paste0(here::here(), '/analysis/_output')
 
-########################################################################################################
+###############################################################################################
 # Children's learning and comprehension
 
-# Ldn >= 55 dB poses risk of inhibited reading skills and oral comprehension in children (WHO, RANCH)
-Ldn_gt55 = get_contours_Ldn()
-Ldn_gt55 = Ldn_gt55[as.numeric(Ldn_gt55$Level)>=55,]
-Ldn_gt55_bounds = st_bbox(Ldn_gt55)
+# Ldn >= 55 dB poses risk of inhibited reading skills and oral comprehension in children (WHO, RANCH). As contours are calculated for average annual day, we recalculate contour associated with school year.
+n_school_days = 180
+threshold_school_year = LeqTotal(c(rep(threshold_reading_comprehension_Lden, n_school_days), rep(0, 365 - n_school_days)))
+
+# The difference between the annual (365 day) exposure and the school year exposure
+threshold_delta = round(threshold_reading_comprehension_Lden - threshold_school_year)
+
+msg('Equivalent ', threshold_reading_comprehension_Lden,' dB Lden annual exposure for ', n_school_days,'-day school year: ', Ldn_target, ' dB', sep='')
+
+# Relabel contours according to school year exposure
+contours_reading_comprehension = get_contours_Ldn()
+contours_reading_comprehension$Level = contours_reading_comprehension$Level - threshold_delta
+contours_reading_comprehension_bounds = st_bbox(contours_reading_comprehension)
 
 # https://nces.ed.gov/programs/edge/geographic/schoollocations
 dir = 'data/gis/schools/'
@@ -29,9 +39,9 @@ schools_public  = st_transform(schools_public, crs)
 schools_private = st_transform(schools_private, crs)
 schools_postsec = st_transform(schools_postsec, crs)
 
-schools_public = st_crop(schools_public, Ldn_gt55_bounds)
-schools_private = st_crop(schools_private, Ldn_gt55_bounds)
-schools_postsec = st_crop(schools_postsec, Ldn_gt55_bounds)
+schools_public = st_crop(schools_public, contours_reading_comprehension_bounds)
+schools_private = st_crop(schools_private, contours_reading_comprehension_bounds)
+schools_postsec = st_crop(schools_postsec, contours_reading_comprehension_bounds)
 
 schools_public  = schools_public[, c('NAME', 'ZIP', 'LAT', 'LON')]
 schools_public$TYPE = 'PUBLIC'
@@ -39,42 +49,35 @@ schools_private = schools_private[, c('NAME', 'ZIP', 'LAT', 'LON')]
 schools_private$TYPE = 'PRIVATE'
 schools_postsec = schools_postsec[, c('NAME', 'ZIP', 'LAT', 'LON')]
 schools_postsec$TYPE = 'POSTSECONDARY'
-
 schools = bind_rows(bind_rows(schools_public, schools_private), schools_postsec)
 schools$TYPE = factor(schools$TYPE)
-schools_affected = st_intersection(schools, Ldn_gt55) # affected schools
-schools_affected$Ldn55 = TRUE
-schools_unaffected = schools[!(schools$NAME %in% schools_affected$NAME),]
-schools_unaffected$Ldn55 = FALSE
-schools = bind_rows(schools_affected, schools_unaffected)
 
-# Affected schools
-# Note that complaints around disrupted activities and loudness are clustered near schools
+schools = st_intersection(schools, contours_reading_comprehension)
+schools$AtRisk = F
+schools[schools$Level >= threshold_reading_comprehension_Lden, 'AtRisk'] = T
 
-# remove web-based, homeschooling, unincorporated, and duplicate programs
+# Remove web-based, homeschooling, unincorporated, and duplicate programs
 schools_to_remove = c('Oak Harbor Virtual Academy', 'Igrad Academy', 'Homeconnection', 'Open Den', 'Island Juvenile Detention Education Program')
+schools = schools[!(schools$NAME %in% schools_to_remove), ]
+schools = schools[order(schools$Level, decreasing=T), ]
+
+# Map results
+# mapview(contours_reading_comprehension, zcol='Level', layer.name='DNL', col.regions=viridis_pal(option='C')(length(seq(45,90,5)))) + mapview(schools, zcol='AtRisk', col.regions=list('gray', 'red')) + mapview(data_sites, xcol='Longitude', ycol='Latitude', crs=4269, grid=F)
 
 # Format results and write to csv
-s = st_drop_geometry(schools[, c('NAME', 'ZIP', 'TYPE', 'Level', 'LAT', 'LON')])
+s = st_drop_geometry(schools[, c('NAME', 'ZIP', 'TYPE', 'Level', 'LAT', 'LON', 'AtRisk')])
+s = s[s$AtRisk==T,]
 s$TYPE = str_to_title(s$TYPE)
 s$NAME = str_to_title(s$NAME)
 s$NAME = gsub(' - Whidbey Island', '', s$NAME)
-s$Level = floor(as.numeric(s$Level) / 5) * 5 # in increments of 5 dB
+s$Level5dB = floor(as.numeric(s$Level) / 5) * 5 # in increments of 5 dB
 s$ZIP = substr(s$ZIP, 1, 5)
-s = s[order(s$Level, decreasing=T), ]
+s = s[order(s$Level5dB, decreasing=T), ]
 s = s[!(s$NAME %in% schools_to_remove), ]
 s$Delay = gsub('1-1', '1', paste0(
-  as.character((s$Level - 55) / 5 * 1 + 1), '-', # 1 month delay at 55, 1-2 month delay per 5 dB increase
-  as.character((s$Level - 55) / 5 * 2 + 1)
+  as.character((s$Level5dB - 55) / 5 * 1 + 1), '-', # 1 month delay at 55, 1-2 month delay per 5 dB increase
+  as.character((s$Level5dB - 55) / 5 * 2 + 1)
 ))
-
-schools = schools[order(schools$Level, decreasing=T), ]
-schools = schools[!(schools$NAME %in% schools_to_remove), ]
-# c = get_contours_Ldn()
-# mapview(c[as.numeric(c$Level)>=40,], zcol='Level', layer.name='DNL', col.regions=viridis_pal(option='C')(length(seq(45,90,5)))) +
-#   mapview(schools, zcol='Ldn55', col.regions=list('gray', 'red'))
-
-# write.csv(s, glue(output_path, '/schools.csv'), row.names = F)
 
 schools_affected = na.omit(s)
 schools_affected = schools_affected[, c('NAME', 'Level', 'Delay')]
@@ -83,8 +86,8 @@ write.csv(schools_affected, glue(output_path, '/schools_affected.csv'), row.name
 
 print(schools_affected)
 
-# TODO:
-# st_write(schools, )
+# Additional schools within 5 dB of the threshold
+nrow(schools[schools$Level >= (threshold_reading_comprehension_Lden - 5) & schools$AtRisk==F,])
 
 ## Cognitive development in children -------------------------------------------
 
