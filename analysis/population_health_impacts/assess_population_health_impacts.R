@@ -108,18 +108,19 @@ totals = health_impact_summary[health_impact_summary$Type == 'county', ] %>% sum
 # health_impact_summary$Exposed = paste0(health_impact_summary$Exposed, ' (', round(health_impact_summary$Exposed / health_impact_summary$Population, 3) * 100, '%)')
 
 health_impact_summary = rbind(health_impact_summary, totals)
+health_impact_summary = format(health_impact_summary, big.mark = ',', trim=T)
 
 # Manually enter zone names
 health_impact_summary = health_impact_summary[,2:ncol(health_impact_summary)]
-health_impact_summary$Name = c(
-  'Island County',
-  'Skagit County',
-  'Samish TDSA',
-  'Swinomish Reservation',
-  'Jefferson County',
-  'San Juan County',
-  'Total'
-)
+# health_impact_summary$Name = c(
+#   'Island County',
+#   'Skagit County',
+#   'Samish TDSA',
+#   'Swinomish Reservation',
+#   'Jefferson County',
+#   'San Juan County',
+#   'Total'
+# )
 
 msg(health_impact_summary)
 

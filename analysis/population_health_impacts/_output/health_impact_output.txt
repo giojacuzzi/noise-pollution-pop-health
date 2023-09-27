@@ -1,6 +1,29 @@
+
+> ## Number of people exposed to levels beyond bounds of common ERFs
+> # Annoyance (75, ISO, WHO, FAA NES)
+> msg('Number of people exposed to levels b .... [TRUNCATED] 
 Number of people exposed to levels beyond bounds of common ERFs: 
+
+> HA_exceed = round(cellStats(mask(pop_exposure_stack[['Exposed.Population']], clamp(pop_exposure_stack[['Ldn']], lower=bounds_who[2], useValues=F)),  .... [TRUNCATED] 
+
+> msg(' HA ', HA_exceed)
  HA  5136 
+
+> # Sleep disturbance (65, WHO/Smith)
+> HSD_exceed = round(cellStats(mask(pop_exposure_stack[['Exposed.Population']], clamp(pop_exposure_stack[['Lnigh .... [TRUNCATED] 
+
+> msg(' HSD ', HSD_exceed)
  HSD  4844 
+
+> # Calculate health metrics for each zone
+> health_impact_summary = data.frame()
+
+> health_impact_layers = list()
+
+> for (zone in names(pop_areas_stack)) {
++   zone_name = unlist(str_split(zone, '_'))[1]
++   type = unlist(str_split(zone, '_'))[2]
++   msg(zone_name, .... [TRUNCATED] 
 Island (county)
   HA FICON  5440.804 
   HA ISO        9394.091 
@@ -57,78 +80,39 @@ Swinomish (native)
   HA Yokoshima  873.8276 
   HSD WHO         102.8505 
   HSD Smith       113.0733 
-    Type      Name HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith
-1 county    Island     5441   9394  17505     20593        29786    7332      8666
-2 county Jefferson        1      1      7         0           18       2         3
-3 native    Samish      116    334   1191       688         2728     238       262
-4 county  San.Juan        1      1      6         0           15       0         0
-5 county    Skagit      244    704   2498      1430         5708     480       528
-6 county Snohomish        0      0      0         0            0       0         0
-7 native Swinomish       41    122    396       282          874     103       113
-    Type      Name HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith
-1 county    Island     5441   9394  17505     20593        29786    7332      8666
-2 county Jefferson        1      1      7         0           18       2         3
-3 native    Samish      116    334   1191       688         2728     238       262
-4 county  San.Juan        1      1      6         0           15       0         0
-5 county    Skagit      244    704   2498      1430         5708     480       528
-7 native Swinomish       41    122    396       282          874     103       113
-    Type      Name HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith
-1 county    Island     5441   9394  17505     20593        29786    7332      8666
-5 county    Skagit      244    704   2498      1430         5708     480       528
-3 native    Samish      116    334   1191       688         2728     238       262
-7 native Swinomish       41    122    396       282          874     103       113
-2 county Jefferson        1      1      7         0           18       2         3
-4 county  San.Juan        1      1      6         0           15       0         0
-  HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith  Type  Name
-1     5687  10100  20016     22023        35527    7814      9197 Total Total
+
+> # Format table and calculate totals for the entire study region
+> health_impact_summary = health_impact_summary %>% mutate_at(c(3:ncol(health_impact .... [TRUNCATED] 
+
+> health_impact_summary = health_impact_summary[rowSums(health_impact_summary[3:ncol(health_impact_summary)])>0,] # remove counties with no exposure
+
+> health_impact_summary = health_impact_summary[order(health_impact_summary$HA_WHO, decreasing=T), ]
+
+> totals = health_impact_summary[health_impact_summary$Type == 'county', ] %>% summarise(.,
++                                               across(whe .... [TRUNCATED] 
+
+> # Append percentages
+> # health_impact_summary$Exposed = paste0(health_impact_summary$Exposed, ' (', round(health_impact_summary$Exposed / health_im .... [TRUNCATED] 
+
+> health_impact_summary = format(health_impact_summary, big.mark = ',', trim=T)
+
+> # Manually enter zone names
+> health_impact_summary = health_impact_summary[,2:ncol(health_impact_summary)]
+
+> # health_impact_summary$Name = c(
+> #   'Island County',
+> #   'Skagit County',
+> #   'Samish TDSA',
+> #   'Swinomish Reservation',
+> #   'Jefferson .... [TRUNCATED] 
         Name HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith
-1     Island     5441   9394  17505     20593        29786    7332      8666
-5     Skagit      244    704   2498      1430         5708     480       528
-3     Samish      116    334   1191       688         2728     238       262
+1     Island    5,441  9,394 17,505    20,593       29,786   7,332     8,666
+5     Skagit      244    704  2,498     1,430        5,708     480       528
+3     Samish      116    334  1,191       688        2,728     238       262
 7  Swinomish       41    122    396       282          874     103       113
 2  Jefferson        1      1      7         0           18       2         3
 4   San.Juan        1      1      6         0           15       0         0
-11     Total     5687  10100  20016     22023        35527    7814      9197
-                    Name HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith
-1          Island County     5441   9394  17505     20593        29786    7332      8666
-5          Skagit County      244    704   2498      1430         5708     480       528
-3            Samish TDSA      116    334   1191       688         2728     238       262
-7  Swinomish Reservation       41    122    396       282          874     103       113
-2       Jefferson County        1      1      7         0           18       2         3
-4        San Juan County        1      1      6         0           15       0         0
-11                 Total     5687  10100  20016     22023        35527    7814      9197
-5 county    Skagit      244    704   2498      1430         5708     480       528
-7 native Swinomish       41    122    396       282          874     103       113
-    Type      Name HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith
-1 county    Island     5441   9394  17505     20593        29786    7332      8666
-5 county    Skagit      244    704   2498      1430         5708     480       528
-3 native    Samish      116    334   1191       688         2728     238       262
-7 native Swinomish       41    122    396       282          874     103       113
-2 county Jefferson        1      1      7         0           18       2         3
-4 county  San.Juan        1      1      6         0           15       0         0
-  HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith  Type  Name
-1     5687  10100  20016     22023        35527    7814      9197 Total Total
-        Name HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith
-1     Island     5441   9394  17505     20593        29786    7332      8666
-5     Skagit      244    704   2498      1430         5708     480       528
-3     Samish      116    334   1191       688         2728     238       262
-7  Swinomish       41    122    396       282          874     103       113
-2  Jefferson        1      1      7         0           18       2         3
-4   San.Juan        1      1      6         0           15       0         0
-11     Total     5687  10100  20016     22023        35527    7814      9197
-                    Name HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith
-1          Island County     5441   9394  17505     20593        29786    7332      8666
-5          Skagit County      244    704   2498      1430         5708     480       528
-3            Samish TDSA      116    334   1191       688         2728     238       262
-7  Swinomish Reservation       41    122    396       282          874     103       113
-2       Jefferson County        1      1      7         0           18       2         3
-4        San Juan County        1      1      6         0           15       0         0
-11                 Total     5687  10100  20016     22023        35527    7814      9197
-Created /Users/giojacuzzi/repos/PHI-Noise-Pollution/analysis/population_health_impacts/_output/health_impact_output.txt 
-Created /Users/giojacuzzi/repos/PHI-Noise-Pollution/analysis/population_health_impacts/_output/health_impact_summary.csv 
-ut/health_impact_output.txt 
-Created /Users/giojacuzzi/repos/PHI-Noise-Pollution/analysis/population_health_impacts/_output/health_impact_summary.csv 
-ut/health_impact_output.txt 
-Created /Users/giojacuzzi/repos/PHI-Noise-Pollution/analysis/population_health_impacts/_output/health_impact_summary.csv 
-txt 
-Created /Users/giojacuzzi/repos/PHI-Noise-Pollution/analysis/population_health_impacts/_output/health_impact_summary.csv 
+11     Total    5,687 10,100 20,016    22,023       35,527   7,814     9,197
+
+> # Write table and results to files
+> sink()

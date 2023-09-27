@@ -110,27 +110,34 @@ stopifnot(sum(health_risk_summary_counties$Exposed) == cellStats(pop_exposure_st
 # Format table and calculate totals for the entire study region
 health_risk_summary = health_risk_summary %>% mutate_at(c(3:ncol(health_risk_summary)), round)
 health_risk_summary = health_risk_summary[health_risk_summary$Exposed != 0, ] # remove counties with no exposure
-health_risk_summary = health_risk_summary[order(health_risk_summary$Exposed, decreasing=T), ]
 
 totals = health_risk_summary[health_risk_summary$Type == 'county', ] %>%
   summarise(., across(where(is.numeric), sum), across(where(is.character), ~"Total"))
 
+health_risk_summary = health_risk_summary[order(health_risk_summary$Type, health_risk_summary$Exposed, decreasing = T), ]
+
 # Append percentages
-health_risk_summary$Exposed = paste0(health_risk_summary$Exposed, ' (', round(health_risk_summary$Exposed / health_risk_summary$Population, 3) * 100, '%)')
-
+# DEBUG:
+# testy = health_risk_summary
+# for (r in 1:nrow(hrs_numeric)) {
+#   r_pop = hrs_numeric[r,3]
+#   testy[r, 4:ncol(testy)] = hrs_numeric[r, 4:ncol(hrs_numeric)] / r_pop
+# }
+# hrs_numeric = as.data.frame(sapply(health_risk_summary, function(x) { gsub(',','',x) }))
+# health_risk_summary$Exposed = paste0(hrs_numeric$Exposed, ' (', round(hrs_numeric$Exposed / hrs_numeric$Population, 3) * 100, '%)')
+# 
 health_risk_summary = rbind(health_risk_summary, totals)
-
-# Manually enter zone names
+health_risk_summary = format(health_risk_summary, big.mark = ',', trim=T)
 health_risk_summary = health_risk_summary[,2:ncol(health_risk_summary)]
-health_risk_summary$Name = c(
-  'Island County',
-  'Skagit County',
-  'Samish TDSA',
-  'Swinomish Reservation',
-  'Jefferson County',
-  'San Juan County',
-  'Total'
-)
+# health_risk_summary$Name = c(
+#   'Island County',
+#   'Skagit County',
+#   'Samish TDSA',
+#   'Swinomish Reservation',
+#   'Jefferson County',
+#   'San Juan County',
+#   'Total'
+# )
 
 msg(health_risk_summary)
 

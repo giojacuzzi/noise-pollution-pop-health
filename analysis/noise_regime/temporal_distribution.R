@@ -25,6 +25,12 @@ data_ops$Day = factor(weekdays(data_ops$Time), levels = c('Monday', 'Tuesday', '
 message('Percent ops by day:')
 print(round(summary(data_ops$Day) / nrow(data_ops), 2))
 
+# Percentage of ops per weekday/weekend period
+nops_total = nrow(data_ops)
+pops_mtwt = nrow(data_ops[data_ops$Day %in% c('Monday', 'Tuesday', 'Wednesday', 'Thursday'),])/nops_total
+pops_f = nrow(data_ops[data_ops$Day %in% c('Friday'),])/nops_total
+pops_ss = nrow(data_ops[data_ops$Day %in% c('Saturday', 'Sunday'),])/nops_total
+
 data_events = data_events[order(data_events$Hour),]
 
 ## Monitoring site map  --------------------------------------------------------
@@ -249,3 +255,4 @@ loud_events_hour = data.frame(
   Events=leh
 )
 ggplot(loud_events_hour, aes(x=Hour,y=Events)) + geom_bar(stat='identity') + labs(title=paste0('Number of ', threshold, '+ dB noise events per hour'))
+
