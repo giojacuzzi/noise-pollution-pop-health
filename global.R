@@ -127,6 +127,12 @@ get_data_navy_events_reported = function() {
   data_navy_events_reported = read.csv('data/events/_output/navy_reported_events.csv')
   data_navy_events_reported$StartTime  = as.POSIXct(data_navy_events_reported$StartTime, tz='UTC')
   data_navy_events_reported$LAeq_LmaxTime = as.POSIXct(data_navy_events_reported$LAeq_LmaxTime, tz='UTC')
+  
+  data_navy_moa_events_reported = read.csv('data/events/_output/navy_reported_moa_events.csv')
+  data_navy_moa_events_reported$StartTime  = as.POSIXct(data_navy_moa_events_reported$StartTime, tz='UTC', format = '%m/%d/%Y %H:%M:%OS')
+  data_navy_moa_events_reported$LAeq_LmaxTime = as.POSIXct(data_navy_moa_events_reported$LAeq_LmaxTime, tz='UTC', format = '%m/%d/%Y %H:%M:%OS')
+
+  data_navy_events_reported = rbind(data_navy_events_reported, data_navy_moa_events_reported)
   data_navy_events_reported$Hour       = format(data_navy_events_reported$StartTime, format='%H')
   data_navy_events_reported$DEN        = get_den_period_for_hours(data_navy_events_reported$Hour)
   data_navy_events_reported$Day        = factor(weekdays(data_navy_events_reported$StartTime, abbreviate=T), levels=days)

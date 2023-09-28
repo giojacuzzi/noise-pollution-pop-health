@@ -50,10 +50,15 @@ for (p in 1:length(event_pages)) {
 }
 
 data = data[data$RemovedFromAnalysis==FALSE, ]
+data = data[data$IsNonAircraft==FALSE, ]
+data = data[data$ActiveInactive=='Active', ]
+data = data[, 1:8] # Discard metadata
+data$SiteID = '99_HOH'
+data$Period = 0
 
 head(data[
   order(data[,'LAeq_Lmax'], decreasing = T),
 ])
 
 # TODO: Save to file
-write.csv(data, 'data/events/_output/navy_reported_moa_events.csv')
+write.csv(data, 'data/events/_output/navy_reported_moa_events.csv', row.names=F)

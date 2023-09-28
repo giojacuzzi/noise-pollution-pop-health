@@ -61,10 +61,9 @@ max_events = merge(data_sites[, c('ID', 'Location')], max_events)
 max_events = max_events[
   order(max_events[,'LE'], decreasing = T),
 ]
-max_events = max_events[max_events$ID!='EBLA001', ]
 
 # Remove duplicate locations from different monitoring sources
-# TODO: Hoh sites
+max_events = max_events[max_events$ID!='EBLA001', ]
 
 # Write table to file
 write.csv(max_events, glue(output_path, '/max_events.csv'), row.names = F)
