@@ -8,6 +8,7 @@ library(gdalUtils)
 library(rslurm)
 library(fasterize)
 library(mapview)
+library(tigris)
 mapviewOptions(mapview.maxpixels = 50000000)
 options(tigris_use_cache = T)
 
@@ -27,8 +28,47 @@ sink(filename_output, split=T)
 
 # Total area of noise exposure associated with adverse health effects (note this includes water)
 contours_Ldn = get_contours_Ldn()
-impact_area = st_area(st_make_valid(st_union(contours_Ldn[contours_Ldn$Level>=threshold_adverse_health_effects_Lden,])))
-msg('Total area of noise exposure associated with adverse health effects:', round(units::set_units(impact_area, km^2),2), 'km2', round(units::set_units(impact_area, mi^2),2), 'mi2')
+impact_area = st_make_valid(st_union(contours_Ldn[contours_Ldn$Level>=threshold_adverse_health_effects_Lden,]))
+impact_area_units = st_area(impact_area)
+impact_area_units_km2 = units::set_units(impact_area_units, km^2)
+impact_area_units_mi2 = units::set_units(impact_area_units, mi^2)
+msg('Total area of noise exposure associated with adverse health effects:', round(impact_area_units_km2,2), 'km2', round(impact_area_units_mi2,2), 'mi2')
+
+## TODO: WITHOUT WATER AND BASES
+
+wa_counties_cb = counties(state = 'WA', cb = T)
+wa_counties_cb = st_transform(wa_counties_cb, 'WGS84')
+
+naswi_water = c()
+for (c in c('Island', 'Jefferson', 'San Juan', 'Skagit', 'Snohomish', 'Clallam')) {
+  naswi_water = rbind(naswi_water, st_transform(area_water(state = 'WA', county = c), 'WGS84'))
+}
+naswi_water = st_union(naswi_water)
+
+naswi_land = st_union(wa_counties_cb)
+naswi_land = st_difference(naswi_land, naswi_water)
+
+wa_military = st_crop(military(year = 2021), xmin = -122.86, ymin = 48.09, xmax = -122.33, ymax = 48.47)
+
+impact_area_land = st_intersection(impact_area, st_make_valid(st_transform(naswi_land, crs = st_crs(impact_area))))
+impact_area_land_units = st_area(impact_area_land)
+impact_area_land_units_km2 = units::set_units(impact_area_land_units, km^2)
+impact_area_land_units_mi2 = units::set_units(impact_area_land_units, mi^2)
+msg('Total area (LAND ONLY) of noise exposure associated with adverse health effects:', round(impact_area_land_units_km2, 2), 'km2', round(impact_area_land_units_mi2,2), 'mi2')
+
+# EIS Table 1.13-1 and 4.2-10, Alternative 2 Scenario A
+# Total area (acres): 23,246 (Acreage presented does not include areas over water or areas over the NAS Whidbey Island complex.)
+# Estimated population: 12,487
+impact_area_EIS_comparison_land = st_make_valid(st_union(contours_Ldn[contours_Ldn$Level>=65,]))
+impact_area_EIS_comparison_land = st_intersection(impact_area_EIS_comparison_land, st_make_valid(st_transform(naswi_land, crs = st_crs(impact_area_EIS_comparison_land))))
+impact_area_EIS_comparison = st_collection_extract(st_make_valid(st_difference(st_union(impact_area_EIS_comparison_land), st_union(wa_military))), 'POLYGON')
+impact_area_EIS_comparison_units = st_area(impact_area_EIS_comparison)
+impact_area_land_units_acerage = units::set_units(st_area(impact_area_EIS_comparison), mi^2) * 640 # 1 square mile == 640 acres
+
+msg('Proportion of 65 dB DNL noise exposure land area (not including military base areas) compared to EIS:', impact_area_land_units_acerage / 23246)
+msg('EIS / Simulation:', 23246 / impact_area_land_units_acerage)
+
+#################################
 
 msg('Total exposed population:', round(cellStats(pop_exposure_stack[['Exposed.Population']], 'sum')))
 
