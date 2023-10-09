@@ -20,12 +20,15 @@ Statement about how data are formatted (i.e. site-date, 1-second SPL measurement
 
 ### Database configuration and data access
 
-First, set the `database_path` global variable in `global.R` to your local database path. This database should include...
+First, set the `database_path` global variable in `global.R` to your local database path. This database should include the following directories:
+
+-   `NAVY` - The NAVFAC database.
+-   `NPS` - Acoustic measurements of EBLA001 and EBLA002 from the National Park Service.
+-   `JGL` - Acoustic measurements from JGL Acoustics, Inc. monitoring periods.
 
 ```{r}
-# Configure database
+# Configure and check for database
 source('global.R')
-
 stopifnot(dir.exists(database_path))
 
 # Retrieve monitoring location information and display
