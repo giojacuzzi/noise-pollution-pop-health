@@ -372,8 +372,9 @@ calculate_events_csv = function(orgarg = '') {
     message(paste0('Processing site ', id, ' \"', name , '\" - ', num_processed, ' of ', length(unique(file_map$ID))))
     
     # readline('Press [enter] to continue...')
-    
-    for (date in unique(file_map[file_map$ID==id, 'Date'])) { # for every date at that site
+    dates = unique(file_map[file_map$ID==id, 'Date'])
+    for (d in 1:length(dates)) { # for every date at that site
+      date = dates[d]
       
       # Retrieve the measured sound pressure levels
       # site_date_data = load_site_date(id, date)

@@ -5,7 +5,7 @@ database_path = {
   # '~/../../Volumes/SAFS Backup/PHI'
   # '~/../../Volumes/SAFS Work/PHI',
   # '~/../../Volumes/gioj/PHI',
-  '~/../../Volumes/Seagate Por/PHI'
+  '~/../../Volumes/drive/database'
 }
 
 # Plotting and figures
@@ -61,9 +61,9 @@ months = c('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','De
 
 # Database file maps
 get_file_map = function() {
-  file_map = rbind(read.csv('data/load/_output/file_map_navy.csv'),
-                   read.csv('data/load/_output/file_map_jgl.csv'),
-                   read.csv('data/load/_output/file_map_nps.csv'))
+  file_map = rbind(read.csv('data/load/_output/file_maps/file_map_navy.csv'),
+                   read.csv('data/load/_output/file_maps/file_map_jgl.csv'),
+                   read.csv('data/load/_output/file_maps/file_map_nps.csv'))
   file_map$Org = factor(file_map$Org)
   file_map$Name = factor(file_map$Name)
   file_map$ID = factor(file_map$ID)
@@ -149,12 +149,12 @@ get_field_name_for_ID = function(id) {
 
 get_site_name_for_ID = function(id) {
   data_sites = get_data_sites()
-  return(na.omit(data_sites[data_sites$ID==id,])$Name)
+  return(data_sites[data_sites$ID==id,]$Name)
 }
 
 get_ID_for_site_name = function(name) {
   data_sites = get_data_sites()
-  return(unique(na.omit(data_sites[data_sites$Name==name,])$ID))
+  return(unique(data_sites[data_sites$Name==name,])$ID)
 }
 
 get_org_for_site_date = function(id, date) {

@@ -157,27 +157,15 @@ totals = health_risk_summary[health_risk_summary$Type == 'county', ] %>%
 health_risk_summary = health_risk_summary[order(health_risk_summary$Type, health_risk_summary$Exposed, decreasing = T), ]
 
 # Append percentages
-# DEBUG:
-# testy = health_risk_summary
-# for (r in 1:nrow(hrs_numeric)) {
-#   r_pop = hrs_numeric[r,3]
-#   testy[r, 4:ncol(testy)] = hrs_numeric[r, 4:ncol(hrs_numeric)] / r_pop
-# }
-# hrs_numeric = as.data.frame(sapply(health_risk_summary, function(x) { gsub(',','',x) }))
-# health_risk_summary$Exposed = paste0(hrs_numeric$Exposed, ' (', round(hrs_numeric$Exposed / hrs_numeric$Population, 3) * 100, '%)')
-# 
+for (r in 1:nrow(health_risk_summary)) {
+  health_risk_summary[r, 4:ncol(health_risk_summary)] = paste0(
+    as.character(health_risk_summary[r, 4:ncol(health_risk_summary)]),
+    ' (', round((as.numeric(health_risk_summary[r, 4:ncol(health_risk_summary)]) / as.numeric(health_risk_summary[r, 3])) * 100,1), ')')
+}
+
 health_risk_summary = rbind(health_risk_summary, totals)
 health_risk_summary = format(health_risk_summary, big.mark = ',', trim=T)
 health_risk_summary = health_risk_summary[,2:ncol(health_risk_summary)]
-# health_risk_summary$Name = c(
-#   'Island County',
-#   'Skagit County',
-#   'Samish TDSA',
-#   'Swinomish Reservation',
-#   'Jefferson County',
-#   'San Juan County',
-#   'Total'
-# )
 
 msg(health_risk_summary)
 

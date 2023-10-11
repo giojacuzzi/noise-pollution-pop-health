@@ -19,12 +19,13 @@ mapview(
   sites_with_events,
   xcol='Longitude', ycol='Latitude', zcol='Org',
   layer.name = 'Organization', crs=4269, grid=F, legend=T,
-  col.regions=c('darkgoldenrod2', 'navy', 'green3')
+  col.regions=c('yellow', 'navy', 'green')
 ) %>% addStaticLabels(label=sites_with_events$ID, direction='top')
 
 ## Max events per site ---------------------------------------------------------
 events_lmax = data_events[!is.na(data_events$LAeq_Lmax),]
-# discard dates before 2015, when primary Growler activity began
+
+# Discard any dates before 2015, when primary Growler activity began
 events_lmax = events_lmax[events_lmax$TimeStart >= as.POSIXct('2015-01-01 00:00:00', tz='UTC'), ]
 events_lmax$ID = factor(events_lmax$ID)
 

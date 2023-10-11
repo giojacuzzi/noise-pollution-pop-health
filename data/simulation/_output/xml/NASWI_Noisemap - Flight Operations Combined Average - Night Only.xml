@@ -6,19 +6,19 @@
  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
  xmlns:html="http://www.w3.org/TR/REC-html40">
  <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
-  <Author>Giordano Jacuzzi</Author>
-  <LastAuthor>Giordano Jacuzzi</LastAuthor>
-  <Created>2023-08-15T21:30:28Z</Created>
+  <Author>Gio Jacuzzi</Author>
+  <LastAuthor>Gio Jacuzzi</LastAuthor>
+  <Created>2023-10-10T17:02:06Z</Created>
   <Version>16.00</Version>
  </DocumentProperties>
  <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
   <AllowPNG/>
  </OfficeDocumentSettings>
  <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
-  <WindowHeight>16940</WindowHeight>
-  <WindowWidth>27640</WindowWidth>
-  <WindowTopX>32767</WindowTopX>
-  <WindowTopY>32767</WindowTopY>
+  <WindowHeight>17440</WindowHeight>
+  <WindowWidth>28040</WindowWidth>
+  <WindowTopX>3900</WindowTopX>
+  <WindowTopY>2200</WindowTopY>
   <ProtectStructure>False</ProtectStructure>
   <ProtectWindows>False</ProtectWindows>
  </ExcelWorkbook>

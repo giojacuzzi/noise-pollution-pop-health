@@ -22,9 +22,12 @@ Statement about how data are formatted (i.e. site-date, 1-second SPL measurement
 
 First, set the `database_path` global variable in `global.R` to your local database path. This database should include the following directories:
 
--   `NAVY` - The NAVFAC database.
--   `NPS` - Acoustic measurements of EBLA001 and EBLA002 from the National Park Service.
--   `JGL` - Acoustic measurements from JGL Acoustics, Inc. monitoring periods.
+-   `NAVY` - The NAVFAC database, with acoustic data files converted from Larson Davis binary format .LD0 to .xlsx.
+-   `NPS` - Acoustic data from the National Park Service (.txt).
+-   `JGL` - Acoustic data from JGL Acoustics, Inc (.csv).
+-   `GIS` - GIS data, including subdirectories:
+    -   `NCLD` - [US National Land Cover Database](https://www.mrlc.gov/data/nlcd-2019-land-cover-conus)
+    -   `NCES` - [NCES school location shapefiles](https://nces.ed.gov/programs/edge/geographic/schoollocations)
 
 ```{r}
 # Configure and check for database
@@ -37,7 +40,7 @@ mapview(
   data_sites,
   xcol='Longitude', ycol='Latitude', zcol='Org',
   layer.name = 'Organization', crs=4269, grid=F, legend=T,
-  col.regions=c('darkgoldenrod2', 'navy', 'green3')
+  col.regions=c('yellow', 'navy', 'green')
 ) %>% addStaticLabels(label=data_sites$ID, direction='top')
 
 # Create tables mapping raw data files to sites and date
@@ -48,38 +51,43 @@ file_map_navy = map_files_navy_csv()
 source('data/load/load_file_nps.R')
 file_map_nps = map_files_nps_csv()
 
-# Load raw data for each site date and save as standardized csv
+# Load raw data for each site date and save as standardized .csv
 source('data/load/load_site_date.R')
 create_site_date_csvs('JGL')
 create_site_date_csvs('NAVY')
 create_site_date_csvs('NPS')
 ```
 
+## Noise regime
+
 ### Cumulative acoustic metrics
 
 ```{r}
 # Calculate cumulative metrics for each site date
-source('analysis/characterization/preprocessing/calculate_cumulative_metrics.R')
-calculate_site_date_metrics_csv()
+source('analysis/noise_regime/preprocessing/calculate_cumulative_metrics.R')
+calculate_cumulative_metrics_csv('JGL')
+calculate_cumulative_metrics_csv('NAVY')
+calculate_cumulative_metrics_csv('NPS')
 
 # Evaluate cumulative metrics
-source('analysis/characterization/evaluate_cumulative_metrics.R')
+source('analysis/noise_regime/evaluate_cumulative_metrics.R') # TODO
 ```
 
 ### Single-event acoustic metrics
 
 ```{r}
 # Calculate single-event metrics for each site date
-source('analysis/characterization/preprocessing/calculate_single_event_metrics.R')
-calculate_events_csv('JGL')
+source('analysis/noise_regime/preprocessing/calculate_single_event_metrics.R') # TODO
 calculate_events_csv('NAVY')
+calculate_events_csv('JGL')
 calculate_events_csv('NPS')
 
 # Retrieve noise events reported by Navy
 source('data/events/load_events_navy.R')
+source('data/events/load_events_navy_moa.R')
 
 # Evaluate single-event metrics
-source('analysis/characterization/evaluate_single_event_metrics.R')
+source('analysis/noise_regime/evaluate_single_event_metrics.R') # TODO
 ```
 
 ## Population noise exposure
@@ -101,7 +109,7 @@ source('data/simulation/aggregate_flight_ops.R')
 ```
 
 4.  Next, open the 'data/simulation/\_output/csv/\* Combined Average \*.csv' files with Microsoft Excel and re-save as .xml files in data/simulation/\_output/xml.
-5.  Open 'simulation/DNL/NASWI_Combined_Average_DNL.baseops' with BaseOps. To import new flight operations into BaseOps:
+5.  Open 'simulation/DNL/NASWI_Combined_Average_DNL.baseops' with BaseOps. Note that modeled static operations were constant across all four monitoring periods. To import new flight operations into BaseOps:
     1.  File \> Import Flight Operations from Spreadsheet
         1.  Option Categories \> File \> Import operations from the following spreadsheet file: \<the xml file you just saved, either the total combined average for DNL and LEQ24, or the "Night Only" for LNIGHT\>
         2.  Option Categories \> Columns:
@@ -179,5 +187,5 @@ Conduct OSHA and NIOSH hearing loss impact evaluation. Reminder: uses SPL data
 
 ```{r}
 # Evaluate OSHA/NIOSH TWA for each site date
-source('analysis/population_health_impacts/preprocessing/calculate_osha_niosh.R')
+source('analysis/population_health_impacts/preprocessing/calculate_osha_niosh.R') # TODO
 ```

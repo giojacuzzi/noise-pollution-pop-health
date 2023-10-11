@@ -14,7 +14,7 @@ get_date_from_file_jgl = function(file) {
 # Scrape site names, id, and measurement dates from files and save to csv
 map_files_jgl_csv = function() {
   message('Mapping files to jgl site dates...')
-  files = list.files(path=paste0(database_path,'/JGL/Data'), pattern="*csv", full.names=T, recursive=F)
+  files = list.files(path=paste0(database_path,'/JGL'), pattern='\\.csv$', full.names=T, recursive=T)
   data_txt = data.frame()
   for (file in files) {
     message(paste0('Mapping file ',file,'...'))
@@ -29,17 +29,15 @@ map_files_jgl_csv = function() {
     data_txt = rbind(data_txt, r)
   }
   data_txt = cbind(Org='JGL', data_txt)
-  write.csv(data_txt, file='data/load/_output/file_map_jgl.csv', row.names=FALSE)
+  path = 'data/load/_output/file_maps'
+  if (!dir.exists(path)) dir.create(path, recursive=T)
+  write.csv(data_txt, file=paste0(path, '/file_map_jgl.csv'), row.names=F)
   return(data_txt)
 }
 
 get_file_map_jgl = function() {
-  return(read.csv('data/load/_output/file_map_jgl.csv'))
+  return(read.csv('data/load/_output/file_maps/file_map_jgl.csv'))
 }
-
-
-# DEBUG FILE LOADING -------------------------------
-file = get_file_map_jgl()[1,'File']
 
 # Takes an absolute path to a JGL .csv file, returns a list containing a data frame
 # Returns a list of data frames, one per date present in file
@@ -70,11 +68,3 @@ load_file_jgl = function(file) {
   }
   return (results)
 }
-
-# TEST:
-# for (file in get_file_map_jgl()$File) {
-#   message(paste('loading', file))
-#   result = load_file_jgl(file)
-#   print(head(result[[1]]))
-#   print(tail(result[[1]]))
-# }

@@ -85,6 +85,7 @@ for (zone in names(pop_areas_stack)) {
   health_impact_summary = rbind(health_impact_summary, data.frame(
     Type         = type,
     Name         = zone_name,
+    Population   = npop_zone,
     HA_FICON     = npop_HA_FICON,
     HA_ISO       = npop_HA_ISO,
     HA_WHO       = npop_HA_WHO,
@@ -97,7 +98,7 @@ for (zone in names(pop_areas_stack)) {
 
 # Format table and calculate totals for the entire study region
 health_impact_summary = health_impact_summary %>% mutate_at(c(3:ncol(health_impact_summary)), round)
-health_impact_summary = health_impact_summary[rowSums(health_impact_summary[3:ncol(health_impact_summary)])>0,] # remove counties with no exposure
+health_impact_summary = health_impact_summary[rowSums(health_impact_summary[4:ncol(health_impact_summary)])>0,] # remove counties with no exposure
 health_impact_summary = health_impact_summary[order(health_impact_summary$HA_WHO, decreasing=T), ]
 
 totals = health_impact_summary[health_impact_summary$Type == 'county', ] %>% summarise(.,
@@ -105,22 +106,16 @@ totals = health_impact_summary[health_impact_summary$Type == 'county', ] %>% sum
                                               across(where(is.character), ~"Total"))
 
 # Append percentages
-# health_impact_summary$Exposed = paste0(health_impact_summary$Exposed, ' (', round(health_impact_summary$Exposed / health_impact_summary$Population, 3) * 100, '%)')
+backup = health_impact_summary
+for (r in 1:nrow(health_impact_summary)) {
+  health_impact_summary[r, 4:ncol(health_impact_summary)] = paste0(
+    as.character(health_impact_summary[r, 4:ncol(health_impact_summary)]),
+    ' (', round((as.numeric(health_impact_summary[r, 4:ncol(health_impact_summary)]) / as.numeric(health_impact_summary[r, 3])) * 100,1), ')')
+}
 
 health_impact_summary = rbind(health_impact_summary, totals)
 health_impact_summary = format(health_impact_summary, big.mark = ',', trim=T)
-
-# Manually enter zone names
 health_impact_summary = health_impact_summary[,2:ncol(health_impact_summary)]
-# health_impact_summary$Name = c(
-#   'Island County',
-#   'Skagit County',
-#   'Samish TDSA',
-#   'Swinomish Reservation',
-#   'Jefferson County',
-#   'San Juan County',
-#   'Total'
-# )
 
 msg(health_impact_summary)
 

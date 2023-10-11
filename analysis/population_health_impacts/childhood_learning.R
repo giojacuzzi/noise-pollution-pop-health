@@ -31,7 +31,7 @@ contours_reading_comprehension$Level = contours_reading_comprehension$Level - th
 contours_reading_comprehension_bounds = st_bbox(contours_reading_comprehension)
 
 # https://nces.ed.gov/programs/edge/geographic/schoollocations
-dir = 'data/gis/schools/'
+dir = paste0(database_path, '/GIS/NCES/')
 schools_public  = st_read(paste0(dir, 'EDGE_GEOCODE_PUBLICSCH_2021/EDGE_GEOCODE_PUBLICSCH_2021.shp'))
 schools_private = st_read(paste0(dir, 'EDGE_GEOCODE_PRIVATESCH_1920/EDGE_GEOCODE_PRIVATESCH_1920.shp'))
 schools_postsec = st_read(paste0(dir, 'EDGE_GEOCODE_POSTSECONDARYSCH_2021/EDGE_GEOCODE_POSTSECSCH_2021.shp'))
@@ -107,7 +107,6 @@ unique(data_metrics[data_metrics$Lden>=55, 'ID'])
 # Measured SEL near schools
 # Only consider school hours -> 8:00 am to 3:59 pm
 # Near Coupeville Elementary and Coupeville High
-# TODO: exact distance, and only consider school hours
 
 # At NbwH, the field monitoring site nearest Coupeville Elementary (347 m, 1,139 ft) and Coupeville High (~264 m, 867 ft),
 # aircraft noise events surpassed 103 dB SEL and 94 dB Lmax.
@@ -126,5 +125,3 @@ events_2B_T = data_events[data_events$ID=='2B_T' &
                             !(data_events$Day %in% c('Sat', 'Sun')), ]
 head(events_2B_T[order(events_2B_T$SEL, decreasing=T), ])
 head(events_2B_T[order(events_2B_T$LAeq_Lmax, decreasing=T), ])
-
-# TODO: Modeled SEL for flight tracks near schools

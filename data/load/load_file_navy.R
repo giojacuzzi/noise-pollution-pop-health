@@ -1,4 +1,4 @@
-### Load data from NAVY .xlsx files converted from Larson Davis binary format .LD0
+### Load data from NAVY .xlsx files, converted from Larson Davis binary format .LD0
 source('global.R')
 library(readxl)
 
@@ -23,23 +23,26 @@ get_date_from_file_navy = function(file) {
 map_files_navy_csv = function() {
   # All xlsx spreadsheet files from the NAVY database
   message('Mapping files to navy site dates...')
-  files = list.files(path=paste0(database_path,'/NAVY/Acoustic Data/Data'), pattern="*.xlsx", full.names=TRUE, recursive=TRUE)
+  files = list.files(path=paste0(database_path,'/NAVY/Acoustic Data'), pattern='\\.xlsx$', full.names=T, recursive=T)
   data_xlsx = data.frame()
   for (file in files) {
     message(paste0('Mapping file',file,'...'))
     id = get_id_from_file_navy(file)
+      
     name = get_site_name_for_ID(id)
     date = get_date_from_file_navy(file)
     r = data.frame(Date=date, Name=name, ID=id, File=file)
     data_xlsx = rbind(data_xlsx, r)
   }
   data_xlsx = cbind(Org='NAVY', data_xlsx)
-  write.csv(data_xlsx, file='data/load/_output/file_map_navy.csv', row.names=FALSE)
+  path = 'data/load/_output/file_maps'
+  if (!dir.exists(path)) dir.create(path, recursive=T)
+  write.csv(data_xlsx, file=paste0(path, '/file_map_navy.csv'), row.names=F)
   return(data_xlsx)
 }
 
 get_file_map_navy = function() {
-  return(read.csv('data/load/_output/file_map_navy.csv'))
+  return(read.csv('data/load/_output/file_maps/file_map_navy.csv'))
 }
 
 # Columns to subset from the raw data
@@ -121,9 +124,7 @@ load_file_navy = function(path) {
   
   # Subset data for desired measurements
   data = data[, selected_columns_NAVY]
-  
-  # TODO: May want to consider using multiple time series (ts) instead of simple vectors
-  
+
   # Validate date start
   date_start = format(data$Time[1], format=format_date)
   if (is.na(as.Date(as.character(data$Time[1]), tz = 'UTC', format = format_date))) {
@@ -140,25 +141,6 @@ load_file_navy = function(path) {
   } else if (any(date_start != format(data$Time, format=format_date))) {
     warning(paste('Measured dates extend beyond start date', date_start))
   }
-  
-  # # Validate time start
-  # time_start = format(data$Time[1], format=format_time)
-  # if (time_start != '00:00:00') {
-  #   warning(paste('Measured start time (', time_start, ') is not 00:00:00', sep=''))
-  # }
-  # 
-  # # Validate time measured (total number of seconds, assuming a 1 second frequency)
-  # time_measured = length(data$Time)
-  # 
-  # hr = floor(time_measured / 3600)
-  # min = floor((time_measured / 60) %% 60)
-  # sec = time_measured %% 60
-  # msg_time_measured = paste0('Total time measured (',hr,' hr ',min,' min ',sec,' sec)')
-  # if (time_measured < time_24hr) {
-  #   warning(paste0(msg_time_measured, ' is less than a full day'))
-  # } else if (time_measured > time_24hr) {
-  #   warning(paste0(msg_time_measured, ' is more than a full day'))
-  # }
   
   # Force data to 24-hour standardized format
   data = fit_24hr_time_window(data)
