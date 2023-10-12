@@ -1,0 +1,67 @@
+Total area of noise exposure associated with adverse health effects: 1354.15 km2 522.84 mi2 
+Total area (LAND ONLY) of noise exposure associated with adverse health effects: 460.87 km2 177.94 mi2 
+Proportion of 65 dB DNL noise exposure land area (not including military base areas) compared to EIS: 0.8553005 
+EIS / Simulation: 1.16918 
+Total exposed population: 77110 
+Number of people at risk of annoyance: 77110 
+Number of people at risk of sleep disturbance: 45635 
+Number of people at risk of hearing impairment: 8575 
+Number of people exposed to noise levels incompatible with land use regulations: 13335 
+Island (county)
+  Total         85938 
+  Exposed       57776.65 
+  Annoyance           57776.65 
+  Sleep disturbance           40220.68 
+  Hearing impairment           8575.133 
+  Incompatible land use          13334.56 
+Jefferson (county)
+  Total         32590 
+  Exposed       129.7641 
+  Annoyance           129.7641 
+  Sleep disturbance           37.17785 
+  Hearing impairment           0 
+  Incompatible land use          0 
+Samish (native)
+  Total         40853 
+  Exposed       9074.918 
+  Annoyance           9074.918 
+  Sleep disturbance           2301.33 
+  Hearing impairment           0 
+  Incompatible land use          0 
+San.Juan (county)
+  Total         17631 
+  Exposed       81.91436 
+  Annoyance           81.91436 
+  Sleep disturbance           0 
+  Hearing impairment           0 
+  Incompatible land use          0 
+Skagit (county)
+  Total         128228 
+  Exposed       19026.02 
+  Annoyance           19026.02 
+  Sleep disturbance           5377.498 
+  Hearing impairment           0 
+  Incompatible land use          0 
+Snohomish (county)
+  Total         820024 
+  Exposed       95.67325 
+  Annoyance           95.67325 
+  Sleep disturbance           0 
+  Hearing impairment           0 
+  Incompatible land use          0 
+Swinomish (native)
+  Total         3207 
+  Exposed       2799.295 
+  Annoyance           2799.295 
+  Sleep disturbance           1135.25 
+  Hearing impairment           0 
+  Incompatible land use          0 
+        Name Population      Exposed    Annoyance SleepDisturbance HearingImpairment IncompatibleLandUse
+3     Samish     40,853  9075 (22.2)  9075 (22.2)       2301 (5.6)             0 (0)               0 (0)
+7  Swinomish      3,207  2799 (87.3)  2799 (87.3)      1135 (35.4)             0 (0)               0 (0)
+1     Island     85,938 57777 (67.2) 57777 (67.2)     40221 (46.8)         8575 (10)        13335 (15.5)
+5     Skagit    128,228 19026 (14.8) 19026 (14.8)       5377 (4.2)             0 (0)               0 (0)
+2  Jefferson     32,590    130 (0.4)    130 (0.4)         37 (0.1)             0 (0)               0 (0)
+6  Snohomish    820,024       96 (0)       96 (0)            0 (0)             0 (0)               0 (0)
+4   San.Juan     17,631     82 (0.5)     82 (0.5)            0 (0)             0 (0)               0 (0)
+11     Total  1,084,411        77111        77111            45635              8575               13335
