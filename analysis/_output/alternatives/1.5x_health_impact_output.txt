@@ -1,0 +1,68 @@
+Number of people exposed to levels beyond bounds of common ERFs: 
+ HA  6505 
+ HSD  5606 
+Island (county)
+  HA FICON  6633.478 
+  HA ISO        11093.55 
+  HA WHO        19959.13 
+  HA FAANES  25127.61 
+  HA Yokoshima  33105.14 
+  HSD WHO         9050.258 
+  HSD Smith       10680 
+Jefferson (county)
+  HA FICON  2.667516 
+  HA ISO        6.017764 
+  HA WHO        30.07461 
+  HA FAANES  4.769421 
+  HA Yokoshima  77.97693 
+  HSD WHO         6.925031 
+  HSD Smith       7.574105 
+Samish (native)
+  HA FICON  174.3998 
+  HA ISO        523.7828 
+  HA WHO        1698.532 
+  HA FAANES  1105.889 
+  HA Yokoshima  3736.532 
+  HSD WHO         371.7246 
+  HSD Smith       413.2306 
+San.Juan (county)
+  HA FICON  1.110124 
+  HA ISO        2.779968 
+  HA WHO        12.6138 
+  HA FAANES  0.996189 
+  HA Yokoshima  31.244 
+  HSD WHO         0 
+  HSD Smith       0 
+Skagit (county)
+  HA FICON  367.1518 
+  HA ISO        1107.22 
+  HA WHO        3549.619 
+  HA FAANES  2389.979 
+  HA Yokoshima  7763.401 
+  HSD WHO         889.1323 
+  HSD Smith       982.8528 
+Snohomish (county)
+  HA FICON  2.974023 
+  HA ISO        5.287908 
+  HA WHO        33.81704 
+  HA FAANES  0 
+  HA Yokoshima  94.94931 
+  HSD WHO         0 
+  HSD Smith       0 
+Swinomish (native)
+  HA FICON  61.36708 
+  HA ISO        190.243 
+  HA WHO        552.496 
+  HA FAANES  444.8643 
+  HA Yokoshima  1158.966 
+  HSD WHO         185.439 
+  HSD Smith       205.4206 
+        Name Population   HA_FICON       HA_ISO       HA_WHO    HA_FAANES HA_Yokoshima     HSD_WHO    HSD_Smith
+1     Island     85,938 6633 (7.7) 11094 (12.9) 19959 (23.2) 25128 (29.2) 33105 (38.5) 9050 (10.5) 10680 (12.4)
+5     Skagit    128,228  367 (0.3)   1107 (0.9)   3550 (2.8)   2390 (1.9)   7763 (6.1)   889 (0.7)    983 (0.8)
+3     Samish     40,853  174 (0.4)    524 (1.3)   1699 (4.2)   1106 (2.7)   3737 (9.1)   372 (0.9)      413 (1)
+7  Swinomish      3,207   61 (1.9)    190 (5.9)   552 (17.2)   445 (13.9)  1159 (36.1)   185 (5.8)    205 (6.4)
+6  Snohomish    820,024      3 (0)        5 (0)       34 (0)        0 (0)       95 (0)       0 (0)        0 (0)
+2  Jefferson     32,590      3 (0)        6 (0)     30 (0.1)        5 (0)     78 (0.2)       7 (0)        8 (0)
+4   San.Juan     17,631      1 (0)        3 (0)     13 (0.1)        1 (0)     31 (0.2)       0 (0)        0 (0)
+11     Total  1,084,411       7007        12215        23586        27524        41072        9946        11671
