@@ -77,7 +77,7 @@ source('analysis/noise_regime/evaluate_cumulative_metrics.R') # TODO
 
 ```{r}
 # Calculate single-event metrics for each site date
-source('analysis/noise_regime/preprocessing/calculate_single_event_metrics.R') # TODO
+source('analysis/noise_regime/preprocessing/calculate_single_event_metrics.R')
 calculate_events_csv('NAVY')
 calculate_events_csv('JGL')
 calculate_events_csv('NPS')
@@ -87,7 +87,14 @@ source('data/events/load_events_navy.R')
 source('data/events/load_events_navy_moa.R')
 
 # Evaluate single-event metrics
-source('analysis/noise_regime/evaluate_single_event_metrics.R') # TODO
+source('analysis/noise_regime/evaluate_single_event_metrics.R')
+```
+
+### Temporal distribution
+
+```{r}
+source('data/flight_ops/load_ops.R')
+source('analysis/noise_regime/temporal_distribution.R')
 ```
 
 ## Population noise exposure
@@ -109,7 +116,7 @@ source('data/simulation/aggregate_flight_ops.R')
 ```
 
 4.  Next, open the 'data/simulation/\_output/csv/\* Combined Average \*.csv' files with Microsoft Excel and re-save as .xml files in data/simulation/\_output/xml.
-5.  Open 'simulation/DNL/NASWI_Combined_Average_DNL.baseops' with BaseOps. Note that modeled static operations were constant across all four monitoring periods. To import new flight operations into BaseOps:
+5.  Open 'simulation/baseops/DNL/NASWI_Combined_Average_DNL.baseops' with BaseOps. Note that modeled static operations were constant across all four monitoring periods. To import new flight operations into BaseOps:
     1.  File \> Import Flight Operations from Spreadsheet
         1.  Option Categories \> File \> Import operations from the following spreadsheet file: \<the xml file you just saved, either the total combined average for DNL and LEQ24, or the "Night Only" for LNIGHT\>
         2.  Option Categories \> Columns:
@@ -186,6 +193,6 @@ source('analysis/population_health_impacts/childhood_learning.R')
 Conduct OSHA and NIOSH hearing loss impact evaluation. Reminder: uses SPL data
 
 ```{r}
-# Evaluate OSHA/NIOSH TWA for each site date
-source('analysis/population_health_impacts/preprocessing/calculate_osha_niosh.R') # TODO
+source('analysis/population_health_impacts/preprocessing/calculate_osha_niosh.R')
+source('analysis/population_health_impacts/hearing_impairment.R')
 ```

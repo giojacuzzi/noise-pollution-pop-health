@@ -8,7 +8,7 @@
  <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
   <Author>Gio Jacuzzi</Author>
   <LastAuthor>Gio Jacuzzi</LastAuthor>
-  <Created>2023-10-10T17:01:12Z</Created>
+  <Created>2023-10-11T23:13:10Z</Created>
   <Version>16.00</Version>
  </DocumentProperties>
  <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
@@ -17,8 +17,8 @@
  <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
   <WindowHeight>17440</WindowHeight>
   <WindowWidth>28040</WindowWidth>
-  <WindowTopX>3900</WindowTopX>
-  <WindowTopY>2200</WindowTopY>
+  <WindowTopX>32767</WindowTopX>
+  <WindowTopY>32767</WindowTopY>
   <ProtectStructure>False</ProtectStructure>
   <ProtectWindows>False</ProtectWindows>
  </ExcelWorkbook>
@@ -52,7 +52,7 @@
     <Cell><Data ss:Type="String">201A_EXP</Data></Cell>
     <Cell><Data ss:Type="String">07D1A</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -64,7 +64,7 @@
     <Cell><Data ss:Type="String">201A_FLT</Data></Cell>
     <Cell><Data ss:Type="String">07D1A</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -76,7 +76,7 @@
     <Cell><Data ss:Type="String">201A_FRS</Data></Cell>
     <Cell><Data ss:Type="String">07D1A</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -88,7 +88,7 @@
     <Cell><Data ss:Type="String">202A_EXP</Data></Cell>
     <Cell><Data ss:Type="String">07D1B</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0.25</Data></Cell>
@@ -100,7 +100,7 @@
     <Cell><Data ss:Type="String">202A_FLT</Data></Cell>
     <Cell><Data ss:Type="String">07D1B</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0.57142857150000004</Data></Cell>
@@ -112,7 +112,7 @@
     <Cell><Data ss:Type="String">202A_FRS</Data></Cell>
     <Cell><Data ss:Type="String">07D1B</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
@@ -124,7 +124,7 @@
     <Cell><Data ss:Type="String">203A_EXP</Data></Cell>
     <Cell><Data ss:Type="String">07D1C</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
@@ -136,7 +136,7 @@
     <Cell><Data ss:Type="String">203A_FLT</Data></Cell>
     <Cell><Data ss:Type="String">07D1C</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0.14285714275</Data></Cell>
@@ -148,7 +148,7 @@
     <Cell><Data ss:Type="String">203A_FRS</Data></Cell>
     <Cell><Data ss:Type="String">07D1C</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -160,7 +160,7 @@
     <Cell><Data ss:Type="String">204A_EXP</Data></Cell>
     <Cell><Data ss:Type="String">07D2A</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
@@ -172,7 +172,7 @@
     <Cell><Data ss:Type="String">204A_FLT</Data></Cell>
     <Cell><Data ss:Type="String">07D2A</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -184,7 +184,7 @@
     <Cell><Data ss:Type="String">204A_FRS</Data></Cell>
     <Cell><Data ss:Type="String">07D2A</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -196,7 +196,7 @@
     <Cell><Data ss:Type="String">205A_EXP</Data></Cell>
     <Cell><Data ss:Type="String">07D2B</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0.10714285725</Data></Cell>
@@ -208,7 +208,7 @@
     <Cell><Data ss:Type="String">205A_FLT</Data></Cell>
     <Cell><Data ss:Type="String">07D2B</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0.17857142875000001</Data></Cell>
@@ -220,7 +220,7 @@
     <Cell><Data ss:Type="String">205A_FRS</Data></Cell>
     <Cell><Data ss:Type="String">07D2B</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0.17857142875000001</Data></Cell>
@@ -232,7 +232,7 @@
     <Cell><Data ss:Type="String">206A_EXP</Data></Cell>
     <Cell><Data ss:Type="String">07D2C</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -244,7 +244,7 @@
     <Cell><Data ss:Type="String">206A_FLT</Data></Cell>
     <Cell><Data ss:Type="String">07D2C</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0.10714285725</Data></Cell>
@@ -256,7 +256,7 @@
     <Cell><Data ss:Type="String">206A_FRS</Data></Cell>
     <Cell><Data ss:Type="String">07D2C</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
@@ -916,7 +916,7 @@
     <Cell><Data ss:Type="String">226A_EXP</Data></Cell>
     <Cell><Data ss:Type="String">07A2A</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -928,7 +928,7 @@
     <Cell><Data ss:Type="String">226A_FLT</Data></Cell>
     <Cell><Data ss:Type="String">07A2A</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -940,7 +940,7 @@
     <Cell><Data ss:Type="String">226A_FRS</Data></Cell>
     <Cell><Data ss:Type="String">07A2A</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">7.1428571499999996E-2</Data></Cell>
@@ -952,7 +952,7 @@
     <Cell><Data ss:Type="String">226B_EXP</Data></Cell>
     <Cell><Data ss:Type="String">07A2B</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -964,7 +964,7 @@
     <Cell><Data ss:Type="String">226B_FLT</Data></Cell>
     <Cell><Data ss:Type="String">07A2B</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -976,7 +976,7 @@
     <Cell><Data ss:Type="String">226B_FRS</Data></Cell>
     <Cell><Data ss:Type="String">07A2B</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -988,7 +988,7 @@
     <Cell><Data ss:Type="String">226C_EXP</Data></Cell>
     <Cell><Data ss:Type="String">07A2C</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -1000,7 +1000,7 @@
     <Cell><Data ss:Type="String">226C_FLT</Data></Cell>
     <Cell><Data ss:Type="String">07A2C</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -1012,7 +1012,7 @@
     <Cell><Data ss:Type="String">226C_FRS</Data></Cell>
     <Cell><Data ss:Type="String">07A2C</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -1024,7 +1024,7 @@
     <Cell><Data ss:Type="String">227A_EXP</Data></Cell>
     <Cell><Data ss:Type="String">07A1A</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -1036,7 +1036,7 @@
     <Cell><Data ss:Type="String">227A_FLT</Data></Cell>
     <Cell><Data ss:Type="String">07A1A</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
@@ -1048,7 +1048,7 @@
     <Cell><Data ss:Type="String">227A_FRS</Data></Cell>
     <Cell><Data ss:Type="String">07A1A</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">7.1428571499999996E-2</Data></Cell>
@@ -1060,7 +1060,7 @@
     <Cell><Data ss:Type="String">227B_EXP</Data></Cell>
     <Cell><Data ss:Type="String">07A3B</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0.17857142875000001</Data></Cell>
@@ -1072,7 +1072,7 @@
     <Cell><Data ss:Type="String">227B_FLT</Data></Cell>
     <Cell><Data ss:Type="String">07A3B</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
@@ -1084,7 +1084,7 @@
     <Cell><Data ss:Type="String">227B_FRS</Data></Cell>
     <Cell><Data ss:Type="String">07A3B</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
@@ -1096,7 +1096,7 @@
     <Cell><Data ss:Type="String">227C_EXP</Data></Cell>
     <Cell><Data ss:Type="String">07A3C</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -1108,7 +1108,7 @@
     <Cell><Data ss:Type="String">227C_FLT</Data></Cell>
     <Cell><Data ss:Type="String">07A3C</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -1120,7 +1120,7 @@
     <Cell><Data ss:Type="String">227C_FRS</Data></Cell>
     <Cell><Data ss:Type="String">07A3C</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -1816,7 +1816,7 @@
     <Cell><Data ss:Type="String">235A_EXP</Data></Cell>
     <Cell><Data ss:Type="String">07O1A_FRS</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
     <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
@@ -1828,7 +1828,7 @@
     <Cell><Data ss:Type="String">235A_FLT</Data></Cell>
     <Cell><Data ss:Type="String">07O1A_FLT</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
     <Cell><Data ss:Type="Number">0.25</Data></Cell>
@@ -1840,7 +1840,7 @@
     <Cell><Data ss:Type="String">235A_FRS</Data></Cell>
     <Cell><Data ss:Type="String">07O1A_FRS</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -1852,7 +1852,7 @@
     <Cell><Data ss:Type="String">235B_EXP</Data></Cell>
     <Cell><Data ss:Type="String">07O1B_FRS</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
     <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
@@ -1864,7 +1864,7 @@
     <Cell><Data ss:Type="String">235B_FLT</Data></Cell>
     <Cell><Data ss:Type="String">07O1B_FLT</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
     <Cell><Data ss:Type="Number">7.1428571499999996E-2</Data></Cell>
@@ -1876,7 +1876,7 @@
     <Cell><Data ss:Type="String">235B_FRS</Data></Cell>
     <Cell><Data ss:Type="String">07O1B_FRS</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
     <Cell><Data ss:Type="Number">0.10714285725</Data></Cell>
@@ -1888,7 +1888,7 @@
     <Cell><Data ss:Type="String">235C_EXP</Data></Cell>
     <Cell><Data ss:Type="String">07O1C_FRS</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -1900,7 +1900,7 @@
     <Cell><Data ss:Type="String">235C_FLT</Data></Cell>
     <Cell><Data ss:Type="String">07O1C_FLT</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
     <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
@@ -1912,7 +1912,7 @@
     <Cell><Data ss:Type="String">235C_FRS</Data></Cell>
     <Cell><Data ss:Type="String">07O1C_FRS</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -1924,7 +1924,7 @@
     <Cell><Data ss:Type="String">236A_EXP</Data></Cell>
     <Cell><Data ss:Type="String">07O2A_FRS</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -1936,7 +1936,7 @@
     <Cell><Data ss:Type="String">236A_FLT</Data></Cell>
     <Cell><Data ss:Type="String">07O2A_FLT</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -1948,7 +1948,7 @@
     <Cell><Data ss:Type="String">236A_FRS</Data></Cell>
     <Cell><Data ss:Type="String">07O2A_FRS</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
     <Cell><Data ss:Type="Number">7.1428571499999996E-2</Data></Cell>
@@ -1960,7 +1960,7 @@
     <Cell><Data ss:Type="String">236B_EXP</Data></Cell>
     <Cell><Data ss:Type="String">07O2B_FRS</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -1972,7 +1972,7 @@
     <Cell><Data ss:Type="String">236B_FLT</Data></Cell>
     <Cell><Data ss:Type="String">07O2B_FLT</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
     <Cell><Data ss:Type="Number">7.1428571499999996E-2</Data></Cell>
@@ -1984,7 +1984,7 @@
     <Cell><Data ss:Type="String">236B_FRS</Data></Cell>
     <Cell><Data ss:Type="String">07O2B_FRS</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
     <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
@@ -1996,7 +1996,7 @@
     <Cell><Data ss:Type="String">236C_EXP</Data></Cell>
     <Cell><Data ss:Type="String">07O2C_FRS</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -2008,7 +2008,7 @@
     <Cell><Data ss:Type="String">236C_FLT</Data></Cell>
     <Cell><Data ss:Type="String">07O2C_FLT</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
     <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
@@ -2020,7 +2020,7 @@
     <Cell><Data ss:Type="String">236C_FRS</Data></Cell>
     <Cell><Data ss:Type="String">07O2C_FRS</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Overhead Break Arrival</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -2536,7 +2536,7 @@
     <Cell><Data ss:Type="String">243_EXP</Data></Cell>
     <Cell><Data ss:Type="String">07AHT</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">HI TACAN Arrival</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -2548,7 +2548,7 @@
     <Cell><Data ss:Type="String">243_FLT</Data></Cell>
     <Cell><Data ss:Type="String">07AHT</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">HI TACAN Arrival</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -2560,7 +2560,7 @@
     <Cell><Data ss:Type="String">243_FRS</Data></Cell>
     <Cell><Data ss:Type="String">07AHT</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">HI TACAN Arrival</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -2680,7 +2680,7 @@
     <Cell><Data ss:Type="String">247P_FH</Data></Cell>
     <Cell><Data ss:Type="String">07WC14P</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Interfacility Ault Field to Coupeville</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -2692,7 +2692,7 @@
     <Cell><Data ss:Type="String">247P_FL</Data></Cell>
     <Cell><Data ss:Type="String">07WC14P</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Interfacility Ault Field to Coupeville</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -2704,7 +2704,7 @@
     <Cell><Data ss:Type="String">247P_FO</Data></Cell>
     <Cell><Data ss:Type="String">07WC14P</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Interfacility Ault Field to Coupeville</Data></Cell>
     <Cell><Data ss:Type="Number">7.1428571499999996E-2</Data></Cell>
@@ -2716,7 +2716,7 @@
     <Cell><Data ss:Type="String">248P_FH</Data></Cell>
     <Cell><Data ss:Type="String">07WC32P</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Interfacility Ault Field to Coupeville</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -2728,7 +2728,7 @@
     <Cell><Data ss:Type="String">248P_FL</Data></Cell>
     <Cell><Data ss:Type="String">07WC32P</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Interfacility Ault Field to Coupeville</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -2740,7 +2740,7 @@
     <Cell><Data ss:Type="String">248P_FO</Data></Cell>
     <Cell><Data ss:Type="String">07WC32P</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Interfacility Ault Field to Coupeville</Data></Cell>
     <Cell><Data ss:Type="Number">0.10714285725</Data></Cell>
@@ -3160,7 +3160,7 @@
     <Cell><Data ss:Type="String">263L</Data></Cell>
     <Cell><Data ss:Type="String">07PL</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Depart and Re-enter Pattern</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -3172,7 +3172,7 @@
     <Cell><Data ss:Type="String">263R</Data></Cell>
     <Cell><Data ss:Type="String">07PR</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Depart and Re-enter Pattern</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -3256,7 +3256,7 @@
     <Cell><Data ss:Type="String">267A</Data></Cell>
     <Cell><Data ss:Type="String">07F1B</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Touch and Go at Ault Field</Data></Cell>
     <Cell><Data ss:Type="Number">0.67857142849999996</Data></Cell>
@@ -3268,7 +3268,7 @@
     <Cell><Data ss:Type="String">267B</Data></Cell>
     <Cell><Data ss:Type="String">07F1C</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Touch and Go at Ault Field</Data></Cell>
     <Cell><Data ss:Type="Number">7.1428571499999996E-2</Data></Cell>
@@ -3460,7 +3460,7 @@
     <Cell><Data ss:Type="String">277A_EXP</Data></Cell>
     <Cell><Data ss:Type="String">07G1A</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -3472,7 +3472,7 @@
     <Cell><Data ss:Type="String">277A_FLT</Data></Cell>
     <Cell><Data ss:Type="String">07G1A</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -3484,7 +3484,7 @@
     <Cell><Data ss:Type="String">277A_FRS</Data></Cell>
     <Cell><Data ss:Type="String">07G1A</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -3496,7 +3496,7 @@
     <Cell><Data ss:Type="String">277B_EXP</Data></Cell>
     <Cell><Data ss:Type="String">07G1B</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -3508,7 +3508,7 @@
     <Cell><Data ss:Type="String">277B_FLT</Data></Cell>
     <Cell><Data ss:Type="String">07G1B</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -3520,7 +3520,7 @@
     <Cell><Data ss:Type="String">277B_FRS</Data></Cell>
     <Cell><Data ss:Type="String">07G1B</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -3532,7 +3532,7 @@
     <Cell><Data ss:Type="String">277C_EXP</Data></Cell>
     <Cell><Data ss:Type="String">07G1C</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -3544,7 +3544,7 @@
     <Cell><Data ss:Type="String">277C_FLT</Data></Cell>
     <Cell><Data ss:Type="String">07G1C</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -3556,7 +3556,7 @@
     <Cell><Data ss:Type="String">277C_FRS</Data></Cell>
     <Cell><Data ss:Type="String">07G1C</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -3892,7 +3892,7 @@
     <Cell><Data ss:Type="String">281A_m</Data></Cell>
     <Cell><Data ss:Type="String">07F1B</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">FCLP at Ault Field</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -3904,7 +3904,7 @@
     <Cell><Data ss:Type="String">281B_m</Data></Cell>
     <Cell><Data ss:Type="String">07F1C</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">FCLP at Ault Field</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -3976,7 +3976,7 @@
     <Cell><Data ss:Type="Number">301</Data></Cell>
     <Cell><Data ss:Type="String">07D1B</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0.14285714299999999</Data></Cell>
@@ -3988,7 +3988,7 @@
     <Cell><Data ss:Type="Number">302</Data></Cell>
     <Cell><Data ss:Type="String">07D1C</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -4000,7 +4000,7 @@
     <Cell><Data ss:Type="Number">303</Data></Cell>
     <Cell><Data ss:Type="String">07D2B</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0.10714285725</Data></Cell>
@@ -4012,7 +4012,7 @@
     <Cell><Data ss:Type="Number">304</Data></Cell>
     <Cell><Data ss:Type="String">07D2C</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -4168,7 +4168,7 @@
     <Cell><Data ss:Type="Number">321</Data></Cell>
     <Cell><Data ss:Type="String">07A1A</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -4180,7 +4180,7 @@
     <Cell><Data ss:Type="Number">322</Data></Cell>
     <Cell><Data ss:Type="String">07A4D</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -4192,7 +4192,7 @@
     <Cell><Data ss:Type="Number">323</Data></Cell>
     <Cell><Data ss:Type="String">07A3B</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -4288,7 +4288,7 @@
     <Cell><Data ss:Type="String">336B</Data></Cell>
     <Cell><Data ss:Type="String">07A2B</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -4300,7 +4300,7 @@
     <Cell><Data ss:Type="String">336C</Data></Cell>
     <Cell><Data ss:Type="String">07A2C</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -4432,7 +4432,7 @@
     <Cell><Data ss:Type="Number">343</Data></Cell>
     <Cell><Data ss:Type="String">07ALT</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">HI TACAN Arrival</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -4480,7 +4480,7 @@
     <Cell><Data ss:Type="String">347B</Data></Cell>
     <Cell><Data ss:Type="String">07G1B</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -4492,7 +4492,7 @@
     <Cell><Data ss:Type="String">347C</Data></Cell>
     <Cell><Data ss:Type="String">07G1C</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -4576,7 +4576,7 @@
     <Cell><Data ss:Type="String">351B</Data></Cell>
     <Cell><Data ss:Type="String">07TU1C</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Touch and Go at Ault Field</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -4624,7 +4624,7 @@
     <Cell><Data ss:Type="Number">401</Data></Cell>
     <Cell><Data ss:Type="String">07D1B</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0.14285714299999999</Data></Cell>
@@ -4636,7 +4636,7 @@
     <Cell><Data ss:Type="Number">402</Data></Cell>
     <Cell><Data ss:Type="String">07D1C</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -4648,7 +4648,7 @@
     <Cell><Data ss:Type="Number">403</Data></Cell>
     <Cell><Data ss:Type="String">07D2B</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -4660,7 +4660,7 @@
     <Cell><Data ss:Type="Number">404</Data></Cell>
     <Cell><Data ss:Type="String">07D2C</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -4816,7 +4816,7 @@
     <Cell><Data ss:Type="Number">417</Data></Cell>
     <Cell><Data ss:Type="String">07A1A</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -4828,7 +4828,7 @@
     <Cell><Data ss:Type="Number">418</Data></Cell>
     <Cell><Data ss:Type="String">07A3B</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -4840,7 +4840,7 @@
     <Cell><Data ss:Type="Number">419</Data></Cell>
     <Cell><Data ss:Type="String">07A4D</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -4936,7 +4936,7 @@
     <Cell><Data ss:Type="String">436B</Data></Cell>
     <Cell><Data ss:Type="String">07A2B</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -4948,7 +4948,7 @@
     <Cell><Data ss:Type="String">436C</Data></Cell>
     <Cell><Data ss:Type="String">07A2C</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -5080,7 +5080,7 @@
     <Cell><Data ss:Type="String">447B</Data></Cell>
     <Cell><Data ss:Type="String">07G1B</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -5092,7 +5092,7 @@
     <Cell><Data ss:Type="String">447C</Data></Cell>
     <Cell><Data ss:Type="String">07G1C</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -5176,7 +5176,7 @@
     <Cell><Data ss:Type="String">451B</Data></Cell>
     <Cell><Data ss:Type="String">07TU2C</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Transient</Data></Cell>
     <Cell><Data ss:Type="String">Touch and Go at Ault Field</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -5224,7 +5224,7 @@
     <Cell><Data ss:Type="String">501_mod</Data></Cell>
     <Cell><Data ss:Type="String">07D1B</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0.4642857145</Data></Cell>
@@ -5236,7 +5236,7 @@
     <Cell><Data ss:Type="String">502_mod</Data></Cell>
     <Cell><Data ss:Type="String">07D1C</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
@@ -5248,7 +5248,7 @@
     <Cell><Data ss:Type="String">503_mod</Data></Cell>
     <Cell><Data ss:Type="String">07D2B</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0.25000000025000002</Data></Cell>
@@ -5260,7 +5260,7 @@
     <Cell><Data ss:Type="String">504_mod</Data></Cell>
     <Cell><Data ss:Type="String">07D2C</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Departure</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -5416,7 +5416,7 @@
     <Cell><Data ss:Type="Number">521</Data></Cell>
     <Cell><Data ss:Type="String">07A1A</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -5428,7 +5428,7 @@
     <Cell><Data ss:Type="Number">522</Data></Cell>
     <Cell><Data ss:Type="String">07A3B</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -5440,7 +5440,7 @@
     <Cell><Data ss:Type="Number">523</Data></Cell>
     <Cell><Data ss:Type="String">07A4D</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 C9 VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -5536,7 +5536,7 @@
     <Cell><Data ss:Type="String">536B_mod</Data></Cell>
     <Cell><Data ss:Type="String">07A2B</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">7.1428571499999996E-2</Data></Cell>
@@ -5548,7 +5548,7 @@
     <Cell><Data ss:Type="String">536C_mod</Data></Cell>
     <Cell><Data ss:Type="String">07A2C</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">P3 P8 IFR and Growler VFR non breaks</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -5680,7 +5680,7 @@
     <Cell><Data ss:Type="Number">543</Data></Cell>
     <Cell><Data ss:Type="String">07ALT</Data></Cell>
     <Cell><Data ss:Type="String">Arrival</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">HI TACAN Arrival</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -5728,7 +5728,7 @@
     <Cell><Data ss:Type="String">547B_mod</Data></Cell>
     <Cell><Data ss:Type="String">07G1B</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
     <Cell><Data ss:Type="Number">3.5714285749999998E-2</Data></Cell>
@@ -5740,7 +5740,7 @@
     <Cell><Data ss:Type="String">547C_mod</Data></Cell>
     <Cell><Data ss:Type="String">07G1C</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">GCA Pattern</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
@@ -5824,7 +5824,7 @@
     <Cell><Data ss:Type="String">551B_mod</Data></Cell>
     <Cell><Data ss:Type="String">07TU2C</Data></Cell>
     <Cell><Data ss:Type="String">Closed Pattern</Data></Cell>
-    <Cell><Data ss:Type="Number">7</Data></Cell>
+    <Cell><Data ss:Type="String" x:Ticked="1">07</Data></Cell>
     <Cell><Data ss:Type="String">Based</Data></Cell>
     <Cell><Data ss:Type="String">Touch and Go at Ault Field</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>

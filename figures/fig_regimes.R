@@ -2,8 +2,20 @@ library(tidyr)
 
 source('global.R')
 
+# From Navy report to Congress:
+# - "For these summaries, one flight operation is counted whenever an aircraft touches or leaves a runway surface. Thus, an arrival and a departure each count as one flight operation, whereas a closed pattern, such as an FCLP, counts as two flight operations for each circuit."
+# - "The number of operations used by the NOISEMAP model is based on the average annual day, per DoD Instruction 4715.13. The average annual day represents the average number of daily airfield operations that would occur during a 24-hour period based on 365 flying days per year; the average annual day is calculated by dividing the total annual airfield operations by 365."
+
+library(readr)
+mp4_ops = read_csv("data/simulation/_output/csv/NASWI_Noisemap - Flight Operations Combined Average.csv")
+
+closed_pattern_ops = 2 * sum(mp4_ops[mp4_ops$`Track Type` == 'Closed Pattern', 'Num Total'])
+other_ops = sum(mp4_ops[mp4_ops$`Track Type` != 'Closed Pattern', 'Num Total'])
+
+nops_4MP = (closed_pattern_ops + other_ops) * 365
+msg('Total projected annual operations from 2020-2021 four monitoring periods:', nops_4MP)
+
 results = read.csv('analysis/_output/health_impact_summary.csv') # 2021 4-month monitoring period aggregate ops
-nops_4MP = 93361.84
 nops_A2A = 112100 # 1.200704x, Alternative 2A
 nops_NA  = 84700 # 0.9072226x, No Action
 

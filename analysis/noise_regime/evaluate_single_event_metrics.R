@@ -124,7 +124,7 @@ for (id in ids) {
     event_avg = data.frame(event_data[,-c(1)])
     event_avg = sapply(event_avg, energyavg)
     event_avg = data.frame(
-      Band=gsub('X','',names(event_avg)),
+      Band=gsub('X1.3.LZeq.','',names(event_avg)),
       dBZ=event_avg
     )
     session_freq_avg = rbind(session_freq_avg, event_avg)

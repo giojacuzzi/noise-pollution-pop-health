@@ -147,4 +147,6 @@ for (r in 1:nrow(data_metrics)) {
   ))
 }
 
-write.csv(results, 'data/metrics/_output/osha_niosh.csv', row.names=F)
+path = 'analysis/population_health_impacts/preprocessing/_output/osha_niosh.csv'
+write.csv(results, path, row.names=F)
+msg('Created', path)

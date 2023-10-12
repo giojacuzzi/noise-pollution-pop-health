@@ -21,6 +21,7 @@ library(stringr)
 library(dplyr)
 library(tidyr)
 library(glue)
+library(readr)
 
 # Spatial mapping
 library(mapview)
@@ -91,7 +92,7 @@ get_data_metrics = function() {
 }
 
 get_data_ops = function() {
-  data_ops = read.csv('data/flight_ops/_output/ops.csv')
+  data_ops = read_csv('data/flight_ops/_output/ops.csv')
   data_ops$Time   = as.POSIXct(data_ops$Time, tz='UTC')
   data_ops$Hour   = as.factor(format(data_ops$Time, format='%H'))
   data_ops$DEN    = get_den_period_for_hours(data_ops$Hour)
