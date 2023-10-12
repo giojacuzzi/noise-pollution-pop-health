@@ -200,8 +200,10 @@ msg('Current simulation total annual operations count:', current_total_annual_op
 
 alternative_nops = c( # Alternative number of operations to evaluate
   current_total_annual_ops * 1.5, # 150 % increase
+  current_total_annual_ops * 1.25,
   112100, # FINAL EIS 2018: "Action Alternative 2: Scenario A"
-  84700,   # FINAL EIS 2018: "No Action"
+  # 84700,   # FINAL EIS 2018: "No Action"
+  current_total_annual_ops * 0.75,
   current_total_annual_ops * 0.5 # 50 % decrease
 )
 
