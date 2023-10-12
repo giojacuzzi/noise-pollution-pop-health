@@ -15,86 +15,69 @@ other_ops = sum(mp4_ops[mp4_ops$`Track Type` != 'Closed Pattern', 'Num Total'])
 nops_4MP = (closed_pattern_ops + other_ops) * 365
 msg('Total projected annual operations from 2020-2021 four monitoring periods:', nops_4MP)
 
-results = read.csv('analysis/_output/health_impact_summary.csv') # 2021 4-month monitoring period aggregate ops
 nops_A2A = 112100 # 1.200704x, Alternative 2A
-nops_NA  = 84700 # 0.9072226x, No Action
+# nops_NA  = 84700 # 0.9072226x, No Action
 
-results = results[nrow(results),]
-results$Exposed = as.numeric(results$Exposed)
-results$Operations = nops_4MP
-results$Multiplier = 1.0
+results_exposure = read.csv('analysis/population_noise_exposure/_output/population_noise_exposure_summary.csv') # 2021 4-month monitoring period aggregate ops
+results_exposure = results_exposure[nrow(results_exposure),]
+results_exposure$Exposed = as.numeric(results_exposure$Exposed)
+results_exposure$Operations = nops_4MP
+results_exposure$Multiplier = 1.0
 
-summary_files = list.files('analysis/_output/alternatives', pattern = paste0('health_impact_summary*.csv'), full.names = T)
-for (file in summary_files) {
-  result = read.csv(file)
-  multiplier = as.numeric(unlist(str_split(unlist(str_split(file, 'analysis/_output/alternatives/'))[2], 'x'))[1])
-  nops = nops_4MP * multiplier
-  msg(multiplier, nops)
+results_impacts = read.csv('analysis/population_health_impacts/_output/health_impact_summary.csv') # 2021 4-month monitoring period aggregate ops
+results_impacts = results_impacts[nrow(results_impacts),]
+
+results = merge(results_impacts, results_exposure)
+results = results[, c('Multiplier', 'Operations', 'Exposed', 'HA_WHO', 'HSD_WHO')]
+
+multipliers = unique(sapply(str_split(list.files('analysis/_output/alternatives'), '_'), '[[', 1))
+
+for (m in multipliers) {
+  file_exposure = paste0('analysis/_output/alternatives/', m, '_population_noise_exposure_summary.csv', sep = '')
+  file_impacts = paste0('analysis/_output/alternatives/', m, '_health_impact_summary.csv', sep = '')
   
-  result = result[nrow(result),]
-  result$Exposed = as.numeric(result$Exposed)
-  result$Operations = nops
-  result$Multiplier = multiplier
+  m = as.numeric(gsub('x', '', m))
+  results_exposure = read.csv(file_exposure)
+  results_exposure = results_exposure[nrow(results_exposure),]
+  results_exposure$Exposed = as.numeric(results_exposure$Exposed)
+  results_exposure$Operations = nops_4MP * m
+  results_exposure$Multiplier = m
   
-  results = rbind(results, result)
+  results_impacts = read.csv(file_impacts)
+  results_impacts = results_impacts[nrow(results_impacts),]
+  
+  results_temp = merge(results_impacts, results_exposure)
+  results_temp = results_temp[, c('Multiplier', 'Operations', 'Exposed', 'HA_WHO', 'HSD_WHO')]
+  results = rbind(results, results_temp)
 }
 
 results = results[order(results$Operations,decreasing=T),]
-
-# 
-# # sim_A2A = read.csv('analysis/_output/alternatives/health_impact_summary_Alternative2A.csv') # 2018 EIS Alternative 2A annual ops (2021 projection)
-# # sim_NA = read.csv('analysis/_output/alternatives/health_impact_summary_PreExpansion.csv') # 2018 EIS No Action
-# 
-# 
-# # 140,042.8 (50 % increase) *
-# # 130,000
-# # 120,000
-# # 112,100 ---- A2A
-# # 110,000
-# # 100,000
-# # 93,361.84 ---- 4MP
-# # 90,000
-# # 84,700 ---- No Action
-# # 80,000
-# # 46,680.92 (50 % decrease) *
-# 
-# last_row = nrow(sim_4MP)
-# comp = rbind(
-#   sim_4MP[last_row,],
-#   sim_A2A[last_row,],
-#   sim_NA[last_row,]
-# )
-
-# nstats = ncol(results) - 1
-
-# outcome_colors = c('yellow', 'royalblue', 'darkorchid2', 'black', 'forestgreen', 'red')
-# names(outcome_colors) = names(comp)[3:nstats]
-
-names(results) = c('Name', 'Population', 'Exposed Population', 'Highly Annoyed (FICON)', 'Highly Annoyed (ISO)', 'Highly Annoyed (WHO)', 'Highly Annoyed (FAA NES)', 'Highly Annoyed (Yokoshima)', 'Highly Sleep Disturbed (WHO)', 'Highly Sleep Disturbed (Smith)', 'Hearing Loss and Cardiovascular Effects', 'Operations', 'Multiplier')
-
-results = results[, c('Operations', 'Highly Annoyed (WHO)', 'Highly Sleep Disturbed (WHO)', 'Exposed Population')]
+results = results %>% mutate_if(is.character, as.numeric)
+results = results[, c('Operations', 'Exposed', 'HA_WHO', 'HSD_WHO')]
 
 results_long = round(results / 1000.0, 2) %>% pivot_longer(cols=names(results)[2:ncol(results)], names_to='Outcome', values_to='Estimate')
 lab_size = 6
 
 p_simulations = results_long %>% ggplot(aes(x=Operations, y=Estimate, group=Outcome, color=Outcome)) +
-  geom_vline(aes(xintercept=nops_4MP / 1000.0), linetype = 'dashed', color = 'gray', lwd=1.5) +
-  geom_vline(aes(xintercept=nops_A2A / 1000.0), linetype = 'dashed', color = 'gray', lwd=1.5) +
-  annotate('text', x=(nops_4MP - 3000) / 1000.0, y=50, label='This study', angle=90, color = 'gray', size = lab_size) +
-  annotate('text', x=(nops_A2A - 3000) / 1000.0, y=50, label='Projected 2021 total', angle=90, color = 'gray', size = lab_size) +
+  geom_vline(aes(xintercept=nops_4MP / 1000.0), linetype = 'dashed', color = 'darkgray', lwd=1.5) +
+  geom_vline(aes(xintercept=nops_A2A / 1000.0), linetype = 'dashed', color = 'darkgray', lwd=1.5) +
+  annotate('text', x=(nops_4MP - 3000) / 1000.0, y=50, label='This study', angle=90, color = 'darkgray', size = lab_size) +
+  annotate('text', x=(nops_A2A - 3000) / 1000.0, y=50, label='Projected 2021 total', angle=90, color = 'darkgray', size = lab_size) +
   geom_line(lwd=1.5) +
   geom_point(size=2) +
-  annotate('text', x=65, y=66.5, label='Exposed population', angle=17, color = '#444444', size = lab_size) +
-  annotate('text', x=65, y=20, label='Highly annoyed (WHO)', angle=6, color = '#F8766D', size = lab_size) +
-  annotate('text', x=67, y=9, label='Highly sleep disturbed (WHO)', angle=2, color = '#619CFF', size = lab_size) +
+  annotate('text', x=65, y=70, label='Exposed population', angle=18, color = '#444444', size = lab_size) +
+  annotate('text', x=70, y=22, label='Highly annoyed (WHO)', angle=7, color = '#F8766D', size = lab_size) +
+  annotate('text', x=70, y=10, label='Highly sleep disturbed (WHO)', angle=3, color = '#619CFF', size = lab_size) +
   scale_color_manual(labels=c('Exposed population','Highly annoyed (WHO)','Highly sleep disturbed (WHO)'), values=c('#444444','#F8766D', '#619CFF')) +
   scale_x_continuous(sec.axis = ggplot2::sec_axis(~. / nops_4MP * 1000.0, name = 'Scaling factor', labels = scales::label_percent())) +
   # scale_color_manual(name='Health Outcome', values=erf_colors, breaks=names(comp)[3:nstats]) +
-  labs(title = 'Projected population health impacts from annual airfield operations', x = 'Annual airfield operations (thousands)', y = 'Estimated population impacted (thousands)', color = 'Health outcome') + 
+  labs(title = '', x = 'Annual airfield operations (thousands)', y = 'Estimated population impacted (thousands)', color = 'Health outcome') + 
   theme(
+    axis.title.x = element_text(margin = margin(t = 20, r = , b = 0, l = 0)),
+    axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0)),
     panel.grid.minor.x = element_blank(),
     panel.grid.minor.y = element_blank(),
-    text=element_text(size=20),
+    text=element_text(size=22),
     legend.position = 'none'
   ); p_simulations
-ggsave(p_simulations, file=paste0('figures/_output/simulations.png'), width=12, height=10)
+ggsave(p_simulations, file=paste0('figures/_output/simulations.png'), width=10, height=10)
