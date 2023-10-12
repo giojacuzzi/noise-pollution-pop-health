@@ -34,8 +34,6 @@ impact_area_units_km2 = units::set_units(impact_area_units, km^2)
 impact_area_units_mi2 = units::set_units(impact_area_units, mi^2)
 msg('Total area of noise exposure associated with adverse health effects:', round(impact_area_units_km2,2), 'km2', round(impact_area_units_mi2,2), 'mi2')
 
-## TODO: WITHOUT WATER AND BASES
-
 wa_counties_cb = counties(state = 'WA', cb = T)
 wa_counties_cb = st_transform(wa_counties_cb, 'WGS84')
 
@@ -67,28 +65,6 @@ impact_area_land_units_acerage = units::set_units(st_area(impact_area_EIS_compar
 
 msg('Proportion of 65 dB DNL noise exposure land area (not including military base areas) compared to EIS:', impact_area_land_units_acerage / 23246)
 msg('EIS / Simulation:', 23246 / impact_area_land_units_acerage)
-
-#################################
-
-msg('Total exposed population:', round(cellStats(pop_exposure_stack[['Exposed.Population']], 'sum')))
-
-## Number of people at risk of annoyance
-nexp_annoyance = round(cellStats(mask(pop_exposure_stack[['Exposed.Population']], clamp(pop_exposure_stack[['Ldn']], lower=threshold_annoyance_Lden, useValues=F)), 'sum'))
-msg('Number of people at risk of annoyance:', nexp_annoyance)
-
-## Number of people exposed to sleeping disturbance risk threshold
-nexp_sleep_disturbance = round(cellStats(mask(pop_exposure_stack[['Exposed.Population']], clamp(pop_exposure_stack[['Lnight']], lower=threshold_sleep_disturbance_Lnight, useValues=F)), 'sum'))
-msg('Number of people at risk of sleep disturbance:', nexp_sleep_disturbance)
-
-## Number of people exposed to hearing impairment risk threshold
-nexp_hearing_impairment = round(cellStats(mask(pop_exposure_stack[['Exposed.Population']], clamp(pop_exposure_stack[['Leq24']], lower=threshold_hearing_impairment_Leq24, useValues=F)), 'sum'))
-msg('Number of people at risk of hearing impairment:', nexp_hearing_impairment)
-
-## Number of people exposed to noise levels incompatible with residential land use (65 dB Ldn, FAA and HUD)
-nexp_land_use = round(cellStats(mask(pop_exposure_stack[['Exposed.Population']], clamp(pop_exposure_stack[['Ldn']], lower=threshold_land_use_Ldn, useValues=F)), 'sum'))
-msg('Number of people exposed to noise levels incompatible with land use regulations:', nexp_land_use)
-
-#######################################
 
 # Calculate at-risk population for each zone
 health_risk_summary = data.frame()
