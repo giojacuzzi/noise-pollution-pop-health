@@ -23,7 +23,7 @@ threshold_school_year = LeqTotal(c(rep(threshold_reading_comprehension_Lden, n_s
 # The difference between the annual (365 day) exposure and the school year exposure
 threshold_delta = round(threshold_reading_comprehension_Lden - threshold_school_year)
 
-msg('Equivalent ', threshold_reading_comprehension_Lden,' dB Lden annual exposure for ', n_school_days,'-day school year: ', Ldn_target, ' dB', sep='')
+msg('Equivalent ', threshold_reading_comprehension_Lden,' dB Lden annual exposure for ', n_school_days,'-day school year: ', (threshold_reading_comprehension_Lden + threshold_delta), ' dB', sep='')
 
 # Relabel contours according to school year exposure
 contours_reading_comprehension = get_contours_Ldn()
@@ -31,7 +31,7 @@ contours_reading_comprehension$Level = contours_reading_comprehension$Level - th
 contours_reading_comprehension_bounds = st_bbox(contours_reading_comprehension)
 
 # https://nces.ed.gov/programs/edge/geographic/schoollocations
-dir = 'data/gis/schools/'
+dir = paste0(database_path, '/GIS/NCES/')
 schools_public  = st_read(paste0(dir, 'EDGE_GEOCODE_PUBLICSCH_2021/EDGE_GEOCODE_PUBLICSCH_2021.shp'))
 schools_private = st_read(paste0(dir, 'EDGE_GEOCODE_PRIVATESCH_1920/EDGE_GEOCODE_PRIVATESCH_1920.shp'))
 schools_postsec = st_read(paste0(dir, 'EDGE_GEOCODE_POSTSECONDARYSCH_2021/EDGE_GEOCODE_POSTSECSCH_2021.shp'))
@@ -87,7 +87,7 @@ write.csv(schools_affected, glue(output_path, '/schools_affected.csv'), row.name
 print(schools_affected)
 
 # Additional schools within 5 dB of the threshold
-nrow(schools[schools$Level >= (threshold_reading_comprehension_Lden - 5) & schools$AtRisk==F,])
+msg('Additional schools within 5 dB of the threshold:', nrow(schools[schools$Level >= (threshold_reading_comprehension_Lden - 5) & schools$AtRisk==F,]))
 
 ## Cognitive development in children -------------------------------------------
 
@@ -106,17 +106,6 @@ unique(data_metrics[data_metrics$Lden>=55, 'ID'])
 
 # Measured SEL near schools
 # Only consider school hours -> 8:00 am to 3:59 pm
-# Near Coupeville Elementary and Coupeville High
-# TODO: exact distance, and only consider school hours
-
-# At NbwH, the field monitoring site nearest Coupeville Elementary (347 m, 1,139 ft) and Coupeville High (~264 m, 867 ft),
-# aircraft noise events surpassed 103 dB SEL and 94 dB Lmax.
-events_NwbH = data_events[data_events$ID=='NwbH' &
-              (as.numeric(data_events$Hour) >=  8) &
-              (as.numeric(data_events$Hour) <=  15) &
-              !(data_events$Day %in% c('Sat', 'Sun')), ]
-head(events_NwbH[order(events_NwbH$SEL, decreasing=T), ])
-head(events_NwbH[order(events_NwbH$LAeq_Lmax, decreasing=T), ])
 
 # At 2B_T, the field monitoring site nearest Crescent Harbor Elementary (~1 km, 3,293 ft),
 # aircraft noise events surpassed 113 dB SEL and 103 dB Lmax.
@@ -126,5 +115,3 @@ events_2B_T = data_events[data_events$ID=='2B_T' &
                             !(data_events$Day %in% c('Sat', 'Sun')), ]
 head(events_2B_T[order(events_2B_T$SEL, decreasing=T), ])
 head(events_2B_T[order(events_2B_T$LAeq_Lmax, decreasing=T), ])
-
-# TODO: Modeled SEL for flight tracks near schools

@@ -1,5 +1,6 @@
 ## Temporal distribution
 # When does the noise occur?
+library(lubridate)
 
 source('global.R')
 source('metrics/metrics.R')
@@ -12,6 +13,7 @@ data_ops     = get_data_ops()
 
 # Time
 data_ops$Hour = hour(data_ops$Time)
+detach(package:lubridate,unload=T)
 data_ops = data_ops[order(data_ops$Hour),]
 perc_day = nrow(data_ops[data_ops$Hour >= 7 & data_ops$Hour < 19, ]) / nrow(data_ops)
 perc_evening = nrow(data_ops[data_ops$Hour >= 19 & data_ops$Hour < 22, ]) / nrow(data_ops)

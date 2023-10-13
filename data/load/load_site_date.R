@@ -14,7 +14,7 @@ load_site_date = function(id, date) {
   }
   
   data_date = NULL
-  data_date = read.csv(file)
+  data_date = read_csv(file, show_col_types = F)
   if (is.null(data_date)) {
     warning(paste('Unable to load', file))
     return(NULL)
@@ -135,8 +135,9 @@ create_site_date_csvs = function(orgarg) {
       }
       
       # Save all site_dates data to csv
-      path = paste0(here::here(), '/data/load/_output/site_dates/')
-      path = paste0(path, org, '/', id, '_', date, '.csv')
+      path = paste0(here::here(), '/data/load/_output/site_dates/', org)
+      if (!dir.exists(path)) dir.create(path, recursive=T)
+      path = paste0(path, '/', id, '_', date, '.csv')
       write.csv(site_date_data[!is.na(site_date_data$LAeq),], file=path, row.names=F)
       message(paste('Wrote', path))
     }

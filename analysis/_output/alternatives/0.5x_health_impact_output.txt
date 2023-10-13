@@ -1,76 +1,47 @@
-Total exposed population: 58292 
-Total area of noise exposure associated with adverse health effects: 996.05 km2 384.58 mi2 
-Number of people exposed to noise levels incompatible with residential land use (65 dB Ldn, FAA and HUD): 9525 
 Number of people exposed to levels beyond bounds of common ERFs: 
- HA  3276 
- HSD  3244 
-Number of people exposed to sleeping disturbance risk threshold: 28164 
-Precalculating raster for HA (FICON)... 
-Precalculating raster for HA (ISO)... 
-Precalculating raster for HA (WHO)... 
-Precalculating raster for HA (FAA NES)... 
-Precalculating raster for HA (Yokoshima)... 
-Precalculating raster for HSD (WHO)... 
-Precalculating raster for HSD (Smith)... 
-Precalculating raster for HL/CE... 
+ HA  3359 
+ HSD  3294 
 Island (county)
-  Total         85938 
-  Exposed       49753.94 
-  HA FICON  3992.506 
-  HA ISO        7337.946 
-  HA WHO        14144.77 
-  HA FAANES  15782.45 
-  HA Yokoshima  24779.79 
-  HSD WHO         5726.85 
-  HSD Smith       6768.422 
-  HLCE           5682.735 
+  HA FICON  4123.071 
+  HA ISO        7651.491 
+  HA WHO        14855.18 
+  HA FAANES  16519.66 
+  HA Yokoshima  26114.58 
+  HSD WHO         6045.234 
+  HSD Smith       7132.959 
 Jefferson (county)
-  Total         32590 
-  Exposed       11.35614 
-  HA FICON  0.1001082 
-  HA ISO        0.1879731 
-  HA WHO        1.144748 
+  HA FICON  0.2182831 
+  HA ISO        0.4145468 
+  HA WHO        2.496159 
   HA FAANES  0 
-  HA Yokoshima  3.156742 
+  HA Yokoshima  6.859534 
   HSD WHO         0 
   HSD Smith       0 
-  HLCE           0 
 Samish (native)
-  Total         40853 
-  Exposed       3929.025 
-  HA FICON  52.96833 
-  HA ISO        148.6913 
-  HA WHO        575.0371 
-  HA FAANES  250.1983 
-  HA Yokoshima  1345.344 
-  HSD WHO         99.40427 
-  HSD Smith       107.4719 
-  HLCE           0 
+  HA FICON  56.98348 
+  HA ISO        160.8857 
+  HA WHO        615.5197 
+  HA FAANES  281.9903 
+  HA Yokoshima  1435.04 
+  HSD WHO         117.0172 
+  HSD Smith       126.6807 
 San.Juan (county)
-  Total         17631 
-  Exposed       4.068062 
-  HA FICON  0.03370353 
-  HA ISO        0.05652667 
-  HA WHO        0.3810431 
+  HA FICON  0.06304112 
+  HA ISO        0.1057309 
+  HA WHO        0.7127261 
   HA FAANES  0 
-  HA Yokoshima  1.089427 
+  HA Yokoshima  2.03773 
   HSD WHO         0 
   HSD Smith       0 
-  HLCE           0 
 Skagit (county)
-  Total         128228 
-  Exposed       8522.199 
-  HA FICON  113.7207 
-  HA ISO        314.98 
-  HA WHO        1228.234 
-  HA FAANES  488.1811 
-  HA Yokoshima  2890.993 
-  HSD WHO         167.1301 
-  HSD Smith       181.2467 
-  HLCE           0 
+  HA FICON  123.9509 
+  HA ISO        346.8703 
+  HA WHO        1330.209 
+  HA FAANES  563.1225 
+  HA Yokoshima  3111.496 
+  HSD WHO         204.7347 
+  HSD Smith       222.0793 
 Snohomish (county)
-  Total         820024 
-  Exposed       0 
   HA FICON  0 
   HA ISO        0 
   HA WHO        0 
@@ -78,24 +49,19 @@ Snohomish (county)
   HA Yokoshima  0 
   HSD WHO         0 
   HSD Smith       0 
-  HLCE           0 
 Swinomish (native)
-  Total         3207 
-  Exposed       1429.161 
-  HA FICON  21.35721 
-  HA ISO        62.50049 
-  HA WHO        224.5891 
-  HA FAANES  127.8106 
-  HA Yokoshima  511.0299 
-  HSD WHO         31.60632 
-  HSD Smith       34.21338 
-  HLCE           0 
-Percent exposed per zone: 
-                    Name Population       Exposed HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith HLCE
-1          Island County      85938 49754 (57.9%)     3993   7338  14145     15782        24780    5727      6768 5683
-5          Skagit County     128228   8522 (6.6%)      114    315   1228       488         2891     167       181    0
-3            Samish TDSA      40853   3929 (9.6%)       53    149    575       250         1345      99       107    0
-7  Swinomish Reservation       3207  1429 (44.6%)       21     63    225       128          511      32        34    0
-2       Jefferson County      32590       11 (0%)        0      0      1         0            3       0         0    0
-4        San Juan County      17631        4 (0%)        0      0      0         0            1       0         0    0
-11                Total*     264387         58291     4107   7653  15374     16270        27675    5894      6949 5683
+  HA FICON  23.9831 
+  HA ISO        71.22312 
+  HA WHO        248.9415 
+  HA FAANES  147.9406 
+  HA Yokoshima  560.1673 
+  HSD WHO         44.53525 
+  HSD Smith       48.18529 
+        Name Population   HA_FICON     HA_ISO       HA_WHO    HA_FAANES HA_Yokoshima   HSD_WHO  HSD_Smith
+1     Island     85,938 4123 (4.8) 7651 (8.9) 14855 (17.3) 16520 (19.2) 26115 (30.4)  6045 (7) 7133 (8.3)
+5     Skagit    128,228  124 (0.1)  347 (0.3)     1330 (1)    563 (0.4)   3111 (2.4) 205 (0.2)  222 (0.2)
+3     Samish     40,853   57 (0.1)  161 (0.4)    616 (1.5)    282 (0.7)   1435 (3.5) 117 (0.3)  127 (0.3)
+7  Swinomish      3,207   24 (0.7)   71 (2.2)    249 (7.8)    148 (4.6)   560 (17.5)  45 (1.4)   48 (1.5)
+2  Jefferson     32,590      0 (0)      0 (0)        2 (0)        0 (0)        7 (0)     0 (0)      0 (0)
+4   San.Juan     17,631      0 (0)      0 (0)        1 (0)        0 (0)        2 (0)     0 (0)      0 (0)
+11     Total    264,387       4247       7998        16188        17083        29235      6250       7355

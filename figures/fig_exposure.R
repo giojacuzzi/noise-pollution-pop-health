@@ -38,7 +38,7 @@ exposure_levels_Ldn = exposure_levels_Ldn %>%
 
 exposure_levels_Ldn$Level = factor(exposure_levels_Ldn$Level, levels=level_scale)
 exposure_levels_Ldn = exposure_levels_Ldn[exposure_levels_Ldn$Population != 0, ]
-exposure_levels_Ldn$PopulationThousands = round(exposure_levels_Ldn$Population/1000.0,2)
+exposure_levels_Ldn$PopulationThousands = round(exposure_levels_Ldn$Population/1000.0,1)
 p_pop_exposed_per_5dB = ggplot(exposure_levels_Ldn, aes(x=Level, y=PopulationThousands, fill=Level)) +
   geom_bar(position='dodge', stat='identity') +
   scale_fill_manual(values=cols[cols$level %in% seq(45,85,5), 'color'], name = expression(L[dn]~'dB('*A*')')) +
@@ -49,11 +49,11 @@ p_pop_exposed_per_5dB = ggplot(exposure_levels_Ldn, aes(x=Level, y=PopulationTho
   theme_minimal() + theme(
     legend.position = 'none',
     panel.grid.major.x = element_blank(),
-    panel.grid.major.y = element_blank(),
+    # panel.grid.major.y = element_blank(),
     panel.grid.minor.x = element_blank(),
     panel.grid.minor.y = element_blank(),
     axis.ticks.length.x = unit(-0.1, 'pt'),
-    axis.text.y = element_blank(),
+    # axis.text.y = element_blank(),
     axis.title.x = element_text(margin = unit(c(4, 0, 0, 0), 'mm')),
     axis.title.y = element_text(margin = unit(c(0, 3, 0, 0), 'mm')),
     axis.ticks = element_blank()
@@ -139,11 +139,11 @@ plot_contours = function(contours, threshold, lims, title, units, lwd) {
 }
 p_Ldn = plot_contours(contours_5dB[[1]],
                      threshold = threshold_adverse_health_effects_Lden, lims = seq(45,90,5),
-                     title = expression('Adverse heath effects, 45+ dB'~L[dn]),
+                     title = expression('Adverse health effects, 45+ dB'~L[dn]),
                      units = expression('dB('*A*')'), lwd=0.3) +
-        geom_text(data = labels_large, aes(x = Lon, y = Lat, label = Name), size = 3.0, col = '#444444') +
-        geom_text(data = labels_medium, aes(x = Lon, y = Lat, label = Name), size = 2.5, col = '#444444') +
-        geom_text(data = labels_small, aes(x = Lon, y = Lat, label = Name), size = 2.25, col = '#444444'); p_Ldn
+        geom_text(data = labels_large, aes(x = Lon, y = Lat, label = Name), size = 4.0, col = '#444444') +
+        geom_text(data = labels_medium, aes(x = Lon, y = Lat, label = Name), size = 3.5, col = '#444444') +
+        geom_text(data = labels_small, aes(x = Lon, y = Lat, label = Name), size = 3.25, col = '#444444'); p_Ldn
 p_Lnight = plot_contours(contours_5dB[[2]],
                          threshold = threshold_sleep_disturbance_Lnight, lims = seq(40,90,5),
                          title = expression('Sleep disturbance, 40+ dB'~L[night]),

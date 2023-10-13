@@ -19,12 +19,13 @@ mapview(
   sites_with_events,
   xcol='Longitude', ycol='Latitude', zcol='Org',
   layer.name = 'Organization', crs=4269, grid=F, legend=T,
-  col.regions=c('darkgoldenrod2', 'navy', 'green3')
+  col.regions=c('yellow', 'navy', 'green')
 ) %>% addStaticLabels(label=sites_with_events$ID, direction='top')
 
 ## Max events per site ---------------------------------------------------------
 events_lmax = data_events[!is.na(data_events$LAeq_Lmax),]
-# discard dates before 2015, when primary Growler activity began
+
+# Discard any dates before 2015, when primary Growler activity began
 events_lmax = events_lmax[events_lmax$TimeStart >= as.POSIXct('2015-01-01 00:00:00', tz='UTC'), ]
 events_lmax$ID = factor(events_lmax$ID)
 
@@ -123,7 +124,7 @@ for (id in ids) {
     event_avg = data.frame(event_data[,-c(1)])
     event_avg = sapply(event_avg, energyavg)
     event_avg = data.frame(
-      Band=gsub('X','',names(event_avg)),
+      Band=gsub('X1.3.LZeq.','',names(event_avg)),
       dBZ=event_avg
     )
     session_freq_avg = rbind(session_freq_avg, event_avg)
@@ -144,3 +145,4 @@ for (id in ids) {
          subtitle = paste('LAeq_Lmax', round(energyavg(events_sesh$LAeq_Lmax),1), 'LCpeak', round(energyavg(events_sesh$LCpeak),1), 'SEL', round(energyavg(events_sesh$SEL),1)))
   print(p_sesh)
 }
+

@@ -1,5 +1,13 @@
 ### Global variables, functions, settings
 
+# Path to directory containing the PHI database
+database_path = {
+  # '~/../../Volumes/SAFS Backup/PHI'
+  # '~/../../Volumes/SAFS Work/PHI',
+  # '~/../../Volumes/gioj/PHI',
+  '~/../../Volumes/drive/database'
+}
+
 # Plotting and figures
 library(ggplot2)
 library(ggpmisc)
@@ -13,6 +21,7 @@ library(stringr)
 library(dplyr)
 library(tidyr)
 library(glue)
+library(readr)
 
 # Spatial mapping
 library(mapview)
@@ -26,13 +35,6 @@ options(tigris_use_cache = T)
 # census_api_key('a9d9f05e0560c7fadaed6b4168bedc56d0e4686d', install = T, overwrite = T)
 sf_extSoftVersion()
 crs = 'NAD83'
-
-# Path to directory containing the PHI database
-database_path = {
-  # '~/../../Volumes/SAFS Backup/PHI'
-  # '~/../../Volumes/SAFS Work/PHI',
-  '~/../../Volumes/gioj/PHI'
-}
 
 # Console logging and output helper
 msg = function(s, ...) {
@@ -60,9 +62,9 @@ months = c('Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','De
 
 # Database file maps
 get_file_map = function() {
-  file_map = rbind(read.csv('data/load/_output/file_map_navy.csv'),
-                   read.csv('data/load/_output/file_map_jgl.csv'),
-                   read.csv('data/load/_output/file_map_nps.csv'))
+  file_map = rbind(read.csv('data/load/_output/file_maps/file_map_navy.csv'),
+                   read.csv('data/load/_output/file_maps/file_map_jgl.csv'),
+                   read.csv('data/load/_output/file_maps/file_map_nps.csv'))
   file_map$Org = factor(file_map$Org)
   file_map$Name = factor(file_map$Name)
   file_map$ID = factor(file_map$ID)
@@ -72,7 +74,7 @@ get_file_map = function() {
 
 # NOTE: missing data_sites IDs produced via: `abbreviate(gsub(',','',data_sites[is.na(data_sites$ID),'Name']), named=F)`
 get_data_sites = function() {
-  data_sites = read.csv('data/load/sites/sites.csv')
+  data_sites = read.csv('data/gis/sites/sites.csv')
   data_sites[data_sites==''] = NA
   return(data_sites)
 }
@@ -90,7 +92,7 @@ get_data_metrics = function() {
 }
 
 get_data_ops = function() {
-  data_ops = read.csv('data/flight_ops/_output/ops.csv')
+  data_ops = read_csv('data/flight_ops/_output/ops.csv')
   data_ops$Time   = as.POSIXct(data_ops$Time, tz='UTC')
   data_ops$Hour   = as.factor(format(data_ops$Time, format='%H'))
   data_ops$DEN    = get_den_period_for_hours(data_ops$Hour)
@@ -148,12 +150,12 @@ get_field_name_for_ID = function(id) {
 
 get_site_name_for_ID = function(id) {
   data_sites = get_data_sites()
-  return(na.omit(data_sites[data_sites$ID==id,])$Name)
+  return(data_sites[data_sites$ID==id,]$Name)
 }
 
 get_ID_for_site_name = function(name) {
   data_sites = get_data_sites()
-  return(unique(na.omit(data_sites[data_sites$Name==name,])$ID))
+  return(unique(data_sites[data_sites$Name==name,])$ID)
 }
 
 get_org_for_site_date = function(id, date) {

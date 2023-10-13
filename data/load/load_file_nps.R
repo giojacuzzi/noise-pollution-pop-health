@@ -16,7 +16,7 @@ get_date_from_file_nps = function(file) {
 map_files_nps_csv = function() {
   # All txt files from the NPS database
   message('Mapping files to nps site dates...')
-  files = list.files(path=paste0(database_path,'/NPS/EBLA/NVSPL'), pattern="*.txt", full.names=TRUE, recursive=TRUE)
+  files = list.files(path=paste0(database_path,'/NPS'), pattern='\\.txt$', full.names=T, recursive=T)
   data_txt = data.frame()
   for (file in files) {
     message(paste0('Mapping file',file,'...'))
@@ -27,12 +27,14 @@ map_files_nps_csv = function() {
     data_txt = rbind(data_txt, r)
   }
   data_txt = cbind(Org='NPS', data_txt)
-  write.csv(data_txt, file='data/load/_output/file_map_nps.csv', row.names=FALSE)
+  path = 'data/load/_output/file_maps'
+  if (!dir.exists(path)) dir.create(path, recursive=T)
+  write.csv(data_txt, file=paste0(path, '/file_map_nps.csv'), row.names=F)
   return(data_txt)
 }
 
 get_file_map_nps = function() {
-  return(read.csv('data/load/_output/file_map_nps.csv'))
+  return(read.csv('data/load/_output/file_maps/file_map_nps.csv'))
 }
 
 # Columns to subset from the raw data

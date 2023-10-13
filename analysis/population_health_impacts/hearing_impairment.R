@@ -11,7 +11,6 @@ library(raster)
 library(glue)
 library(mapview)
 mapviewOptions(mapview.maxpixels = 50000000)
-input_path = paste0(here::here(), '/analysis/_output')
 output_path = paste0(here::here(), '/analysis/_output')
 
 # OSHA/NIOSH violation ---------------------------------------------------------
@@ -62,5 +61,3 @@ unique(data_metrics[data_metrics$Lmax>=115,'ID'])
 # https://ehp.niehs.nih.gov/doi/10.1289/ehp.113-a14
 unique(na.omit(data_events[data_events$LAFmax>120, ])$ID)
 unique(na.omit(data_events[data_events$LCpeak>135, ])$ID)
-
-# TODO: threshold of pain (typically 120-140)

@@ -11,7 +11,7 @@ get_levels_for_org = function(data, org) {
 }
 
 # Calculate metrics for every site ID and date from an org database (or all, if none is specified), store in a data frame, and save as `data/metrics/metrics.csv`
-calculate_site_date_metrics_csv = function(orgarg = '') {
+calculate_cumulative_metrics_csv = function(orgarg = '') {
 
   options(warn = 1)
   file_map = get_file_map()
@@ -28,9 +28,9 @@ calculate_site_date_metrics_csv = function(orgarg = '') {
     name = get_site_name_for_ID(id)
     message(paste0('Processing site ', id, ' \"', name , '\" - ', num_processed, ' of ', length(unique(file_map$ID))))
     
-    # readline('Press [enter] to continue...')
-    
-    for (date in unique(file_map[file_map$ID==id, 'Date'])) { # for every date at that site
+    dates = unique(file_map[file_map$ID==id, 'Date'])
+    for (d in 1:length(dates)) { # for every date at that site
+      date = dates[d]
       
       # Retrieve the measured sound pressure levels
       site_date_data = load_site_date(id, date)

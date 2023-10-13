@@ -2,7 +2,7 @@
 source('global.R')
 library(pdftools)
 
-pdf = '~/../../Volumes/gioj/PHI/NAVY/Aircraft Noise Event Database/PUBLIC_NASWI_NoiseEvents/Public_NoiseEvents_OlympicMOA_2020-10-20_to_2021-10-20.pdf'
+pdf = paste0(database_path, '/NAVY/Aircraft Noise Event Database/PUBLIC_NASWI_NoiseEvents/Public_NoiseEvents_OlympicMOA_2020-10-20_to_2021-10-20.pdf')
 
 format_date = '%m/%d/%Y'
 format_time = '%H:%M:%S'
@@ -60,5 +60,6 @@ head(data[
   order(data[,'LAeq_Lmax'], decreasing = T),
 ])
 
-# TODO: Save to file
-write.csv(data, 'data/events/_output/navy_reported_moa_events.csv', row.names=F)
+path = 'data/events/_output/navy_reported_moa_events.csv'
+write.csv(data, path, row.names=F)
+message(paste('Created', path))

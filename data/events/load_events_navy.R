@@ -2,7 +2,7 @@
 source('global.R')
 library(pdftools)
 
-files = list.files(path='~/../../Volumes/SAFS Work/NAVY/Aircraft Noise Event Database/PUBLIC_NASWI_NoiseEvents', pattern="Public_NoiseEvents_NASWI_M(1|2|3|4).pdf", full.names=T, recursive=F)
+files = list.files(path=paste0(database_path, '/NAVY/Aircraft Noise Event Database/PUBLIC_NASWI_NoiseEvents'), pattern="Public_NoiseEvents_NASWI_M(1|2|3|4).pdf", full.names=T, recursive=F)
 
 format_date = '%m/%d/%Y'
 format_time = '%H:%M:%S'
@@ -19,7 +19,9 @@ for (pdf in files) {
   colnames(period_data) = c('SiteID',scan(text=trimws(strsplit(event_pages[1],'\n')[[1]]), what ='', quiet=T)[1:8])
   
   # For each page of the pdf, parse and bind to period_data
-  for (page in event_pages) {
+  for (p in 1:length(event_pages)) {
+    msg('Processing page', p)
+    page = event_pages[p]
     page = strsplit(page, "\n")
     page = page[[1]]
     page = trimws(page)
@@ -55,14 +57,9 @@ for (pdf in files) {
     colnames(page_data) = c('SiteID',page_text[1:8])
     page_data = na.omit(page_data)
     period_data = rbind(period_data, page_data)
-    message(siteID)
   }
   period_data$Period = period
   data = rbind(data, period_data)
-  
-  # path = paste0('data/events/_output/events_', period, '.csv')
-  # write.csv(period_data, path, row.names=F)
-  # message(paste('Created', path))
 }
 path = 'data/events/_output/navy_reported_events.csv'
 write.csv(data, path, row.names=F)

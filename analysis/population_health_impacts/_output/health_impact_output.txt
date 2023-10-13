@@ -1,46 +1,46 @@
 Number of people exposed to levels beyond bounds of common ERFs: 
- HA  5136 
- HSD  4844 
+ HA  5265 
+ HSD  4967 
 Island (county)
-  HA FICON  5440.804 
-  HA ISO        9394.091 
-  HA WHO        17504.65 
-  HA FAANES  20593.12 
-  HA Yokoshima  29785.5 
-  HSD WHO         7332.047 
-  HSD Smith       8666.458 
+  HA FICON  5603.836 
+  HA ISO        9764.942 
+  HA WHO        18110.09 
+  HA FAANES  21775.52 
+  HA Yokoshima  30689.07 
+  HSD WHO         7778.318 
+  HSD Smith       9178.504 
 Jefferson (county)
-  HA FICON  0.6010177 
-  HA ISO        1.377112 
-  HA WHO        6.87546 
-  HA FAANES  0 
-  HA Yokoshima  17.67518 
-  HSD WHO         2.380482 
-  HSD Smith       2.552469 
+  HA FICON  0.8086501 
+  HA ISO        1.965288 
+  HA WHO        9.229516 
+  HA FAANES  0.3572728 
+  HA Yokoshima  23.15507 
+  HSD WHO         4.030947 
+  HSD Smith       4.356123 
 Samish (native)
-  HA FICON  116.0774 
-  HA ISO        334.299 
-  HA WHO        1191.46 
-  HA FAANES  687.7411 
-  HA Yokoshima  2727.523 
-  HSD WHO         237.8195 
-  HSD Smith       262.0717 
+  HA FICON  124.9635 
+  HA ISO        360.9021 
+  HA WHO        1275.521 
+  HA FAANES  734.2312 
+  HA Yokoshima  2911.735 
+  HSD WHO         253.7825 
+  HSD Smith       280.2234 
 San.Juan (county)
-  HA FICON  0.5040727 
-  HA ISO        1.116486 
-  HA WHO        5.802766 
+  HA FICON  0.6217106 
+  HA ISO        1.36284 
+  HA WHO        7.128362 
   HA FAANES  0 
-  HA Yokoshima  15.09675 
+  HA Yokoshima  18.63752 
   HSD WHO         0 
   HSD Smith       0 
 Skagit (county)
-  HA FICON  244.328 
-  HA ISO        703.6044 
-  HA WHO        2498.06 
-  HA FAANES  1429.52 
-  HA Yokoshima  5708.075 
-  HSD WHO         480.3692 
-  HSD Smith       528.489 
+  HA FICON  267.1467 
+  HA ISO        770.7134 
+  HA WHO        2713.66 
+  HA FAANES  1558.801 
+  HA Yokoshima  6185.456 
+  HSD WHO         532.9987 
+  HSD Smith       587.1063 
 Snohomish (county)
   HA FICON  0 
   HA ISO        0 
@@ -50,18 +50,18 @@ Snohomish (county)
   HSD WHO         0 
   HSD Smith       0 
 Swinomish (native)
-  HA FICON  40.78004 
-  HA ISO        122.389 
-  HA WHO        396.491 
-  HA FAANES  281.7202 
-  HA Yokoshima  873.8276 
-  HSD WHO         102.8505 
-  HSD Smith       113.0733 
-        Name HA_FICON HA_ISO HA_WHO HA_FAANES HA_Yokoshima HSD_WHO HSD_Smith
-1     Island    5,441  9,394 17,505    20,593       29,786   7,332     8,666
-5     Skagit      244    704  2,498     1,430        5,708     480       528
-3     Samish      116    334  1,191       688        2,728     238       262
-7  Swinomish       41    122    396       282          874     103       113
-2  Jefferson        1      1      7         0           18       2         3
-4   San.Juan        1      1      6         0           15       0         0
-11     Total    5,687 10,100 20,016    22,023       35,527   7,814     9,197
+  HA FICON  47.28692 
+  HA ISO        140.2846 
+  HA WHO        456.8526 
+  HA FAANES  319.5771 
+  HA Yokoshima  1013.023 
+  HSD WHO         119.8194 
+  HSD Smith       131.8842 
+        Name Population   HA_FICON      HA_ISO       HA_WHO    HA_FAANES HA_Yokoshima    HSD_WHO   HSD_Smith
+1     Island     85,938 5604 (6.5) 9765 (11.4) 18110 (21.1) 21776 (25.3) 30689 (35.7) 7778 (9.1) 9179 (10.7)
+5     Skagit    128,228  267 (0.2)   771 (0.6)   2714 (2.1)   1559 (1.2)   6185 (4.8)  533 (0.4)   587 (0.5)
+3     Samish     40,853  125 (0.3)   361 (0.9)   1276 (3.1)    734 (1.8)   2912 (7.1)  254 (0.6)   280 (0.7)
+7  Swinomish      3,207   47 (1.5)   140 (4.4)   457 (14.3)     320 (10)  1013 (31.6)  120 (3.7)   132 (4.1)
+2  Jefferson     32,590      1 (0)       2 (0)        9 (0)        0 (0)     23 (0.1)      4 (0)       4 (0)
+4   San.Juan     17,631      1 (0)       1 (0)        7 (0)        0 (0)     19 (0.1)      0 (0)       0 (0)
+11     Total    264,387       5873       10539        20840        23335        36916       8315        9770

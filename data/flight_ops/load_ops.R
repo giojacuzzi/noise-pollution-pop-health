@@ -3,7 +3,7 @@
 # Ault Field -------------------------------------------------------------------
 library(pdftools)
 
-files = list.files(path='~/../../Volumes/SAFS Work/NAVY/Flight Operations Data/AultField_and_OlympicMOA/PUBLIC_NASWI_Operations_AultField_and_OlympicMOA/Ault Field/', pattern="*.pdf", full.names=T, recursive=F)
+files = list.files(path=paste0(database_path, '/NAVY/Flight Operations Data/AultField_and_OlympicMOA/PUBLIC_NASWI_Operations_AultField_and_OlympicMOA/Ault Field/'), pattern="*.pdf", full.names=T, recursive=F)
 
 format_date = '%m/%d/%y'
 format_time = '%H:%M'
@@ -81,7 +81,7 @@ library(pdftools)
 # NOTE: A session on 12/16/20 from ~14:30-15:10 was mistakenly not observed, and is not included
 
 rm()
-files = list.files(path='~/../../Volumes/SAFS Work/NAVY/Flight Operations Data/OLFCoupeville/PUBLIC_NASWI_Operations_OLFCoupeville/', pattern="*Ops.pdf", full.names=T, recursive=F)
+files = list.files(path=paste0(database_path, '/NAVY/Flight Operations Data/OLFCoupeville/PUBLIC_NASWI_Operations_OLFCoupeville/'), pattern="*Ops.pdf", full.names=T, recursive=F)
 
 ncols = 1
 
@@ -181,7 +181,6 @@ data_coup = na.omit(data_coup)
 # write.csv(data, filename, row.names=F)
 # message(paste('Created', filename))
 
-# TODO: bind coup and ault, save to csv
 data_ault$Field = 'Ault'
 data_coup$Field = 'Coup'
 data = data.frame()
