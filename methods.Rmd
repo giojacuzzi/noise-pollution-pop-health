@@ -70,7 +70,7 @@ calculate_cumulative_metrics_csv('NAVY')
 calculate_cumulative_metrics_csv('NPS')
 
 # Evaluate cumulative metrics
-source('analysis/noise_regime/evaluate_cumulative_metrics.R') # TODO
+source('analysis/noise_regime/evaluate_cumulative_metrics.R')
 ```
 
 ### Single-event acoustic metrics
