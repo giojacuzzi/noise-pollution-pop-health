@@ -1,22 +1,42 @@
 # Methods
 
-This file documents the entire data processing pipeline.
+This R Markdown file documents the entire data processing and analysis pipeline for "TODO".
 
-> Disclaimer: Note that the following code is developed for this specific study purpose, but is not generally plug and play. It can be repurposed for future studies, and should be used a reference.
+## Dependencies
 
-## Data availability
+R software version 4.3.0 was used for this study. Noisemap software is available from the [US Department of Defense Community and Environmental Noise Primer Resources](http://dodnoise.org/primer_resources). BaseOps version 7.368 was used as the graphical user interface for Noisemap simulation data entry and management in concert with a) Omega10 and Omega11 to calculate sound over distance for aircraft flight operations, ground maintenance, and run-up operations; b) NMap 7.3 and MRNMap to calculate noise exposure values on the ground; c) NMPlot 4.974 to convert calculated noise exposure values to noise contour plots.
 
-TODO: reference Data Availability Statement in manuscript.
-
-Raw data should be 1-sec with X metrics.
-
--   Navy data from ... exported from Larson Davis binary in xlsx format in the same directories as the original binary files.
--   NPS data from ... in txt format with ...
--   JGL data from ... in csv format with file name convention `ID_YYYY-MM-DD`, where ID is the site ID corresponding to a site listed in `data/load/sites/sites.csv`.
-
-## Acoustic monitoring analyses
-
-Statement about how data are formatted (i.e. site-date, 1-second SPL measurements, with frequency spectrum when available). These routines are written
+```{r}
+# Install package dependencies
+packages = c(
+  'dplyr',      # 1.1.2
+  'fasterize',  # 1.0.4
+  'gdalUtils',  # 2.0.3.2
+  'ggplot2',    # 3.4.2
+  'ggpmisc',    # 0.5.2
+  'ggpp',       # 0.5.2
+  'ggrepel',    # 0.9.3
+  'glue',       # 1.6.2
+  'leafem',     # 0.2.0
+  'mapview',    # 2.11.0
+  'patchwork',  # 1.1.2
+  'pdftools',   # 3.3.3
+  'raster',     # 3.6-23
+  'readr',      # 2.1.4
+  'readxl',     # 1.4.2
+  'rslurm',     # 0.6.2
+  'scales',     # 1.2.1
+  'sf',         # 1.0-13
+  'sp',         # 1.6-1
+  'stringr',    # 1.5.0
+  'tidycensus', # 1.4.1
+  'tidyr',      # 1.3.0
+  'tigris',     # 2.0.3
+  'viridis',    # 0.6.3
+  'zoo'         # 1.8-12
+)
+install.packages(packages[!(packages %in% rownames(installed.packages()))])
+```
 
 ### Database configuration and data access
 
@@ -29,12 +49,14 @@ First, set the `database_path` global variable in `global.R` to your local datab
     -   `NCLD` - [US National Land Cover Database](https://www.mrlc.gov/data/nlcd-2019-land-cover-conus)
     -   `NCES` - [NCES school location shapefiles](https://nces.ed.gov/programs/edge/geographic/schoollocations)
 
+Statement about how data are formatted (i.e. site-date, 1-second SPL measurements, with frequency spectrum when available). These routines are written...
+
 ```{r}
-# Configure and check for database
+# Configure and check for mounted database
 source('global.R')
 stopifnot(dir.exists(database_path))
 
-# Retrieve monitoring location information and display
+# Display monitoring location map
 data_sites = get_data_sites()
 mapview(
   data_sites,
@@ -58,7 +80,7 @@ create_site_date_csvs('NAVY')
 create_site_date_csvs('NPS')
 ```
 
-## Noise regime
+## Acoustic monitoring metrics (noise regime)
 
 ### Cumulative acoustic metrics
 
@@ -90,16 +112,19 @@ source('data/events/load_events_navy_moa.R')
 source('analysis/noise_regime/evaluate_single_event_metrics.R')
 ```
 
-### Temporal distribution
+## Aircraft operations data and simulation models
+
+### Temporal distribution analysis
 
 ```{r}
+# Retrieve flight operations reported by Navy
 source('data/flight_ops/load_ops.R')
+
+# Evaluate temporal distribution of noise and aircraft operations
 source('analysis/noise_regime/temporal_distribution.R')
 ```
 
-## Population noise exposure
-
-### Noise simulation modeling with Noisemap
+### Aggregate aircraft operations data
 
 1.  Download "[V. Noise Modeling Data - PUBLIC_NOISEMAP](https://www.navfac.navy.mil/Portals/68/Documents/Business-Lines/Asset-Management/Sound/Remaining-Adds/PUBLIC_NOISEMAP.zip?ver=KEbUPIKWwvnjZl0H4vUg9g%3d%3d)" from NAVY database and unzip.
 2.  Format flight operations
@@ -112,11 +137,14 @@ source('analysis/noise_regime/temporal_distribution.R')
     2.  Outputs: 'data/simulation/flight_ops/\_output/NASWI_MP[N]\_Noisemap - Flight Operations Aggregated.csv', 'data/simulation/flight_ops/\_output/NASWI_Noisemap - Flight Operations Combined Average.csv', 'data/simulation/flight_ops/\_output/NASWI_Noisemap - Flight Operations Combined Average - Night Only.csv'; and also simulated adjustments (0.5 and 1.5)
 
 ```{r}
+# Generate aggregated flight operations data
 source('data/simulation/aggregate_flight_ops.R')
 ```
 
-4.  Next, open the 'data/simulation/\_output/csv/\* Combined Average \*.csv' files with Microsoft Excel and re-save as .xml files in data/simulation/\_output/xml.
-5.  Open 'simulation/baseops/DNL/NASWI_Combined_Average_DNL.baseops' with BaseOps. Note that modeled static operations were constant across all four monitoring periods. To import new flight operations into BaseOps:
+### Noise simulation modeling with Noisemap
+
+1.  Next, open the 'data/simulation/\_output/csv/\* Combined Average \*.csv' files with Microsoft Excel and re-save as .xml files in data/simulation/\_output/xml.
+2.  Open 'simulation/baseops/DNL/NASWI_Combined_Average_DNL.baseops' with BaseOps. Note that modeled static operations were constant across all four monitoring periods. To import new flight operations into BaseOps:
     1.  File \> Import Flight Operations from Spreadsheet
         1.  Option Categories \> File \> Import operations from the following spreadsheet file: \<the xml file you just saved, either the total combined average for DNL and LEQ24, or the "Night Only" for LNIGHT\>
         2.  Option Categories \> Columns:
@@ -147,20 +175,23 @@ source('data/simulation/aggregate_flight_ops.R')
     3.  Create based upon the filename '....\\simulation\\\_output\\DNL\\DNL' , replacing 'DNL' with the corresponding metric.
 5.  Click `OK`
 
-#### Validate simulation against measurements from the field
+#### Simulation model validation
 
 ```{r}
+# Validate simulation against results from the Navy’s monitoring study
 source('simulation/validation.R')
 ```
 
-### Dasymetric population exposure
+## Population noise exposure
 
-Generate dasymetric population density maps for all exposed areas.
+### Dasymetric population density
 
 ```{r}
+# Determine exposed areas
 source('simulation/contours.R')
 exposed_areas = get_exposed_areas()
 
+# Generate dasymetric population density maps for all exposed areas
 source('analysis/population_noise_exposure/dasymetric_population_density.R')
 for (id in exposed_areas$counties) generate_dasypop_county(id)
 for (id in exposed_areas$native_lands) generate_dasypop_native_land(id)
@@ -170,7 +201,6 @@ Combine dasymetric population density maps with noise contour maps to yield nois
 
 ```{r}
 source('analysis/population_noise_exposure/calculate_population_noise_exposure.R')
-
 source('analysis/population_noise_exposure/assess_population_noise_exposure.R')
 ```
 
@@ -180,7 +210,6 @@ Next, conduct health assessment for chosen metrics across the population.
 
 ```{r}
 source('analysis/population_health_impacts/calculate_population_health_impacts.R')
-
 source('analysis/population_health_impacts/assess_population_health_impacts.R')
 ```
 
@@ -190,7 +219,7 @@ Conduct childhood learning school impact evaluation.
 source('analysis/population_health_impacts/childhood_learning.R')
 ```
 
-Conduct OSHA and NIOSH hearing loss impact evaluation. Reminder: uses SPL data
+Conduct OSHA and NIOSH hearing loss impact evaluation. Reminder: uses SPL data.
 
 ```{r}
 source('analysis/population_health_impacts/preprocessing/calculate_osha_niosh.R')
