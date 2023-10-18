@@ -1,6 +1,7 @@
 library(tidyr)
 
 source('global.R')
+source('figures/fig_global.R')
 
 # From Navy report to Congress:
 # - "For these summaries, one flight operation is counted whenever an aircraft touches or leaves a runway surface. Thus, an arrival and a departure each count as one flight operation, whereas a closed pattern, such as an FCLP, counts as two flight operations for each circuit."
@@ -56,28 +57,34 @@ results = results %>% mutate_if(is.character, as.numeric)
 results = results[, c('Operations', 'Exposed', 'HA_WHO', 'HSD_WHO')]
 
 results_long = round(results / 1000.0, 2) %>% pivot_longer(cols=names(results)[2:ncol(results)], names_to='Outcome', values_to='Estimate')
-lab_size = 6
+
+annotation_size = text_size_min/.pt
 
 p_simulations = results_long %>% ggplot(aes(x=Operations, y=Estimate, group=Outcome, color=Outcome)) +
-  geom_vline(aes(xintercept=nops_4MP / 1000.0), linetype = 'dashed', color = 'darkgray', lwd=1.5) +
-  geom_vline(aes(xintercept=nops_A2A / 1000.0), linetype = 'dashed', color = 'darkgray', lwd=1.5) +
-  annotate('text', x=(nops_4MP - 3000) / 1000.0, y=50, label='This study', angle=90, color = 'darkgray', size = lab_size) +
-  annotate('text', x=(nops_A2A - 3000) / 1000.0, y=50, label='Projected 2021 total', angle=90, color = 'darkgray', size = lab_size) +
-  geom_line(lwd=1.5) +
-  geom_point(size=2) +
-  annotate('text', x=65, y=70, label='Exposed population', angle=18, color = '#444444', size = lab_size) +
-  annotate('text', x=70, y=22, label='Highly annoyed (WHO)', angle=7, color = '#F8766D', size = lab_size) +
-  annotate('text', x=70, y=10, label='Highly sleep disturbed (WHO)', angle=3, color = '#619CFF', size = lab_size) +
+  geom_vline(aes(xintercept=nops_4MP / 1000.0), linetype = 'dashed', color = 'darkgray') +
+  geom_vline(aes(xintercept=nops_A2A / 1000.0), linetype = 'dashed', color = 'darkgray') +
+  annotate('text', x=(nops_4MP - 3000) / 1000.0, y=50, label='This study', angle=90, color = 'darkgray', size = annotation_size) +
+  annotate('text', x=(nops_A2A - 3000) / 1000.0, y=50, label='Projected 2021 total', angle=90, color = 'darkgray', size = annotation_size) +
+  geom_line() +
+  # geom_point() +
+  annotate('text', x=65, y=70, label='Exposed population', angle=16, color = '#444444', size = annotation_size) +
+  annotate('text', x=70, y=22, label='Highly annoyed (WHO)', angle=7, color = '#F8766D', size = annotation_size) +
+  annotate('text', x=70, y=10, label='Highly sleep disturbed (WHO)', angle=3, color = '#619CFF', size = annotation_size) +
   scale_color_manual(labels=c('Exposed population','Highly annoyed (WHO)','Highly sleep disturbed (WHO)'), values=c('#444444','#F8766D', '#619CFF')) +
   scale_x_continuous(sec.axis = ggplot2::sec_axis(~. / nops_4MP * 1000.0, name = 'Scaling factor', labels = scales::label_percent())) +
-  # scale_color_manual(name='Health Outcome', values=erf_colors, breaks=names(comp)[3:nstats]) +
-  labs(title = '', x = 'Annual airfield operations (thousands)', y = 'Estimated population impacted (thousands)', color = 'Health outcome') + 
+  labs(title = '', x = 'Annual airfield operations (thousands)', y = 'Population impacted (thousands)', color = 'Health outcome') + 
   theme(
-    axis.title.x = element_text(margin = margin(t = 20, r = , b = 0, l = 0)),
-    axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0)),
     panel.grid.minor.x = element_blank(),
     panel.grid.minor.y = element_blank(),
-    text=element_text(size=22),
+    text=element_text(size=text_size_max),
     legend.position = 'none'
-  ); p_simulations
+  ); print(p_simulations)
 ggsave(p_simulations, file=paste0('figures/_output/simulations.png'), width=10, height=10)
+
+ggplot2::ggsave(filename = glue('{output_path}/simulations.eps'), 
+                device = 'eps', units = 'cm', dpi = 300, 
+                width = fig_size_single - 0.2, height = fig_size_single + 0.4,
+                plot = p_simulations + theme(
+                  panel.grid.minor.x = element_blank(),
+                  panel.grid.minor.y = element_blank(),
+                  legend.position = 'none'))

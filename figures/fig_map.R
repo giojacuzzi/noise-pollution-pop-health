@@ -1,4 +1,5 @@
 library(raster)
+source('figures/fig_map_global.R')
 source('figures/fig_global.R')
 
 bounds_x = c(-122.86, -122.33) # [min, max]
@@ -49,26 +50,26 @@ naswi_map = ggplot() +
   geom_sf(data = wa_military$geometry, fill=color_military, color='#444444', lwd=0.4) +
   geom_sf(data = naswi_land, fill=NA) +
   geom_sf(data = runways, lwd=1, color='#555555') +
-  geom_text(data = waterbodies, aes(x = Lon, y = Lat, label = Name), size = 5.5, col = '#b6e3fc', fontface = 'bold', angle=67) +
+  # geom_text(data = waterbodies, aes(x = Lon, y = Lat, label = Name), size = 5.5, col = '#b6e3fc', fontface = 'bold', angle=67) +
   geom_sf(data = flight_tracks_union, lwd=0.4, color=alpha('#005eff', 0.1),) + # alpha('#005eff', 0.1)
   geom_sf(data = naswi_sites, size = 5, aes(col = Org)) + # aes(shape = Org, col = Org)
-  geom_sf_text(data = naswi_sites[naswi_sites$LocationOffset == '',], aes(label=Location), size=2.8, color='white') +
-  geom_text(data = labels_large, aes(x = Lon, y = Lat, label = Name), size = 3.5, col = '#222222') +
-  geom_text(data = labels_medium, aes(x = Lon, y = Lat, label = Name), size = 3.0, col = '#222222') +
-  geom_text(data = labels_small, aes(x = Lon, y = Lat, label = Name), size = 2.5, col = '#222222') +
+  # geom_sf_text(data = naswi_sites[naswi_sites$LocationOffset == '',], aes(label=Location), size=2.8, color='white') +
+  # geom_text(data = labels_large, aes(x = Lon, y = Lat, label = Name), size = 3.5, col = '#222222') +
+  # geom_text(data = labels_medium, aes(x = Lon, y = Lat, label = Name), size = 3.0, col = '#222222') +
+  # geom_text(data = labels_small, aes(x = Lon, y = Lat, label = Name), size = 2.5, col = '#222222') +
   scale_color_manual(name='Monitoring Locations', values = c('#619CFF','#F8766D','#00BA38')) +
-  geom_text_repel(data = naswi_sites[naswi_sites$LocationOffset != '', ],
-                  aes(x = Longitude, y = Latitude, label = LocationOffset),
-                  size = 3, col = '#222222', max.overlaps = 5, # fontface = '',
-                  force = 10,
-                  nudge_x = c(0.03,0.025,0.0),
-                  nudge_y = c(-0.008,-0.018,-0.028)) +
-  geom_label_repel(data = airfields,
-                  aes(x = Lon, y = Lat, label = Airfield),
-                  size = 4, col = '#222222', max.overlaps = 5, fontface = 'bold',
-                  force = 10,
-                  nudge_x = c(0.08,0.08),
-                  nudge_y = c(-0.025,0.02)) +
+  # geom_text_repel(data = naswi_sites[naswi_sites$LocationOffset != '', ],
+  #                 aes(x = Longitude, y = Latitude, label = LocationOffset),
+  #                 size = 3, col = '#222222', max.overlaps = 5, # fontface = '',
+  #                 force = 10,
+  #                 nudge_x = c(0.03,0.025,0.0),
+  #                 nudge_y = c(-0.008,-0.018,-0.028)) +
+  # geom_label_repel(data = airfields,
+  #                 aes(x = Lon, y = Lat, label = Airfield),
+  #                 size = 4, col = '#222222', max.overlaps = 5, fontface = 'bold',
+  #                 force = 10,
+  #                 nudge_x = c(0.08,0.08),
+  #                 nudge_y = c(-0.025,0.02)) +
   coord_sf(xlim = bounds_x, ylim = bounds_y, expand = F) +
   # labs(x='', y='') +
   # north(naswi_sites, symbol = 3, scale = 0.11, location='bottomleft', anchor = c(x=-122.85677080867502, y=48.17642123618527)) +
@@ -125,14 +126,14 @@ wa_map = ggplot() +
   # geom_sf(data = flight_tracks, lwd=0.5, color=alpha('blue', 0.1),) +
   # geom_sf(data = moa_tracks, lwd=0.1, color=alpha('blue', 0.5)) +
   geom_sf(data = sites[sites$ID %in% c('99_HOH'), ], size = 5, aes(shape = Org), color='#619CFF') +
-  geom_text(data = state_label, aes(x = Lon, y = Lat, label = Name), size = 4, col = '#AAAAAA', fontface = 'bold') +
-  geom_sf_text(data = sites[sites$ID %in% c('99_HOH'), ], aes(label=Location), size=3, color='white') +
-  geom_label_repel(data = naswi_areas,
-                   aes(x = Lon, y = Lat, label = Name),
-                   size = 4, col = '#222222', max.overlaps = 5, fontface = 'bold',
-                   force = 10,
-                   nudge_x = c(2.2,2.7),
-                   nudge_y = c(0.1,-1.0)) +
+  # geom_text(data = state_label, aes(x = Lon, y = Lat, label = Name), size = 4, col = '#AAAAAA', fontface = 'bold') +
+  # geom_sf_text(data = sites[sites$ID %in% c('99_HOH'), ], aes(label=Location), size=3, color='white') +
+  # geom_label_repel(data = naswi_areas,
+  #                  aes(x = Lon, y = Lat, label = Name),
+  #                  size = 4, col = '#222222', max.overlaps = 5, fontface = 'bold',
+  #                  force = 10,
+  #                  nudge_x = c(2.2,2.7),
+  #                  nudge_y = c(0.1,-1.0)) +
   coord_sf(xlim = c(-125, -116.8), ylim = c(45.5,49.2), expand = F) +
   theme(axis.line=element_blank(),
         axis.text.x=element_blank(),
@@ -157,10 +158,12 @@ map_combined = naswi_map + theme(legend.position='none') +
 
 ggsave(
   plot = map_combined,
-  filename = glue('{output_path}/map.png')
+  filename = glue('{output_path}/map.png'),
+  dpi = 300
 )
 
 ggsave(
   plot = cowplot::get_legend(naswi_map),
   filename = glue('{output_path}/map_legend.png')
 )
+

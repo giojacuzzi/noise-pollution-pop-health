@@ -2,6 +2,7 @@ source('global.R')
 source('metrics/metrics.R')
 library(patchwork)
 
+source('figures/fig_global.R')
 source('data/load/load_site_date.R')
 id = '24A_B'
 date = '2021-08-10'
@@ -30,7 +31,10 @@ plot_Leq = function(l) {
     theme(
       panel.grid.minor.x = element_blank(),
       panel.grid.minor.y = element_blank(),
-      axis.title.x = element_blank()
+      axis.title.x = element_blank(),
+      axis.text.x = element_text(size=5),
+      axis.text.y = element_text(size=5),
+      text=element_text(size=text_size_max)
     ); return(p_leq)
 }
 
@@ -78,7 +82,9 @@ plot_spectrum = function(l) {
       panel.grid.minor.x = element_blank(),
       panel.grid.minor.y = element_blank(),
       axis.text.x = element_blank(),
-      axis.text.y = element_text(size=6)
+      axis.text.y = element_text(size=5),
+      text=element_text(size=text_size_max),
+      legend.position='none'
     )
   return(p_spectral)
 }
@@ -106,6 +112,17 @@ p_event_spectrum = plot_spectrum(data)
 p_event_combined = p_event_Leq / p_event_spectrum + plot_annotation(tag_levels = 'A'); p_event_combined
 ggsave(p_event_combined, file=paste0('figures/_output/', 'noise_event.png'), width=8, height=5)
 
+ggsave(filename = glue('{output_path}/noise_event.eps'), 
+       device = 'eps', units = 'cm', dpi = 300, 
+       width = fig_size_single, height = fig_size_single + 0.0,
+       plot = p_event_combined + theme())
+
 p_session_spectrum = plot_spectrum(data_session); p_session_spectrum
 p_session_combined = (p_session_Leq / p_session_spectrum) + plot_annotation(tag_levels = 'A'); p_session_combined
 ggsave(p_session_combined, file=paste0('figures/_output/', 'noise_session.png'), width=8, height=5)
+
+ggsave(filename = glue('{output_path}/noise_session.eps'), 
+       device = 'eps', units = 'cm', dpi = 300, 
+       width = fig_size_single, height = fig_size_single + 0.0,
+       plot = p_session_combined + theme())
+

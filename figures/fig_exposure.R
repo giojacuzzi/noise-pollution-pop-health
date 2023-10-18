@@ -1,7 +1,4 @@
-# Various figures
-library(OpenStreetMap)
-library(osmdata)
-
+source('figures/fig_map_global.R')
 source('figures/fig_global.R')
 source('simulation/contours.R')
 
@@ -140,10 +137,10 @@ plot_contours = function(contours, threshold, lims, title, units, lwd) {
 p_Ldn = plot_contours(contours_5dB[[1]],
                      threshold = threshold_adverse_health_effects_Lden, lims = seq(45,90,5),
                      title = expression('Adverse health effects, 45+ dB'~L[dn]),
-                     units = expression('dB('*A*')'), lwd=0.3) +
-        geom_text(data = labels_large, aes(x = Lon, y = Lat, label = Name), size = 4.0, col = '#444444') +
-        geom_text(data = labels_medium, aes(x = Lon, y = Lat, label = Name), size = 3.5, col = '#444444') +
-        geom_text(data = labels_small, aes(x = Lon, y = Lat, label = Name), size = 3.25, col = '#444444'); p_Ldn
+                     units = expression('dB('*A*')'), lwd=0.3)
+        # geom_text(data = labels_large, aes(x = Lon, y = Lat, label = Name), size = 4.0, col = '#444444') +
+        # geom_text(data = labels_medium, aes(x = Lon, y = Lat, label = Name), size = 3.5, col = '#444444') +
+        # geom_text(data = labels_small, aes(x = Lon, y = Lat, label = Name), size = 3.25, col = '#444444'); p_Ldn
 p_Lnight = plot_contours(contours_5dB[[2]],
                          threshold = threshold_sleep_disturbance_Lnight, lims = seq(40,90,5),
                          title = expression('Sleep disturbance, 40+ dB'~L[night]),
@@ -178,7 +175,7 @@ p_combined = ((p_Ldn + p_theme) + ((p_Lnight + p_theme) / (p_Leq24 + p_theme))) 
 ggsave(
   plot = p_combined,
   filename = glue('{output_path}/contours.png'),
-  width = 20, height = 20
+  width = 20, height = 20, dpi = 300
 )
 
 ggsave(

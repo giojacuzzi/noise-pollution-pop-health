@@ -14,9 +14,8 @@ Raw data should be 1-sec with X metrics.
 -   NPS data from ... in txt format with ...
 -   JGL data from ... in csv format with file name convention `ID_YYYY-MM-DD`, where ID is the site ID corresponding to a site listed in `data/load/sites/sites.csv`.
 
-```{=html}
 <!-- -->
-```
+
 -   `NAVY` - The NAVFAC database, with acoustic data files converted from Larson Davis binary format .LD0 to .xlsx, including operational data and [Noisemap files](https://www.navfac.navy.mil/Portals/68/Documents/Business-Lines/Asset-Management/Sound/Remaining-Adds/PUBLIC_NOISEMAP.zip?ver=KEbUPIKWwvnjZl0H4vUg9g%3d%3d).
 -   `NPS` - Acoustic data from the National Park Service (.txt).
 -   `JGL` - Acoustic data from JGL Acoustics, Inc (.csv).

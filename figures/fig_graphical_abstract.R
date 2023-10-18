@@ -9,7 +9,7 @@
 #   Population health estimates
 
 # Various figures
-source('figures/fig_global.R')
+source('figures/fig_map_global.R')
 source('simulation/contours.R')
 
 source('metrics/metrics.R')
@@ -177,5 +177,5 @@ p = ggplot() +
 ggsave(
   plot = p,
   filename = glue('{output_path}/graphical_abstract.png'),
-  width = 15, height = 15
+  width = 15, height = 15, dpi = 300
 )
