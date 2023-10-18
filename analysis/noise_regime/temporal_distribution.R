@@ -101,7 +101,6 @@ ggsave(p_mean_ops_field_day / p_mean_lden_field_day, file=paste0(ggsave_output_p
 
 # Average active day Leq and ops per hour --------------------------------------
 # Dependencies: NAVY dataset
-# TODO: show distribution as well, some days are much worse and late at night
 
 ops_hour_ault = c()
 for (hour in hours) ops_hour_ault = c(ops_hour_ault, sum(data_ops[data_ops$Field=='Ault',]$Hour==hour))

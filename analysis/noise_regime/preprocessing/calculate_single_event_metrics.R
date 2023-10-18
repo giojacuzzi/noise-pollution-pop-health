@@ -1,45 +1,4 @@
 # Identify individual sound events
-#
-# NOTE: According to Stusnick,
-# 0 dB adjustment for onset_rate <= 15 db/sec
-# 11*log10(onset_rate) - 12.9 adjustment for 15 db/sec <= onset_rate <= 150 db/sec
-# 11 dB adjustment for onset_rate >= 150 db/sec
-
-# Recommended max onset rate of 60 dB / sec
-# https://drive.google.com/drive/u/0/search?q=Low-altitude%20overflights%20of%20fighters%20the%20risk%20of%20hearing%20loss
-
-# https://drive.google.com/drive/u/0/folders/1wWnqevA6S3ANlzIVyh5lu_bcuR0cOybx
-# A sound eventis characterized bythe sound exposure level LEA, and the maximum sound pressure level LpASmax or LpAeq1smax
-
-# An automatic sound-monitoring system shall reliably and precisely detect and classify aircraft sound events. The chosen technique shall satisfy the following criteria:
-# a) The expanded uncertainty (see Clause 6) of the measured cumulated exposure level of all aircraft sound events shall not exceed 3 dB
-# b) At least 50% of true aircraft sound events shall be correctly classified as aircraft sound events
-# c) The number of non-aircraft sound events which are incorrectly classified as shall be less than 50% of the true number of aircraft sound events
-
-# For each sound event:
-# A-weighted sound exposure level LEA
-# Maximum SPL LpASmax and/or LpAeq1smax
-# Actual SPL of the event detection threshold Lthreshold if releveant
-# Time-history sequence of SPLs
-
-# Data processing stages:
-# Continuous measurement >
-# Event extraction and classification >
-# Event identification (informed by ops info) >
-#  > Reports of aircraft sound events, missing, or unidentified
-
-# Sound event detection (5.3.2) criteria:
-# a) The sound is not steady state, but also not imulsive (i.e. its duration lies within specified limits)
-# b) The sound level exceeds a threshold level by at least a specified amount
-# c) When an event terminates, the sound level does not rise again above a specified level within a specified time
-
-
-# Navy used a detection threshold of L90 + 10 for the hour
-# ISO 3.13.4 states that background sound may be estimated by the 95% exceedance level of total sound (LpAS95) 
-
-# a) Use moving average (exponential?)
-# b) Use L95 exceedance threshold
-# c) Multiple peaks splitting
 
 source('global.R')
 source('metrics/metrics.R')
@@ -56,7 +15,7 @@ find_extrema = function (x, last=F) {
   # force first value to be recognized as an extreme
   first_value <- x_rle$values[1] - x_rle$values[2]
   
-  # differentiate the series, keep only the sign, and use 'rle' to
+  # Differentiate the series, keep only the sign, and use 'rle' to
   # locate increase or decrease concerning multiple successive values.
   # The result values is a series of (only) -1 and 1.
   # NOTE: with this method, last value will be considered as an extrema
@@ -381,7 +340,6 @@ calculate_events_csv = function(orgarg = '') {
       # org = unique(file_map[file_map$ID==id & file_map$Date==date,]$Org)
       # site_date_levels = get_levels_for_org(site_date_data, org)
       # if (is.null(site_date_levels)) {
-      #   # TODO: If NAVY, scrape any pre-calculated events from the 'Summary' sheet
       #   warning(paste('Unable to get levels for', id, date, '- skipping...'))
       #   next
       # }

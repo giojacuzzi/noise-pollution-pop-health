@@ -44,7 +44,7 @@ selected_columns_nps = c(
   'dbA',
   # C-weighted
   'dbC',
-  # F-weighted (TODO: assuming this is 'fast' time weighting?)
+  # F-weighted (time)
   'dbF',
   # Frequency content
   'H12p5',

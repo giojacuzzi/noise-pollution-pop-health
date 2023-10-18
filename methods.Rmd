@@ -1,6 +1,6 @@
 # Methods
 
-This R Markdown file documents the entire data processing and analysis pipeline for "TODO".
+This R Markdown file documents the entire data processing and analysis pipeline for "Population health implications of exposure to pervasive military aircraft noise pollution".
 
 ## Dependencies
 
@@ -219,7 +219,7 @@ Conduct childhood learning school impact evaluation.
 source('analysis/population_health_impacts/childhood_learning.R')
 ```
 
-Conduct OSHA and NIOSH hearing loss impact evaluation. Reminder: uses SPL data.
+Conduct OSHA and NIOSH hearing loss impact evaluation.
 
 ```{r}
 source('analysis/population_health_impacts/preprocessing/calculate_osha_niosh.R')

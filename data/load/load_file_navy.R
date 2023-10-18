@@ -113,7 +113,6 @@ load_file_navy = function(path) {
     warning(paste('Unable to load data -', e$message, 'in', path))
   })
   if (data_failure) {
-    # TODO: If NAVY, scrape any pre-calculated metrics from the 'Summary' sheet
     return()
   }
   message(paste('Loading file', basename(path)))

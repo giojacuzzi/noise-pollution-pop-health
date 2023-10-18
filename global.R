@@ -2,9 +2,6 @@
 
 # Path to directory containing the PHI database
 database_path = {
-  # '~/../../Volumes/SAFS Backup/PHI'
-  # '~/../../Volumes/SAFS Work/PHI',
-  # '~/../../Volumes/gioj/PHI',
   '~/../../Volumes/drive/database'
 }
 
@@ -32,7 +29,6 @@ library(tidycensus)
 library(raster)
 mapviewOptions(mapview.maxpixels = 50000000)
 options(tigris_use_cache = T)
-# census_api_key('a9d9f05e0560c7fadaed6b4168bedc56d0e4686d', install = T, overwrite = T)
 sf_extSoftVersion()
 crs = 'NAD83'
 
@@ -72,7 +68,6 @@ get_file_map = function() {
   return(file_map)
 }
 
-# NOTE: missing data_sites IDs produced via: `abbreviate(gsub(',','',data_sites[is.na(data_sites$ID),'Name']), named=F)`
 get_data_sites = function() {
   data_sites = read.csv('data/gis/sites/sites.csv')
   data_sites[data_sites==''] = NA

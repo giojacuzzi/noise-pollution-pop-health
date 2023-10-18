@@ -62,7 +62,7 @@ LxFromLevels = function(L, p = 50) {
   } else if (p == 100) {
     return(min(L) - 0.1) # 0.1 dB adjustment to establish exceedance
   }
-  Lsorted = L[order(L, decreasing=TRUE)] # TODO: does this account correctly for repeated values?
+  Lsorted = L[order(L, decreasing=TRUE)]
   i = max(floor(length(L) * p/100.0), 1)
   return(Lsorted[i] - 0.1)
 }

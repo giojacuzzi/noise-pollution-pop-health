@@ -87,12 +87,6 @@ ggplot(data_date, aes(x=Time, y=LAeq)) +
 ids = c('26B_SG','25B_T','20B_SG','27A_SG', '24A_B')
 date = '2020-12-15'
 
-# FCLP session times for 2020-12-15
-# 12:37-13:11
-# 14:29-15:01
-# 17:01-18:10
-# 18:31-19:40
-
 for (id in ids) {
   events_sesh=data_events[
     data_events$ID==id &

@@ -72,16 +72,6 @@ ggsave(
   filename = glue('{output_path}/legend_HSD.png')
 )
 
-legend_size = 1.7
-
-# ggplot2::ggsave(filename = glue('{output_path}/simulations.eps'), 
-#                 device = 'eps', units = 'cm', dpi = 300, 
-#                 width = fig_size_double - legend_size, height = fig_size_single,
-#                 plot = p_combined + theme(
-#                   panel.grid.minor.x = element_blank(),
-#                   panel.grid.minor.y = element_blank(),
-#                   legend.position = 'none'))
-
 ggplot2::ggsave(filename = glue('{output_path}/erfs.eps'),
                 device = 'eps', units = 'cm', dpi = 300, 
                 width = fig_size_double - 3.5, height = fig_size_single - 1.0,

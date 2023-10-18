@@ -95,9 +95,6 @@ data_events = data_events[
 ]
 data_events = data_events[data_events$Org == 'NAVY', ]
 
-### DEBUG
-# data_events = data_events[data_events$LAeq_Lmax < 110 & data_events$LAeq_Lmax > 107, ] # 16, 31
-# 2, 9, 10, 17, 18, 25, 37, 40 <--- 2
 i = 2
 event = data_events[i,]
 id = event$ID

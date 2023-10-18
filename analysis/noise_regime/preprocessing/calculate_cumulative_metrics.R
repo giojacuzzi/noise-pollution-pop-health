@@ -37,7 +37,6 @@ calculate_cumulative_metrics_csv = function(orgarg = '') {
       org = unique(file_map[file_map$ID==id & file_map$Date==date,]$Org)
       site_date_levels = get_levels_for_org(site_date_data, org)
       if (is.null(site_date_levels)) {
-        # TODO: If NAVY, scrape any pre-calculated metrics from the 'Summary' sheet
         warning(paste('Unable to get levels for', id, date, '- skipping...'))
         next
       }

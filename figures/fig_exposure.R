@@ -155,19 +155,7 @@ ggsave(p_Leq24 + theme(text=element_text(size=22), plot.margin = margin(5,5,5,5,
 
 p_theme = theme(
   text=element_text(size=24),
-  # axis.line=element_blank(),
-  # axis.text.x=element_blank(),
-  # axis.text.y=element_blank(),
-  # axis.ticks=element_blank(),
-  # axis.title.x=element_blank(),
-  # axis.title.y=element_blank(),
   legend.position='none'
-  # panel.background=element_rect(fill = '#EAF7FE', color = NA),
-  # panel.border=element_rect(colour = '#222222', fill=NA, linewidth=0.75),
-  # panel.grid.major=element_blank(),
-  # panel.grid.minor=element_blank(),
-  # plot.background=element_blank(),
-  # plot.margin = margin(0, 0, 0, 0, 'pt')
 )
 
 p_combined = ((p_Ldn + p_theme) + ((p_Lnight + p_theme) / (p_Leq24 + p_theme))) + plot_annotation(tag_levels = 'A')

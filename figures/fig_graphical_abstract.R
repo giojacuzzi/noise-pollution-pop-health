@@ -1,14 +1,4 @@
-# Layered map stack with
-# - Acoustic monitoring locations (dots)
-# - Aircraft operations data (flight racks)
-# - Simulated noise contour (Ldn)
-# - Population density map (heatmap)
-# +
-#   Exposure-response functions and thresholds
-# +
-#   Population health estimates
-
-# Various figures
+# Graphical abstract
 source('figures/fig_map_global.R')
 source('simulation/contours.R')
 

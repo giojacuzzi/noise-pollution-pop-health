@@ -145,8 +145,6 @@ health_risk_summary = health_risk_summary[,2:ncol(health_risk_summary)]
 
 msg(health_risk_summary)
 
-#######################################
-
 # Write table and results to files
 sink()
 msg('Created', filename_output)

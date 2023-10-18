@@ -22,7 +22,6 @@ exp_resp_bounded = function(exp_resp, L, bounds) {
 # Note that the WHO guidelines for Ldn/Lden/Lday/Lnight are based on this same 1996 standard –– in their words, "an average sound pressure level over all days, evenings and nights in a year ".
 
 # The percent predicted to be highly annoyed in relation to exposure to aircraft traffic noise. Based on the WHO regression equation %HA = −50.9693 + 1.0168 × Lden + 0.0072 × Lden^2 derived from the systematic review (Guski et al., 2017).
-# TODO: should be only defined for Lden [40, 75]
 exp_resp_WHO = function(Lden) {
   return(-50.9693 + 1.0168 * Lden + 0.0072 * Lden^2)
 }
@@ -91,7 +90,6 @@ ci_Yokoshima = data=data.frame(
 bounds_Yokoshima = c(40,65)
 
 ## HSD ------------------------------------------------------------------------------
-# TODO: Military-specific / low-frequency / onset / aircraft dB penalty adjustment?
 
 # Combined estimate, Basner and McGuire 2018
 exp_resp_HSD_WHO = function(Lnight) {
