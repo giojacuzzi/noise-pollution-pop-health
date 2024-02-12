@@ -1,5 +1,7 @@
 # Population health implications of exposure to pervasive military aircraft noise pollution
 
+[![DOI](https://zenodo.org/badge/565972351.svg)](https://zenodo.org/doi/10.5281/zenodo.10652377)
+
 This repository contains the reproducible methods and workflow routines used in the research article:
 
 > Jacuzzi G, Kuehne LM, Harvey A, Hurley C, Wilbur R, Seto E, Olden JD. Population health implications of exposure to pervasive military aircraft noise pollution. *Journal of Exposure Science and Environmental Epidemiology*. In press, 2024.
