@@ -1,4 +1,4 @@
-### Global variables, functions, settings
+## Global variables, utility functions, and configuration settings
 
 # Path to directory containing the PHI database
 database_path = {
