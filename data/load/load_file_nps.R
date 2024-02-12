@@ -1,4 +1,5 @@
-### Load data from NPS spl files
+## Load data from NPS acoustic monitoring files
+
 source('global.R')
 
 get_id_from_file_nps = function(file) {

@@ -1,3 +1,5 @@
+## Calculate cumulative acoustic metrics
+
 source('metrics/metrics.R')
 source('data/load/load_site_date.R')
 

@@ -1,4 +1,4 @@
-# Metric Evaluation Functions --------------------------------------------------
+## Utility functions for acoustic metric calculation
 
 p0 = 2*10^(-5)  # Reference sound pressure in Pascals (Pa) in air 20 μPa
 
@@ -214,7 +214,7 @@ lden_composite = function() {
                        (24-d-e/24)*(10^((LRn+Kn)/10)))
 }
 
-# see page 43 https://www.navfac.navy.mil/Portals/68/Documents/Business-Lines/Asset-Management/Sound/Read-Me-Files/Technical_Report_Real-time_Aircraft_Sound_Monitoring_FINAL.pdf?ver=11ABujLRXHVyNY9tGQNZsA%3d%3d
+# See page 43 https://www.navfac.navy.mil/Portals/68/Documents/Business-Lines/Asset-Management/Sound/Read-Me-Files/Technical_Report_Real-time_Aircraft_Sound_Monitoring_FINAL.pdf?ver=11ABujLRXHVyNY9tGQNZsA%3d%3d
 dnl_composite = function() {
   dnl = 10*log10((15/24)*(1/54000)*sum(10^(SELsDay/10))) +
     10*log10( (9/24)*(1/32400)*sum(10^(SELsNight/10)))

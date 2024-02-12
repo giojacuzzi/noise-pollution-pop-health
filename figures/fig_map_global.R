@@ -1,3 +1,5 @@
+## Global variables used in map generation
+
 library(patchwork)
 library(ggsn)
 library(tigris)

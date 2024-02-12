@@ -1,3 +1,4 @@
+## Calculate population noise exposure
 # Input: dasypop .tif files
 # Output: analysis/preprocessing/_output/pop_exposure_stack .gri and .grd
 

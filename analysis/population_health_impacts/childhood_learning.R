@@ -1,4 +1,4 @@
-## Cognitive development in children and speech intelligibility
+## Calculate risks to cognitive development in children and speech intelligibility
 
 source('global.R')
 source('metrics/metrics.R')

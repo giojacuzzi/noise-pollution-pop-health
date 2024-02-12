@@ -1,4 +1,5 @@
-### Load data from NAVY .xlsx files, converted from Larson Davis binary format .LD0
+## Load data from NAVY acoustic monitoring .xlsx files, converted from Larson Davis binary format .LD0
+
 source('global.R')
 library(readxl)
 

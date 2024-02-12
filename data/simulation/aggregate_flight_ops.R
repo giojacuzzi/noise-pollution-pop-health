@@ -1,4 +1,4 @@
-# Generate the per-period aggregates and the total combined average .csv outputs, respectively.
+## Generate the per-period aggregates and the total combined average .csv outputs, respectively.
 # Input: 'data/simulation/flight_ops/*.csv'
 # Outputs:
 # 'data/simulation/flight_ops/_output/NASWI_MP[N]_Noisemap - Flight Operations Aggregated.csv'

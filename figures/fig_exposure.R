@@ -1,3 +1,5 @@
+## Figures for population noise exposure
+
 source('figures/fig_map_global.R')
 source('figures/fig_global.R')
 source('simulation/contours.R')

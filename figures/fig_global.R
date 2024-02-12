@@ -1,3 +1,5 @@
+## Global variables used in figure generation
+
 output_path = paste0(here::here(), '/figures/_output')
 
 text_size_max = 7 # pt

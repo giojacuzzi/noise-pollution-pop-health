@@ -1,4 +1,5 @@
-#### Extract noise events from pdfs and save to csv files
+## Extract noise events from pdfs and save to csv files
+
 source('global.R')
 library(pdftools)
 

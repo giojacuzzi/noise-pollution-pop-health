@@ -1,3 +1,5 @@
+## Assess population noise exposure from calculations
+
 source('global.R')
 source('simulation/contours.R')
 

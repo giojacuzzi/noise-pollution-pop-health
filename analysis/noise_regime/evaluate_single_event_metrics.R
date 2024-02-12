@@ -1,6 +1,4 @@
-## Noise characterization
-# How is the noise quantitatively characterized?
-# Requirements: PHI database
+## Evaluate single-event acoustic metrics
 
 source('global.R')
 source('metrics/metrics.R')
@@ -74,7 +72,6 @@ source('data/load/load_site_date.R')
 data_date_1 = load_site_date('KysH', '2019-06-18')
 data_date_2 = load_site_date('KysH', '2019-06-19')
 data_date = rbind(data_date_1, data_date_2)
-# data_date = na.omit(data_date)
 start_idx = which(data_date$Time==as.POSIXct('2019-06-18 20:00:00', tz='UTC'))
 end_idx   = which(data_date$Time==as.POSIXct('2019-06-19 00:25:00', tz='UTC'))
 data_date = data_date[start_idx:end_idx,]
@@ -105,7 +102,6 @@ for (id in ids) {
              data_events$TimeStart<as.POSIXct('2020-12-15 19:41:00', tz='UTC')
           ))
     , ]
-  # plot_events('25B_T', date, events_sesh$X)
   
   site_data = load_site_date(id, date)
   session_freq_avg = data.frame()

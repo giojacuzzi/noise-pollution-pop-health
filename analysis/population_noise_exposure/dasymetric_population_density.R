@@ -1,6 +1,5 @@
-# Dasymetric population mapping framework:
-# https://zenodo.org/record/7853206
-
+## Generate dasymetric population density maps
+# Dasymetric population mapping framework: https://zenodo.org/record/7853206
 # Input: NLCD rasters and NASWI infrastructure shapefile
 # Output: analysis/preprocessing/_output/{county}_dasypop.tif
 

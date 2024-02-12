@@ -1,4 +1,5 @@
-### Load data from JGL spl files
+## Load data from JGL acoustic monitoring files
+
 source('global.R')
 
 get_id_from_file_jgl = function(file) {

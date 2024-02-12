@@ -1,4 +1,6 @@
-# From Navy Report to Congress
+## Flight operations from Olympic MOA
+# Data copied from Navy "Report to Congress: Real-Time Aircraft Sound Monitoring Final Report"
+
 m = c(
   'Oct 2020', 'Nov 2020', 'Dec 2020', 'Jan 2021', 'Feb 2021', 'Mar 2021',
   'Apr 2021', 'May 2021', 'Jun 2021', 'Jul 2021', 'Aug 2021', 'Sep 2021', 'Oct 2021'

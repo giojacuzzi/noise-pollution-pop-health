@@ -1,3 +1,5 @@
+## Figure for simulated noise regimes
+
 library(tidyr)
 
 source('global.R')

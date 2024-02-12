@@ -49,7 +49,7 @@ First, set the `database_path` global variable in `global.R` to your local datab
     -   `NCLD` - [US National Land Cover Database](https://www.mrlc.gov/data/nlcd-2019-land-cover-conus)
     -   `NCES` - [NCES school location shapefiles](https://nces.ed.gov/programs/edge/geographic/schoollocations)
 
-Statement about how data are formatted (i.e. site-date, 1-second SPL measurements, with frequency spectrum when available). These routines are written...
+Acoustic data for a given date of monitoring at a given site should be encapsulated in a single file. Data are expected to be organized in rows of 1 second measurement intervals with an individual column for time and each sound pressure level and/or frequency metric measurement. Metadata for each site should be entered in `data/gis/sites/sites.csv`. While the routines below are written to accommodate the output formats of common class 1 sound pressure level meters, they can be edited to support the parsing of other file types.
 
 ```{r}
 # Configure and check for mounted database
@@ -126,15 +126,17 @@ source('analysis/noise_regime/temporal_distribution.R')
 
 ### Aggregate aircraft operations data
 
+The following instructions outline the steps for aggregating aircraft operations data from the Navy database.
+
 1.  Download "[V. Noise Modeling Data - PUBLIC_NOISEMAP](https://www.navfac.navy.mil/Portals/68/Documents/Business-Lines/Asset-Management/Sound/Remaining-Adds/PUBLIC_NOISEMAP.zip?ver=KEbUPIKWwvnjZl0H4vUg9g%3d%3d)" from NAVY database and unzip.
 2.  Format flight operations
-    1.  Input: NOISEMAP/NASWI/MP[N]/\*Flight Operations.xml, where 'N' is the monitoring period, 1-4
-    2.  Output: .csv for each Flight Operations.xml file, located under 'data/simulation/flight_ops'
-    3.  For each Flight Operations.xml file, open in Microsoft Excel. If prompted, do not update workbook links. Then, select File \> Save As \> Comma Separated Values (.csv), and save to the corresponding directory in 'data/simulation/flight_ops/MP[N]'
+    a.  Input: NOISEMAP/NASWI/MP[N]/\*Flight Operations.xml, where 'N' is the monitoring period, 1-4
+    b.  Output: .csv for each Flight Operations.xml file, located under 'data/simulation/flight_ops'
+    c.  For each Flight Operations.xml file, open in Microsoft Excel. If prompted, do not update workbook links. Then, select File \> Save As \> Comma Separated Values (.csv), and save to the corresponding directory in 'data/simulation/flight_ops/MP[N]'
 3.  Run `data/simulation/flight_ops/aggregate_flight_ops.R` to generate the per-period aggregates and the total combined average .csv outputs, respectively.
-    1.  Input: 'data/simulation/flight_ops/\*.csv'
+    a.  Input: 'data/simulation/flight_ops/\*.csv'
 
-    2.  Outputs: 'data/simulation/flight_ops/\_output/NASWI_MP[N]\_Noisemap - Flight Operations Aggregated.csv', 'data/simulation/flight_ops/\_output/NASWI_Noisemap - Flight Operations Combined Average.csv', 'data/simulation/flight_ops/\_output/NASWI_Noisemap - Flight Operations Combined Average - Night Only.csv'; and also simulated adjustments (0.5 and 1.5)
+    b.  Outputs: 'data/simulation/flight_ops/\_output/NASWI_MP[N]\_Noisemap - Flight Operations Aggregated.csv', 'data/simulation/flight_ops/\_output/NASWI_Noisemap - Flight Operations Combined Average.csv', 'data/simulation/flight_ops/\_output/NASWI_Noisemap - Flight Operations Combined Average - Night Only.csv'; and also simulated adjustments (0.5 and 1.5)
 
 ```{r}
 # Generate aggregated flight operations data
@@ -143,36 +145,41 @@ source('data/simulation/aggregate_flight_ops.R')
 
 ### Noise simulation modeling with Noisemap
 
+The following instructions outline the steps for importing flight operations into Noisemap and running noise the exposure simulation models.
+
 1.  Next, open the 'data/simulation/\_output/csv/\* Combined Average \*.csv' files with Microsoft Excel and re-save as .xml files in data/simulation/\_output/xml.
-2.  Open 'simulation/baseops/DNL/NASWI_Combined_Average_DNL.baseops' with BaseOps. Note that modeled static operations were constant across all four monitoring periods. To import new flight operations into BaseOps:
-    1.  File \> Import Flight Operations from Spreadsheet
-        1.  Option Categories \> File \> Import operations from the following spreadsheet file: \<the xml file you just saved, either the total combined average for DNL and LEQ24, or the "Night Only" for LNIGHT\>
-        2.  Option Categories \> Columns:
-            1.  Flight Profile Name Column: B (2)
-            2.  Num Day Ops Column: H (8)
-            3.  Num Night Ops Column: I (9)
-        3.  Also import flight tracks: yes
-            1.  Flight Track Name Column: C (3)
-        4.  Option Categories \> Missing Data
-            1.  If a flight profile in the spreadsheet is missing from the BaseOps case, then... Add the missing profile to the BaseOps case
-            2.  If a flight profile in the BaseOps case is missing from the spreadsheet, then... Leave the profile unchanged in the BaseOps case
-            3.  If you are also importing flight tracks, and a flight track in the spreadsheet is missing from the BaseOps case, then... Set the profile's flight track to "undefined"
-        5.  Press OK... You should see the following message: `Importing flight profiles from spreadsheet file NASWI_MP1_Noisemap - Flight Operations.xml.  The following flight profiles appear in both the BaseOps case and the spreadsheet file.  The daily flight profile operation counts in the BaseOps case will be updated to match the values in the spreadsheet file.`
+2.  Open 'simulation/baseops/DNL/NASWI_Combined_Average_DNL.baseops' with BaseOps. Note that modeled static operations were constant across all four monitoring periods. To import new flight operations into BaseOps, select File \> Import Flight Operations from Spreadsheet:
+    a.  Option Categories \> File \> Import operations from the following spreadsheet file: \<the xml file you just saved, either the total combined average for DNL and LEQ24, or the "Night Only" for LNIGHT\>.
+    b.  Option Categories \> Columns:
+        i.  Flight Profile Name Column: B (2)
+        ii. Num Day Ops Column: H (8)
+        iii. Num Night Ops Column: I (9)
+    c.  Also import flight tracks: yes
+        i.  Flight Track Name Column: C (3)
+    d.  Option Categories \> Missing Data
+        a.  If a flight profile in the spreadsheet is missing from the BaseOps case, then... Add the missing profile to the BaseOps case.
+        b.  If a flight profile in the BaseOps case is missing from the spreadsheet, then... Leave the profile unchanged in the BaseOps case.
+        c.  If you are also importing flight tracks, and a flight track in the spreadsheet is missing from the BaseOps case, then... Set the profile's flight track to "undefined".
+    e.  Press OK... You should see the following message:
+
+```         
+Importing flight profiles from spreadsheet file NASWI_MP1_Noisemap - Flight Operations.xml.  The following flight profiles appear in both the BaseOps case and the spreadsheet file.  The daily flight profile operation counts in the BaseOps case will be updated to match the values in the spreadsheet file
+```
 
 #### Run BaseOps simulations and generate NMPlot noise contour maps
 
-*See NoiseMap and AEDT Gap Analysis Technical Report for further details of NoiseMap and BaseOps software. NoiseMap BaseOps cases have been made for DNL and Leq24 (cumulative, see 4.1.1.1) and Lnight (9hr, see 4.1.1.2).*
+See NoiseMap and AEDT Gap Analysis Technical Report for further details of NoiseMap and BaseOps software. NoiseMap BaseOps cases have been made for DNL and Leq24 (cumulative, see 4.1.1.1) and Lnight (9hr, see 4.1.1.2).
 
 1.  For a given .baseops file under 'simulation/baseops' (DNL, LEQ24, or LNIGHT), open it with BaseOps, then select `Case > Run Case`
 2.  After the case has finished running, select `Case > Plot`. This will open the default contours in NMPlot.
 3.  Click the `Edit Options` button. From `Option Categories > Contours > Levels`, manually specify contour levels with a lowest primary level (such as 35) and highest 150, with spacing between primary levels of 1, and 0 secondary levels. Click `Apply`.
-    1.  NOTE: To view the contours on a map, you can select Background \> Layers \> Add Layer (SlippyMap) \> Options Title Server - URL Prefix: tile.openstreetmap.org Attribution Text: OpenStreetMap
+    a.  NOTE: To view the contours on a map, you can select Background \> Layers \> Add Layer (SlippyMap) \> Options Title Server - URL Prefix: tile.openstreetmap.org Attribution Text: OpenStreetMap
 4.  Select `File > Export to GIS`. Under format, select `ESRI ARC/INFO Shapefile (SHP)`, then click `Properties`
-    1.  Coordinate System \> Export in the following coordinate system... WGS 84
-    2.  Level of Detail \> Export with a level of detail appropriate for display at a scale of...
+    a.  Coordinate System \> Export in the following coordinate system... WGS 84
+    b.  Level of Detail \> Export with a level of detail appropriate for display at a scale of...
         -   1:24000
         -   1 inch = 2000 feet
-    3.  Create based upon the filename '....\\simulation\\\_output\\DNL\\DNL' , replacing 'DNL' with the corresponding metric.
+    c.  Create based upon the filename '....\\simulation\\\_output\\DNL\\DNL' , replacing 'DNL' with the corresponding metric.
 5.  Click `OK`
 
 #### Simulation model validation

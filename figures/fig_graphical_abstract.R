@@ -1,4 +1,5 @@
-# Graphical abstract
+## Graphical abstract figure
+
 source('figures/fig_map_global.R')
 source('simulation/contours.R')
 

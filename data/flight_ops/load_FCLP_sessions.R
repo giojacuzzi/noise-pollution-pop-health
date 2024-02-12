@@ -1,4 +1,5 @@
-# Extract sessions from FCLP Time Periods
+## Extract sessions from FCLP Time Periods flight operations data
+
 library(pdftools)
 library(stringr)
 source('global.R')

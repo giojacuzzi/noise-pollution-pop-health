@@ -1,4 +1,4 @@
-# Extract ops from 'Flight Operations Data' pdfs and save to csv files
+## Extract flight operations from 'Flight Operations Data' pdfs and save to csv files
 
 # Ault Field -------------------------------------------------------------------
 library(pdftools)

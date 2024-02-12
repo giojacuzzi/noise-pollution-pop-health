@@ -1,3 +1,5 @@
+## Utility functions to assist with the calculation of OSHA and NIOSH standards measurements
+
 source('global.R')
 
 # https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.95AppA#:~:text=(2)%20The%20eight%2Dhour,to%20the%20measured%20sound%20level.

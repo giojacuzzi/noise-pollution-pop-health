@@ -1,3 +1,5 @@
+## Thresholds for adverse health risks due to noise exposure
+
 # WHO - "For average noise exposure, the GDG strongly recommends reducing noise levels produced by aircraft below 45 dB Lden, as aircraft noise above this level is associated with adverse health effects." The U.S. EPA recommends an average 24-hr exposure limit of 55 DNL (dBA) to protect the public from all adverse effects on health and welfare in residential areas
 threshold_adverse_health_effects_Lden = 45
 

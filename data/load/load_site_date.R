@@ -1,3 +1,5 @@
+## Utility functions for loading acoustic monitoring data from a given site and date
+
 source('global.R')
 source('data/load/load_file_navy.R')
 source('data/load/load_file_jgl.R')

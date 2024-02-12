@@ -1,4 +1,4 @@
-## Hearing loss and OSHA / NIOSH standards
+## Calculate potential hearing loss and OSHA / NIOSH standards measurements
 
 source('global.R')
 source('metrics/metrics.R')
@@ -12,9 +12,6 @@ library(glue)
 library(mapview)
 mapviewOptions(mapview.maxpixels = 50000000)
 output_path = paste0(here::here(), '/analysis/_output')
-
-# OSHA/NIOSH violation ---------------------------------------------------------
-# NOTE: calculate OSHA/NIOSH with data/metrics/calculate_osha_niosh.R
 
 # Hearing loss -----------------------------------------------------------------
 # Dependencies: any dataset

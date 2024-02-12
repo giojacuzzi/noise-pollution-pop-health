@@ -1,16 +1,18 @@
 # Population health implications of exposure to pervasive military aircraft noise pollution
 
-This repository contains the reproducible methods and workflow routines used in the research article, "Population health implications of exposure to pervasive military aircraft noise pollution".
+This repository contains the reproducible methods and workflow routines used in the research article:
 
-> DISCLAIMER: The code in this repository was developed for the purposes of this specific study. However, it can be used as a reference and freely redesigned for other purposes.
+> Jacuzzi G, Kuehne LM, Harvey A, Hurley C, Wilbur R, Seto E, Olden JD. Population health implications of exposure to pervasive military aircraft noise pollution. *Journal of Exposure Science and Environmental Epidemiology*. In press, 2024.
+
+While this code was developed for the objectives of this specific study, it can be freely repurposed for other noise monitoring and health assessment initiatives. Please cite the original publication in your references and direct any correspondance to gioj@uw.edu.
 
 ## Data availability
 
-Refer to the Data Availability Statement in the paper to find links to requisite data, including:
+Refer to the Data Availability statement in the paper for links to requisite data, including:
 
--   Navy data from the NAVFAC database, exported from Larson Davis binary in xlsx format in the same directories as the original binary files.
--   NPS data from the National Park Service Night Skies and Sounds Division, in txt format.
--   JGL data from JGL Acoustics, Inc. in csv format.
+-   Navy acoustic data from the NAVFAC database, exported from Larson Davis binary in xlsx format in the same directories as the original binary files.
+-   NPS acoustic data from the National Park Service Night Skies and Sounds Division, in txt format.
+-   JGL acoustic data from JGL Acoustics, Inc. in csv format.
 
 Software and package dependencies are listed in `methods.Rmd`.
 
@@ -47,7 +49,7 @@ Scripts for the generation of figures presented in the paper and supplementary m
 
 ### metrics
 
-Helper functions and constants for the calculation of acoustic metrics and health impacts, including exposure-response functions and thresholds.
+Utility functions and constants for the calculation of acoustic metrics and health impacts, including exposure-response functions and thresholds.
 
 ### simulation
 

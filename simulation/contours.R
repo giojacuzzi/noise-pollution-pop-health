@@ -1,3 +1,5 @@
+## Utility function to retrieve and process noise contours
+
 source('global.R')
 source('metrics/thresholds.R')
 library(glue)

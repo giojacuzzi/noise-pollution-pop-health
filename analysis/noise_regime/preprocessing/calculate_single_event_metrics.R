@@ -1,4 +1,4 @@
-# Identify individual sound events
+## Identify and calculate single-event acoustic metrics
 
 source('global.R')
 source('metrics/metrics.R')

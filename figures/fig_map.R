@@ -1,3 +1,5 @@
+## Figures for study area map
+
 library(raster)
 source('figures/fig_map_global.R')
 source('figures/fig_global.R')

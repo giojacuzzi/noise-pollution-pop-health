@@ -1,5 +1,5 @@
-## Temporal distribution
-# When does the noise occur?
+## Evaluate temporal distribution of noise and aircraft operations
+
 library(lubridate)
 
 source('global.R')

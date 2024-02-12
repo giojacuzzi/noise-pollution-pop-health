@@ -1,3 +1,5 @@
+## Figures for noise events
+
 source('global.R')
 source('metrics/metrics.R')
 library(patchwork)

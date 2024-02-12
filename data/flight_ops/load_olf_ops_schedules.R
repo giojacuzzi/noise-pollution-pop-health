@@ -1,4 +1,5 @@
-# Extract ops from OLF Operations Schedules
+## Extract flight operations from OLF Operations Schedules
+
 library(pdftools)
 library(stringr)
 source('global.R')

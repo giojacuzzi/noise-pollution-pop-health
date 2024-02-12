@@ -1,5 +1,4 @@
-## Averages
-# Ldn, Lden
+## Evaluate cumulative acoustic metrics
 
 source('global.R')
 source('metrics/metrics.R')
