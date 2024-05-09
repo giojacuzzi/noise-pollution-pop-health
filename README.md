@@ -4,7 +4,8 @@
 
 This repository contains the reproducible methods and workflow routines used in the research article:
 
-> Jacuzzi G, Kuehne LM, Harvey A, Hurley C, Wilbur R, Seto E, Olden JD. Population health implications of exposure to pervasive military aircraft noise pollution. *Journal of Exposure Science and Environmental Epidemiology*. In press, 2024.
+> Jacuzzi G., Kuehne L.M., Harvey A., Hurley C., Wilbur R., Seto E., Olden J.D. Population health implications of exposure to pervasive military aircraft noise pollution. *Journal of Exposure Science and Environmental Epidemiology* (2024).
+https://doi.org/10.1038/s41370-024-00670-1
 
 While this code was developed for the objectives of this specific study, it can be freely repurposed for other noise monitoring and health assessment initiatives. Please cite the original publication in your references and direct any correspondance to gioj@uw.edu.
 

@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+message: "This code can be freely repurposed for other noise monitoring and health assessment initiatives. If you use this software, please cite it as below."
+authors:
+- family-names: "Jacuzzi"
+  given-names: "Giordano"
+  orcid: "https://orcid.org/0009-0005-4351-5682"
+title: "noise-pollution-pop-health-naswi"
+version: 1.0
+doi: 10.5281/zenodo.10652377
+date-released: 2024-5-9
+url: "https://github.com/giojacuzzi/noise-pollution-pop-health-naswi"
+preferred-citation:
+  type: article
+  authors:
+  - family-names: "Jacuzzi"
+    given-names: "Giordano"
+    orcid: "https://orcid.org/0009-0005-4351-5682"
+  - family-names: "Kuehne"
+    given-names: "Lauren"
+    orcid: "https://orcid.org/0000-0002-0054-613X"
+  - family-names: "Harvey"
+    given-names: "Anne"
+  - family-names: "Hurley"
+    given-names: "Christine"
+  - family-names: "Wilbur"
+    given-names: "Robert"
+  - family-names: "Seto"
+    given-names: "Edmund"
+    orcid: "https://orcid.org/0000-0003-4058-0313"
+  - family-names: "Olden"
+    given-names: "Julian"
+    orcid: "https://orcid.org/0000-0003-2143-1187"
+  doi: "10.1038/s41370-024-00670-1"
+  journal: "Journal of Exposure Science & Environmental Epidemiology"
+  month: 5
+  title: "Population health implications of exposure to pervasive military aircraft noise pollution"
+  year: 2024
